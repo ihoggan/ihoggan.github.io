@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S.M.A.R.T - Neural Network Learning Playground</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(255,255,255,0.95);
+            color: #333;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .hero-title {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .subtitle {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 1.2em;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+            margin: 10px;
+        }
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            color: white;
+            text-decoration: none;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        .feature {
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+        .feature h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .challenge {
+            text-align: center;
+            margin-top: 40px;
+            padding: 30px;
+            background: #f0f8ff;
+            border-radius: 10px;
+            border: 2px solid #667eea;
+        }
+        .challenge h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        .price-formula {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #667eea;
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border-left: 5px solid #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="hero-title">🧠 S.M.A.R.T Neural Network Playground</h1>
+            <p class="subtitle">See Machine Adaptive Reasoning Training</p>
+            <p><strong>Watch AI learn to predict house prices in real-time!</strong></p>
+            
+            <a href="smart-see-machine-adaptive-reasoning-training.ipynb" class="cta-button">
+                📁 View Notebook
+            </a>
+            
+            <a href="https://nbviewer.jupyter.org/github/ihoggan/S.M.A.R.T./blob/main/smart-see-machine-adaptive-reasoning-training.ipynb" class="cta-button">
+                🚀 Interactive Version
+            </a>
+            
+            <a href="https://github.com/ihoggan/S.M.A.R.T." class="cta-button">
+                📂 GitHub Repository
+            </a>
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <h3>🎯 Interactive Learning</h3>
+                <p>Adjust learning rates with sliders and watch neural network parameters evolve in real-time. See what happens when you "break" the AI!</p>
+            </div>
+            
+            <div class="feature">
+                <h3>📊 Visual Understanding</h3>
+                <p>Watch gradient descent optimization happen before your eyes. No more "black box" - see exactly how AI learns!</p>
+            </div>
+            
+            <div class="feature">
+                <h3>🎓 Educational Focus</h3>
+                <p>Perfect for students, educators, and anyone curious about neural networks. No math background required!</p>
+            </div>
+            
+            <div class="feature">
+                <h3>💥 Learn from Explosions</h3>
+                <p>Discover why learning rate selection matters by watching parameters explode with bad settings!</p>
+            </div>
+        </div>
+
+        <div class="challenge">
+            <h2>🏠 The Challenge</h2>
+            <p>Can a neural network learn that house prices follow this pattern?</p>
+            <div class="price-formula">
+                House Price = $200/sqft × Square Feet + $50,000 base
+            </div>
+            <p>Try the interactive notebook to find out! Start with random parameters and watch the AI discover the hidden relationship.</p>
+            
+            <p><strong>🎮 Experiment with different learning rates:</strong></p>
+            <p>🐌 <strong>Slow & Steady:</strong> 0.0000001 (safe but takes time)<br>
+            ⚡ <strong>Balanced:</strong> 0.000001 (good learning speed)<br>
+            💥 <strong>Explosive:</strong> 0.0001+ (watch it break!)</p>
+        </div>
+    </div>
+</body>
+</html>
