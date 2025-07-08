@@ -12,3 +12,11 @@ An **interactive educational tool** that lets you watch neural networks learn in
 
 **Stop wondering how neural networks learn - watch it happen!**
 
+## 💝 Support S.M.A.R.T Development
+
+If this tool helped you understand neural networks, consider supporting more educational AI tools:
+
+[![GitHub Sponsors](https://img.shields.io/badge/Sponsor-GitHub-pink?style=for-the-badge&logo=github)](https://github.com/sponsors/ihoggan)
+
+**Even $5 helps create more interactive learning experiences!** ☕🧠
+
