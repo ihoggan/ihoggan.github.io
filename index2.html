@@ -117,10 +117,14 @@
             border: 1px solid rgba(255,255,255,0.1);
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             display: none;
+            position: relative;
+            z-index: 10;
         }
 
         .content.active {
-            display: block;
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
             animation: fadeIn 0.5s ease;
         }
 
@@ -320,11 +324,11 @@
         </div>
 
         <div class="tabs">
-            <button class="tab active" onclick="showTab('basics')">🌟 What Is It?</button>
-            <button class="tab" onclick="showTab('size')">📏 How Big?</button>
-            <button class="tab" onclick="showTab('stars')">⭐ Baby Stars</button>
-            <button class="tab" onclick="showTab('science')">🔬 Cool Science</button>
-            <button class="tab" onclick="showTab('fun')">🎮 Fun Zone</button>
+            <button class="tab active" onclick="showTab('basics', this)">🌟 What Is It?</button>
+            <button class="tab" onclick="showTab('size', this)">📏 How Big?</button>
+            <button class="tab" onclick="showTab('stars', this)">⭐ Baby Stars</button>
+            <button class="tab" onclick="showTab('science', this)">🔬 Cool Science</button>
+            <button class="tab" onclick="showTab('fun', this)">🎮 Fun Zone</button>
         </div>
 
         <div id="basics" class="content active">
@@ -560,19 +564,34 @@
             }
         }
 
-        // Tab functionality
-        function showTab(tabName) {
-            // Hide all content
-            const contents = document.querySelectorAll('.content');
-            contents.forEach(content => content.classList.remove('active'));
+        // Tab functionality - simplified approach
+        function showTab(tabName, clickedTab) {
+            // Get all content divs and hide them
+            const allContent = ['basics', 'size', 'stars', 'science', 'fun'];
+            
+            allContent.forEach(contentId => {
+                const element = document.getElementById(contentId);
+                if (element) {
+                    element.classList.remove('active');
+                    element.style.display = 'none';
+                }
+            });
             
             // Remove active class from all tabs
             const tabs = document.querySelectorAll('.tab');
             tabs.forEach(tab => tab.classList.remove('active'));
             
-            // Show selected content and activate tab
-            document.getElementById(tabName).classList.add('active');
-            event.target.classList.add('active');
+            // Show the selected content
+            const targetElement = document.getElementById(tabName);
+            if (targetElement) {
+                targetElement.style.display = 'block';
+                targetElement.classList.add('active');
+            }
+            
+            // Activate the clicked tab
+            if (clickedTab) {
+                clickedTab.classList.add('active');
+            }
         }
 
         // Telescope information
