@@ -570,21 +570,25 @@
         }
 
         function resetNeuron() {
-            isTraining = false;
-            clearInterval(trainingInterval);
-            currentEpoch = 0;
-            learningData = [];
-            
-            neuronParams = {
-                pricePerSqft: Math.random() * 100 + 150,
-                basePrice: Math.random() * 50000 + 25000
-            };
-            
-            document.getElementById('trainBtn').innerHTML = '▶️ Start Training';
-            document.getElementById('trainBtn').className = 'flex items-center gap-2 px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold transition-all';
-            
-            updateDisplay();
-        }
+			isTraining = false;
+			clearInterval(trainingInterval);
+			currentEpoch = 0;
+			learningData = [];
+			
+			neuronParams = {
+				pricePerSqft: Math.random() * 100 + 150,
+				basePrice: Math.random() * 50000 + 25000
+			};
+			
+			document.getElementById('trainBtn').innerHTML = '▶️ Start Training';
+			document.getElementById('trainBtn').className = 'flex items-center gap-2 px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold transition-all';
+			
+			updateDisplay();
+			
+			// Reset accuracy displays to 0% after reset
+			document.getElementById('accuracyValue').textContent = '0.0%';
+			document.getElementById('currentAccuracy').textContent = '0.0%';
+		}
 
         function updateLearningRateStatus() {
             const statusElement = document.getElementById('rateStatus');
