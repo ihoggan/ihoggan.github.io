@@ -9,7 +9,7 @@
     <!-- External Libraries -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/recharts@2.8.0/umd/Recharts.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
@@ -27,12 +27,13 @@
     <div id="root"></div>
     
     <script>
-        // Neural Network Learning Playground
-        const { useState, useEffect } = React;
+        const { useState, useEffect, useCallback, useMemo } = React;
+        const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } = Recharts;
         
         function NeuralPlayground() {
             const [isTraining, setIsTraining] = useState(false);
             const [currentEpoch, setCurrentEpoch] = useState(0);
+            const [learningData, setLearningData] = useState([]);
             const [neuronParams, setNeuronParams] = useState({
                 pricePerSqft: Math.random() * 100 + 150,
                 basePrice: Math.random() * 50000 + 25000,
@@ -40,98 +41,133 @@
             const [learningRate, setLearningRate] = useState(0.0000001);
             const [showMath, setShowMath] = useState(false);
             const [explosionWarning, setExplosionWarning] = useState(false);
-            const [accuracy, setAccuracy] = useState(0);
+            const [lastExplosionEpoch, setLastExplosionEpoch] = useState(null);
             
-            const houseData = [
+            const houseData = useMemo(() => [
                 { sqft: 1000, price: 250000 },
                 { sqft: 1500, price: 350000 },
                 { sqft: 2000, price: 450000 },
                 { sqft: 2500, price: 550000 },
                 { sqft: 3000, price: 650000 },
-            ];
+            ], []);
             
             const TRUE_PRICE_PER_SQFT = 200;
             const TRUE_BASE_PRICE = 50000;
             
-            const predictPrice = (sqft) => {
-                return neuronParams.pricePerSqft * sqft + neuronParams.basePrice;
-            };
+            const predictPrice = useCallback((sqft, params = neuronParams) => {
+                return params.pricePerSqft * sqft + params.basePrice;
+            }, [neuronParams]);
             
-            const calculateError = () => {
+            const calculateError = useCallback((params = neuronParams) => {
                 let totalError = 0;
                 houseData.forEach(house => {
-                    const prediction = predictPrice(house.sqft);
+                    const prediction = predictPrice(house.sqft, params);
                     const error = house.price - prediction;
                     totalError += error * error;
                 });
                 return Math.sqrt(totalError / houseData.length);
-            };
+            }, [houseData, predictPrice, neuronParams]);
             
-            const calculateAccuracy = () => {
-                const error = calculateError();
-                return Math.max(0, 100 - (error / 100000) * 100);
-            };
-            
-            const trainOneEpoch = () => {
+            const trainOneEpoch = useCallback((params) => {
+                let newParams = { ...params };
                 let totalPriceGradient = 0;
                 let totalBiasGradient = 0;
                 
+                // Calculate gradients (batch gradient descent)
                 houseData.forEach(house => {
-                    const prediction = predictPrice(house.sqft);
+                    const prediction = predictPrice(house.sqft, newParams);
                     const error = house.price - prediction;
                     
                     totalPriceGradient += error * house.sqft;
                     totalBiasGradient += error;
                 });
                 
+                // Update weights with explosion detection
                 const avgPriceGradient = totalPriceGradient / houseData.length;
                 const avgBiasGradient = totalBiasGradient / houseData.length;
                 
-                // Check for explosion
+                // Detect if we're about to explode
                 const gradientMagnitude = Math.abs(avgPriceGradient) + Math.abs(avgBiasGradient);
-                const isExploding = gradientMagnitude > 100000 || Math.abs(neuronParams.pricePerSqft) > 1000;
+                const isExploding = gradientMagnitude > 100000 || Math.abs(newParams.pricePerSqft) > 1000;
                 
                 if (isExploding) {
                     setExplosionWarning(true);
+                    setLastExplosionEpoch(currentEpoch);
                     setTimeout(() => setExplosionWarning(false), 2000);
                 }
                 
-                // Update parameters
-                setNeuronParams(prev => ({
-                    pricePerSqft: prev.pricePerSqft + learningRate * avgPriceGradient,
-                    basePrice: prev.basePrice + learningRate * avgBiasGradient
-                }));
+                // Apply updates
+                newParams.pricePerSqft += learningRate * avgPriceGradient;
+                newParams.basePrice += learningRate * avgBiasGradient;
                 
-                setAccuracy(calculateAccuracy());
-            };
+                // Safety bounds for extreme cases
+                if (Math.abs(newParams.pricePerSqft) > 10000) {
+                    newParams.pricePerSqft = Math.sign(newParams.pricePerSqft) * 10000;
+                }
+                if (Math.abs(newParams.basePrice) > 10000000) {
+                    newParams.basePrice = Math.sign(newParams.basePrice) * 10000000;
+                }
+                
+                return newParams;
+            }, [houseData, predictPrice, learningRate, currentEpoch]);
             
-            useEffect(() => {
-                if (!isTraining) return;
+            const startTraining = () => {
+                setIsTraining(true);
+                setCurrentEpoch(0);
+                setLearningData([]);
                 
-                const interval = setInterval(() => {
-                    setCurrentEpoch(prev => {
-                        const newEpoch = prev + 1;
-                        if (newEpoch >= 200) {
-                            setIsTraining(false);
-                            return prev;
-                        }
-                        trainOneEpoch();
-                        return newEpoch;
-                    });
-                }, 100);
-                
-                return () => clearInterval(interval);
-            }, [isTraining, learningRate]);
+                const initialError = calculateError();
+                setLearningData([{
+                    epoch: 0,
+                    error: initialError,
+                    pricePerSqft: neuronParams.pricePerSqft,
+                    basePrice: neuronParams.basePrice,
+                    accuracy: Math.max(0, 100 - (initialError / 100000) * 100)
+                }]);
+            };
             
             const resetNeuron = () => {
                 setIsTraining(false);
                 setCurrentEpoch(0);
+                setLearningData([]);
                 setNeuronParams({
                     pricePerSqft: Math.random() * 100 + 150,
                     basePrice: Math.random() * 50000 + 25000,
                 });
-                setAccuracy(0);
             };
+            
+            useEffect(() => {
+                if (!isTraining) return;
+
+                const interval = setInterval(() => {
+                    setCurrentEpoch(prev => {
+                        const newEpoch = prev + 1;
+                        
+                        if (newEpoch >= 200) {
+                            setIsTraining(false);
+                            return prev;
+                        }
+                        
+                        const newParams = trainOneEpoch(neuronParams);
+                        setNeuronParams(newParams);
+                        
+                        const error = calculateError(newParams);
+                        const accuracy = Math.max(0, 100 - (error / 100000) * 100);
+                        
+                        setLearningData(prevData => [...prevData, {
+                            epoch: newEpoch,
+                            error: error,
+                            pricePerSqft: newParams.pricePerSqft,
+                            basePrice: newParams.basePrice,
+                            accuracy: accuracy
+                        }]);
+                        
+                        return newEpoch;
+                    });
+                }, 100);
+
+                return () => clearInterval(interval);
+            }, [isTraining, neuronParams, trainOneEpoch, calculateError]);
             
             const getLearningRateStatus = () => {
                 if (learningRate <= 0.0000001) return { color: 'text-green-600', label: 'SAFE', icon: '✅' };
@@ -142,6 +178,10 @@
             };
             
             const status = getLearningRateStatus();
+            const currentError = learningData.length > 0 ? learningData[learningData.length - 1].error : calculateError();
+            const currentAccuracy = learningData.length > 0 ? learningData[learningData.length - 1].accuracy : 0;
+            const priceAccuracy = Math.abs(neuronParams.pricePerSqft - TRUE_PRICE_PER_SQFT);
+            const baseAccuracy = Math.abs(neuronParams.basePrice - TRUE_BASE_PRICE);
             
             return React.createElement('div', {
                 className: 'w-full max-w-7xl mx-auto p-6 gradient-bg min-h-screen'
@@ -167,7 +207,10 @@
                     React.createElement('p', {
                         key: 'subtitle',
                         className: 'text-lg text-gray-600 max-w-3xl mx-auto mb-4'
-                    }, React.createElement('strong', {}, 'See Machine Adaptive Reasoning Training'), ' - Watch neural networks learn in real-time!'),
+                    }, [
+                        React.createElement('strong', {}, 'See Machine Adaptive Reasoning Training'),
+                        ' - Watch neural networks learn in real-time!'
+                    ]),
                     
                     // Project Links
                     React.createElement('div', {
@@ -204,7 +247,12 @@
                             'Support Project',
                             React.createElement('span', { key: 'external-icon2' }, '↗️')
                         ])
-                    ])
+                    ]),
+                    
+                    React.createElement('p', {
+                        key: 'description',
+                        className: 'text-sm text-gray-600 max-w-2xl mx-auto'
+                    }, 'This demonstrates the core of all neural networks: adjusting parameters through gradient descent to minimize prediction errors.')
                 ]),
                 
                 // Control Panel
@@ -222,7 +270,7 @@
                         }, [
                             React.createElement('button', {
                                 key: 'train-button',
-                                onClick: () => setIsTraining(!isTraining),
+                                onClick: isTraining ? () => setIsTraining(false) : startTraining,
                                 className: `flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all ${
                                     isTraining 
                                         ? 'bg-red-500 hover:bg-red-600 text-white' 
@@ -346,11 +394,15 @@
                             className: `text-2xl font-bold transition-all ${
                                 explosionWarning ? 'text-red-600' : 'text-green-600'
                             }`
-                        }, `${accuracy.toFixed(1)}%`),
+                        }, `${currentAccuracy.toFixed(1)}%`),
                         React.createElement('div', {
                             key: 'accuracy-label',
                             className: 'text-sm text-gray-600'
-                        }, 'prediction accuracy')
+                        }, 'prediction accuracy'),
+                        lastExplosionEpoch && React.createElement('div', {
+                            key: 'explosion-epoch',
+                            className: 'text-xs text-red-500 mt-1'
+                        }, `Last explosion: epoch ${lastExplosionEpoch}`)
                     ]),
                     
                     React.createElement('div', {
@@ -366,7 +418,7 @@
                             className: `text-xl font-bold transition-all ${
                                 Math.abs(neuronParams.pricePerSqft) > 500 ? 'text-red-600' : 'text-purple-600'
                             }`
-                        }, `${neuronParams.pricePerSqft.toFixed(0)}`),
+                        }, `$${neuronParams.pricePerSqft.toFixed(0)}`),
                         React.createElement('div', {
                             key: 'price-target',
                             className: 'text-xs text-gray-600'
@@ -374,7 +426,11 @@
                         React.createElement('div', {
                             key: 'price-error',
                             className: 'text-xs text-red-500'
-                        }, `Error: ${Math.abs(neuronParams.pricePerSqft - TRUE_PRICE_PER_SQFT).toFixed(0)}`)
+                        }, `Error: $${priceAccuracy.toFixed(0)}`),
+                        Math.abs(neuronParams.pricePerSqft) > 500 && React.createElement('div', {
+                            key: 'price-unstable',
+                            className: 'text-xs text-red-600 font-bold animate-pulse'
+                        }, 'UNSTABLE!')
                     ]),
                     
                     React.createElement('div', {
@@ -388,7 +444,7 @@
                         React.createElement('div', {
                             key: 'base-value',
                             className: 'text-xl font-bold text-purple-600'
-                        }, `${(neuronParams.basePrice/1000).toFixed(0)}k`),
+                        }, `$${(neuronParams.basePrice/1000).toFixed(0)}k`),
                         React.createElement('div', {
                             key: 'base-target',
                             className: 'text-xs text-gray-600'
@@ -396,7 +452,7 @@
                         React.createElement('div', {
                             key: 'base-error',
                             className: 'text-xs text-red-500'
-                        }, `Error: ${(Math.abs(neuronParams.basePrice - TRUE_BASE_PRICE)/1000).toFixed(0)}k`)
+                        }, `Error: $${(baseAccuracy/1000).toFixed(0)}k`)
                     ])
                 ]),
                 
@@ -423,71 +479,115 @@
                     ])
                 ]),
                 
-                // Current Predictions
+                // CRITICAL FIX: Learning Progress Chart
                 React.createElement('div', {
-                    key: 'predictions',
-                    className: 'bg-white rounded-xl shadow-lg p-6 mb-8'
+                    key: 'visualizations',
+                    className: 'grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8'
                 }, [
-                    React.createElement('h3', {
-                        key: 'predictions-title',
-                        className: 'text-xl font-bold text-gray-800 mb-4'
-                    }, 'Current Predictions'),
                     React.createElement('div', {
-                        key: 'predictions-list',
-                        className: 'space-y-3'
-                    }, houseData.map((house, index) => {
-                        const prediction = predictPrice(house.sqft);
-                        const error = Math.abs(house.price - prediction);
-                        const errorPercent = (error / house.price) * 100;
-                        
-                        return React.createElement('div', {
-                            key: `house-${index}`,
-                            className: 'flex items-center justify-between p-3 bg-gray-50 rounded-lg'
+                        key: 'learning-chart',
+                        className: 'bg-white rounded-xl shadow-lg p-6'
+                    }, [
+                        React.createElement('h3', {
+                            key: 'chart-title',
+                            className: 'text-xl font-bold text-gray-800 mb-4'
+                        }, 'Learning Progress'),
+                        React.createElement(ResponsiveContainer, {
+                            key: 'chart-container',
+                            width: '100%',
+                            height: 300
+                        }, React.createElement(LineChart, {
+                            data: learningData
                         }, [
-                            React.createElement('div', {
-                                key: 'house-info',
-                                className: 'flex-1'
+                            React.createElement(CartesianGrid, { key: 'grid', strokeDasharray: '3 3' }),
+                            React.createElement(XAxis, { key: 'xaxis', dataKey: 'epoch' }),
+                            React.createElement(YAxis, { key: 'yaxis' }),
+                            React.createElement(Tooltip, { 
+                                key: 'tooltip',
+                                formatter: (value, name) => [
+                                    name === 'error' ? `$${value.toFixed(0)}` : `${value.toFixed(1)}%`,
+                                    name === 'error' ? 'Prediction Error' : 'Accuracy'
+                                ]
+                            }),
+                            React.createElement(Legend, { key: 'legend' }),
+                            React.createElement(Line, {
+                                key: 'line',
+                                type: 'monotone',
+                                dataKey: 'accuracy',
+                                stroke: '#10b981',
+                                strokeWidth: 3,
+                                dot: false,
+                                name: 'Accuracy %'
+                            })
+                        ]))
+                    ]),
+                    
+                    // Current Predictions
+                    React.createElement('div', {
+                        key: 'predictions',
+                        className: 'bg-white rounded-xl shadow-lg p-6'
+                    }, [
+                        React.createElement('h3', {
+                            key: 'predictions-title',
+                            className: 'text-xl font-bold text-gray-800 mb-4'
+                        }, 'Current Predictions'),
+                        React.createElement('div', {
+                            key: 'predictions-list',
+                            className: 'space-y-3'
+                        }, houseData.map((house, index) => {
+                            const prediction = predictPrice(house.sqft);
+                            const error = Math.abs(house.price - prediction);
+                            const errorPercent = (error / house.price) * 100;
+                            
+                            return React.createElement('div', {
+                                key: `house-${index}`,
+                                className: 'flex items-center justify-between p-3 bg-gray-50 rounded-lg'
                             }, [
                                 React.createElement('div', {
-                                    key: 'house-sqft',
-                                    className: 'font-semibold'
-                                }, `${house.sqft} sqft`),
+                                    key: 'house-info',
+                                    className: 'flex-1'
+                                }, [
+                                    React.createElement('div', {
+                                        key: 'house-sqft',
+                                        className: 'font-semibold'
+                                    }, `${house.sqft} sqft`),
+                                    React.createElement('div', {
+                                        key: 'house-actual',
+                                        className: 'text-sm text-gray-600'
+                                    }, `Actual: $${(house.price/1000).toFixed(0)}k`)
+                                ]),
                                 React.createElement('div', {
-                                    key: 'house-actual',
-                                    className: 'text-sm text-gray-600'
-                                }, `Actual: ${(house.price/1000).toFixed(0)}k`)
-                            ]),
-                            React.createElement('div', {
-                                key: 'house-pred',
-                                className: 'flex-1 text-center'
-                            }, [
+                                    key: 'house-pred',
+                                    className: 'flex-1 text-center'
+                                }, [
+                                    React.createElement('div', {
+                                        key: 'pred-value',
+                                        className: 'font-semibold text-blue-600'
+                                    }, `$${(prediction/1000).toFixed(0)}k`),
+                                    React.createElement('div', {
+                                        key: 'pred-label',
+                                        className: 'text-sm text-gray-600'
+                                    }, 'Predicted')
+                                ]),
                                 React.createElement('div', {
-                                    key: 'pred-value',
-                                    className: 'font-semibold text-blue-600'
-                                }, `${(prediction/1000).toFixed(0)}k`),
-                                React.createElement('div', {
-                                    key: 'pred-label',
-                                    className: 'text-sm text-gray-600'
-                                }, 'Predicted')
-                            ]),
-                            React.createElement('div', {
-                                key: 'house-error',
-                                className: 'flex-1 text-right'
-                            }, [
-                                React.createElement('div', {
-                                    key: 'error-value',
-                                    className: `font-semibold ${
-                                        errorPercent > 20 ? 'text-red-600' : 
-                                        errorPercent > 10 ? 'text-yellow-600' : 'text-green-600'
-                                    }`
-                                }, `${errorPercent.toFixed(1)}%`),
-                                React.createElement('div', {
-                                    key: 'error-label',
-                                    className: 'text-sm text-gray-600'
-                                }, 'Error')
-                            ])
-                        ]);
-                    }))
+                                    key: 'house-error',
+                                    className: 'flex-1 text-right'
+                                }, [
+                                    React.createElement('div', {
+                                        key: 'error-value',
+                                        className: `font-semibold ${
+                                            errorPercent > 20 ? 'text-red-600' : 
+                                            errorPercent > 10 ? 'text-yellow-600' : 'text-green-600'
+                                        }`
+                                    }, `${errorPercent.toFixed(1)}%`),
+                                    React.createElement('div', {
+                                        key: 'error-label',
+                                        className: 'text-sm text-gray-600'
+                                    }, 'Error')
+                                ])
+                            ]);
+                        }))
+                    ])
                 ]),
                 
                 // Mathematical Explanation
@@ -604,7 +704,7 @@
                                 ]),
                                 React.createElement('div', { key: 'perf-acc' }, [
                                     'Accuracy: ',
-                                    React.createElement('strong', {}, `${accuracy.toFixed(1)}%`)
+                                    React.createElement('strong', {}, `${currentAccuracy.toFixed(1)}%`)
                                 ])
                             ]))
                         ])
