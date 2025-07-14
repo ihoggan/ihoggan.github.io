@@ -4,726 +4,440 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>S.M.A.R.T - Neural Network Learning Playground</title>
-    <meta name="description" content="Interactive neural network playground - Watch AI learn house prices in real-time!">
-    
-    <!-- External Libraries -->
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/recharts@2.8.0/umd/Recharts.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <style>
         .gradient-bg { background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%); }
         .animate-bounce { animation: bounce 1s infinite; }
-        .animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
         @keyframes bounce {
-            0%, 100% { transform: translateY(-25%); animation-timing-function: cubic-bezier(0.8,0,1,1); }
-            50% { transform: none; animation-timing-function: cubic-bezier(0,0,0.2,1); }
+            0%, 100% { transform: translateY(-25%); }
+            50% { transform: none; }
         }
-        @keyframes pulse { 50% { opacity: .5; } }
     </style>
 </head>
 <body>
-    <div id="root"></div>
-    
+    <div class="w-full max-w-7xl mx-auto p-6 gradient-bg min-h-screen">
+        <!-- Header -->
+        <div class="mb-8 text-center">
+            <div class="flex items-center justify-center gap-3 mb-4">
+                <div class="text-blue-600 text-4xl">🧠</div>
+                <h1 class="text-3xl font-bold text-gray-800">S.M.A.R.T Neural Network Playground</h1>
+            </div>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto mb-4">
+                <strong>See Machine Adaptive Reasoning Training</strong> - Watch neural networks learn in real-time!
+            </p>
+            
+            <!-- Project Links -->
+            <div class="flex flex-wrap items-center justify-center gap-4 mb-6">
+                <a href="https://github.com/ihoggan/S.M.A.R.T." target="_blank"
+                   class="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-900 text-white rounded-lg font-semibold transition-all">
+                    📂 GitHub Repository ↗️
+                </a>
+                <a href="./smart-see-machine-adaptive-reasoning-training.ipynb" download
+                   class="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-all">
+                    📓 Download Notebook ⬇️
+                </a>
+                <a href="https://github.com/sponsors/ihoggan" target="_blank"
+                   class="flex items-center gap-2 px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white rounded-lg font-semibold transition-all">
+                    ❤️ Support Project ↗️
+                </a>
+            </div>
+        </div>
+
+        <!-- Control Panel -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+                <div class="flex items-center gap-4">
+                    <button id="trainBtn" class="flex items-center gap-2 px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold transition-all">
+                        ▶️ Start Training
+                    </button>
+                    <button id="resetBtn" class="flex items-center gap-2 px-4 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg font-semibold transition-all">
+                        🔄 Reset Neuron
+                    </button>
+                </div>
+                
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2 px-3 py-1 bg-gray-100 rounded-full">
+                        ⚙️ <label class="text-sm font-medium text-gray-700">Learning Rate:</label>
+                        <span id="rateStatus" class="font-bold text-sm text-green-600">✅ SAFE</span>
+                    </div>
+                    <select id="learningRate" class="px-3 py-1 border border-gray-300 rounded">
+                        <option value="0.0000001">0.0000001 (Safe & Stable)</option>
+                        <option value="0.000001">0.000001 (Moderate)</option>
+                        <option value="0.00001">0.00001 (Fast)</option>
+                        <option value="0.0001">0.0001 (⚠️ May Explode!)</option>
+                        <option value="0.001">0.001 (💥 Definitely Explodes!)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Dashboard -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center gap-3 mb-2">
+                    <span>⚡</span>
+                    <h3 class="font-bold text-gray-800">Training Progress</h3>
+                </div>
+                <div id="epochValue" class="text-2xl font-bold text-blue-600">0</div>
+                <div class="text-sm text-gray-600">epochs completed</div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center gap-3 mb-2">
+                    <span>📈</span>
+                    <h3 class="font-bold text-gray-800">Accuracy</h3>
+                    <div id="explosionWarning" class="hidden text-red-600 animate-bounce">💥 EXPLODING!</div>
+                </div>
+                <div id="accuracyValue" class="text-2xl font-bold text-green-600">0.0%</div>
+                <div class="text-sm text-gray-600">prediction accuracy</div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="font-bold text-gray-800 mb-2">Price per Sqft</h3>
+                <div id="priceValue" class="text-xl font-bold text-purple-600">$0</div>
+                <div class="text-xs text-gray-600">Target: $200</div>
+                <div id="priceError" class="text-xs text-red-500">Error: $0</div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="font-bold text-gray-800 mb-2">Base Price</h3>
+                <div id="baseValue" class="text-xl font-bold text-purple-600">$0k</div>
+                <div class="text-xs text-gray-600">Target: $50k</div>
+                <div id="baseError" class="text-xs text-red-500">Error: $0k</div>
+            </div>
+        </div>
+
+        <!-- Learning Progress Chart -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Learning Progress</h3>
+            <canvas id="learningChart" width="800" height="400" class="w-full h-64"></canvas>
+        </div>
+
+        <!-- Current Predictions -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Current Predictions</h3>
+            <div id="predictions" class="space-y-3">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Challenge Section -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">🏠 The Neural Network Challenge</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h4 class="font-bold text-green-600 mb-2">The Hidden Pattern</h4>
+                    <div class="bg-green-50 p-4 rounded-lg">
+                        <div class="font-mono text-lg text-center">
+                            <strong>House Price = $200/sqft × Square Feet + $50,000</strong>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">
+                        This is the secret relationship our neural network must discover!
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-blue-600 mb-2">Current Performance</h4>
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <div class="text-sm">
+                            <div>Price/sqft: <strong id="currentPrice">$0</strong> (target: $200)</div>
+                            <div>Base price: <strong id="currentBase">$0k</strong> (target: $50k)</div>
+                            <div>Accuracy: <strong id="currentAccuracy">0.0%</strong></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6 p-4 bg-yellow-50 rounded-lg">
+                <p class="text-sm text-gray-700">
+                    <strong>🎯 Your Mission:</strong> Experiment with different learning rates to help the neural network 
+                    discover the hidden relationship. Watch what happens when you use learning rates that are too high!
+                </p>
+            </div>
+        </div>
+    </div>
+
     <script>
-        const { useState, useEffect, useCallback, useMemo } = React;
-        const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } = Recharts;
-        
-        function NeuralPlayground() {
-            const [isTraining, setIsTraining] = useState(false);
-            const [currentEpoch, setCurrentEpoch] = useState(0);
-            const [learningData, setLearningData] = useState([]);
-            const [neuronParams, setNeuronParams] = useState({
-                pricePerSqft: Math.random() * 100 + 150,
-                basePrice: Math.random() * 50000 + 25000,
-            });
-            const [learningRate, setLearningRate] = useState(0.0000001);
-            const [showMath, setShowMath] = useState(false);
-            const [explosionWarning, setExplosionWarning] = useState(false);
-            const [lastExplosionEpoch, setLastExplosionEpoch] = useState(null);
-            
-            const houseData = useMemo(() => [
-                { sqft: 1000, price: 250000 },
-                { sqft: 1500, price: 350000 },
-                { sqft: 2000, price: 450000 },
-                { sqft: 2500, price: 550000 },
-                { sqft: 3000, price: 650000 },
-            ], []);
-            
-            const TRUE_PRICE_PER_SQFT = 200;
-            const TRUE_BASE_PRICE = 50000;
-            
-            const predictPrice = useCallback((sqft, params = neuronParams) => {
-                return params.pricePerSqft * sqft + params.basePrice;
-            }, [neuronParams]);
-            
-            const calculateError = useCallback((params = neuronParams) => {
-                let totalError = 0;
-                houseData.forEach(house => {
-                    const prediction = predictPrice(house.sqft, params);
-                    const error = house.price - prediction;
-                    totalError += error * error;
-                });
-                return Math.sqrt(totalError / houseData.length);
-            }, [houseData, predictPrice, neuronParams]);
-            
-            const trainOneEpoch = useCallback((params) => {
-                let newParams = { ...params };
-                let totalPriceGradient = 0;
-                let totalBiasGradient = 0;
-                
-                // Calculate gradients (batch gradient descent)
-                houseData.forEach(house => {
-                    const prediction = predictPrice(house.sqft, newParams);
-                    const error = house.price - prediction;
-                    
-                    totalPriceGradient += error * house.sqft;
-                    totalBiasGradient += error;
-                });
-                
-                // Update weights with explosion detection
-                const avgPriceGradient = totalPriceGradient / houseData.length;
-                const avgBiasGradient = totalBiasGradient / houseData.length;
-                
-                // Detect if we're about to explode
-                const gradientMagnitude = Math.abs(avgPriceGradient) + Math.abs(avgBiasGradient);
-                const isExploding = gradientMagnitude > 100000 || Math.abs(newParams.pricePerSqft) > 1000;
-                
-                if (isExploding) {
-                    setExplosionWarning(true);
-                    setLastExplosionEpoch(currentEpoch);
-                    setTimeout(() => setExplosionWarning(false), 2000);
-                }
-                
-                // Apply updates
-                newParams.pricePerSqft += learningRate * avgPriceGradient;
-                newParams.basePrice += learningRate * avgBiasGradient;
-                
-                // Safety bounds for extreme cases
-                if (Math.abs(newParams.pricePerSqft) > 10000) {
-                    newParams.pricePerSqft = Math.sign(newParams.pricePerSqft) * 10000;
-                }
-                if (Math.abs(newParams.basePrice) > 10000000) {
-                    newParams.basePrice = Math.sign(newParams.basePrice) * 10000000;
-                }
-                
-                return newParams;
-            }, [houseData, predictPrice, learningRate, currentEpoch]);
-            
-            const startTraining = () => {
-                setIsTraining(true);
-                setCurrentEpoch(0);
-                setLearningData([]);
-                
-                const initialError = calculateError();
-                setLearningData([{
-                    epoch: 0,
-                    error: initialError,
-                    pricePerSqft: neuronParams.pricePerSqft,
-                    basePrice: neuronParams.basePrice,
-                    accuracy: Math.max(0, 100 - (initialError / 100000) * 100)
-                }]);
-            };
-            
-            const resetNeuron = () => {
-                setIsTraining(false);
-                setCurrentEpoch(0);
-                setLearningData([]);
-                setNeuronParams({
-                    pricePerSqft: Math.random() * 100 + 150,
-                    basePrice: Math.random() * 50000 + 25000,
-                });
-            };
-            
-            useEffect(() => {
-                if (!isTraining) return;
+        // Neural Network Implementation
+        let isTraining = false;
+        let currentEpoch = 0;
+        let learningData = [];
+        let neuronParams = {
+            pricePerSqft: Math.random() * 100 + 150,
+            basePrice: Math.random() * 50000 + 25000
+        };
+        let learningRate = 0.0000001;
+        let trainingInterval;
 
-                const interval = setInterval(() => {
-                    setCurrentEpoch(prev => {
-                        const newEpoch = prev + 1;
-                        
-                        if (newEpoch >= 200) {
-                            setIsTraining(false);
-                            return prev;
-                        }
-                        
-                        const newParams = trainOneEpoch(neuronParams);
-                        setNeuronParams(newParams);
-                        
-                        const error = calculateError(newParams);
-                        const accuracy = Math.max(0, 100 - (error / 100000) * 100);
-                        
-                        setLearningData(prevData => [...prevData, {
-                            epoch: newEpoch,
-                            error: error,
-                            pricePerSqft: newParams.pricePerSqft,
-                            basePrice: newParams.basePrice,
-                            accuracy: accuracy
-                        }]);
-                        
-                        return newEpoch;
-                    });
-                }, 100);
+        const houseData = [
+            { sqft: 1000, price: 250000 },
+            { sqft: 1500, price: 350000 },
+            { sqft: 2000, price: 450000 },
+            { sqft: 2500, price: 550000 },
+            { sqft: 3000, price: 650000 }
+        ];
 
-                return () => clearInterval(interval);
-            }, [isTraining, neuronParams, trainOneEpoch, calculateError]);
-            
-            const getLearningRateStatus = () => {
-                if (learningRate <= 0.0000001) return { color: 'text-green-600', label: 'SAFE', icon: '✅' };
-                if (learningRate <= 0.000001) return { color: 'text-blue-600', label: 'STABLE', icon: '📈' };
-                if (learningRate <= 0.00001) return { color: 'text-yellow-600', label: 'FAST', icon: '⚡' };
-                if (learningRate <= 0.0001) return { color: 'text-orange-600', label: 'RISKY', icon: '⚠️' };
-                return { color: 'text-red-600', label: 'BOOM!', icon: '💥' };
-            };
-            
-            const status = getLearningRateStatus();
-            const currentError = learningData.length > 0 ? learningData[learningData.length - 1].error : calculateError();
-            const currentAccuracy = learningData.length > 0 ? learningData[learningData.length - 1].accuracy : 0;
-            const priceAccuracy = Math.abs(neuronParams.pricePerSqft - TRUE_PRICE_PER_SQFT);
-            const baseAccuracy = Math.abs(neuronParams.basePrice - TRUE_BASE_PRICE);
-            
-            return React.createElement('div', {
-                className: 'w-full max-w-7xl mx-auto p-6 gradient-bg min-h-screen'
-            }, [
-                // Header
-                React.createElement('div', {
-                    key: 'header',
-                    className: 'mb-8 text-center'
-                }, [
-                    React.createElement('div', {
-                        key: 'title-section',
-                        className: 'flex items-center justify-center gap-3 mb-4'
-                    }, [
-                        React.createElement('div', {
-                            key: 'brain-icon',
-                            className: 'text-blue-600 text-4xl'
-                        }, '🧠'),
-                        React.createElement('h1', {
-                            key: 'title',
-                            className: 'text-3xl font-bold text-gray-800'
-                        }, 'S.M.A.R.T Neural Network Playground')
-                    ]),
-                    React.createElement('p', {
-                        key: 'subtitle',
-                        className: 'text-lg text-gray-600 max-w-3xl mx-auto mb-4'
-                    }, [
-                        React.createElement('strong', {}, 'See Machine Adaptive Reasoning Training'),
-                        ' - Watch neural networks learn in real-time!'
-                    ]),
-                    
-                    // Project Links
-                    React.createElement('div', {
-                        key: 'links',
-                        className: 'flex flex-wrap items-center justify-center gap-4 mb-6'
-                    }, [
-                        React.createElement('a', {
-                            key: 'github-link',
-                            href: 'https://github.com/ihoggan/S.M.A.R.T.',
-                            target: '_blank',
-                            className: 'flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-900 text-white rounded-lg font-semibold transition-all'
-                        }, [
-                            React.createElement('span', { key: 'github-icon' }, '📂'),
-                            'GitHub Repository',
-                            React.createElement('span', { key: 'external-icon' }, '↗️')
-                        ]),
-                        React.createElement('a', {
-                            key: 'notebook-link',
-                            href: './smart-see-machine-adaptive-reasoning-training.ipynb',
-                            download: true,
-                            className: 'flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-all'
-                        }, [
-                            React.createElement('span', { key: 'download-icon' }, '📓'),
-                            'Download Notebook',
-                            React.createElement('span', { key: 'download-arrow' }, '⬇️')
-                        ]),
-                        React.createElement('a', {
-                            key: 'sponsor-link',
-                            href: 'https://github.com/sponsors/ihoggan',
-                            target: '_blank',
-                            className: 'flex items-center gap-2 px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white rounded-lg font-semibold transition-all'
-                        }, [
-                            React.createElement('span', { key: 'heart-icon' }, '❤️'),
-                            'Support Project',
-                            React.createElement('span', { key: 'external-icon2' }, '↗️')
-                        ])
-                    ]),
-                    
-                    React.createElement('p', {
-                        key: 'description',
-                        className: 'text-sm text-gray-600 max-w-2xl mx-auto'
-                    }, 'This demonstrates the core of all neural networks: adjusting parameters through gradient descent to minimize prediction errors.')
-                ]),
-                
-                // Control Panel
-                React.createElement('div', {
-                    key: 'controls',
-                    className: 'bg-white rounded-xl shadow-lg p-6 mb-8'
-                }, [
-                    React.createElement('div', {
-                        key: 'control-row',
-                        className: 'flex flex-wrap items-center justify-between gap-4'
-                    }, [
-                        React.createElement('div', {
-                            key: 'buttons',
-                            className: 'flex items-center gap-4'
-                        }, [
-                            React.createElement('button', {
-                                key: 'train-button',
-                                onClick: isTraining ? () => setIsTraining(false) : startTraining,
-                                className: `flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all ${
-                                    isTraining 
-                                        ? 'bg-red-500 hover:bg-red-600 text-white' 
-                                        : 'bg-green-500 hover:bg-green-600 text-white'
-                                }`
-                            }, [
-                                React.createElement('span', { key: 'play-icon' }, isTraining ? '⏸️' : '▶️'),
-                                isTraining ? 'Pause Training' : 'Start Training'
-                            ]),
-                            React.createElement('button', {
-                                key: 'reset-button',
-                                onClick: resetNeuron,
-                                className: 'flex items-center gap-2 px-4 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg font-semibold transition-all'
-                            }, [
-                                React.createElement('span', { key: 'reset-icon' }, '🔄'),
-                                'Reset Neuron'
-                            ])
-                        ]),
-                        
-                        React.createElement('div', {
-                            key: 'rate-controls',
-                            className: 'flex items-center gap-4'
-                        }, [
-                            React.createElement('div', {
-                                key: 'rate-status',
-                                className: `flex items-center gap-2 px-3 py-1 rounded-full transition-all ${
-                                    explosionWarning ? 'bg-red-100 animate-pulse' : 'bg-gray-100'
-                                }`
-                            }, [
-                                React.createElement('span', { key: 'settings-icon' }, '⚙️'),
-                                React.createElement('label', {
-                                    key: 'rate-label',
-                                    className: 'text-sm font-medium text-gray-700'
-                                }, 'Learning Rate:'),
-                                React.createElement('span', {
-                                    key: 'rate-status-text',
-                                    className: `font-bold text-sm ${status.color}`
-                                }, `${status.icon} ${status.label}`)
-                            ]),
-                            React.createElement('select', {
-                                key: 'rate-select',
-                                value: learningRate,
-                                onChange: (e) => setLearningRate(parseFloat(e.target.value)),
-                                className: `px-3 py-1 border rounded transition-all ${
-                                    explosionWarning ? 'border-red-500 bg-red-50' : 'border-gray-300'
-                                }`
-                            }, [
-                                React.createElement('option', { key: 'rate1', value: 0.0000001 }, '0.0000001 (Safe & Stable)'),
-                                React.createElement('option', { key: 'rate2', value: 0.000001 }, '0.000001 (Moderate)'),
-                                React.createElement('option', { key: 'rate3', value: 0.00001 }, '0.00001 (Fast)'),
-                                React.createElement('option', { key: 'rate4', value: 0.0001 }, '0.0001 (⚠️ May Explode!)'),
-                                React.createElement('option', { key: 'rate5', value: 0.001 }, '0.001 (💥 Definitely Explodes!)')
-                            ]),
-                            React.createElement('button', {
-                                key: 'math-toggle',
-                                onClick: () => setShowMath(!showMath),
-                                className: 'flex items-center gap-2 px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg transition-all'
-                            }, [
-                                React.createElement('span', { key: 'chart-icon' }, '📊'),
-                                showMath ? 'Hide Math' : 'Show Math'
-                            ])
-                        ])
-                    ])
-                ]),
-                
-                // Status Dashboard
-                React.createElement('div', {
-                    key: 'dashboard',
-                    className: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8'
-                }, [
-                    React.createElement('div', {
-                        key: 'epoch-card',
-                        className: 'bg-white rounded-xl shadow-lg p-6'
-                    }, [
-                        React.createElement('div', {
-                            key: 'epoch-header',
-                            className: 'flex items-center gap-3 mb-2'
-                        }, [
-                            React.createElement('span', { key: 'zap-icon' }, '⚡'),
-                            React.createElement('h3', {
-                                key: 'epoch-title',
-                                className: 'font-bold text-gray-800'
-                            }, 'Training Progress')
-                        ]),
-                        React.createElement('div', {
-                            key: 'epoch-value',
-                            className: 'text-2xl font-bold text-blue-600'
-                        }, currentEpoch),
-                        React.createElement('div', {
-                            key: 'epoch-label',
-                            className: 'text-sm text-gray-600'
-                        }, 'epochs completed')
-                    ]),
-                    
-                    React.createElement('div', {
-                        key: 'accuracy-card',
-                        className: 'bg-white rounded-xl shadow-lg p-6'
-                    }, [
-                        React.createElement('div', {
-                            key: 'accuracy-header',
-                            className: 'flex items-center gap-3 mb-2'
-                        }, [
-                            React.createElement('span', { key: 'trend-icon' }, '📈'),
-                            React.createElement('h3', {
-                                key: 'accuracy-title',
-                                className: 'font-bold text-gray-800'
-                            }, 'Accuracy'),
-                            explosionWarning && React.createElement('div', {
-                                key: 'explosion-warning',
-                                className: 'flex items-center gap-1 text-red-600 animate-bounce'
-                            }, [
-                                React.createElement('span', { key: 'boom-icon' }, '💥'),
-                                React.createElement('span', {
-                                    key: 'exploding-text',
-                                    className: 'text-sm font-bold'
-                                }, 'EXPLODING!')
-                            ])
-                        ]),
-                        React.createElement('div', {
-                            key: 'accuracy-value',
-                            className: `text-2xl font-bold transition-all ${
-                                explosionWarning ? 'text-red-600' : 'text-green-600'
-                            }`
-                        }, `${currentAccuracy.toFixed(1)}%`),
-                        React.createElement('div', {
-                            key: 'accuracy-label',
-                            className: 'text-sm text-gray-600'
-                        }, 'prediction accuracy'),
-                        lastExplosionEpoch && React.createElement('div', {
-                            key: 'explosion-epoch',
-                            className: 'text-xs text-red-500 mt-1'
-                        }, `Last explosion: epoch ${lastExplosionEpoch}`)
-                    ]),
-                    
-                    React.createElement('div', {
-                        key: 'price-card',
-                        className: 'bg-white rounded-xl shadow-lg p-6'
-                    }, [
-                        React.createElement('h3', {
-                            key: 'price-title',
-                            className: 'font-bold text-gray-800 mb-2'
-                        }, 'Price per Sqft'),
-                        React.createElement('div', {
-                            key: 'price-value',
-                            className: `text-xl font-bold transition-all ${
-                                Math.abs(neuronParams.pricePerSqft) > 500 ? 'text-red-600' : 'text-purple-600'
-                            }`
-                        }, `$${neuronParams.pricePerSqft.toFixed(0)}`),
-                        React.createElement('div', {
-                            key: 'price-target',
-                            className: 'text-xs text-gray-600'
-                        }, 'Target: $200'),
-                        React.createElement('div', {
-                            key: 'price-error',
-                            className: 'text-xs text-red-500'
-                        }, `Error: $${priceAccuracy.toFixed(0)}`),
-                        Math.abs(neuronParams.pricePerSqft) > 500 && React.createElement('div', {
-                            key: 'price-unstable',
-                            className: 'text-xs text-red-600 font-bold animate-pulse'
-                        }, 'UNSTABLE!')
-                    ]),
-                    
-                    React.createElement('div', {
-                        key: 'base-card',
-                        className: 'bg-white rounded-xl shadow-lg p-6'
-                    }, [
-                        React.createElement('h3', {
-                            key: 'base-title',
-                            className: 'font-bold text-gray-800 mb-2'
-                        }, 'Base Price'),
-                        React.createElement('div', {
-                            key: 'base-value',
-                            className: 'text-xl font-bold text-purple-600'
-                        }, `$${(neuronParams.basePrice/1000).toFixed(0)}k`),
-                        React.createElement('div', {
-                            key: 'base-target',
-                            className: 'text-xs text-gray-600'
-                        }, 'Target: $50k'),
-                        React.createElement('div', {
-                            key: 'base-error',
-                            className: 'text-xs text-red-500'
-                        }, `Error: $${(baseAccuracy/1000).toFixed(0)}k`)
-                    ])
-                ]),
-                
-                // Explosion Alert
-                explosionWarning && React.createElement('div', {
-                    key: 'explosion-alert',
-                    className: 'fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg animate-bounce z-50'
-                }, [
-                    React.createElement('div', {
-                        key: 'explosion-content',
-                        className: 'flex items-center gap-2'
-                    }, [
-                        React.createElement('span', { key: 'explosion-emoji' }, '💥'),
-                        React.createElement('div', { key: 'explosion-text' }, [
-                            React.createElement('div', {
-                                key: 'explosion-title',
-                                className: 'font-bold'
-                            }, 'Gradient Explosion Detected!'),
-                            React.createElement('div', {
-                                key: 'explosion-desc',
-                                className: 'text-sm'
-                            }, 'Learning rate too high - parameters going crazy!')
-                        ])
-                    ])
-                ]),
-                
-                // CRITICAL FIX: Learning Progress Chart
-                React.createElement('div', {
-                    key: 'visualizations',
-                    className: 'grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8'
-                }, [
-                    React.createElement('div', {
-                        key: 'learning-chart',
-                        className: 'bg-white rounded-xl shadow-lg p-6'
-                    }, [
-                        React.createElement('h3', {
-                            key: 'chart-title',
-                            className: 'text-xl font-bold text-gray-800 mb-4'
-                        }, 'Learning Progress'),
-                        React.createElement(ResponsiveContainer, {
-                            key: 'chart-container',
-                            width: '100%',
-                            height: 300
-                        }, React.createElement(LineChart, {
-                            data: learningData
-                        }, [
-                            React.createElement(CartesianGrid, { key: 'grid', strokeDasharray: '3 3' }),
-                            React.createElement(XAxis, { key: 'xaxis', dataKey: 'epoch' }),
-                            React.createElement(YAxis, { key: 'yaxis' }),
-                            React.createElement(Tooltip, { 
-                                key: 'tooltip',
-                                formatter: (value, name) => [
-                                    name === 'error' ? `$${value.toFixed(0)}` : `${value.toFixed(1)}%`,
-                                    name === 'error' ? 'Prediction Error' : 'Accuracy'
-                                ]
-                            }),
-                            React.createElement(Legend, { key: 'legend' }),
-                            React.createElement(Line, {
-                                key: 'line',
-                                type: 'monotone',
-                                dataKey: 'accuracy',
-                                stroke: '#10b981',
-                                strokeWidth: 3,
-                                dot: false,
-                                name: 'Accuracy %'
-                            })
-                        ]))
-                    ]),
-                    
-                    // Current Predictions
-                    React.createElement('div', {
-                        key: 'predictions',
-                        className: 'bg-white rounded-xl shadow-lg p-6'
-                    }, [
-                        React.createElement('h3', {
-                            key: 'predictions-title',
-                            className: 'text-xl font-bold text-gray-800 mb-4'
-                        }, 'Current Predictions'),
-                        React.createElement('div', {
-                            key: 'predictions-list',
-                            className: 'space-y-3'
-                        }, houseData.map((house, index) => {
-                            const prediction = predictPrice(house.sqft);
-                            const error = Math.abs(house.price - prediction);
-                            const errorPercent = (error / house.price) * 100;
-                            
-                            return React.createElement('div', {
-                                key: `house-${index}`,
-                                className: 'flex items-center justify-between p-3 bg-gray-50 rounded-lg'
-                            }, [
-                                React.createElement('div', {
-                                    key: 'house-info',
-                                    className: 'flex-1'
-                                }, [
-                                    React.createElement('div', {
-                                        key: 'house-sqft',
-                                        className: 'font-semibold'
-                                    }, `${house.sqft} sqft`),
-                                    React.createElement('div', {
-                                        key: 'house-actual',
-                                        className: 'text-sm text-gray-600'
-                                    }, `Actual: $${(house.price/1000).toFixed(0)}k`)
-                                ]),
-                                React.createElement('div', {
-                                    key: 'house-pred',
-                                    className: 'flex-1 text-center'
-                                }, [
-                                    React.createElement('div', {
-                                        key: 'pred-value',
-                                        className: 'font-semibold text-blue-600'
-                                    }, `$${(prediction/1000).toFixed(0)}k`),
-                                    React.createElement('div', {
-                                        key: 'pred-label',
-                                        className: 'text-sm text-gray-600'
-                                    }, 'Predicted')
-                                ]),
-                                React.createElement('div', {
-                                    key: 'house-error',
-                                    className: 'flex-1 text-right'
-                                }, [
-                                    React.createElement('div', {
-                                        key: 'error-value',
-                                        className: `font-semibold ${
-                                            errorPercent > 20 ? 'text-red-600' : 
-                                            errorPercent > 10 ? 'text-yellow-600' : 'text-green-600'
-                                        }`
-                                    }, `${errorPercent.toFixed(1)}%`),
-                                    React.createElement('div', {
-                                        key: 'error-label',
-                                        className: 'text-sm text-gray-600'
-                                    }, 'Error')
-                                ])
-                            ]);
-                        }))
-                    ])
-                ]),
-                
-                // Mathematical Explanation
-                showMath && React.createElement('div', {
-                    key: 'math-section',
-                    className: 'bg-white rounded-xl shadow-lg p-8 mb-8'
-                }, [
-                    React.createElement('h3', {
-                        key: 'math-title',
-                        className: 'text-xl font-bold text-gray-800 mb-6'
-                    }, 'Understanding the Mathematics'),
-                    React.createElement('div', {
-                        key: 'math-grid',
-                        className: 'grid grid-cols-1 md:grid-cols-2 gap-8'
-                    }, [
-                        React.createElement('div', { key: 'formula-section' }, [
-                            React.createElement('h4', {
-                                key: 'formula-title',
-                                className: 'font-bold text-lg text-blue-600 mb-3'
-                            }, 'The Prediction Formula'),
-                            React.createElement('div', {
-                                key: 'formula-code',
-                                className: 'bg-blue-50 p-4 rounded-lg font-mono text-sm'
-                            }, [
-                                'predicted_price = ',
-                                React.createElement('br'),
-                                '  price_per_sqft × square_feet + ',
-                                React.createElement('br'),
-                                '  base_neighborhood_price'
-                            ]),
-                            React.createElement('p', {
-                                key: 'formula-desc',
-                                className: 'text-gray-600 mt-3'
-                            }, 'Our neuron learns two numbers: how much each square foot adds to the price, and what the base price is for any house in this neighborhood.')
-                        ]),
-                        React.createElement('div', { key: 'learning-section' }, [
-                            React.createElement('h4', {
-                                key: 'learning-title',
-                                className: 'font-bold text-lg text-green-600 mb-3'
-                            }, 'How Learning Works'),
-                            React.createElement('div', {
-                                key: 'learning-code',
-                                className: 'bg-green-50 p-4 rounded-lg font-mono text-sm'
-                            }, [
-                                'error = actual_price - predicted_price',
-                                React.createElement('br'),
-                                React.createElement('br'),
-                                'price_per_sqft += ',
-                                React.createElement('br'),
-                                '  learning_rate × error × square_feet',
-                                React.createElement('br'),
-                                React.createElement('br'),
-                                'base_price += ',
-                                React.createElement('br'),
-                                '  learning_rate × error'
-                            ]),
-                            React.createElement('p', {
-                                key: 'learning-desc',
-                                className: 'text-gray-600 mt-3'
-                            }, 'When predictions are wrong, the neuron adjusts its parameters to reduce the error. Bigger houses cause bigger adjustments to the price_per_sqft parameter.')
-                        ])
-                    ])
-                ]),
-                
-                // Challenge Section
-                React.createElement('div', {
-                    key: 'challenge',
-                    className: 'bg-white rounded-xl shadow-lg p-6'
-                }, [
-                    React.createElement('h3', {
-                        key: 'challenge-title',
-                        className: 'text-xl font-bold text-gray-800 mb-4'
-                    }, '🏠 The Neural Network Challenge'),
-                    React.createElement('div', {
-                        key: 'challenge-grid',
-                        className: 'grid grid-cols-1 md:grid-cols-2 gap-6'
-                    }, [
-                        React.createElement('div', { key: 'pattern-section' }, [
-                            React.createElement('h4', {
-                                key: 'pattern-title',
-                                className: 'font-bold text-green-600 mb-2'
-                            }, 'The Hidden Pattern'),
-                            React.createElement('div', {
-                                key: 'pattern-formula',
-                                className: 'bg-green-50 p-4 rounded-lg'
-                            }, React.createElement('div', {
-                                className: 'font-mono text-lg text-center'
-                            }, React.createElement('strong', {}, 'House Price = $200/sqft × Square Feet + $50,000'))),
-                            React.createElement('p', {
-                                key: 'pattern-desc',
-                                className: 'text-sm text-gray-600 mt-2'
-                            }, 'This is the secret relationship our neural network must discover!')
-                        ]),
-                        React.createElement('div', { key: 'performance-section' }, [
-                            React.createElement('h4', {
-                                key: 'performance-title',
-                                className: 'font-bold text-blue-600 mb-2'
-                            }, 'Current Performance'),
-                            React.createElement('div', {
-                                key: 'performance-stats',
-                                className: 'bg-blue-50 p-4 rounded-lg'
-                            }, React.createElement('div', {
-                                className: 'text-sm'
-                            }, [
-                                React.createElement('div', { key: 'perf-price' }, [
-                                    'Price/sqft: ',
-                                    React.createElement('strong', {}, `${neuronParams.pricePerSqft.toFixed(0)}`),
-                                    ' (target: $200)'
-                                ]),
-                                React.createElement('div', { key: 'perf-base' }, [
-                                    'Base price: ',
-                                    React.createElement('strong', {}, `${(neuronParams.basePrice/1000).toFixed(0)}k`),
-                                    ' (target: $50k)'
-                                ]),
-                                React.createElement('div', { key: 'perf-acc' }, [
-                                    'Accuracy: ',
-                                    React.createElement('strong', {}, `${currentAccuracy.toFixed(1)}%`)
-                                ])
-                            ]))
-                        ])
-                    ]),
-                    React.createElement('div', {
-                        key: 'mission',
-                        className: 'mt-6 p-4 bg-yellow-50 rounded-lg'
-                    }, React.createElement('p', {
-                        className: 'text-sm text-gray-700'
-                    }, [
-                        React.createElement('strong', {}, '🎯 Your Mission: '),
-                        'Experiment with different learning rates to help the neural network discover the hidden relationship. Watch what happens when you use learning rates that are too high!'
-                    ]))
-                ])
-            ]);
+        const TRUE_PRICE_PER_SQFT = 200;
+        const TRUE_BASE_PRICE = 50000;
+
+        function predictPrice(sqft, params = neuronParams) {
+            return params.pricePerSqft * sqft + params.basePrice;
         }
-        
-        // Render the app
-        ReactDOM.render(React.createElement(NeuralPlayground), document.getElementById('root'));
+
+        function calculateError(params = neuronParams) {
+            let totalError = 0;
+            houseData.forEach(house => {
+                const prediction = predictPrice(house.sqft, params);
+                const error = house.price - prediction;
+                totalError += error * error;
+            });
+            return Math.sqrt(totalError / houseData.length);
+        }
+
+        function calculateAccuracy(params = neuronParams) {
+            const error = calculateError(params);
+            return Math.max(0, 100 - (error / 100000) * 100);
+        }
+
+        function trainOneEpoch() {
+            let totalPriceGradient = 0;
+            let totalBiasGradient = 0;
+            
+            houseData.forEach(house => {
+                const prediction = predictPrice(house.sqft);
+                const error = house.price - prediction;
+                
+                totalPriceGradient += error * house.sqft;
+                totalBiasGradient += error;
+            });
+            
+            const avgPriceGradient = totalPriceGradient / houseData.length;
+            const avgBiasGradient = totalBiasGradient / houseData.length;
+            
+            // Check for explosion
+            const gradientMagnitude = Math.abs(avgPriceGradient) + Math.abs(avgBiasGradient);
+            const isExploding = gradientMagnitude > 100000 || Math.abs(neuronParams.pricePerSqft) > 1000;
+            
+            if (isExploding) {
+                document.getElementById('explosionWarning').classList.remove('hidden');
+                setTimeout(() => {
+                    document.getElementById('explosionWarning').classList.add('hidden');
+                }, 2000);
+            }
+            
+            // Update parameters
+            neuronParams.pricePerSqft += learningRate * avgPriceGradient;
+            neuronParams.basePrice += learningRate * avgBiasGradient;
+            
+            // Safety bounds
+            neuronParams.pricePerSqft = Math.max(-10000, Math.min(10000, neuronParams.pricePerSqft));
+            neuronParams.basePrice = Math.max(-10000000, Math.min(10000000, neuronParams.basePrice));
+        }
+
+        function updateDisplay() {
+            const accuracy = calculateAccuracy();
+            const priceError = Math.abs(neuronParams.pricePerSqft - TRUE_PRICE_PER_SQFT);
+            const baseError = Math.abs(neuronParams.basePrice - TRUE_BASE_PRICE);
+
+            document.getElementById('epochValue').textContent = currentEpoch;
+            document.getElementById('accuracyValue').textContent = accuracy.toFixed(1) + '%';
+            document.getElementById('priceValue').textContent = '$' + neuronParams.pricePerSqft.toFixed(0);
+            document.getElementById('baseValue').textContent = '$' + (neuronParams.basePrice/1000).toFixed(0) + 'k';
+            document.getElementById('priceError').textContent = 'Error: $' + priceError.toFixed(0);
+            document.getElementById('baseError').textContent = 'Error: $' + (baseError/1000).toFixed(0) + 'k';
+            
+            // Update performance section
+            document.getElementById('currentPrice').textContent = '$' + neuronParams.pricePerSqft.toFixed(0);
+            document.getElementById('currentBase').textContent = '$' + (neuronParams.basePrice/1000).toFixed(0) + 'k';
+            document.getElementById('currentAccuracy').textContent = accuracy.toFixed(1) + '%';
+
+            updatePredictions();
+            updateChart();
+        }
+
+        function updatePredictions() {
+            const container = document.getElementById('predictions');
+            container.innerHTML = '';
+            
+            houseData.forEach((house, index) => {
+                const prediction = predictPrice(house.sqft);
+                const error = Math.abs(house.price - prediction);
+                const errorPercent = (error / house.price) * 100;
+                
+                const errorColor = errorPercent > 20 ? 'text-red-600' : 
+                                 errorPercent > 10 ? 'text-yellow-600' : 'text-green-600';
+                
+                container.innerHTML += `
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div class="flex-1">
+                            <div class="font-semibold">${house.sqft} sqft</div>
+                            <div class="text-sm text-gray-600">Actual: $${(house.price/1000).toFixed(0)}k</div>
+                        </div>
+                        <div class="flex-1 text-center">
+                            <div class="font-semibold text-blue-600">$${(prediction/1000).toFixed(0)}k</div>
+                            <div class="text-sm text-gray-600">Predicted</div>
+                        </div>
+                        <div class="flex-1 text-right">
+                            <div class="font-semibold ${errorColor}">${errorPercent.toFixed(1)}%</div>
+                            <div class="text-sm text-gray-600">Error</div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function updateChart() {
+            const canvas = document.getElementById('learningChart');
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            if (learningData.length < 2) return;
+            
+            // Draw axes
+            ctx.strokeStyle = '#e5e7eb';
+            ctx.lineWidth = 1;
+            
+            // Y-axis
+            ctx.beginPath();
+            ctx.moveTo(50, 20);
+            ctx.lineTo(50, canvas.height - 50);
+            ctx.stroke();
+            
+            // X-axis
+            ctx.beginPath();
+            ctx.moveTo(50, canvas.height - 50);
+            ctx.lineTo(canvas.width - 20, canvas.height - 50);
+            ctx.stroke();
+            
+            // Draw accuracy line
+            ctx.strokeStyle = '#10b981';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            const maxEpoch = Math.max(...learningData.map(d => d.epoch));
+            const maxAccuracy = 100;
+            
+            learningData.forEach((point, index) => {
+                const x = 50 + (point.epoch / maxEpoch) * (canvas.width - 70);
+                const y = canvas.height - 50 - (point.accuracy / maxAccuracy) * (canvas.height - 70);
+                
+                if (index === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            });
+            
+            ctx.stroke();
+            
+            // Add labels
+            ctx.fillStyle = '#374151';
+            ctx.font = '12px Arial';
+            ctx.fillText('Epoch', canvas.width / 2, canvas.height - 10);
+            
+            ctx.save();
+            ctx.translate(15, canvas.height / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText('Accuracy (%)', 0, 0);
+            ctx.restore();
+        }
+
+        function startTraining() {
+            if (isTraining) {
+                isTraining = false;
+                clearInterval(trainingInterval);
+                document.getElementById('trainBtn').innerHTML = '▶️ Start Training';
+                document.getElementById('trainBtn').className = document.getElementById('trainBtn').className.replace('bg-red-500 hover:bg-red-600', 'bg-green-500 hover:bg-green-600');
+                return;
+            }
+            
+            isTraining = true;
+            currentEpoch = 0;
+            learningData = [];
+            
+            // Add initial data point
+            learningData.push({
+                epoch: 0,
+                accuracy: calculateAccuracy()
+            });
+            
+            document.getElementById('trainBtn').innerHTML = '⏸️ Pause Training';
+            document.getElementById('trainBtn').className = document.getElementById('trainBtn').className.replace('bg-green-500 hover:bg-green-600', 'bg-red-500 hover:bg-red-600');
+            
+            trainingInterval = setInterval(() => {
+                currentEpoch++;
+                
+                if (currentEpoch >= 200) {
+                    isTraining = false;
+                    clearInterval(trainingInterval);
+                    document.getElementById('trainBtn').innerHTML = '▶️ Start Training';
+                    document.getElementById('trainBtn').className = document.getElementById('trainBtn').className.replace('bg-red-500 hover:bg-red-600', 'bg-green-500 hover:bg-green-600');
+                    return;
+                }
+                
+                trainOneEpoch();
+                
+                learningData.push({
+                    epoch: currentEpoch,
+                    accuracy: calculateAccuracy()
+                });
+                
+                updateDisplay();
+            }, 100);
+        }
+
+        function resetNeuron() {
+            isTraining = false;
+            clearInterval(trainingInterval);
+            currentEpoch = 0;
+            learningData = [];
+            
+            neuronParams = {
+                pricePerSqft: Math.random() * 100 + 150,
+                basePrice: Math.random() * 50000 + 25000
+            };
+            
+            document.getElementById('trainBtn').innerHTML = '▶️ Start Training';
+            document.getElementById('trainBtn').className = 'flex items-center gap-2 px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold transition-all';
+            
+            updateDisplay();
+        }
+
+        function updateLearningRateStatus() {
+            const statusElement = document.getElementById('rateStatus');
+            
+            if (learningRate <= 0.0000001) {
+                statusElement.textContent = '✅ SAFE';
+                statusElement.className = 'font-bold text-sm text-green-600';
+            } else if (learningRate <= 0.000001) {
+                statusElement.textContent = '📈 STABLE';
+                statusElement.className = 'font-bold text-sm text-blue-600';
+            } else if (learningRate <= 0.00001) {
+                statusElement.textContent = '⚡ FAST';
+                statusElement.className = 'font-bold text-sm text-yellow-600';
+            } else if (learningRate <= 0.0001) {
+                statusElement.textContent = '⚠️ RISKY';
+                statusElement.className = 'font-bold text-sm text-orange-600';
+            } else {
+                statusElement.textContent = '💥 BOOM!';
+                statusElement.className = 'font-bold text-sm text-red-600';
+            }
+        }
+
+        // Event listeners
+        document.getElementById('trainBtn').addEventListener('click', startTraining);
+        document.getElementById('resetBtn').addEventListener('click', resetNeuron);
+        document.getElementById('learningRate').addEventListener('change', (e) => {
+            learningRate = parseFloat(e.target.value);
+            updateLearningRateStatus();
+        });
+
+        // Initialize
+        updateDisplay();
+        updateLearningRateStatus();
     </script>
 </body>
 </html>
