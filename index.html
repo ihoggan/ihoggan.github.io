@@ -156,6 +156,70 @@
                 </p>
             </div>
         </div>
+
+        <!-- Mathematical Explanation Section -->
+        <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h3 class="text-xl font-bold text-gray-800 mb-6">Understanding the Mathematics</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h4 class="font-bold text-lg text-blue-600 mb-3">The Prediction Formula</h4>
+                    <div class="bg-blue-50 p-4 rounded-lg font-mono text-sm">
+                        predicted_price = <br>
+                        &nbsp;&nbsp;price_per_sqft × square_feet + <br>
+                        &nbsp;&nbsp;base_neighborhood_price
+                    </div>
+                    <p class="text-gray-600 mt-3">
+                        Our neuron learns two numbers: how much each square foot adds to the price, 
+                        and what the base price is for any house in this neighborhood.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-lg text-green-600 mb-3">How Learning Works</h4>
+                    <div class="bg-green-50 p-4 rounded-lg font-mono text-sm">
+                        error = actual_price - predicted_price<br><br>
+                        price_per_sqft += <br>
+                        &nbsp;&nbsp;learning_rate × error × square_feet<br><br>
+                        base_price += <br>
+                        &nbsp;&nbsp;learning_rate × error
+                    </div>
+                    <p class="text-gray-600 mt-3">
+                        When predictions are wrong, the neuron adjusts its parameters to reduce the error. 
+                        Bigger houses cause bigger adjustments to the price_per_sqft parameter.
+                    </p>
+                </div>
+            </div>
+
+            <div class="mt-8 p-6 bg-gray-50 rounded-lg">
+                <h4 class="font-bold text-lg text-purple-600 mb-3">🧮 The Learning Process Explained</h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div class="text-center">
+                        <div class="text-2xl mb-2">🎲</div>
+                        <div class="font-semibold">1. Random Start</div>
+                        <div class="text-gray-600">Neural network begins with random parameter values</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl mb-2">📊</div>
+                        <div class="font-semibold">2. Calculate Error</div>
+                        <div class="text-gray-600">Compare predictions with actual house prices</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl mb-2">🔧</div>
+                        <div class="font-semibold">3. Adjust Parameters</div>
+                        <div class="text-gray-600">Use gradients to improve predictions</div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-400">
+                    <p class="text-sm text-gray-700">
+                        <strong>💡 Key Insight:</strong> The learning rate controls how big steps the neural network takes. 
+                        Too small = slow learning. Too big = parameters explode! Finding the right balance is crucial 
+                        for successful AI training.
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -291,38 +355,74 @@
             const canvas = document.getElementById('learningChart');
             const ctx = canvas.getContext('2d');
             
+            // Set canvas to high DPI for crisp rendering
+            const rect = canvas.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = rect.height + 'px';
+            
             // Clear canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(0, 0, rect.width, rect.height);
             
             if (learningData.length < 2) return;
             
-            // Draw axes
-            ctx.strokeStyle = '#e5e7eb';
+            // Anti-aliasing for smooth lines
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+            
+            // Draw grid
+            ctx.strokeStyle = '#f3f4f6';
             ctx.lineWidth = 1;
+            
+            // Grid lines
+            for (let i = 1; i < 5; i++) {
+                // Horizontal grid lines
+                const y = 20 + (i * (rect.height - 70) / 5);
+                ctx.beginPath();
+                ctx.moveTo(50, y);
+                ctx.lineTo(rect.width - 20, y);
+                ctx.stroke();
+                
+                // Vertical grid lines
+                const x = 50 + (i * (rect.width - 70) / 5);
+                ctx.beginPath();
+                ctx.moveTo(x, 20);
+                ctx.lineTo(x, rect.height - 50);
+                ctx.stroke();
+            }
+            
+            // Draw axes
+            ctx.strokeStyle = '#d1d5db';
+            ctx.lineWidth = 2;
             
             // Y-axis
             ctx.beginPath();
             ctx.moveTo(50, 20);
-            ctx.lineTo(50, canvas.height - 50);
+            ctx.lineTo(50, rect.height - 50);
             ctx.stroke();
             
             // X-axis
             ctx.beginPath();
-            ctx.moveTo(50, canvas.height - 50);
-            ctx.lineTo(canvas.width - 20, canvas.height - 50);
+            ctx.moveTo(50, rect.height - 50);
+            ctx.lineTo(rect.width - 20, rect.height - 50);
             ctx.stroke();
             
-            // Draw accuracy line
+            // Draw accuracy line with smooth curves
             ctx.strokeStyle = '#10b981';
             ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
             ctx.beginPath();
             
             const maxEpoch = Math.max(...learningData.map(d => d.epoch));
             const maxAccuracy = 100;
             
             learningData.forEach((point, index) => {
-                const x = 50 + (point.epoch / maxEpoch) * (canvas.width - 70);
-                const y = canvas.height - 50 - (point.accuracy / maxAccuracy) * (canvas.height - 70);
+                const x = 50 + (point.epoch / maxEpoch) * (rect.width - 70);
+                const y = rect.height - 50 - (point.accuracy / maxAccuracy) * (rect.height - 70);
                 
                 if (index === 0) {
                     ctx.moveTo(x, y);
@@ -333,13 +433,33 @@
             
             ctx.stroke();
             
-            // Add labels
+            // Add y-axis labels
+            ctx.fillStyle = '#6b7280';
+            ctx.font = '12px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+            ctx.textAlign = 'right';
+            
+            for (let i = 0; i <= 5; i++) {
+                const accuracy = (i * 20);
+                const y = rect.height - 50 - (accuracy / 100) * (rect.height - 70);
+                ctx.fillText(accuracy + '%', 45, y + 4);
+            }
+            
+            // Add x-axis labels
+            ctx.textAlign = 'center';
+            for (let i = 0; i <= 5; i++) {
+                const epoch = Math.round((i * maxEpoch) / 5);
+                const x = 50 + (i * (rect.width - 70) / 5);
+                ctx.fillText(epoch.toString(), x, rect.height - 30);
+            }
+            
+            // Add axis titles
             ctx.fillStyle = '#374151';
-            ctx.font = '12px Arial';
-            ctx.fillText('Epoch', canvas.width / 2, canvas.height - 10);
+            ctx.font = 'bold 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Epoch', rect.width / 2, rect.height - 5);
             
             ctx.save();
-            ctx.translate(15, canvas.height / 2);
+            ctx.translate(15, rect.height / 2);
             ctx.rotate(-Math.PI / 2);
             ctx.fillText('Accuracy (%)', 0, 0);
             ctx.restore();
