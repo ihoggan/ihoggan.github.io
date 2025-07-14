@@ -103,6 +103,86 @@
             </div>
         </div>
 
+        <!-- Neural Network Workflow Visualization -->
+        <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">🧠 How This Neural Network Works</h2>
+            
+            <div class="relative">
+                <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-300 hidden lg:block"></div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-4 lg:gap-2">
+                    
+                    <div class="relative bg-blue-50 rounded-lg p-4 border-2 border-blue-200">
+                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">1</div>
+                        <div class="text-center mt-2">
+                            <div class="text-2xl mb-2">📏</div>
+                            <div class="font-bold text-blue-700 text-sm">Input Feature</div>
+                            <div class="text-xs text-gray-600 mt-1">Square Feet</div>
+                            <div class="text-lg font-bold text-blue-600 mt-1" id="workflow-input">1500</div>
+                        </div>
+                    </div>
+
+                    <div class="relative bg-green-50 rounded-lg p-4 border-2 border-green-200">
+                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">2</div>
+                        <div class="text-center mt-2">
+                            <div class="text-2xl mb-2">⚖️</div>
+                            <div class="font-bold text-green-700 text-sm">Weight (W)</div>
+                            <div class="text-xs text-gray-600 mt-1">Price per SqFt</div>
+                            <div class="text-lg font-bold text-green-600 mt-1" id="workflow-weight">$100</div>
+                        </div>
+                    </div>
+
+                    <div class="relative flex items-center justify-center">
+                        <div class="bg-gray-100 rounded-full w-10 h-10 flex items-center justify-center text-xl font-bold text-gray-700">×</div>
+                    </div>
+
+                    <div class="relative bg-purple-50 rounded-lg p-4 border-2 border-purple-200">
+                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-purple-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">4</div>
+                        <div class="text-center mt-2">
+                            <div class="text-2xl mb-2">➕</div>
+                            <div class="font-bold text-purple-700 text-sm">Bias (B)</div>
+                            <div class="text-xs text-gray-600 mt-1">Base Price</div>
+                            <div class="text-lg font-bold text-purple-600 mt-1" id="workflow-bias">$50k</div>
+                        </div>
+                    </div>
+                    
+                    <div class="relative flex items-center justify-center">
+                        <div class="bg-gray-100 rounded-full w-10 h-10 flex items-center justify-center text-xl font-bold text-gray-700">+</div>
+                    </div>
+
+                    <div class="relative bg-orange-50 rounded-lg p-4 border-2 border-orange-200">
+                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-orange-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">6</div>
+                        <div class="text-center mt-2">
+                            <div class="text-2xl mb-2">💲</div>
+                            <div class="font-bold text-orange-700 text-sm">Prediction (Y')</div>
+                            <div class="text-xs text-gray-600 mt-1">Estimated Price</div>
+                            <div class="text-lg font-bold text-orange-600 mt-1" id="workflow-prediction">$200k</div>
+                        </div>
+                    </div>
+                    
+                    <div class="relative bg-red-50 rounded-lg p-4 border-2 border-red-200">
+                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">7</div>
+                        <div class="text-center mt-2">
+                            <div class="text-2xl mb-2">📉</div>
+                            <div class="font-bold text-red-700 text-sm">Error (E)</div>
+                            <div class="text-xs text-gray-600 mt-1">Actual - Prediction</div>
+                            <div class="text-lg font-bold text-red-600 mt-1" id="workflow-error">-$50k</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 text-center bg-gray-50 p-4 rounded-lg border border-gray-200">
+                <p class="text-xl font-semibold text-gray-700 mb-2">Formula: Y' = (Input × W) + B</p>
+                <p class="text-xl font-mono text-gray-800" id="workflow-formula">
+                    <span class="text-orange-600 font-bold">$200k</span> = 
+                    <span class="text-blue-600 font-bold">1500</span> × 
+                    <span class="text-green-600 font-bold">$100</span> + 
+                    <span class="text-purple-600 font-bold">$50k</span>
+                </p>
+            </div>
+        </div>
+
         <!-- Control Panel -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
             <div class="flex flex-wrap items-center justify-between gap-4">
@@ -182,7 +262,7 @@
         </div>
 
         <!-- Challenge Section -->
-        <div class="bg-white rounded-xl shadow-lg p-6">
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
             <h3 class="text-xl font-bold text-gray-800 mb-4">🏠 The Neural Network Challenge</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
@@ -324,6 +404,28 @@
             return Math.max(0, 100 - (error / 100000) * 100);
         }
 
+        function updateWorkflowVisualization() {
+            // Use the middle house (1500 sqft) as example for workflow
+            const exampleHouse = houseData[1]; // 1500 sqft, $350k
+            const prediction = predictPrice(exampleHouse.sqft);
+            const error = exampleHouse.price - prediction;
+
+            // Update workflow elements
+            document.getElementById('workflow-input').textContent = exampleHouse.sqft;
+            document.getElementById('workflow-weight').textContent = '$' + Math.round(neuronParams.pricePerSqft);
+            document.getElementById('workflow-bias').textContent = '$' + Math.round(neuronParams.basePrice / 1000) + 'k';
+            document.getElementById('workflow-prediction').textContent = '$' + Math.round(prediction / 1000) + 'k';
+            document.getElementById('workflow-error').textContent = (error >= 0 ? '+' : '') + '$' + Math.round(error / 1000) + 'k';
+
+            // Update formula
+            document.getElementById('workflow-formula').innerHTML = `
+                <span class="text-orange-600 font-bold">$${Math.round(prediction / 1000)}k</span> = 
+                <span class="text-blue-600 font-bold">${exampleHouse.sqft}</span> × 
+                <span class="text-green-600 font-bold">$${Math.round(neuronParams.pricePerSqft)}</span> + 
+                <span class="text-purple-600 font-bold">$${Math.round(neuronParams.basePrice / 1000)}k</span>
+            `;
+        }
+
         function trainOneEpoch() {
             let totalPriceGradient = 0;
             let totalBiasGradient = 0;
@@ -378,6 +480,7 @@
 
             updatePredictions();
             updateChart();
+            updateWorkflowVisualization();
         }
 
         function updatePredictions() {
@@ -396,10 +499,10 @@
                     <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                         <div class="flex-1">
                             <div class="font-semibold">${house.sqft} sqft</div>
-                            <div class="text-sm text-gray-600">Actual: $${(house.price/1000).toFixed(0)}k</div>
+                            <div class="text-sm text-gray-600">Actual: ${(house.price/1000).toFixed(0)}k</div>
                         </div>
                         <div class="flex-1 text-center">
-                            <div class="font-semibold text-blue-600">$${(prediction/1000).toFixed(0)}k</div>
+                            <div class="font-semibold text-blue-600">${(prediction/1000).toFixed(0)}k</div>
                             <div class="text-sm text-gray-600">Predicted</div>
                         </div>
                         <div class="flex-1 text-right">
@@ -570,25 +673,25 @@
         }
 
         function resetNeuron() {
-			isTraining = false;
-			clearInterval(trainingInterval);
-			currentEpoch = 0;
-			learningData = [];
-			
-			neuronParams = {
-				pricePerSqft: Math.random() * 100 + 150,
-				basePrice: Math.random() * 50000 + 25000
-			};
-			
-			document.getElementById('trainBtn').innerHTML = '▶️ Start Training';
-			document.getElementById('trainBtn').className = 'flex items-center gap-2 px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold transition-all';
-			
-			updateDisplay();
-			
-			// Reset accuracy displays to 0% after reset
-			document.getElementById('accuracyValue').textContent = '0.0%';
-			document.getElementById('currentAccuracy').textContent = '0.0%';
-		}
+            isTraining = false;
+            clearInterval(trainingInterval);
+            currentEpoch = 0;
+            learningData = [];
+            
+            neuronParams = {
+                pricePerSqft: Math.random() * 100 + 150,
+                basePrice: Math.random() * 50000 + 25000
+            };
+            
+            document.getElementById('trainBtn').innerHTML = '▶️ Start Training';
+            document.getElementById('trainBtn').className = 'flex items-center gap-2 px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold transition-all';
+            
+            updateDisplay();
+            
+            // Reset accuracy displays to 0% after reset
+            document.getElementById('accuracyValue').textContent = '0.0%';
+            document.getElementById('currentAccuracy').textContent = '0.0%';
+        }
 
         function updateLearningRateStatus() {
             const statusElement = document.getElementById('rateStatus');
