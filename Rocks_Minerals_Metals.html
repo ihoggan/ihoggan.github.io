@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earth's Hidden Treasures - Interactive Mineral Explorer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #fff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: transparent;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 3s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        .header {
+            text-align: center;
+            padding: 2rem 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            background: linear-gradient(45deg, #ffd700, #ff6b35, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #b8c5d6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-button {
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .tab-button:hover::before {
+            left: 100%;
+        }
+
+        .tab-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .tab-button.active {
+            background: linear-gradient(45deg, #ffd700, #ff6b35);
+            transform: scale(1.05);
+        }
+
+        .content-section {
+            display: none;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .rarity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .rarity-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rarity-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--card-accent);
+        }
+
+        .rarity-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            border-color: var(--card-accent);
+        }
+
+        .common { --card-accent: linear-gradient(45deg, #4caf50, #8bc34a); }
+        .uncommon { --card-accent: linear-gradient(45deg, #2196f3, #03a9f4); }
+        .rare { --card-accent: linear-gradient(45deg, #9c27b0, #e91e63); }
+        .precious { --card-accent: linear-gradient(45deg, #ffd700, #ff6b35); }
+        .radioactive { --card-accent: linear-gradient(45deg, #ff4444, #ff8800); }
+
+        .rarity-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .rarity-icon {
+            font-size: 1.8rem;
+        }
+
+        .mineral-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 10px;
+            border-left: 4px solid var(--card-accent);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .mineral-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .mineral-name {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #ffd700;
+        }
+
+        .mineral-formula {
+            font-style: italic;
+            color: #b8c5d6;
+            font-size: 0.9rem;
+        }
+
+        .mineral-description {
+            margin-top: 0.5rem;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .location-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin: 0.2rem 0.2rem 0 0;
+            color: #ffd700;
+        }
+
+        .warning-banner {
+            background: linear-gradient(45deg, #ff4444, #ff8800);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 68, 68, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 4px 15px rgba(255, 68, 68, 0.3); }
+            50% { box-shadow: 0 4px 25px rgba(255, 68, 68, 0.6); }
+            100% { box-shadow: 0 4px 15px rgba(255, 68, 68, 0.3); }
+        }
+
+        .country-section {
+            margin: 2rem 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .country-title {
+            font-size: 1.8rem;
+            color: #ffd700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .country-flag {
+            font-size: 2rem;
+        }
+
+        .geode-showcase {
+            text-align: center;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: radial-gradient(circle, rgba(138, 43, 226, 0.1) 0%, rgba(0, 0, 0, 0.1) 100%);
+            border-radius: 20px;
+            border: 2px solid rgba(138, 43, 226, 0.3);
+        }
+
+        .geode-title {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #8a2be2, #4b0082, #9370db);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .search-container {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .search-box {
+            padding: 12px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            width: 300px;
+            max-width: 90%;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-box::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #ffd700;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .footer {
+            margin-top: 4rem;
+            padding: 2rem;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer p {
+            color: #b8c5d6;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-tabs {
+                gap: 0.5rem;
+            }
+            
+            .tab-button {
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
+            
+            .rarity-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+
+    <header class="header">
+        <h1>🌍 Earth's Hidden Treasures</h1>
+        <p>Explore the fascinating world of minerals, gemstones, and precious metals - from your backyard to the rarest radioactive specimens on Earth</p>
+    </header>
+
+    <nav class="nav-tabs">
+        <button class="tab-button active" onclick="showTab('rarity')">🏆 By Rarity</button>
+        <button class="tab-button" onclick="showTab('countries')">🌎 By Country</button>
+        <button class="tab-button" onclick="showTab('geodes')">🔮 Geode Gallery</button>
+        <button class="tab-button" onclick="showTab('gemstones')">💎 Precious Gems</button>
+        <button class="tab-button" onclick="showTab('radioactive')">☢️ Radioactive</button>
+    </nav>
+
+    <div class="search-container">
+        <input type="text" class="search-box" placeholder="Search for minerals, locations, or properties..." id="searchBox">
+    </div>
+
+    <!-- Rarity Tab -->
+    <section id="rarity" class="content-section active">
+        <div class="rarity-grid">
+            <div class="rarity-card common">
+                <div class="rarity-title">
+                    <span class="rarity-icon">🪨</span>
+                    Common Treasures
+                </div>
+                <p>Perfect for beginners! These minerals are abundant and great for learning identification skills.</p>
+                
+                <div class="mineral-item">
+                    <div class="mineral-name">Quartz</div>
+                    <div class="mineral-formula">SiO₂</div>
+                    <div class="mineral-description">The most abundant mineral on Earth's surface. Found in countless varieties and colors.</div>
+                    <div class="location-tag">Arkansas, USA</div>
+                    <div class="location-tag">Brazil</div>
+                    <div class="location-tag">Madagascar</div>
+                </div>
+
+                <div class="mineral-item">
+                    <div class="mineral-name">Calcite</div>
+                    <div class="mineral-formula">CaCO₃</div>
+                    <div class="mineral-description">Famous for its perfect cleavage and reaction to vinegar. Shows double refraction!</div>
+                    <div class="location-tag">Mexico</div>
+                    <div class="location-tag">England</div>
+                    <div class="location-tag">Missouri, USA</div>
+                </div>
+
+                <div class="mineral-item">
+                    <div class="mineral-name">Pyrite</div>
+                    <div class="mineral-formula">FeS₂</div>
+                    <div class="mineral-description">"Fool's Gold" - metallic luster and perfect cubic crystals make this a favorite.</div>
+                    <div class="location-tag">Peru</div>
+                    <div class="location-tag">Spain</div>
+                    <div class="location-tag">Colorado, USA</div>
+                </div>
+            </div>
+
+            <div class="rarity-card uncommon">
+                <div class="rarity-title">
+                    <span class="rarity-icon">💙</span>
+                    Uncommon Finds
+                </div>
+                <p>Stepping up the challenge! These minerals require more specific geological conditions.</p>
+                
+                <div class="mineral-item">
+                    <div class="mineral-name">Fluorite</div>
+                    <div class="mineral-formula">CaF₂</div>
+                    <div class="mineral-description">The most colorful mineral in the world! Often fluorescent under UV light.</div>
+                    <div class="location-tag">China</div>
+                    <div class="location-tag">England</div>
+                    <div class="location-tag">Illinois, USA</div>
+                </div>
+
+                <div class="mineral-item">
+                    <div class="mineral-name">Malachite</div>
+                    <div class="mineral-formula">Cu₂CO₃(OH)₂</div>
+                    <div class="mineral-description">Stunning green bands make this copper mineral a lapidary favorite.</div>
+                    <div class="location-tag">Congo</div>
+                    <div class="location-tag">Arizona, USA</div>
+                    <div class="location-tag">Russia</div>
+                </div>
+
+                <div class="mineral-item">
+                    <div class="mineral-name">Amethyst</div>
+                    <div class="mineral-formula">SiO₂</div>
+                    <div class="mineral-description">Purple quartz variety formed by iron impurities and natural radiation.</div>
+                    <div class="location-tag">Brazil</div>
+                    <div class="location-tag">Uruguay</div>
+                    <div class="location-tag">Zambia</div>
+                </div>
+            </div>
+
+            <div class="rarity-card rare">
+                <div class="rarity-title">
+                    <span class="rarity-icon">🌟</span>
+                    Rare Specimens
+                </div>
+                <p>Serious collector territory! These minerals form under special conditions or specific localities.</p>
+                
+                <div class="mineral-item">
+                    <div class="mineral-name">Rhodochrosite</div>
+                    <div class="mineral-formula">MnCO₃</div>
+                    <div class="mineral-description">Argentina's national gemstone. Sweet Home Mine specimens are legendary!</div>
+                    <div class="location-tag">Colorado, USA</div>
+                    <div class="location-tag">Argentina</div>
+                    <div class="location-tag">Romania</div>
+                </div>
+
+                <div class="mineral-item">
+                    <div class="mineral-name">Cavansite</div>
+                    <div class="mineral-formula">Ca(VO)(Si₄O₁₀)·4H₂O</div>
+                    <div class="mineral-description">Only discovered in 1967! Striking sky-blue color from limited localities.</div>
+                    <div class="location-tag">India</div>
+                    <div class="location-tag">Oregon, USA</div>
+                    <div class="location-tag">New Zealand</div>
+                </div>
+
+                <div class="mineral-item">
+                    <div class="mineral-name">Wulfenite</div>
+                    <div class="mineral-formula">PbMoO₄</div>
+                    <div class="mineral-description">Orange "desert roses" from Arizona are among the world's finest.</div>
+                    <div class="location-tag">Arizona, USA</div>
+                    <div class="location-tag">Mexico</div>
+                    <div class="location-tag">Morocco</div>
+                </div>
+            </div>
+
+            <div class="rarity-card precious">
+                <div class="rarity-title">
+                    <span class="rarity-icon">👑</span>
+                    Precious Metals & Gems
+                </div>
+                <p>The crown jewels of mineral collecting! Investment-grade specimens and precious metals.</p>
+                
+                <div class="mineral-item">
+                    <div class="mineral-name">Native Gold</div>
+                    <div class="mineral-formula">Au</div>
+                    <div class="mineral-description">California's Mother Lode produced legendary crystalline gold specimens.</div>
+                    <div class="location-tag">California, USA</div>
+                    <div class="location-tag">Alaska, USA</div>
+                    <div class="location-tag">Australia</div>
+                </div>
+
+                <div class="mineral-item">
+                    <div class="mineral-name">Wire Silver</div>
+                    <div class="mineral-formula">Ag</div>
+                    <div class="mineral-description">Norway's Kongsberg produced the world's most famous wire silver specimens.</div>
+                    <div class="location-tag">Kongsberg, Norway</div>
+                    <div class="location-tag">Cobalt, Ontario</div>
+                    <div class="location-tag">Mexico</div>
+                </div>
+
+                <div class="mineral-item">
+                    <div class="mineral-name">Ruby</div>
+                    <div class="mineral-formula">Al₂O₃</div>
+                    <div class="mineral-description">Myanmar's "Pigeon's Blood" rubies are the world's most prized.</div>
+                    <div class="location-tag">Myanmar</div>
+                    <div class="location-tag">Thailand</div>
+                    <div class="location-tag">Sri Lanka</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Countries Tab -->
+    <section id="countries" class="content-section">
+        <div class="country-section">
+            <div class="country-title">
+                <span class="country-flag">🇺🇸</span>
+                United States - Land of Mineral Diversity
+            </div>
+            <div class="rarity-grid">
+                <div class="mineral-item">
+                    <div class="mineral-name">Arkansas Quartz Crystals</div>
+                    <div class="mineral-description">Hot Springs and Mount Ida produce world-class clear quartz crystals.</div>
+                </div>
+                <div class="mineral-item">
+                    <div class="mineral-name">Colorado Rhodochrosite</div>
+                    <div class="mineral-description">Sweet Home Mine specimens are among the world's finest red minerals.</div>
+                </div>
+                <div class="mineral-item">
+                    <div class="mineral-name">Franklin/Sterling Hill Fluorescents</div>
+                    <div class="mineral-description">New Jersey's famous zinc mines produce 300+ mineral species!</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="country-section">
+            <div class="country-title">
+                <span class="country-flag">🇲🇽</span>
+                Mexico - Collector's Paradise
+            </div>
+            <div class="rarity-grid">
+                <div class="mineral-item">
+                    <div class="mineral-name">Adamite (World's Best)</div>
+                    <div class="mineral-description">Ojuela Mine produces the world's finest green adamite crystals.</div>
+                </div>
+                <div class="mineral-item">
+                    <div class="mineral-name">Naica Giant Gypsum</div>
+                    <div class="mineral-description">Cave of Crystals contains 60-foot gypsum crystals!</div>
+                </div>
+                <div class="mineral-item">
+                    <div class="mineral-name">Santa Eulalia Fluorite</div>
+                    <div class="mineral-description">Complex purple cubes up to 12 cm from Chihuahua.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="country-section">
+            <div class="country-title">
+                <span class="country-flag">🇧🇷</span>
+                Brazil - Gemstone Giant
+            </div>
+            <div class="rarity-grid">
+                <div class="mineral-item">
+                    <div class="mineral-name">World's Largest Amethyst Geodes</div>
+                    <div class="mineral-description">Rio Grande do Sul produces cathedral-sized amethyst geodes.</div>
+                </div>
+                <div class="mineral-item">
+                    <div class="mineral-name">Paraíba Tourmaline</div>
+                    <div class="mineral-description">Electric blue copper tourmalines worth $10,000+ per carat!</div>
+                </div>
+                <div class="mineral-item">
+                    <div class="mineral-name">Imperial Topaz</div>
+                    <div class="mineral-description">Ouro Preto produces the world's finest orange-pink topaz.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="country-section">
+            <div class="country-title">
+                <span class="country-flag">🇲🇦</span>
+                Morocco - African Treasure House
+            </div>
+            <div class="rarity-grid">
+                <div class="mineral-item">
+                    <div class="mineral-name">Mibladen Vanadinite</div>
+                    <div class="mineral-description">World's premier vanadinite locality - red hexagonal crystals.</div>
+                </div>
+                <div class="mineral-item">
+                    <div class="mineral-name">Bou Azzer Erythrite</div>
+                    <div class="mineral-description">Spectacular pink "cobalt bloom" specimens.</div>
+                </div>
+                <div class="mineral-item">
+                    <div class="mineral-name">Taourirt Fluorite</div>
+                    <div class="mineral-description">Green and purple cubes up to 30 cm!</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Geodes Tab -->
+    <section id="geodes" class="content-section">
+        <div class="geode-showcase">
+            <div class="geode-title">🔮 The Magic of Geodes</div>
+            <p>Nature's surprise packages - ordinary rocks hiding crystal treasures inside!</p>
+        </div>
+
+        <div class="rarity-grid">
+            <div class="rarity-card">
+                <div class="rarity-title">
+                    <span class="rarity-icon">🇺🇸</span>
+                    Keokuk Geodes (Iowa/Illinois)
+                </div>
+                <p><strong>Formation:</strong> Lower Warsaw Formation, 350 million years old</p>
+                <p><strong>Size:</strong> Typically 2-6 inches, some up to 30 inches!</p>
+                <p><strong>Contents:</strong> Quartz crystals, calcite, dolomite, pyrite</p>
+                <p><strong>Special:</strong> Iowa's official State Rock since 1967</p>
+                <div class="location-tag">Iowa</div>
+                <div class="location-tag">Illinois</div>
+                <div class="location-tag">Missouri</div>
+            </div>
+
+            <div class="rarity-card">
+                <div class="rarity-title">
+                    <span class="rarity-icon">🇧🇷</span>
+                    Brazilian Amethyst Cathedrals
+                </div>
+                <p><strong>Formation:</strong> Volcanic basalt flows, 130 million years ago</p>
+                <p><strong>Size:</strong> Room-sized specimens weighing tons!</p>
+                <p><strong>Contents:</strong> Deep purple amethyst crystals</p>
+                <p><strong>Famous:</strong> "Empress of Uruguay" weighs 2.5 tons</p>
+                <div class="location-tag">Rio Grande do Sul</div>
+                <div class="location-tag">Uruguay</div>
+            </div>
+
+            <div class="rarity-card">
+                <div class="rarity-title">
+                    <span class="rarity-icon">🏔️</span>
+                    Dugway Geode Beds (Utah)
+                </div>
+                <p><strong>Formation:</strong> Volcanic ash deposits</p>
+                <p><strong>Size:</strong> Golf ball to basketball sized</p>
+                <p><strong>Contents:</strong> Purple, pink, and clear quartz crystals</p>
+                <p><strong>Access:</strong> Public collecting area</p>
+                <div class="location-tag">Utah, USA</div>
+            </div>
+
+            <div class="rarity-card">
+                <div class="rarity-title">
+                    <span class="rarity-icon">🌵</span>
+                    Thunder Eggs (Oregon)
+                </div>
+                <p><strong>Formation:</strong> Rhyolite volcanic flows</p>
+                <p><strong>Size:</strong> Walnut to football sized</p>
+                <p><strong>Contents:</strong> Agate, jasper, opal</p>
+                <p><strong>Special:</strong> Oregon's state rock</p>
+                <div class="location-tag">Oregon, USA</div>
+            </div>
+        </div>
+
+        <div class="country-section">
+            <h3>🔍 How to Identify Geodes in the Field</h3>
+            <div class="mineral-item">
+                <div class="mineral-name">Weight Test</div>
+                <div class="mineral-description">Hollow geodes feel lighter than solid rocks of the same size</div>
+            </div>
+            <div class="mineral-item">
+                <div class="mineral-name">Sound Test</div>
+                <div class="mineral-description">Tap with a rock - hollow geodes produce a different sound</div>
+            </div>
+            <div class="mineral-item">
+                <div class="mineral-name">Shape</div>
+                <div class="mineral-description">Look for round to oval, nodular shapes</div>
+            </div>
+            <div class="mineral-item">
+                <div class="mineral-name">Surface</div>
+                <div class="mineral-description">Often weathered, bumpy exterior, sometimes with crystal exposure</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gemstones Tab -->
+    <section id="gemstones" class="content-section">
+        <div class="rarity-grid">
+            <div class="rarity-card precious">
+                <div class="rarity-title">
+                    <span class="rarity-icon">💎</span>
+                    The "Big Four" Precious Gems
+                </div>
+                
+                <div class="mineral-item">
+                    <div class="mineral-name">Diamond</div>
+                    <div class="mineral-formula">C</div>
+                    <div class="mineral-description">Hardest natural material. Crater of Diamonds, Arkansas - only public diamond mine!</div>
+                    <div class="location-tag">Botswana</div>
+                    <div class="location-tag">Russia</div>
+                    <div class="location-tag">Arkansas, USA</div>
+                </div>
+
+                <div class="mineral-item">
+                    <div class="mineral-name">Ruby</div>
+                    <div class="mineral-formula">Al₂O₃</div>
+                    <div class="mineral-description">Myanmar's "Pigeon's Blood" rubies command $1M+ per carat!</div>
+                    <div class="location-tag">Myanmar</div>
+                    <div class="location-tag">Thailand</div>
+                    <div class="location-tag">Sri Lanka</div>
+                </div>
+
+                <div class="mineral-item">
+                    <div class="mineral-name">Emerald</div>
+                    <div class="mineral-formula">Be₃Al₂Si₆O₁₈</div>
+                    <div class="mineral-description">Colombian emeralds are the world's finest - Muzo mine legendary.</div>
+                    <div class="location-tag">Colombia</div>
+                    <div class="location-tag">Zambia</div>
+                    <div class="location-tag">Brazil</div>
+                </div>
+
+                <div class="mineral-item">
+                    <div class="mineral-name">Sapphire</div>
+                    <div class="mineral-formula">Al₂O₃</div>
+                    <div class="mineral-description">Kashmir sapphires command 10x premium! Montana produces fine cornflower blue.</div>
+                    <div class="location-tag">Kashmir, India</div>
+                    <div class="location-tag">Myanmar</div>
+                    <div class="location-tag">Montana, USA</div>
+                </div>
+            </div>
+
+            <div class="rarity-card">
+                <div class="rarity-title">
+                    <span class="rarity-icon">🌈</span>
+                    Phenomenal Gems
+                </div>
+                
+                <div class="mineral-item">
+                    <div class="mineral-name">Black Opal</div>
+                    <div class="mineral-formula">SiO₂·nH₂O</div>
+                    <div class="mineral-description">Lightning Ridge, Australia - world's only source of precious black opal.</div>
+                    <div class="location-tag">Lightning Ridge, Australia</div>
+                </div>
+
+                <div class="mineral-item">
+                    <div class="mineral-name">Paraíba Tourmaline</div>
+                    <div class="mineral-formula">Complex borosilicate</div>
+                    <div class="mineral-description">Electric blue copper tourmalines worth $50,000+ per carat!</div>
+                    <div class="location-tag">Paraíba, Brazil</div>
+                    <div class="location-tag">Nigeria</div>
+                    <div class="location-tag">Mozambique</div>
+                </div>
+
+                <div class="mineral-item">
+                    <div class="mineral-name">Tanzanite</div>
+                    <div class="mineral-formula">Ca₂Al₃(SiO₄)(Si₂O₇)O(OH)</div>
+                    <div class="mineral-description">Found only in 4 square miles near Mount Kilimanjaro!</div>
+                    <div class="location-tag">Merelani Hills, Tanzania</div>
+                </div>
+
+                <div class="mineral-item">
+                    <div class="mineral-name">Padparadscha Sapphire</div>
+                    <div class="mineral-formula">Al₂O₃</div>
+                    <div class="mineral-description">Pink-orange "Lotus Blossom" sapphires from Sri Lanka.</div>
+                    <div class="location-tag">Sri Lanka</div>
+                    <div class="location-tag">Madagascar</div>
+                </div>
+            </div>
+
+            <div class="rarity-card">
+                <div class="rarity-title">
+                    <span class="rarity-icon">💰</span>
+                    Investment Grade Locations
+                </div>
+                
+                <div class="mineral-item">
+                    <div class="mineral-name">Kashmir Sapphires</div>
+                    <div class="mineral-description">Historic mine, rarely produces. Specimens sell for $50,000+ per carat.</div>
+                </div>
+
+                <div class="mineral-item">
+                    <div class="mineral-name">Burmese Rubies (Unheated)</div>
+                    <div class="mineral-description">Mogok Valley specimens without heat treatment command massive premiums.</div>
+                </div>
+
+                <div class="mineral-item">
+                    <div class="mineral-name">Muzo Emeralds</div>
+                    <div class="mineral-description">Colombian mine produces the world's most valuable emeralds.</div>
+                </div>
+
+                <div class="mineral-item">
+                    <div class="mineral-name">Imperial Jadeite</div>
+                    <div class="mineral-description">Myanmar imperial green jade sells for $1M+ per carat!</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Radioactive Tab -->
+    <section id="radioactive" class="content-section">
+        <div class="warning-banner">
+            ⚠️ RADIOACTIVE MINERALS WARNING ⚠️<br>
+            Handle with extreme caution! Store in lead-lined containers away from living areas.<br>
+            Use Geiger counter for monitoring. Check local regulations for possession limits.
+        </div>
+
+        <div class="rarity-grid">
+            <div class="rarity-card radioactive">
+                <div class="rarity-title">
+                    <span class="rarity-icon">☢️</span>
+                    Uranium Minerals
+                </div>
+                
+                <div class="mineral-item">
+                    <div class="mineral-name">Uraninite (Pitchblende)</div>
+                    <div class="mineral-formula">UO₂</div>
+                    <div class="mineral-description">Primary uranium ore. Marie Curie isolated radium from pitchblende!</div>
+                    <div class="location-tag">Congo (Shinkolobwe)</div>
+                    <div class="location-tag">Canada</div>
+                    <div class="location-tag">Czech Republic</div>
+                </div>
+
+                <div class="mineral-item">
+                    <div class="mineral-name">Autunite</div>
+                    <div class="mineral-formula">Ca(UO₂)₂(PO₄)₂·10-12H₂O</div>
+                    <div class="mineral-description">Brilliant yellow-green fluorescence! Strongly radioactive uranium phosphate.</div>
+                    <div class="location-tag">France (type locality)</div>
+                    <div class="location-tag">Utah, USA</div>
+                    <div class="location-tag">Australia</div>
+                </div>
+
+                <div class="mineral-item">
+                    <div class="mineral-name">Torbernite</div>
+                    <div class="mineral-formula">Cu(UO₂)₂(PO₄)₂·12H₂O</div>
+                    <div class="mineral-description">Green copper uranium phosphate. Beautiful but dangerous crystals!</div>
+                    <div class="location-tag">Congo</div>
+                    <div class="location-tag">France</div>
+                    <div class="location-tag">Colorado, USA</div>
+                </div>
+
+                <div class="mineral-item">
+                    <div class="mineral-name">Carnotite</div>
+                    <div class="mineral-formula">K₂(UO₂)₂(VO₄)₂·3H₂O</div>
+                    <div class="mineral-description">Bright yellow uranium-vanadium mineral. Major ore in Colorado Plateau.</div>
+                    <div class="location-tag">Colorado, USA</div>
+                    <div class="location-tag">Utah, USA</div>
+                    <div class="location-tag">Australia</div>
+                </div>
+            </div>
+
+            <div class="rarity-card radioactive">
+                <div class="rarity-title">
+                    <span class="rarity-icon">🌟</span>
+                    Rare Earth Radioactives
+                </div>
+                
+                <div class="mineral-item">
+                    <div class="mineral-name">Monazite</div>
+                    <div class="mineral-formula">(Ce,La,Nd,Th)PO₄</div>
+                    <div class="mineral-description">Contains thorium. Important rare earth element source.</div>
+                    <div class="location-tag">North Carolina, USA</div>
+                    <div class="location-tag">Brazil</div>
+                    <div class="location-tag">India</div>
+                </div>
+
+                <div class="mineral-item">
+                    <div class="mineral-name">Samarskite</div>
+                    <div class="mineral-formula">(Y,Ce,U,Fe)₃(Nb,Ta,Ti)₅O₁₆</div>
+                    <div class="mineral-description">Complex rare earth mineral. Named after Russian Colonel Samarski.</div>
+                    <div class="location-tag">North Carolina, USA</div>
+                    <div class="location-tag">Madagascar</div>
+                    <div class="location-tag">Russia</div>
+                </div>
+
+                <div class="mineral-item">
+                    <div class="mineral-name">Euxenite</div>
+                    <div class="mineral-formula">(Y,Ca,Ce,U,Th)(Nb,Ta,Ti)₂O₆</div>
+                    <div class="mineral-description">First source of europium discovery. Strongly radioactive.</div>
+                    <div class="location-tag">Norway</div>
+                    <div class="location-tag">Madagascar</div>
+                    <div class="location-tag">Brazil</div>
+                </div>
+            </div>
+
+            <div class="rarity-card radioactive">
+                <div class="rarity-title">
+                    <span class="rarity-icon">⚡</span>
+                    Fluorescent Radioactives
+                </div>
+                
+                <div class="mineral-item">
+                    <div class="mineral-name">Uranophane</div>
+                    <div class="mineral-formula">Ca(UO₂)₂(SiO₃OH)₂·5H₂O</div>
+                    <div class="mineral-description">Bright green fluorescence under UV light! Secondary uranium mineral.</div>
+                    <div class="location-tag">Utah, USA</div>
+                    <div class="location-tag">Germany</div>
+                    <div class="location-tag">Australia</div>
+                </div>
+
+                <div class="mineral-item">
+                    <div class="mineral-name">Zippeite</div>
+                    <div class="mineral-formula">K₃(UO₂)₄(SO₄)₂O₃(OH)·3H₂O</div>
+                    <div class="mineral-description">Bright yellow crystals with intense fluorescence. Highly radioactive!</div>
+                    <div class="location-tag">Utah, USA</div>
+                    <div class="location-tag">Czech Republic</div>
+                </div>
+
+                <div class="mineral-item">
+                    <div class="mineral-name">Schoepite</div>
+                    <div class="mineral-formula">UO₃·2H₂O</div>
+                    <div class="mineral-description">Yellow alteration product of uraninite. Named after Alfred Schoep.</div>
+                    <div class="location-tag">Congo</div>
+                    <div class="location-tag">Utah, USA</div>
+                </div>
+            </div>
+
+            <div class="rarity-card radioactive">
+                <div class="rarity-title">
+                    <span class="rarity-icon">🏛️</span>
+                    Historic Radioactive Localities
+                </div>
+                
+                <div class="mineral-item">
+                    <div class="mineral-name">Shinkolobwe Mine, Congo</div>
+                    <div class="mineral-description">Source of uranium for the Manhattan Project! World's richest uranium deposit.</div>
+                </div>
+
+                <div class="mineral-item">
+                    <div class="mineral-name">Jáchymov, Czech Republic</div>
+                    <div class="mineral-description">Historic type locality for many radioactive minerals. Curie's radium source.</div>
+                </div>
+
+                <div class="mineral-item">
+                    <div class="mineral-name">Great Bear Lake, Canada</div>
+                    <div class="mineral-description">Eldorado Mine supplied uranium for atomic bombs. Rich pitchblende deposits.</div>
+                </div>
+
+                <div class="mineral-item">
+                    <div class="mineral-name">Colorado Plateau, USA</div>
+                    <div class="mineral-description">Vast uranium province. Hundreds of mines across Utah, Colorado, Arizona.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="country-section">
+            <h3>☢️ Safety Guidelines for Radioactive Specimens</h3>
+            <div class="mineral-item">
+                <div class="mineral-name">Storage Requirements</div>
+                <div class="mineral-description">Lead-lined containers, separate from living areas, proper ventilation</div>
+            </div>
+            <div class="mineral-item">
+                <div class="mineral-name">Handling Precautions</div>
+                <div class="mineral-description">Minimal contact time, wash hands thoroughly, use tweezers/tongs</div>
+            </div>
+            <div class="mineral-item">
+                <div class="mineral-name">Monitoring Equipment</div>
+                <div class="mineral-description">Geiger counter essential, dosimeter badges recommended for serious collectors</div>
+            </div>
+            <div class="mineral-item">
+                <div class="mineral-name">Legal Considerations</div>
+                <div class="mineral-description">Check local regulations - some areas limit possession of radioactive materials</div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>🌍 Earth's Hidden Treasures - Educational Resource for Mineral Enthusiasts</p>
+        <p>Remember: Always respect private property, follow local laws, and practice Leave No Trace principles when collecting.</p>
+        <p>For radioactive specimens, prioritize safety and check regulations in your area.</p>
+    </footer>
+
+    <script>
+        // Create animated stars background
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numStars = 100;
+            
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Tab switching functionality
+        function showTab(tabName) {
+            // Hide all content sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => section.classList.remove('active'));
+            
+            // Remove active class from all tab buttons
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(button => button.classList.remove('active'));
+            
+            // Show selected content section
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        // Search functionality
+        function setupSearch() {
+            const searchBox = document.getElementById('searchBox');
+            let allMineralItems = [];
+            
+            // Collect all mineral items for searching
+            document.querySelectorAll('.mineral-item').forEach(item => {
+                allMineralItems.push({
+                    element: item,
+                    text: item.textContent.toLowerCase(),
+                    originalDisplay: item.style.display
+                });
+            });
+            
+            searchBox.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                
+                allMineralItems.forEach(item => {
+                    if (searchTerm === '' || item.text.includes(searchTerm)) {
+                        item.element.style.display = item.originalDisplay || 'block';
+                        item.element.style.opacity = '1';
+                    } else {
+                        item.element.style.display = 'none';
+                        item.element.style.opacity = '0.3';
+                    }
+                });
+                
+                // If searching, highlight matching terms
+                if (searchTerm.length > 2) {
+                    highlightSearchTerms(searchTerm);
+                } else {
+                    removeHighlights();
+                }
+            });
+        }
+
+        function highlightSearchTerms(term) {
+            const mineralItems = document.querySelectorAll('.mineral-item');
+            mineralItems.forEach(item => {
+                if (item.style.display !== 'none') {
+                    const text = item.innerHTML;
+                    const regex = new RegExp(`(${term})`, 'gi');
+                    item.innerHTML = text.replace(regex, '<mark style="background: #ffd700; color: #000;">$1</mark>');
+                }
+            });
+        }
+
+        function removeHighlights() {
+            const marks = document.querySelectorAll('mark');
+            marks.forEach(mark => {
+                mark.outerHTML = mark.innerHTML;
+            });
+        }
+
+        // Add hover effects for mineral items
+        function setupHoverEffects() {
+            const mineralItems = document.querySelectorAll('.mineral-item');
+            mineralItems.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateX(10px) scale(1.02)';
+                    this.style.boxShadow = '0 8px 25px rgba(255, 215, 0, 0.3)';
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateX(5px) scale(1)';
+                    this.style.boxShadow = 'none';
+                });
+            });
+        }
+
+        // Add click effects for detailed information
+        function setupClickEffects() {
+            const mineralItems = document.querySelectorAll('.mineral-item');
+            mineralItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Create a simple tooltip with additional info
+                    const mineralName = this.querySelector('.mineral-name').textContent;
+                    const formula = this.querySelector('.mineral-formula')?.textContent || '';
+                    
+                    // Simple alert for now - could be enhanced with modal
+                    const locations = Array.from(this.querySelectorAll('.location-tag')).map(tag => tag.textContent).join(', ');
+                    
+                    if (locations) {
+                        alert(`${mineralName} ${formula}\n\nMajor localities: ${locations}\n\nClick OK to learn more about mineral collecting!`);
+                    }
+                });
+            });
+        }
+
+        // Smooth scrolling for better UX
+        function addSmoothScrolling() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        }
+
+        // Intersection Observer for animation on scroll
+        function setupScrollAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animation = 'fadeIn 0.6s ease-out forwards';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.rarity-card, .country-section').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+            setupSearch();
+            setupHoverEffects();
+            setupClickEffects();
+            addSmoothScrolling();
+            setupScrollAnimations();
+            
+            // Add welcome message
+            console.log('🌍 Welcome to Earth\'s Hidden Treasures! Start exploring the wonderful world of minerals!');
+        });
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.getElementById('searchBox').value = '';
+                document.getElementById('searchBox').dispatchEvent(new Event('input'));
+            }
+        });
+
+        // Make tab buttons accessible via keyboard
+        document.querySelectorAll('.tab-button').forEach((button, index) => {
+            button.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
