@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robot Command System</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            display: flex;
+            gap: 20px;
+        }
+        
+        .game-area {
+            flex: 1;
+        }
+        
+        .grid-container {
+            display: inline-block;
+            border: 2px solid #00ff00;
+            background: #000;
+            position: relative;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(10, 40px);
+            grid-template-rows: repeat(10, 40px);
+            gap: 1px;
+            background: #333;
+            padding: 2px;
+            position: relative;
+        }
+        
+        .cell {
+            width: 40px;
+            height: 40px;
+            background: #000;
+            border: 1px solid #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .robot {
+            position: relative;
+            width: 30px;
+            height: 30px;
+        }
+        
+        .robot-body {
+            width: 100%;
+            height: 100%;
+            background: #00ff00;
+            position: absolute;
+            clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+            transition: transform 0.3s ease;
+        }
+        
+        .robot-turret {
+            width: 20px;
+            height: 20px;
+            background: #00aa00;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+        
+        .turret-barrel {
+            width: 3px;
+            height: 15px;
+            background: #00ff00;
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            transform-origin: bottom center;
+        }
+        
+        .control-panel {
+            width: 300px;
+            background: #2a2a2a;
+            border: 2px solid #00ff00;
+            padding: 20px;
+            height: fit-content;
+        }
+        
+        .status {
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #000;
+            border: 1px solid #00ff00;
+        }
+        
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .key {
+            background: #333;
+            color: #00ff00;
+            border: 2px solid #555;
+            padding: 15px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .key:hover {
+            background: #555;
+            border-color: #00ff00;
+        }
+        
+        .key:active {
+            background: #00ff00;
+            color: #000;
+        }
+        
+        .command-input {
+            background: #000;
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        
+        .execute-btn {
+            background: #004400;
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            padding: 10px 20px;
+            cursor: pointer;
+            width: 100%;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+        }
+        
+        .execute-btn:hover {
+            background: #006600;
+        }
+        
+        .error {
+            color: #ff0000;
+            background: #440000;
+            border: 1px solid #ff0000;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        
+        .success {
+            color: #00ff00;
+            background: #004400;
+            border: 1px solid #00ff00;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        
+        .compass {
+            display: grid;
+            grid-template-columns: repeat(3, 30px);
+            gap: 2px;
+            margin: 10px 0;
+            font-size: 12px;
+        }
+        
+        .compass-cell {
+            width: 30px;
+            height: 30px;
+            background: #333;
+            border: 1px solid #555;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+        
+        .instructions {
+            font-size: 12px;
+            line-height: 1.4;
+            margin-top: 15px;
+            color: #aaa;
+        }
+        
+        .projectile {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ffff00;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .scan-circle {
+            position: absolute;
+            border: 2px dashed #00ff00;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 5;
+            animation: scan-rotate 2s linear;
+        }
+        
+        @keyframes scan-rotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-area">
+        <h2>Robot Command System - Fixed Version</h2>
+        <div class="grid-container">
+            <div class="grid" id="gameGrid"></div>
+        </div>
+    </div>
+    
+    <div class="control-panel">
+        <div class="status">
+            <div>Health: <span id="health">100</span>/100</div>
+            <div>Position: <span id="position">5,5</span></div>
+            <div>Body Facing: <span id="bodyFacing">N</span></div>
+            <div>Turret Facing: <span id="turretFacing">N</span></div>
+        </div>
+        
+        <div class="compass">
+            <div class="compass-cell">1<br>NW</div>
+            <div class="compass-cell">2<br>N</div>
+            <div class="compass-cell">3<br>NE</div>
+            <div class="compass-cell">4<br>W</div>
+            <div class="compass-cell">5<br>●</div>
+            <div class="compass-cell">6<br>E</div>
+            <div class="compass-cell">7<br>SW</div>
+            <div class="compass-cell">8<br>S</div>
+            <div class="compass-cell">9<br>SE</div>
+        </div>
+        
+        <input type="text" class="command-input" id="commandInput" placeholder="Enter command..." readonly>
+        
+        <div class="keypad">
+            <div class="key" data-key="1">1</div>
+            <div class="key" data-key="2">2</div>
+            <div class="key" data-key="3">3</div>
+            <div class="key" data-key="4">4</div>
+            <div class="key" data-key="5">5</div>
+            <div class="key" data-key="6">6</div>
+            <div class="key" data-key="7">7</div>
+            <div class="key" data-key="8">8</div>
+            <div class="key" data-key="9">9</div>
+            <div class="key" data-key="*">*</div>
+            <div class="key" data-key="0">0</div>
+            <div class="key" data-key="#">#</div>
+        </div>
+        
+        <button class="execute-btn" id="executeBtn">EXECUTE COMMAND</button>
+        <button class="execute-btn" id="clearBtn" style="background: #440000; margin-top: 5px;">CLEAR</button>
+        
+        <div id="feedback"></div>
+        
+        <div class="instructions">
+            <strong>Command Format:</strong><br>
+            #[dir][dist][turret][action]*<br><br>
+            
+            <strong>Examples:</strong><br>
+            #1360* - Move N 3 squares, turret E, no action<br>
+            #0082* - Hold position, turret S, scan area<br>
+            #2241* - Move N 2 squares, turret W, fire weapon<br><br>
+            
+            <strong>Movement:</strong><br>
+            0 = Hold position<br>
+            1-4, 6-9 = Compass directions<br><br>
+            
+            <strong>Actions:</strong><br>
+            0 = No action<br>
+            1 = Fire weapon<br>
+            2 = Scan area<br>
+        </div>
+    </div>
+    
+    <script>
+        // Game state
+        const gameState = {
+            robot: {
+                x: 5,
+                y: 5,
+                bodyFacing: 2,
+                turretFacing: 2,
+                health: 100
+            },
+            gridSize: 10,
+            currentCommand: '',
+            animating: false,
+            animationSpeed: 500
+        };
+        
+        // Direction mappings
+        const directions = {
+            1: { name: 'NW', dx: -1, dy: -1 },
+            2: { name: 'N', dx: 0, dy: -1 },
+            3: { name: 'NE', dx: 1, dy: -1 },
+            4: { name: 'W', dx: -1, dy: 0 },
+            6: { name: 'E', dx: 1, dy: 0 },
+            7: { name: 'SW', dx: -1, dy: 1 },
+            8: { name: 'S', dx: 0, dy: 1 },
+            9: { name: 'SE', dx: 1, dy: 1 }
+        };
+        
+        // Direction to rotation mapping
+        const directionToRotation = {
+            1: -45,  // NW
+            2: 0,    // N
+            3: 45,   // NE
+            4: -90,  // W
+            6: 90,   // E
+            7: -135, // SW
+            8: 180,  // S
+            9: 135   // SE
+        };
+        
+        // Initialize grid
+        function initializeGrid() {
+            const grid = document.getElementById('gameGrid');
+            grid.innerHTML = '';
+            
+            for (let y = 0; y < gameState.gridSize; y++) {
+                for (let x = 0; x < gameState.gridSize; x++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.dataset.x = x;
+                    cell.dataset.y = y;
+                    grid.appendChild(cell);
+                }
+            }
+            
+            updateRobotDisplay();
+        }
+        
+        // Update robot display
+        function updateRobotDisplay() {
+            document.querySelectorAll('.robot').forEach(robot => robot.remove());
+            
+            const currentCell = document.querySelector(`[data-x="${gameState.robot.x}"][data-y="${gameState.robot.y}"]`);
+            
+            const robot = document.createElement('div');
+            robot.className = 'robot';
+            
+            const body = document.createElement('div');
+            body.className = 'robot-body';
+            
+            const turret = document.createElement('div');
+            turret.className = 'robot-turret';
+            
+            const barrel = document.createElement('div');
+            barrel.className = 'turret-barrel';
+            turret.appendChild(barrel);
+            
+            robot.appendChild(body);
+            robot.appendChild(turret);
+            currentCell.appendChild(robot);
+            
+            const bodyRotation = directionToRotation[gameState.robot.bodyFacing] || 0;
+            const turretRotation = directionToRotation[gameState.robot.turretFacing] || 0;
+            
+            body.style.transform = `rotate(${bodyRotation}deg)`;
+            turret.style.transform = `translate(-50%, -50%) rotate(${turretRotation}deg)`;
+            
+            document.getElementById('position').textContent = `${gameState.robot.x},${gameState.robot.y}`;
+            document.getElementById('bodyFacing').textContent = directions[gameState.robot.bodyFacing].name;
+            document.getElementById('turretFacing').textContent = directions[gameState.robot.turretFacing].name;
+            document.getElementById('health').textContent = gameState.robot.health;
+        }
+        
+        // Execute command
+        async function executeCommand(command) {
+            console.log(`Executing command: "${command}"`);
+            
+            if (gameState.animating) {
+                showFeedback('ERROR: Robot busy executing previous command.', 'error');
+                return false;
+            }
+            
+            // Validate format
+            if (!command.match(/^#\d\d\d\d\*$/)) {
+                showFeedback('ERROR: Invalid command format. Use #[dir][dist][turret][action]*', 'error');
+                return false;
+            }
+            
+            // Parse command
+            const moveDirection = parseInt(command[1]);
+            const distance = parseInt(command[2]);
+            const turretDirection = parseInt(command[3]);
+            const action = parseInt(command[4]);
+            
+            console.log(`Parsed - Move: ${moveDirection}, Distance: ${distance}, Turret: ${turretDirection}, Action: ${action}`);
+            
+            // Validate
+            if (moveDirection !== 0 && !directions[moveDirection]) {
+                showFeedback('ERROR: Invalid movement direction. Use 0 (hold), 1-4, 6-9.', 'error');
+                return false;
+            }
+            
+            if (!directions[turretDirection]) {
+                showFeedback('ERROR: Invalid turret direction. Use 1-9.', 'error');
+                return false;
+            }
+            
+            if (moveDirection !== 0 && distance === 0) {
+                showFeedback('ERROR: Distance must be greater than 0 for movement.', 'error');
+                return false;
+            }
+            
+            gameState.animating = true;
+            showFeedback('EXECUTING COMMAND...', 'success');
+            
+            // Execute movement
+            if (moveDirection === 0) {
+                console.log('Holding position');
+                await sleep(300);
+            } else {
+                const dir = directions[moveDirection];
+                for (let step = 0; step < distance; step++) {
+                    const newX = gameState.robot.x + dir.dx;
+                    const newY = gameState.robot.y + dir.dy;
+                    
+                    if (newX < 0 || newX >= gameState.gridSize || newY < 0 || newY >= gameState.gridSize) {
+                        showFeedback(`ERROR: Movement blocked at step ${step + 1}. Robot grounded.`, 'error');
+                        gameState.animating = false;
+                        return false;
+                    }
+                    
+                    gameState.robot.x = newX;
+                    gameState.robot.y = newY;
+                    gameState.robot.bodyFacing = moveDirection;
+                    
+                    updateRobotDisplay();
+                    await sleep(gameState.animationSpeed);
+                }
+            }
+            
+            // Set turret
+            gameState.robot.turretFacing = turretDirection;
+            updateRobotDisplay();
+            await sleep(300);
+            
+            // Execute action
+            let actionResult = '';
+            switch(action) {
+                case 0:
+                    actionResult = 'No action';
+                    break;
+                case 1:
+                    await fireProjectile();
+                    actionResult = 'Fire weapon';
+                    break;
+                case 2:
+                    await scanArea();
+                    actionResult = 'Scan area';
+                    break;
+                default:
+                    actionResult = `Action ${action}`;
+                    break;
+            }
+            
+            gameState.animating = false;
+            let movementDesc = moveDirection === 0 ? 'Held position' : `Moved ${distance} squares ${directions[moveDirection].name}`;
+            showFeedback(`SUCCESS: ${movementDesc}, turret ${directions[turretDirection].name}, ${actionResult}`, 'success');
+            return true;
+        }
+        
+        // Fire projectile
+        async function fireProjectile() {
+            const robotX = gameState.robot.x;
+            const robotY = gameState.robot.y;
+            const dir = directions[gameState.robot.turretFacing];
+            
+            const projectile = document.createElement('div');
+            projectile.className = 'projectile';
+            
+            const startX = 2 + robotX * 41 + 20;
+            const startY = 2 + robotY * 41 + 20;
+            
+            projectile.style.position = 'absolute';
+            projectile.style.left = startX + 'px';
+            projectile.style.top = startY + 'px';
+            
+            document.querySelector('.grid-container').appendChild(projectile);
+            
+            for (let step = 0; step < 8; step++) {
+                const newX = startX + (dir.dx * 15 * (step + 1));
+                const newY = startY + (dir.dy * 15 * (step + 1));
+                
+                projectile.style.left = newX + 'px';
+                projectile.style.top = newY + 'px';
+                
+                await sleep(50);
+            }
+            
+            projectile.remove();
+        }
+        
+        // Scan area
+        async function scanArea() {
+            const robotX = gameState.robot.x;
+            const robotY = gameState.robot.y;
+            
+            const scanCircle = document.createElement('div');
+            scanCircle.className = 'scan-circle';
+            
+            const centerX = 2 + robotX * 41 + 20;
+            const centerY = 2 + robotY * 41 + 20;
+            
+            scanCircle.style.position = 'absolute';
+            scanCircle.style.width = '120px';
+            scanCircle.style.height = '120px';
+            scanCircle.style.left = centerX + 'px';
+            scanCircle.style.top = centerY + 'px';
+            scanCircle.style.transform = 'translate(-50%, -50%)';
+            
+            document.querySelector('.grid-container').appendChild(scanCircle);
+            
+            await sleep(2000);
+            scanCircle.remove();
+        }
+        
+        // Utility functions
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+        
+        function showFeedback(message, type) {
+            const feedback = document.getElementById('feedback');
+            feedback.innerHTML = `<div class="${type}">${message}</div>`;
+            setTimeout(() => {
+                feedback.innerHTML = '';
+            }, 3000);
+        }
+        
+        // Event listeners
+        document.querySelectorAll('.key').forEach(key => {
+            key.addEventListener('click', () => {
+                const value = key.dataset.key;
+                gameState.currentCommand += value;
+                document.getElementById('commandInput').value = gameState.currentCommand;
+            });
+        });
+        
+        document.getElementById('executeBtn').addEventListener('click', async () => {
+            if (gameState.currentCommand && !gameState.animating) {
+                await executeCommand(gameState.currentCommand);
+                gameState.currentCommand = '';
+                document.getElementById('commandInput').value = '';
+            }
+        });
+        
+        document.getElementById('clearBtn').addEventListener('click', () => {
+            gameState.currentCommand = '';
+            document.getElementById('commandInput').value = '';
+            document.getElementById('feedback').innerHTML = '';
+        });
+        
+        // Keyboard support
+        document.addEventListener('keydown', async (e) => {
+            if (e.key.match(/[0-9*#]/)) {
+                gameState.currentCommand += e.key;
+                document.getElementById('commandInput').value = gameState.currentCommand;
+            } else if (e.key === 'Enter' && !gameState.animating) {
+                if (gameState.currentCommand) {
+                    await executeCommand(gameState.currentCommand);
+                    gameState.currentCommand = '';
+                    document.getElementById('commandInput').value = '';
+                }
+            } else if (e.key === 'Escape') {
+                document.getElementById('clearBtn').click();
+            }
+        });
+        
+        // Initialize
+        initializeGrid();
+    </script>
+</body>
+</html>
