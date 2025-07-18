@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Programming: Your Gateway to Code</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: #fff;
+            opacity: 0.9;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #333;
+        }
+
+        .section p {
+            color: #333;
+        }
+
+        .section ul, .section ol {
+            color: #333;
+        }
+
+        .section li {
+            color: #333;
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .section h3 {
+            font-size: 1.8rem;
+            margin: 2rem 0 1rem 0;
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        .terminal {
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+            overflow-x: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-left: 4px solid #667eea;
+        }
+
+        .terminal::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ff5f56;
+            box-shadow: 20px 0 #ffbd2e, 40px 0 #27ca3f;
+        }
+
+        .terminal-header {
+            color: #8b949e;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            padding-left: 70px;
+            font-family: 'Monaco', 'Menlo', monospace;
+        }
+
+        .terminal code {
+            color: #e6edf3;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            display: block;
+            white-space: pre-wrap;
+        }
+
+        .python-code {
+            background: #0d1117;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+            overflow-x: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-left: 4px solid #3776ab;
+        }
+
+        .python-code::before {
+            content: 'Python';
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: #3776ab;
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .python-code code {
+            color: #e6edf3;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            display: block;
+            white-space: pre-wrap;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 15px;
+            padding: 2rem;
+            color: white;
+            margin: 2rem 0;
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+        }
+
+        .highlight-box h3 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .tutorial-step {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            color: white;
+            box-shadow: 0 15px 35px rgba(255, 107, 107, 0.3);
+        }
+
+        .tutorial-step h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .tutorial-step h4::before {
+            content: counter(step-counter);
+            counter-increment: step-counter;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-weight: bold;
+        }
+
+        .tutorial-container {
+            counter-reset: step-counter;
+        }
+
+        .command-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .command-card {
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+            border-radius: 15px;
+            padding: 1.5rem;
+            color: white;
+            box-shadow: 0 10px 25px rgba(78, 205, 196, 0.3);
+        }
+
+        .command-card h4 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .challenge-box {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            border-radius: 15px;
+            padding: 2rem;
+            color: white;
+            margin: 2rem 0;
+            box-shadow: 0 15px 35px rgba(240, 147, 251, 0.3);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .feature-item {
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section {
+                padding: 2rem;
+            }
+            
+            .command-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>🐍 Python Programming</h1>
+            <p>Your Gateway to the World of Code</p>
+        </div>
+
+        <div class="section">
+            <h2>Why Choose Python?</h2>
+            <p>Python has become one of the most popular programming languages in the world, and for good reason. Its clean syntax, powerful libraries, and versatility make it an excellent choice for beginners and experienced developers alike.</p>
+            
+            <p>Python's philosophy emphasizes code readability and simplicity. Unlike many programming languages that require complex syntax, Python lets you express concepts in fewer lines of code. This makes it perfect for rapid prototyping, data analysis, web development, and automation tasks.</p>
+            
+            <div class="features-grid">
+                <div class="feature-item">
+                    <h4>📖 Easy to Learn</h4>
+                    <p>Simple, readable syntax perfect for beginners</p>
+                </div>
+                <div class="feature-item">
+                    <h4>🚀 Powerful</h4>
+                    <p>Handles everything from web apps to AI</p>
+                </div>
+                <div class="feature-item">
+                    <h4>🌍 Versatile</h4>
+                    <p>Works on all platforms and devices</p>
+                </div>
+                <div class="feature-item">
+                    <h4>📚 Rich Libraries</h4>
+                    <p>Thousands of packages for any task</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <h3>🚀 Start Coding Right Now!</h3>
+            <p>The best way to learn Python is by writing code. Follow our interactive tutorials and try every example yourself. Each code block is ready to copy and paste into your Python environment.</p>
+        </div>
+
+        <div class="section">
+            <h2>Your First Python Program</h2>
+            <p>The traditional first program in any language is "Hello, World!" In Python, this is remarkably simple:</p>
+            
+            <div class="python-code">
+                <code>print("Hello, World!")</code>
+            </div>
+            
+            <p>This single line demonstrates Python's approachable nature. The <code>print()</code> function displays text on the screen, and the syntax is intuitive even for complete beginners.</p>
+        </div>
+
+        <div class="tutorial-container">
+            <div class="section">
+                <h2>🎯 Hands-On Python Tutorial: Try It Yourself!</h2>
+                
+                <div class="tutorial-step">
+                    <h4>Open Your Python Environment</h4>
+                    <div class="terminal">
+                        <div class="terminal-header">Terminal / Command Prompt</div>
+                        <code># On Windows:
+python
+
+# On Mac/Linux:
+python3
+
+# Or use online: python.org/shell</code>
+                    </div>
+                </div>
+
+                <div class="tutorial-step">
+                    <h4>Basic Commands to Try</h4>
+                    <p>Start with these fundamental commands. Type each one and press Enter:</p>
+                    <div class="python-code">
+                        <code># Basic arithmetic
+print(5 + 3)
+print(10 * 4)
+print(20 / 4)
+
+# Working with text
+name = "Your Name"
+print("Hello, " + name + "!")
+
+# Creating a simple list
+favorite_foods = ["pizza", "chocolate", "tacos"]
+print(favorite_foods)
+print(favorite_foods[0])  # Prints the first item</code>
+                    </div>
+                </div>
+
+                <div class="tutorial-step">
+                    <h4>Your First Interactive Program</h4>
+                    <p>Copy and paste this program that asks for your input:</p>
+                    <div class="python-code">
+                        <code># Simple conversation program
+user_name = input("What's your name? ")
+user_age = input("How old are you? ")
+
+print(f"Nice to meet you, {user_name}!")
+print(f"So you're {user_age} years old. That's awesome!")
+
+# Simple math with user input
+favorite_number = int(input("What's your favorite number? "))
+doubled = favorite_number * 2
+print(f"Your favorite number doubled is: {doubled}")</code>
+                    </div>
+                </div>
+
+                <div class="tutorial-step">
+                    <h4>Create a Simple Calculator</h4>
+                    <p>Build your first useful program:</p>
+                    <div class="python-code">
+                        <code># Simple calculator
+print("=== Simple Calculator ===")
+num1 = float(input("Enter first number: "))
+num2 = float(input("Enter second number: "))
+
+print(f"{num1} + {num2} = {num1 + num2}")
+print(f"{num1} - {num2} = {num1 - num2}")
+print(f"{num1} * {num2} = {num1 * num2}")
+print(f"{num1} / {num2} = {num1 / num2}")</code>
+                    </div>
+                </div>
+
+                <div class="challenge-box">
+                    <h3>🎯 Practice Challenge</h3>
+                    <p><strong>Try creating a program that:</strong></p>
+                    <ol>
+                        <li>Asks for three favorite colors</li>
+                        <li>Stores them in a list</li>
+                        <li>Prints them back in reverse order</li>
+                    </ol>
+                    <details>
+                        <summary style="cursor: pointer; margin: 1rem 0;">💡 Click here for the solution (try it yourself first!)</summary>
+                        <div class="python-code" style="margin-top: 1rem;">
+                            <code>colors = []
+colors.append(input("First favorite color: "))
+colors.append(input("Second favorite color: "))
+colors.append(input("Third favorite color: "))
+
+print("Your colors in reverse:")
+for color in reversed(colors):
+    print(f"- {color}")</code>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Essential Python Commands and Tools</h2>
+            
+            <h3>Command Line Python Tools</h3>
+            <p>Master these essential commands for Python development:</p>
+            
+            <div class="terminal">
+                <div class="terminal-header">Command Line</div>
+                <code># Check Python version
+python --version
+python3 --version
+
+# Run a Python file
+python filename.py
+
+# Install packages
+pip install package_name
+pip install requests numpy pandas
+
+# List installed packages
+pip list
+
+# Create a virtual environment
+python -m venv myproject
+source myproject/bin/activate  # On Windows: myproject\Scripts\activate
+
+# Interactive Python shell
+python
+python3
+
+# Get help on any function or module
+help(print)
+help(len)</code>
+            </div>
+
+            <div class="command-grid">
+                <div class="command-card">
+                    <h4>🔧 String & Data Functions</h4>
+                    <div class="python-code">
+                        <code>len("Hello")          # Returns 5
+str(42)              # "42"
+int("42")            # 42
+float("3.14")        # 3.14</code>
+                    </div>
+                </div>
+                
+                <div class="command-card">
+                    <h4>📋 List Operations</h4>
+                    <div class="python-code">
+                        <code>max([1, 5, 3])       # Returns 5
+min([1, 5, 3])       # Returns 1
+sum([1, 2, 3])       # Returns 6
+sorted([3, 1, 4])    # [1, 3, 4]</code>
+                    </div>
+                </div>
+                
+                <div class="command-card">
+                    <h4>📁 File Operations</h4>
+                    <div class="python-code">
+                        <code>open("file.txt", "r")  # Read file
+open("file.txt", "w")  # Write file
+with open("file.txt") as f:
+    content = f.read()</code>
+                    </div>
+                </div>
+                
+                <div class="command-card">
+                    <h4>🛠️ Useful Utilities</h4>
+                    <div class="python-code">
+                        <code>range(5)             # 0,1,2,3,4
+enumerate(["a","b"])  # Index pairs
+zip([1,2], ["a","b"]) # Combine lists</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Python's Powerful Ecosystem</h2>
+            
+            <h3>Essential Libraries</h3>
+            <p>Python's strength lies in its extensive library ecosystem:</p>
+            
+            <div class="command-grid">
+                <div class="command-card">
+                    <h4>📊 Data Science</h4>
+                    <ul>
+                        <li><strong>NumPy & Pandas:</strong> Data analysis</li>
+                        <li><strong>Matplotlib:</strong> Visualizations</li>
+                        <li><strong>Scikit-learn:</strong> Machine learning</li>
+                    </ul>
+                </div>
+                
+                <div class="command-card">
+                    <h4>🌐 Web Development</h4>
+                    <ul>
+                        <li><strong>Django:</strong> Full framework</li>
+                        <li><strong>Flask:</strong> Lightweight</li>
+                        <li><strong>Requests:</strong> HTTP library</li>
+                    </ul>
+                </div>
+                
+                <div class="command-card">
+                    <h4>🤖 Automation</h4>
+                    <ul>
+                        <li><strong>Selenium:</strong> Browser automation</li>
+                        <li><strong>Schedule:</strong> Task scheduling</li>
+                        <li><strong>Paramiko:</strong> SSH connections</li>
+                    </ul>
+                </div>
+                
+                <div class="command-card">
+                    <h4>🎮 Game Development</h4>
+                    <ul>
+                        <li><strong>Pygame:</strong> 2D games</li>
+                        <li><strong>Arcade:</strong> Modern gaming</li>
+                        <li><strong>Panda3D:</strong> 3D games</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Practical Python Projects</h2>
+            
+            <h3>File Automation Script</h3>
+            <p>Create a script to organize your downloads folder:</p>
+            <div class="python-code">
+                <code>import os
+import shutil
+
+def organize_downloads():
+    downloads_path = os.path.expanduser("~/Downloads")
+    
+    # Create folders for different file types
+    folders = {
+        "Images": [".jpg", ".png", ".gif", ".bmp"],
+        "Documents": [".pdf", ".doc", ".txt", ".xlsx"],
+        "Videos": [".mp4", ".avi", ".mov", ".mkv"],
+        "Audio": [".mp3", ".wav", ".flac", ".m4a"]
+    }
+    
+    for folder in folders.keys():
+        folder_path = os.path.join(downloads_path, folder)
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
+    
+    # Move files to appropriate folders
+    for filename in os.listdir(downloads_path):
+        if os.path.isfile(os.path.join(downloads_path, filename)):
+            file_extension = os.path.splitext(filename)[1].lower()
+            
+            for folder, extensions in folders.items():
+                if file_extension in extensions:
+                    source = os.path.join(downloads_path, filename)
+                    destination = os.path.join(downloads_path, folder, filename)
+                    shutil.move(source, destination)
+                    print(f"Moved {filename} to {folder}")
+                    break
+
+organize_downloads()
+print("Downloads folder organized!")</code>
+            </div>
+
+            <h3>Weather API Script</h3>
+            <p>Get current weather for any city:</p>
+            <div class="python-code">
+                <code>import requests
+
+def get_weather(city):
+    # Note: You'll need a free API key from openweathermap.org
+    api_key = "your_api_key_here"
+    url = f"http://api.openweathermap.org/data/2.5/weather"
+    
+    params = {
+        "q": city,
+        "appid": api_key,
+        "units": "metric"
+    }
+    
+    try:
+        response = requests.get(url, params=params)
+        data = response.json()
+        
+        if response.status_code == 200:
+            temp = data["main"]["temp"]
+            description = data["weather"][0]["description"]
+            humidity = data["main"]["humidity"]
+            
+            print(f"Weather in {city}:")
+            print(f"Temperature: {temp}°C")
+            print(f"Description: {description.title()}")
+            print(f"Humidity: {humidity}%")
+        else:
+            print(f"Error: {data['message']}")
+            
+    except requests.RequestException:
+        print("Error connecting to weather service")
+
+# Example usage
+city = input("Enter city name: ")
+get_weather(city)</code>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <h3>🎯 Next Steps in Your Python Journey</h3>
+            <p>You've learned the fundamentals! Continue practicing with small projects and gradually explore more advanced topics. The Python community is welcoming and provides extensive support for learners at all levels.</p>
+            
+            <div class="terminal">
+                <div class="terminal-header">Keep Learning</div>
+                <code># Explore these topics next:
+# - Object-oriented programming (classes, inheritance)
+# - Web frameworks (Django, Flask)
+# - Data science libraries (Pandas, NumPy)
+# - API development and consumption
+# - Database integration (SQLite, PostgreSQL)
+# - Testing frameworks (pytest, unittest)
+# - Deployment and packaging
+
+echo "Happy coding! 🐍✨"</code>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

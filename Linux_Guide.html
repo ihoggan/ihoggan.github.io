@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux: The Open Source Revolution</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #2980b9 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #e74c3c, #f39c12);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: #fff;
+            opacity: 0.9;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #2c3e50, #3498db);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .section h3 {
+            font-size: 1.8rem;
+            margin: 2rem 0 1rem 0;
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        .terminal {
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+            overflow-x: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-left: 4px solid #e74c3c;
+        }
+
+        .terminal::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ff5f56;
+            box-shadow: 20px 0 #ffbd2e, 40px 0 #27ca3f;
+        }
+
+        .terminal-header {
+            color: #8b949e;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            padding-left: 70px;
+            font-family: 'Monaco', 'Menlo', monospace;
+        }
+
+        .terminal code {
+            color: #e6edf3;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            display: block;
+            white-space: pre-wrap;
+        }
+
+        .bash-code {
+            background: #0d1117;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+            overflow-x: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-left: 4px solid #f39c12;
+        }
+
+        .bash-code::before {
+            content: 'Bash';
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: #f39c12;
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .bash-code code {
+            color: #e6edf3;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            display: block;
+            white-space: pre-wrap;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            border-radius: 15px;
+            padding: 2rem;
+            color: white;
+            margin: 2rem 0;
+            box-shadow: 0 15px 35px rgba(231, 76, 60, 0.3);
+        }
+
+        .highlight-box h3 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .tutorial-step {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            color: white;
+            box-shadow: 0 15px 35px rgba(52, 152, 219, 0.3);
+        }
+
+        .tutorial-step h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .tutorial-step h4::before {
+            content: counter(step-counter);
+            counter-increment: step-counter;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-weight: bold;
+        }
+
+        .tutorial-container {
+            counter-reset: step-counter;
+        }
+
+        .command-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .command-card {
+            background: linear-gradient(135deg, #16a085, #27ae60);
+            border-radius: 15px;
+            padding: 1.5rem;
+            color: white;
+            box-shadow: 0 10px 25px rgba(22, 160, 133, 0.3);
+        }
+
+        .command-card h4 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .distro-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .distro-card {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            border-radius: 15px;
+            padding: 1.5rem;
+            color: white;
+            box-shadow: 0 10px 25px rgba(155, 89, 182, 0.3);
+            text-align: center;
+        }
+
+        .challenge-box {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            border-radius: 15px;
+            padding: 2rem;
+            color: white;
+            margin: 2rem 0;
+            box-shadow: 0 15px 35px rgba(243, 156, 18, 0.3);
+        }
+
+        .project-box {
+            background: linear-gradient(135deg, #1abc9c, #16a085);
+            border-radius: 15px;
+            padding: 2rem;
+            color: white;
+            margin: 2rem 0;
+            box-shadow: 0 15px 35px rgba(26, 188, 156, 0.3);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin: 3rem 0;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(231, 76, 60, 0.4);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .feature-item {
+            background: rgba(52, 152, 219, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            border: 2px solid rgba(52, 152, 219, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section {
+                padding: 2rem;
+            }
+            
+            .command-grid, .distro-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>🐧 Linux</h1>
+            <p>The Open Source Operating System Revolution</p>
+        </div>
+
+        <div class="section">
+            <h2>What Makes Linux Different</h2>
+            <p>Linux represents one of the most successful collaborative software projects in history. This powerful, flexible operating system runs everything from smartphones to supercomputers, offering users complete control over their computing environment.</p>
+            
+            <div class="features-grid">
+                <div class="feature-item">
+                    <h4>🔓 Open Source</h4>
+                    <p>View, modify, and distribute the source code freely</p>
+                </div>
+                <div class="feature-item">
+                    <h4>🛡️ Secure</h4>
+                    <p>Robust permission system and active security community</p>
+                </div>
+                <div class="feature-item">
+                    <h4>⚡ Fast</h4>
+                    <p>Efficient resource usage and optimized performance</p>
+                </div>
+                <div class="feature-item">
+                    <h4>🔧 Customizable</h4>
+                    <p>Adapt every aspect to your needs and preferences</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <h3>🚀 Master Linux Commands Today!</h3>
+            <p>The best way to learn Linux is by using the terminal. Every command below is safe to try and will help you understand how Linux works. Open your terminal and follow along!</p>
+        </div>
+
+        <div class="section">
+            <h2>Popular Linux Distributions</h2>
+            <p>Linux comes in many flavors called distributions or "distros." Each serves different needs:</p>
+            
+            <div class="distro-grid">
+                <div class="distro-card">
+                    <h4>🎯 Ubuntu</h4>
+                    <p>Perfect for beginners with user-friendly interface and great community support</p>
+                </div>
+                <div class="distro-card">
+                    <h4>🏛️ Debian</h4>
+                    <p>Rock-solid stability and the foundation for many other distributions</p>
+                </div>
+                <div class="distro-card">
+                    <h4>🔬 Fedora</h4>
+                    <p>Cutting-edge features and latest Linux technologies</p>
+                </div>
+                <div class="distro-card">
+                    <h4>🏢 CentOS/Rocky</h4>
+                    <p>Enterprise-grade stability for servers and business use</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="tutorial-container">
+            <div class="section">
+                <h2>🎯 Essential Linux Commands Tutorial</h2>
+                
+                <div class="tutorial-step">
+                    <h4>Getting Started: Your First Commands</h4>
+                    <p>Open your terminal and try these fundamental commands. Each is safe to run:</p>
+                    <div class="terminal">
+                        <div class="terminal-header">Linux Terminal</div>
+                        <code># Find out where you are
+pwd
+
+# See what's in your current directory
+ls
+ls -la    # Detailed view with hidden files
+
+# Navigate directories
+cd /home
+cd ~      # Go to your home directory
+cd ..     # Go up one directory
+cd -      # Go back to previous directory</code>
+                    </div>
+                </div>
+
+                <div class="tutorial-step">
+                    <h4>Create and Manage Files</h4>
+                    <p>Practice file management with these commands:</p>
+                    <div class="terminal">
+                        <div class="terminal-header">File Operations</div>
+                        <code># Create directories
+mkdir my_test_folder
+mkdir -p projects/python/scripts   # Create nested directories
+
+# Create and view files
+touch test_file.txt
+echo "Hello Linux!" > greeting.txt
+cat greeting.txt
+less greeting.txt   # View file with paging (q to quit)</code>
+                    </div>
+                </div>
+
+                <div class="tutorial-step">
+                    <h4>File Operations Mastery</h4>
+                    <p>Learn to copy, move, and organize files:</p>
+                    <div class="terminal">
+                        <div class="terminal-header">Advanced File Operations</div>
+                        <code># Copy files and directories
+cp greeting.txt backup_greeting.txt
+cp -r my_test_folder my_backup_folder
+
+# Move and rename files
+mv greeting.txt welcome.txt
+mv welcome.txt my_test_folder/
+
+# Remove files and directories (be careful!)
+rm backup_greeting.txt
+rm -r my_backup_folder   # Remove directory and contents
+
+# Find files
+find . -name "*.txt"
+find /home -name "welcome.txt"</code>
+                    </div>
+                </div>
+
+                <div class="tutorial-step">
+                    <h4>Text Processing Power</h4>
+                    <p>Search and manipulate text like a pro:</p>
+                    <div class="terminal">
+                        <div class="terminal-header">Text Processing</div>
+                        <code># Search within files
+grep "Hello" *.txt
+grep -r "Linux" /home/username/
+
+# Count lines, words, characters
+wc filename.txt
+wc -l filename.txt    # Just count lines
+
+# Sort and filter
+sort filename.txt
+sort -r filename.txt  # Reverse order
+uniq filename.txt     # Remove duplicates
+
+# View file contents
+head filename.txt     # First 10 lines
+tail filename.txt     # Last 10 lines
+tail -f logfile.txt   # Follow file changes</code>
+                    </div>
+                </div>
+
+                <div class="tutorial-step">
+                    <h4>System Monitoring</h4>
+                    <p>Keep track of your system's health:</p>
+                    <div class="terminal">
+                        <div class="terminal-header">System Information</div>
+                        <code># System information
+uname -a          # System information
+whoami           # Current username
+date             # Current date and time
+uptime           # System uptime and load
+
+# Process management
+ps aux           # Show all running processes
+top              # Real-time process viewer (q to quit)
+htop             # Enhanced process viewer (if installed)
+
+# Disk and memory usage
+df -h            # Disk space usage
+du -h            # Directory space usage
+free -h          # Memory usage</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Package Management Commands</h2>
+            <p>Install and manage software efficiently:</p>
+            
+            <div class="command-grid">
+                <div class="command-card">
+                    <h4>📦 Ubuntu/Debian (APT)</h4>
+                    <div class="bash-code">
+                        <code># Update package database
+sudo apt update
+
+# Install software
+sudo apt install git python3 curl
+
+# Remove software
+sudo apt remove package_name
+sudo apt autoremove
+
+# Search packages
+apt search python</code>
+                    </div>
+                </div>
+                
+                <div class="command-card">
+                    <h4>🎩 Red Hat/Fedora (DNF)</h4>
+                    <div class="bash-code">
+                        <code># Update system
+sudo dnf update
+
+# Install software
+sudo dnf install git python3 curl
+
+# Remove software
+sudo dnf remove package_name
+
+# Search packages
+dnf search python</code>
+                    </div>
+                </div>
+                
+                <div class="command-card">
+                    <h4>📱 Universal (Snap)</h4>
+                    <div class="bash-code">
+                        <code># Install snap packages
+sudo snap install code
+sudo snap install discord
+
+# List installed snaps
+snap list
+
+# Update snaps
+sudo snap refresh</code>
+                    </div>
+                </div>
+                
+                <div class="command-card">
+                    <h4>🌐 Network Commands</h4>
+                    <div class="bash-code">
+                        <code># Test connectivity
+ping google.com
+ping -c 4 google.com
+
+# Download files
+wget https://example.com/file.txt
+curl -O https://example.com/file.txt
+
+# Network info
+ifconfig
+ip addr show</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="project-box">
+            <h2>🛠️ Hands-On Project: Personal File Organization System</h2>
+            <p>Follow this step-by-step project to practice Linux commands:</p>
+            
+            <h4>Step 1: Set up your workspace</h4>
+            <div class="terminal">
+                <div class="terminal-header">Project Setup</div>
+                <code>cd ~
+mkdir linux_practice
+cd linux_practice
+mkdir {documents,scripts,backups,logs}
+ls -la</code>
+            </div>
+
+            <h4>Step 2: Create sample files</h4>
+            <div class="terminal">
+                <div class="terminal-header">File Creation</div>
+                <code># Create some sample files
+echo "This is my Linux learning journey" > documents/learning_log.txt
+echo "#!/bin/bash" > scripts/hello.sh
+echo "echo 'Hello from my script!'" >> scripts/hello.sh
+date >> logs/activity.log</code>
+            </div>
+
+            <h4>Step 3: Practice operations</h4>
+            <div class="terminal">
+                <div class="terminal-header">File Operations</div>
+                <code># Copy your learning log
+cp documents/learning_log.txt backups/
+ls backups/
+
+# Make script executable and run it
+chmod +x scripts/hello.sh
+./scripts/hello.sh</code>
+            </div>
+
+            <h4>Step 4: Search and organize</h4>
+            <div class="terminal">
+                <div class="terminal-header">Search & Organize</div>
+                <code># Find all .txt files
+find . -name "*.txt"
+
+# Search for content
+grep -r "Linux" .
+
+# Create a summary
+echo "Files created: $(find . -type f | wc -l)" >> logs/summary.txt
+echo "Directories created: $(find . -type d | wc -l)" >> logs/summary.txt
+cat logs/summary.txt</code>
+            </div>
+        </div>
+
+        <div class="challenge-box">
+            <h3>🎯 Practice Challenge: Create a Backup Script</h3>
+            <p><strong>Your mission:</strong></p>
+            <ol>
+                <li>Create a new file called <code>backup.sh</code></li>
+                <li>Make it executable</li>
+                <li>Have it copy all .txt files to a <code>daily_backup</code> folder</li>
+                <li>Add a timestamp to the backup folder name</li>
+            </ol>
+            
+            <details>
+                <summary style="cursor: pointer; margin: 1rem 0;">💡 Click here for the solution (try it yourself first!)</summary>
+                <div class="bash-code" style="margin-top: 1rem;">
+                    <code>#!/bin/bash
+backup_dir="daily_backup_$(date +%Y%m%d)"
+mkdir -p "$backup_dir"
+cp *.txt "$backup_dir"/ 2>/dev/null || echo "No .txt files found"
+echo "Backup completed to $backup_dir"
+
+# To use:
+# 1. Save this as backup.sh
+# 2. chmod +x backup.sh
+# 3. ./backup.sh</code>
+                </div>
+            </details>
+        </div>
+
+        <div class="section">
+            <h2>Advanced Linux Concepts</h2>
+            
+            <div class="command-grid">
+                <div class="command-card">
+                    <h4>🔐 Permissions & Security</h4>
+                    <div class="bash-code">
+                        <code># Change file permissions
+chmod 755 script.sh   # rwxr-xr-x
+chmod +x script.sh    # Add execute
+
+# Change ownership
+sudo chown user:group file.txt
+
+# View permissions
+ls -la</code>
+                    </div>
+                </div>
+                
+                <div class="command-card">
+                    <h4>⚙️ Process Management</h4>
+                    <div class="bash-code">
+                        <code># View processes
+ps aux | grep python
+
+# Kill processes
+kill PID
+killall process_name
+
+# Run in background
+command &
+nohup command &</code>
+                    </div>
+                </div>
+                
+                <div class="command-card">
+                    <h4>🔧 System Services</h4>
+                    <div class="bash-code">
+                        <code># Manage services (systemd)
+sudo systemctl start service
+sudo systemctl stop service
+sudo systemctl status service
+sudo systemctl enable service</code>
+                    </div>
+                </div>
+                
+                <div class="command-card">
+                    <h4>📊 Monitoring & Logs</h4>
+                    <div class="bash-code">
+                        <code># View system logs
+journalctl -f
+tail -f /var/log/syslog
+
+# System monitoring
+htop
+iotop    # I/O monitoring
+nethogs  # Network monitoring</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <h3>🎯 Next Steps in Your Linux Journey</h3>
+            <p>You've learned the fundamentals! Continue practicing these commands daily. Try setting up a Linux virtual machine or dual-boot system to get hands-on experience. Join Linux communities and don't be afraid to experiment!</p>
+            
+            <div class="terminal">
+                <div class="terminal-header">Keep Learning</div>
+                <code># Explore these topics next:
+# - Shell scripting with bash
+# - Text editors: vim, nano, emacs
+# - Network configuration and firewalls
+# - Package compilation from source
+# - Container technologies (Docker)
+# - System administration and automation
+
+echo "Happy Linux journey! 🐧"</code>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

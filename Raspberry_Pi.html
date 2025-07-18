@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raspberry Pi: Unleashing Creativity with Miniature Computing</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 50%, #e91e63 100%);
+            background-attachment: fixed;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Main container - Match Linux page layout style */
+        .main-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: 100vh;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: clamp(1.1rem, 3vw, 1.5rem);
+            color: #fff;
+            opacity: 0.9;
+        }
+
+        .content-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #333;
+        }
+
+        .content-section h2 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, #8e44ad, #e91e63);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .content-section h3 {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            margin: 2rem 0 1.5rem 0;
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        .content-section p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        /* Feature grid - spans full width */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .feature-item {
+            background: rgba(233, 30, 99, 0.1);
+            border-radius: 15px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            border: 2px solid rgba(233, 30, 99, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-item h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #2d3748;
+        }
+
+        /* Highlight boxes */
+        .highlight-box {
+            background: linear-gradient(135deg, #8e44ad, #9b59b6);
+            border-radius: 20px;
+            padding: 3rem;
+            color: white;
+            margin: 2rem 0;
+            box-shadow: 0 15px 35px rgba(142, 68, 173, 0.3);
+        }
+
+        .highlight-box h3 {
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .highlight-box p {
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        /* Model grid - full width responsive */
+        .model-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .model-card {
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+            border-radius: 20px;
+            padding: 2.5rem;
+            color: white;
+            box-shadow: 0 15px 35px rgba(78, 205, 196, 0.3);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .model-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .model-card h4 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .model-card p {
+            color: white;
+            margin: 0.5rem 0;
+        }
+
+        /* Command grid - full width */
+        .command-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .command-card {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            border-radius: 20px;
+            padding: 2rem;
+            color: white;
+            box-shadow: 0 15px 35px rgba(255, 107, 107, 0.3);
+        }
+
+        .command-card h4 {
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+        }
+
+        /* Terminal styling */
+        .terminal {
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            position: relative;
+            overflow-x: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            border-left: 4px solid #e91e63;
+        }
+
+        .terminal::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ff5f56;
+            box-shadow: 20px 0 #ffbd2e, 40px 0 #27ca3f;
+        }
+
+        .terminal-header {
+            color: #8b949e;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            padding-left: 70px;
+            font-family: 'Monaco', 'Menlo', monospace;
+        }
+
+        .terminal code {
+            color: #e6edf3;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            display: block;
+            white-space: pre-wrap;
+        }
+
+        /* Python code blocks */
+        .python-code {
+            background: #0d1117;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            position: relative;
+            overflow-x: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            border-left: 4px solid #3776ab;
+        }
+
+        .python-code::before {
+            content: 'Python';
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: #3776ab;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .python-code code {
+            color: #e6edf3;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            display: block;
+            white-space: pre-wrap;
+        }
+
+        /* Tutorial steps */
+        .tutorial-container {
+            counter-reset: step-counter;
+        }
+
+        .tutorial-step {
+            background: linear-gradient(135deg, #e91e63, #ad1457);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 2rem 0;
+            color: white;
+            box-shadow: 0 15px 35px rgba(233, 30, 99, 0.3);
+        }
+
+        .tutorial-step h4 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .tutorial-step h4::before {
+            content: counter(step-counter);
+            counter-increment: step-counter;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.5rem;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .tutorial-step p {
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Project showcase */
+        .project-showcase {
+            background: linear-gradient(135deg, #ff9a9e, #fecfef);
+            border-radius: 20px;
+            padding: 3rem;
+            color: #333;
+            margin: 3rem 0;
+            box-shadow: 0 15px 35px rgba(255, 154, 158, 0.3);
+        }
+
+        .project-showcase h2 {
+            color: #333;
+            margin-bottom: 2rem;
+        }
+
+        .project-showcase h4 {
+            color: #333;
+            margin: 2rem 0 1rem 0;
+            font-size: 1.3rem;
+        }
+
+        .project-showcase p {
+            color: #333;
+        }
+
+        /* Challenge box */
+        .challenge-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 20px;
+            padding: 3rem;
+            color: white;
+            margin: 3rem 0;
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+        }
+
+        .challenge-box h3 {
+            color: white;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        .challenge-box p {
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        /* Hardware box */
+        .hardware-box {
+            background: linear-gradient(135deg, #ffecd2, #fcb69f);
+            border-radius: 20px;
+            padding: 3rem;
+            color: #333;
+            margin: 2rem 0;
+            box-shadow: 0 15px 35px rgba(252, 182, 159, 0.3);
+        }
+
+        .hardware-box h3 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .hardware-box ul {
+            color: #333;
+            padding-left: 2rem;
+        }
+
+        .hardware-box li {
+            margin: 0.8rem 0;
+            font-size: 1.1rem;
+        }
+
+        /* Wiring diagram */
+        .wiring-diagram {
+            background: #2d3748;
+            color: #e2e8f0;
+            border-radius: 15px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+            border-left: 6px solid #ff6b6b;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            line-height: 1.8;
+        }
+
+        /* Responsive design */
+        @media (max-width: 1200px) {
+            .command-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-wrapper {
+                padding: 0.5rem;
+            }
+            
+            .hero {
+                padding: 3rem 1.5rem;
+            }
+            
+            .content-section {
+                padding: 2rem;
+            }
+            
+            .command-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .model-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .features-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+            
+            .tutorial-step {
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-wrapper {
+                padding: 0.25rem;
+            }
+            
+            .hero {
+                padding: 2rem 1rem;
+            }
+            
+            .content-section {
+                padding: 1.5rem;
+            }
+            
+            .terminal, .python-code {
+                padding: 1.5rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tutorial-step h4::before {
+                width: 35px;
+                height: 35px;
+                margin-right: 1rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-wrapper">
+        <div class="hero">
+            <h1>🍓 Raspberry Pi</h1>
+            <p>Unleashing Creativity with Miniature Computing</p>
+        </div>
+
+        <div class="content-section">
+            <h2>What is Raspberry Pi?</h2>
+            <p>The Raspberry Pi has revolutionized the world of single-board computers, making powerful computing accessible to makers, educators, and enthusiasts worldwide. This credit-card-sized computer packs remarkable capabilities into an affordable package.</p>
+            
+            <div class="features-grid">
+                <div class="feature-item">
+                    <h4>💰 Affordable</h4>
+                    <p>Starting from just $35</p>
+                </div>
+                <div class="feature-item">
+                    <h4>🔌 GPIO Pins</h4>
+                    <p>40 pins for hardware interfacing</p>
+                </div>
+                <div class="feature-item">
+                    <h4>🌐 Connected</h4>
+                    <p>Wi-Fi, Bluetooth, Ethernet</p>
+                </div>
+                <div class="feature-item">
+                    <h4>🐧 Linux Powered</h4>
+                    <p>Runs full Linux operating system</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <h3>🚀 Start Building Hardware Projects Today!</h3>
+            <p>This guide includes everything you need to get started with Raspberry Pi programming and hardware projects. Every command and code example is ready to try immediately!</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Raspberry Pi Models</h2>
+            <p>Choose the right Pi for your project:</p>
+            
+            <div class="model-grid">
+                <div class="model-card">
+                    <h4>🏆 Raspberry Pi 4</h4>
+                    <p><strong>2-8GB RAM</strong></p>
+                    <p>Desktop computing, media streaming, complex projects</p>
+                </div>
+                <div class="model-card">
+                    <h4>⚡ Raspberry Pi Zero</h4>
+                    <p><strong>512MB RAM</strong></p>
+                    <p>Ultra-compact, wearables, IoT sensors</p>
+                </div>
+                <div class="model-card">
+                    <h4>🏭 Compute Module</h4>
+                    <p><strong>Industrial</strong></p>
+                    <p>Custom carrier boards, commercial products</p>
+                </div>
+                <div class="model-card">
+                    <h4>🎯 Pico</h4>
+                    <p><strong>Microcontroller</strong></p>
+                    <p>Real-time projects, embedded systems</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Essential Raspberry Pi Commands</h2>
+            
+            <div class="command-grid">
+                <div class="command-card">
+                    <h4>🔧 System Information</h4>
+                    <div class="terminal">
+                        <div class="terminal-header">Raspberry Pi Terminal</div>
+                        <code># Check system info
+cat /proc/cpuinfo
+cat /proc/meminfo
+
+# Monitor temperature
+vcgencmd measure_temp
+
+# Check for throttling
+vcgencmd get_throttled
+
+# System configuration
+sudo raspi-config</code>
+                    </div>
+                </div>
+                
+                <div class="command-card">
+                    <h4>📷 Camera & Media</h4>
+                    <div class="terminal">
+                        <div class="terminal-header">Camera Commands</div>
+                        <code># Take a photo
+raspistill -o photo.jpg
+
+# Record video (10 seconds)
+raspivid -o video.h264 -t 10000
+
+# Preview camera
+raspistill -t 0 -k</code>
+                    </div>
+                </div>
+                
+                <div class="command-card">
+                    <h4>🔌 GPIO Control</h4>
+                    <div class="terminal">
+                        <div class="terminal-header">Hardware Control</div>
+                        <code># Show GPIO layout
+pinout
+
+# Control GPIO (command line)
+echo "18" > /sys/class/gpio/export
+echo "out" > /sys/class/gpio/gpio18/direction
+echo "1" > /sys/class/gpio/gpio18/value</code>
+                    </div>
+                </div>
+                
+                <div class="command-card">
+                    <h4>📦 Python Libraries</h4>
+                    <div class="terminal">
+                        <div class="terminal-header">Install Libraries</div>
+                        <code># Essential GPIO libraries
+pip3 install RPi.GPIO
+pip3 install gpiozero
+
+# Camera and sensors
+pip3 install picamera
+pip3 install sense-hat
+pip3 install adafruit-circuitpython-dht</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tutorial-container">
+            <div class="content-section">
+                <h2>🎯 Hands-On Hardware Tutorial: Your First LED Project</h2>
+                
+                <div class="hardware-box">
+                    <h3>🛠️ What You'll Need</h3>
+                    <ul>
+                        <li>Raspberry Pi (any model with GPIO)</li>
+                        <li>LED (any color)</li>
+                        <li>220-ohm resistor</li>
+                        <li>Breadboard and jumper wires</li>
+                    </ul>
+                </div>
+
+                <div class="wiring-diagram">
+<strong>🔌 Wiring Diagram:</strong>
+Raspberry Pi Pin 18 (GPIO) → 220Ω Resistor → LED Long Leg (+)
+LED Short Leg (-) → Raspberry Pi Pin 6 (Ground)
+
+     Pi GPIO 18 ──────[ 220Ω ]──────┐
+                                     │
+                                   ┌─▼─┐  LED
+                                   │ + │
+                                   │ - │
+                                   └─┬─┘
+                                     │
+     Pi Ground ──────────────────────┘
+                </div>
+
+                <div class="tutorial-step">
+                    <h4>Set Up Your Environment</h4>
+                    <div class="terminal">
+                        <div class="terminal-header">Initial Setup</div>
+                        <code># Update your system
+sudo apt update && sudo apt upgrade -y
+
+# Install required packages
+sudo apt install python3-pip python3-rpi.gpio
+
+# Create project directory
+mkdir ~/led_project
+cd ~/led_project</code>
+                    </div>
+                </div>
+
+                <div class="tutorial-step">
+                    <h4>Test GPIO with Command Line</h4>
+                    <p>First, let's test the LED using command line controls:</p>
+                    <div class="terminal">
+                        <div class="terminal-header">GPIO Command Line Test</div>
+                        <code># Enable GPIO 18 as output
+echo "18" > /sys/class/gpio/export
+echo "out" > /sys/class/gpio/gpio18/direction
+
+# Turn LED on
+echo "1" > /sys/class/gpio/gpio18/value
+sleep 2
+
+# Turn LED off
+echo "0" > /sys/class/gpio/gpio18/value
+
+# Clean up
+echo "18" > /sys/class/gpio/unexport</code>
+                    </div>
+                </div>
+
+                <div class="tutorial-step">
+                    <h4>Create Your First Hardware Python Script</h4>
+                    <p>Create a file called <code>blink_led.py</code>:</p>
+                    <div class="python-code">
+                        <code>import RPi.GPIO as GPIO
+import time
+
+# Set up GPIO
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(18, GPIO.OUT)
+
+try:
+    # Blink LED 10 times
+    for i in range(10):
+        GPIO.output(18, GPIO.HIGH)  # Turn on
+        print(f"LED ON - Blink {i+1}")
+        time.sleep(0.5)
+        
+        GPIO.output(18, GPIO.LOW)   # Turn off
+        print(f"LED OFF - Blink {i+1}")
+        time.sleep(0.5)
+        
+finally:
+    GPIO.cleanup()  # Always clean up GPIO settings
+    print("GPIO cleanup complete!")</code>
+                    </div>
+                    
+                    <div class="terminal">
+                        <div class="terminal-header">Run Your Script</div>
+                        <code>python3 blink_led.py</code>
+                    </div>
+                </div>
+
+                <div class="tutorial-step">
+                    <h4>Advanced: Button-Controlled LED</h4>
+                    <p>Add a button to control your LED interactively:</p>
+                    
+                    <div class="wiring-diagram">
+<strong>🔘 Button Wiring (add to existing LED circuit):</strong>
+Raspberry Pi Pin 7 (GPIO4) ── Button ── Raspberry Pi 3.3V (Pin 1)
+Raspberry Pi Pin 7 (GPIO4) ── 10kΩ Resistor ── Ground
+                    </div>
+                    
+                    <div class="python-code">
+                        <code>import RPi.GPIO as GPIO
+import time
+
+# Pin setup
+LED_PIN = 18
+BUTTON_PIN = 4
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(LED_PIN, GPIO.OUT)
+GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+
+print("Press button to toggle LED (Ctrl+C to exit)")
+
+led_state = False
+
+try:
+    while True:
+        if GPIO.input(BUTTON_PIN) == GPIO.HIGH:
+            # Button pressed - toggle LED
+            led_state = not led_state
+            GPIO.output(LED_PIN, led_state)
+            
+            if led_state:
+                print("💡 LED ON!")
+            else:
+                print("🔴 LED OFF!")
+            
+            # Wait for button release
+            while GPIO.input(BUTTON_PIN) == GPIO.HIGH:
+                time.sleep(0.01)
+            
+            time.sleep(0.1)  # Debounce delay
+        
+        time.sleep(0.01)  # Small delay to prevent excessive CPU usage
+        
+except KeyboardInterrupt:
+    print("\nExiting...")
+finally:
+    GPIO.cleanup()</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="project-showcase">
+            <h2>🌡️ Advanced Project: Temperature Web Server</h2>
+            <p>Build a web-based temperature monitoring system:</p>
+            
+            <h4>Step 1: Install Required Libraries</h4>
+            <div class="terminal">
+                <div class="terminal-header">Library Installation</div>
+                <code>pip3 install flask w1thermsensor</code>
+            </div>
+
+            <h4>Step 2: Enable 1-Wire Interface</h4>
+            <div class="terminal">
+                <div class="terminal-header">Enable Sensor Interface</div>
+                <code>sudo raspi-config
+# Navigate to: Interface Options > 1-Wire > Enable
+sudo reboot</code>
+            </div>
+
+            <h4>Step 3: Create Temperature Web Server</h4>
+            <p>Create <code>temp_server.py</code>:</p>
+            <div class="python-code">
+                <code>from flask import Flask, render_template_string
+from w1thermsensor import W1ThermSensor
+import time
+import threading
+from datetime import datetime
+
+app = Flask(__name__)
+current_temp = 0
+last_update = ""
+
+def read_temperature():
+    global current_temp, last_update
+    try:
+        sensor = W1ThermSensor()
+        while True:
+            current_temp = round(sensor.get_temperature(), 1)
+            last_update = datetime.now().strftime("%H:%M:%S")
+            time.sleep(10)  # Read every 10 seconds
+    except:
+        current_temp = "Sensor not found"
+        last_update = "Error"
+
+# Start temperature reading in background
+temp_thread = threading.Thread(target=read_temperature)
+temp_thread.daemon = True
+temp_thread.start()
+
+@app.route('/')
+def index():
+    html = '''
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>🌡️ Raspberry Pi Temperature Monitor</title>
+        <style>
+            body { 
+                font-family: Arial, sans-serif; 
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                margin: 0; 
+                padding: 20px;
+                color: white;
+            }
+            .container { 
+                max-width: 600px; 
+                margin: 0 auto; 
+                text-align: center;
+                background: rgba(255,255,255,0.1);
+                border-radius: 20px;
+                padding: 40px;
+                backdrop-filter: blur(10px);
+            }
+            .temp { 
+                font-size: 4rem; 
+                margin: 20px 0;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            }
+            .last-update {
+                opacity: 0.8;
+                margin-top: 20px;
+            }
+        </style>
+        <meta http-equiv="refresh" content="10">
+    </head>
+    <body>
+        <div class="container">
+            <h1>🌡️ Temperature Monitor</h1>
+            <div class="temp">{{ temp }}°C</div>
+            <p>Last Update: {{ update_time }}</p>
+            <p class="last-update">Updates every 10 seconds</p>
+        </div>
+    </body>
+    </html>
+    '''
+    return render_template_string(html, temp=current_temp, update_time=last_update)
+
+if __name__ == '__main__':
+    print("🌐 Starting temperature web server...")
+    print("📱 Visit http://your-pi-ip:5000 in your browser")
+    app.run(host='0.0.0.0', port=5000)</code>
+            </div>
+
+            <h4>Step 4: Run Your Web Server</h4>
+            <div class="terminal">
+                <div class="terminal-header">Start Web Server</div>
+                <code>python3 temp_server.py
+
+# Visit http://your-pi-ip:5000 in your browser!
+# To find your Pi's IP: hostname -I</code>
+            </div>
+        </div>
+
+        <div class="challenge-box">
+            <h3>🎯 Challenge Projects</h3>
+            <p>Ready for more? Try these exciting projects:</p>
+            
+            <div class="command-grid">
+                <div class="command-card" style="background: linear-gradient(135deg, #4ecdc4, #44a08d);">
+                    <h4>🚶 Motion-Activated Light</h4>
+                    <p>Use PIR sensor to detect movement and automatically turn on LEDs</p>
+                    <div class="python-code">
+                        <code>import RPi.GPIO as GPIO
+import time
+
+PIR_PIN = 7
+LED_PIN = 18
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(PIR_PIN, GPIO.IN)
+GPIO.setup(LED_PIN, GPIO.OUT)
+
+try:
+    print("🔍 Motion detector ready!")
+    while True:
+        if GPIO.input(PIR_PIN):
+            GPIO.output(LED_PIN, GPIO.HIGH)
+            print("🚶 Motion detected! LED ON")
+            time.sleep(2)
+        else:
+            GPIO.output(LED_PIN, GPIO.LOW)
+        time.sleep(0.1)
+except KeyboardInterrupt:
+    GPIO.cleanup()</code>
+                    </div>
+                </div>
+                
+                <div class="command-card" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                    <h4>📊 Data Logger</h4>
+                    <p>Record sensor data to CSV files for analysis</p>
+                    <div class="python-code">
+                        <code>import csv
+import time
+from datetime import datetime
+
+def log_data(temperature, humidity):
+    with open('sensor_data.csv', 'a', newline='') as file:
+        writer = csv.writer(file)
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        writer.writerow([timestamp, temperature, humidity])
+        print(f"📝 Logged: {timestamp}, {temperature}°C, {humidity}%")
+
+# Example usage
+while True:
+    # Replace with actual sensor readings
+    temp = 23.5
+    humidity = 45.2
+    log_data(temp, humidity)
+    time.sleep(60)  # Log every minute</code>
+                    </div>
+                </div>
+                
+                <div class="command-card" style="background: linear-gradient(135deg, #ff6b6b, #ee5a52);">
+                    <h4>🎮 Remote Control</h4>
+                    <p>Control your Pi remotely via web interface</p>
+                    <div class="python-code">
+                        <code>from flask import Flask, request, jsonify
+import RPi.GPIO as GPIO
+
+app = Flask(__name__)
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(18, GPIO.OUT)
+
+@app.route('/led/<state>')
+def control_led(state):
+    if state == 'on':
+        GPIO.output(18, GPIO.HIGH)
+        return jsonify({"status": "LED ON"})
+    elif state == 'off':
+        GPIO.output(18, GPIO.LOW)
+        return jsonify({"status": "LED OFF"})
+    
+app.run(host='0.0.0.0', port=5000)</code>
+                    </div>
+                </div>
+                
+                <div class="command-card" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                    <h4>🌤️ Weather Station</h4>
+                    <p>Combine multiple sensors for complete weather monitoring</p>
+                    <div class="python-code">
+                        <code>import time
+import board
+import adafruit_dht
+
+# Initialize sensors
+dht = adafruit_dht.DHT22(board.D4)
+
+while True:
+    try:
+        temperature = dht.temperature
+        humidity = dht.humidity
+        
+        print(f"🌡️  Temperature: {temperature:.1f}°C")
+        print(f"💧 Humidity: {humidity:.1f}%")
+        print("-" * 30)
+        
+    except RuntimeError as error:
+        print(f"Reading error: {error.args[0]}")
+    
+    time.sleep(10)</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Advanced Raspberry Pi Techniques</h2>
+            
+            <div class="command-grid">
+                <div class="command-card">
+                    <h4>🔧 Performance Optimization</h4>
+                    <div class="terminal">
+                        <div class="terminal-header">System Optimization</div>
+                        <code># Check CPU frequency
+cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq
+
+# Monitor system performance
+htop
+
+# Check memory usage
+free -h
+
+# Monitor temperature
+watch -n 1 vcgencmd measure_temp</code>
+                    </div>
+                </div>
+                
+                <div class="command-card">
+                    <h4>🌐 Networking Projects</h4>
+                    <div class="terminal">
+                        <div class="terminal-header">Network Commands</div>
+                        <code># Set up access point
+sudo apt install hostapd dnsmasq
+
+# Check network interfaces
+ifconfig
+
+# Scan for Wi-Fi networks
+sudo iwlist wlan0 scan | grep ESSID
+
+# Static IP configuration
+sudo nano /etc/dhcpcd.conf</code>
+                    </div>
+                </div>
+                
+                <div class="command-card">
+                    <h4>📦 Automation & Services</h4>
+                    <div class="terminal">
+                        <div class="terminal-header">System Services</div>
+                        <code># Create a service for your project
+sudo nano /etc/systemd/system/myproject.service
+
+# Enable service on boot
+sudo systemctl enable myproject.service
+
+# Start/stop services
+sudo systemctl start myproject.service
+sudo systemctl status myproject.service</code>
+                    </div>
+                </div>
+                
+                <div class="command-card">
+                    <h4>🔒 Security & Monitoring</h4>
+                    <div class="terminal">
+                        <div class="terminal-header">Security Setup</div>
+                        <code># Enable SSH key authentication
+ssh-keygen -t rsa -b 4096
+
+# Disable password login
+sudo nano /etc/ssh/sshd_config
+
+# Set up firewall
+sudo ufw enable
+sudo ufw allow ssh
+
+# Monitor system logs
+journalctl -f</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <h3>🎯 Your Raspberry Pi Journey Continues</h3>
+            <p>You've learned the fundamentals of Raspberry Pi programming and hardware interfacing! The possibilities are endless - from home automation to robotics, IoT projects to educational tools. Keep experimenting and building!</p>
+            
+            <div class="terminal">
+                <div class="terminal-header">Next Steps</div>
+                <code># Explore these advanced topics:
+# - Camera projects and computer vision
+# - IoT integration with cloud services  
+# - Robotics with motors and servos
+# - Machine learning on the edge
+# - Industrial automation projects
+# - Solar-powered remote sensors
+
+echo "Happy making! 🍓⚡"</code>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
