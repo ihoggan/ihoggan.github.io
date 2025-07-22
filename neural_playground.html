@@ -3,728 +3,657 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>S.M.A.R.T - Neural Network Learning Playground</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Portfolio</title>
     <style>
-        .gradient-bg { background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%); }
-        .animate-bounce { animation: bounce 1s infinite; }
-        @keyframes bounce {
-            0%, 100% { transform: translateY(-25%); }
-            50% { transform: none; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 1s ease;
+        }
+
+        .logo {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient 3s ease infinite;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-weight: 300;
+            letter-spacing: 3px;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-bottom: 3rem;
+        }
+
+        .intro-section {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeIn 1.2s ease;
+        }
+
+        .intro-text {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            gap: 3rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .project-featured {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 3rem;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            transition: all 0.5s ease;
+            animation: slideInUp 1s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-featured::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57);
+            background-size: 300% 300%;
+            border-radius: 25px;
+            z-index: -1;
+            animation: gradient 3s ease infinite;
+        }
+
+        .project-featured:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
+        }
+
+        .project-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            gap: 1rem;
+        }
+
+        .project-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .project-title {
+            flex: 1;
+        }
+
+        .project-name {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .project-tagline {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            font-style: italic;
+        }
+
+        .project-description {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .project-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .feature-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #4ecdc4;
+        }
+
+        .feature-desc {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        .project-actions {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .action-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            color: white;
+            text-decoration: none;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-button.primary {
+            background: linear-gradient(135deg, #4ecdc4, #45b7d1);
+            font-size: 1.2rem;
+            padding: 1.2rem 3rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .action-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .action-button:hover::before {
+            left: 100%;
+        }
+
+        .action-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .coming-soon {
+            text-align: center;
+            padding: 3rem;
+            animation: fadeIn 1.5s ease;
+        }
+
+        .coming-soon h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.7;
+        }
+
+        .coming-soon p {
+            opacity: 0.6;
+            font-style: italic;
+        }
+
+        .navigation {
+            text-align: center;
+            animation: fadeInUp 1s ease;
+        }
+
+        .home-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            color: white;
+            text-decoration: none;
+            padding: 1rem 3rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .home-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .home-button:hover::before {
+            left: 100%;
+        }
+
+        .home-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .project-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .project-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .logo {
+                font-size: 3rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+
+            .project-featured {
+                padding: 2rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="w-full max-w-7xl mx-auto p-6 gradient-bg min-h-screen">
-        <!-- Header -->
-        <div class="mb-8 text-center">
-            <div class="flex items-center justify-center gap-3 mb-4">
-                <div class="text-blue-600 text-4xl">🧠</div>
-                <h1 class="text-3xl font-bold text-gray-800">S.M.A.R.T Neural Network Playground</h1>
-            </div>
-            <p class="text-lg text-gray-600 max-w-3xl mx-auto mb-4">
-                <strong>See Machine Adaptive Reasoning Training</strong> - Watch neural networks learn in real-time!
-            </p>
-            
-            <!-- Project Links -->
-            <div class="flex flex-wrap items-center justify-center gap-4 mb-6">
-                <a href="https://github.com/ihoggan/S.M.A.R.T." target="_blank"
-                   class="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-900 text-white rounded-lg font-semibold transition-all">
-                    📂 GitHub Repository ↗️
-                </a>
-                <a href="./smart-see-machine-adaptive-reasoning-training.ipynb" download
-                   class="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-all">
-                    📓 Download Notebook ⬇️
-                </a>
-                <a href="https://colab.research.google.com/github/ihoggan/S.M.A.R.T./blob/main/smart-see-machine-adaptive-reasoning-training.ipynb" target="_blank"
-                   class="flex items-center gap-2 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold transition-all">
-                    🚀 Open with Colab ↗️
-                </a>
-                <a href="https://github.com/sponsors/ihoggan" target="_blank"
-                   class="flex items-center gap-2 px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white rounded-lg font-semibold transition-all">
-                    ❤️ Support Project ↗️
-                </a>
-            </div>
-        </div>
+    <div class="stars" id="stars"></div>
+    
+    <div class="container">
+        <header class="header">
+            <h1 class="logo">Portfolio</h1>
+            <p class="subtitle">PORTFOLIO SHOWCASE</p>
+        </header>
 
-        <!-- Instructions Panel -->
-        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl shadow-lg p-8 mb-8 border-l-4 border-blue-500">
-            <div class="flex items-start gap-4">
-                <div class="text-3xl">🎓</div>
-                <div class="flex-1">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-4">Welcome to Neural Network Training!</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <h3 class="text-lg font-semibold text-blue-700 mb-3">🤖 What You're Seeing</h3>
-                            <ul class="space-y-2 text-gray-700">
-                                <li class="flex items-start gap-2">
-                                    <span class="text-blue-500 font-bold">•</span>
-                                    <span>A single neuron learning to predict house prices from square footage</span>
-                                </li>
-                                <li class="flex items-start gap-2">
-                                    <span class="text-green-500 font-bold">•</span>
-                                    <span>Real gradient descent happening in your browser</span>
-                                </li>
-                                <li class="flex items-start gap-2">
-                                    <span class="text-purple-500 font-bold">•</span>
-                                    <span>The neuron discovers the pattern: <strong>Price = $200/sqft × sqft + $50k</strong></span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-semibold text-green-700 mb-3">🚀 How to Use</h3>
-                            <ol class="space-y-2 text-gray-700">
-                                <li class="flex items-start gap-2">
-                                    <span class="bg-green-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">1</span>
-                                    <span>Click <strong>"Reset Neuron"</strong> then <strong>"Start Training"</strong> to watch the neural network learn</span>
-                                </li>
-                                <li class="flex items-start gap-2">
-                                    <span class="bg-blue-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">2</span>
-                                    <span>Watch accuracy climb and parameters converge to target values</span>
-                                </li>
-                                <li class="flex items-start gap-2">
-                                    <span class="bg-purple-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">3</span>
-                                    <span>Experiment with different <strong>learning rates</strong> to see what happens!</span>
-                                </li>
-                            </ol>
-                        </div>
-                    </div>
-                    <div class="mt-6 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-                        <div class="flex items-center gap-2 mb-2">
-                            <span class="text-xl">💡</span>
-                            <span class="font-semibold text-yellow-800">Pro Tip:</span>
-                        </div>
-                        <p class="text-yellow-700 text-sm">
-                            Try increasing the learning rate to see what happens when neural networks "explode"! 
-                            This demonstrates why finding the right learning rate is crucial in AI training.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Neural Network Workflow Visualization -->
-        <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">🧠 How This Neural Network Works</h2>
-            
-            <div class="relative">
-                <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-300 hidden lg:block"></div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-4 lg:gap-2">
-                    
-                    <div class="relative bg-blue-50 rounded-lg p-4 border-2 border-blue-200">
-                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">1</div>
-                        <div class="text-center mt-2">
-                            <div class="text-2xl mb-2">📏</div>
-                            <div class="font-bold text-blue-700 text-sm">Input Feature</div>
-                            <div class="text-xs text-gray-600 mt-1">Square Feet</div>
-                            <div class="text-lg font-bold text-blue-600 mt-1" id="workflow-input">1500</div>
-                        </div>
-                    </div>
-
-                    <div class="relative bg-green-50 rounded-lg p-4 border-2 border-green-200">
-                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">2</div>
-                        <div class="text-center mt-2">
-                            <div class="text-2xl mb-2">⚖️</div>
-                            <div class="font-bold text-green-700 text-sm">Weight (W)</div>
-                            <div class="text-xs text-gray-600 mt-1">Price per SqFt</div>
-                            <div class="text-lg font-bold text-green-600 mt-1" id="workflow-weight">$100</div>
-                        </div>
-                    </div>
-
-                    <div class="relative flex items-center justify-center">
-                        <div class="bg-gray-100 rounded-full w-10 h-10 flex items-center justify-center text-xl font-bold text-gray-700">×</div>
-                    </div>
-
-                    <div class="relative bg-purple-50 rounded-lg p-4 border-2 border-purple-200">
-                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-purple-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">4</div>
-                        <div class="text-center mt-2">
-                            <div class="text-2xl mb-2">➕</div>
-                            <div class="font-bold text-purple-700 text-sm">Bias (B)</div>
-                            <div class="text-xs text-gray-600 mt-1">Base Price</div>
-                            <div class="text-lg font-bold text-purple-600 mt-1" id="workflow-bias">$50k</div>
-                        </div>
-                    </div>
-                    
-                    <div class="relative flex items-center justify-center">
-                        <div class="bg-gray-100 rounded-full w-10 h-10 flex items-center justify-center text-xl font-bold text-gray-700">+</div>
-                    </div>
-
-                    <div class="relative bg-orange-50 rounded-lg p-4 border-2 border-orange-200">
-                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-orange-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">6</div>
-                        <div class="text-center mt-2">
-                            <div class="text-2xl mb-2">💲</div>
-                            <div class="font-bold text-orange-700 text-sm">Prediction (Y')</div>
-                            <div class="text-xs text-gray-600 mt-1">Estimated Price</div>
-                            <div class="text-lg font-bold text-orange-600 mt-1" id="workflow-prediction">$200k</div>
-                        </div>
-                    </div>
-                    
-                    <div class="relative bg-red-50 rounded-lg p-4 border-2 border-red-200">
-                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">7</div>
-                        <div class="text-center mt-2">
-                            <div class="text-2xl mb-2">📉</div>
-                            <div class="font-bold text-red-700 text-sm">Error (E)</div>
-                            <div class="text-xs text-gray-600 mt-1">Actual - Prediction</div>
-                            <div class="text-lg font-bold text-red-600 mt-1" id="workflow-error">-$50k</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mt-8 text-center bg-gray-50 p-4 rounded-lg border border-gray-200">
-                <p class="text-xl font-semibold text-gray-700 mb-2">Formula: Y' = (Input × W) + B</p>
-                <p class="text-xl font-mono text-gray-800" id="workflow-formula">
-                    <span class="text-orange-600 font-bold">$200k</span> = 
-                    <span class="text-blue-600 font-bold">1500</span> × 
-                    <span class="text-green-600 font-bold">$100</span> + 
-                    <span class="text-purple-600 font-bold">$50k</span>
+        <main class="main-content">
+            <section class="intro-section">
+                <p class="intro-text">
+                    Explore innovative projects that combine cutting-edge technology with practical solutions. 
+                    Each project represents a commitment to excellence, user experience, and meaningful impact.
                 </p>
-            </div>
-        </div>
+            </section>
 
-        <!-- Control Panel -->
-        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <div class="flex flex-wrap items-center justify-between gap-4">
-                <div class="flex items-center gap-4">
-                    <button id="trainBtn" class="flex items-center gap-2 px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold transition-all">
-                        ▶️ Start Training
-                    </button>
-                    <button id="resetBtn" class="flex items-center gap-2 px-4 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg font-semibold transition-all">
-                        🔄 Reset Neuron
-                    </button>
-                </div>
-                
-                <div class="flex items-center gap-4">
-                    <div class="flex items-center gap-2 px-3 py-1 bg-gray-100 rounded-full">
-                        ⚙️ <label class="text-sm font-medium text-gray-700">Learning Rate:</label>
-                        <span id="rateStatus" class="font-bold text-sm text-green-600">✅ SAFE</span>
-                    </div>
-                    <select id="learningRate" class="px-3 py-1 border border-gray-300 rounded">
-                        <option value="0.0000001">0.0000001 (Safe & Stable)</option>
-                        <option value="0.000001">0.000001 (Moderate)</option>
-                        <option value="0.00001">0.00001 (Fast)</option>
-                        <option value="0.0001">0.0001 (⚠️ May Explode!)</option>
-                        <option value="0.001">0.001 (💥 Definitely Explodes!)</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <!-- Status Dashboard -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div class="bg-white rounded-xl shadow-lg p-6">
-                <div class="flex items-center gap-3 mb-2">
-                    <span>⚡</span>
-                    <h3 class="font-bold text-gray-800">Training Progress</h3>
-                </div>
-                <div id="epochValue" class="text-2xl font-bold text-blue-600">0</div>
-                <div class="text-sm text-gray-600">epochs completed</div>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-lg p-6">
-                <div class="flex items-center gap-3 mb-2">
-                    <span>📈</span>
-                    <h3 class="font-bold text-gray-800">Accuracy</h3>
-                    <div id="explosionWarning" class="hidden text-red-600 animate-bounce">💥 EXPLODING!</div>
-                </div>
-                <div id="accuracyValue" class="text-2xl font-bold text-green-600">0.0%</div>
-                <div class="text-sm text-gray-600">prediction accuracy</div>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-lg p-6">
-                <h3 class="font-bold text-gray-800 mb-2">Price per Sqft</h3>
-                <div id="priceValue" class="text-xl font-bold text-purple-600">$0</div>
-                <div class="text-xs text-gray-600">Target: $200</div>
-                <div id="priceError" class="text-xs text-red-500">Error: $0</div>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-lg p-6">
-                <h3 class="font-bold text-gray-800 mb-2">Base Price</h3>
-                <div id="baseValue" class="text-xl font-bold text-purple-600">$0k</div>
-                <div class="text-xs text-gray-600">Target: $50k</div>
-                <div id="baseError" class="text-xs text-red-500">Error: $0k</div>
-            </div>
-        </div>
-
-        <!-- Learning Progress Chart -->
-        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <h3 class="text-xl font-bold text-gray-800 mb-4">Learning Progress</h3>
-            <canvas id="learningChart" width="800" height="400" class="w-full h-64"></canvas>
-        </div>
-
-        <!-- Current Predictions -->
-        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <h3 class="text-xl font-bold text-gray-800 mb-4">Current Predictions</h3>
-            <div id="predictions" class="space-y-3">
-                <!-- Will be populated by JavaScript -->
-            </div>
-        </div>
-
-        <!-- Challenge Section -->
-        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <h3 class="text-xl font-bold text-gray-800 mb-4">🏠 The Neural Network Challenge</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <h4 class="font-bold text-green-600 mb-2">The Hidden Pattern</h4>
-                    <div class="bg-green-50 p-4 rounded-lg">
-                        <div class="font-mono text-lg text-center">
-                            <strong>House Price = $200/sqft × Square Feet + $50,000</strong>
+            <div class="portfolio-grid">
+                <article class="project-featured">
+                    <div class="project-header">
+                        <div class="project-icon">🧠</div>
+                        <div class="project-title">
+                            <h2 class="project-name">S.M.A.R.T.</h2>
+                            <p class="project-tagline">See Machine Adaptive Reasoning Training</p>
                         </div>
                     </div>
-                    <p class="text-sm text-gray-600 mt-2">
-                        This is the secret relationship our neural network must discover!
-                    </p>
-                </div>
-                
-                <div>
-                    <h4 class="font-bold text-blue-600 mb-2">Current Performance</h4>
-                    <div class="bg-blue-50 p-4 rounded-lg">
-                        <div class="text-sm">
-                            <div>Price/sqft: <strong id="currentPrice">$0</strong> (target: $200)</div>
-                            <div>Base price: <strong id="currentBase">$0k</strong> (target: $50k)</div>
-                            <div>Accuracy: <strong id="currentAccuracy">0.0%</strong></div>
+
+                    <div class="project-description">
+                        An interactive neural network playground that makes machine learning accessible and visual. 
+                        Experiment with different architectures, watch training in real-time, and understand how 
+                        artificial intelligence learns through hands-on exploration and adaptive reasoning demonstrations.
+                    </div>
+
+                    <div class="project-features">
+                        <div class="feature-card">
+                            <span class="feature-icon">🧠</span>
+                            <h4 class="feature-title">Neural Networks</h4>
+                            <p class="feature-desc">Interactive playground for exploring machine learning concepts</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">👁️</span>
+                            <h4 class="feature-title">Visual Learning</h4>
+                            <p class="feature-desc">Watch AI training processes unfold in real-time</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">⚡</span>
+                            <h4 class="feature-title">Adaptive Training</h4>
+                            <p class="feature-desc">Experiment with different architectures and parameters</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">🎯</span>
+                            <h4 class="feature-title">Reasoning Demo</h4>
+                            <p class="feature-desc">See how machines develop reasoning capabilities</p>
                         </div>
                     </div>
-                </div>
-            </div>
-            
-            <div class="mt-6 p-4 bg-yellow-50 rounded-lg">
-                <p class="text-sm text-gray-700">
-                    <strong>🎯 Your Mission:</strong> Experiment with different learning rates to help the neural network 
-                    discover the hidden relationship. Watch what happens when you use learning rates that are too high!
-                </p>
-            </div>
-        </div>
 
-        <!-- Mathematical Explanation Section -->
-        <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
-            <h3 class="text-xl font-bold text-gray-800 mb-6">Understanding the Mathematics</h3>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div>
-                    <h4 class="font-bold text-lg text-blue-600 mb-3">The Prediction Formula</h4>
-                    <div class="bg-blue-50 p-4 rounded-lg font-mono text-sm">
-                        predicted_price = <br>
-                        &nbsp;&nbsp;price_per_sqft × square_feet + <br>
-                        &nbsp;&nbsp;base_neighborhood_price
+                    <div class="project-actions">
+                        <a href="neural_playground.html" class="action-button primary">
+                            🧠 Explore Neural Playground
+                        </a>
+                        <a href="#" class="action-button" onclick="showComingSoon(event)">
+                            📖 View Documentation
+                        </a>
                     </div>
-                    <p class="text-gray-600 mt-3">
-                        Our neuron learns two numbers: how much each square foot adds to the price, 
-                        and what the base price is for any house in this neighborhood.
-                    </p>
-                </div>
-                
-                <div>
-                    <h4 class="font-bold text-lg text-green-600 mb-3">How Learning Works</h4>
-                    <div class="bg-green-50 p-4 rounded-lg font-mono text-sm">
-                        error = actual_price - predicted_price<br><br>
-                        price_per_sqft += <br>
-                        &nbsp;&nbsp;learning_rate × error × square_feet<br><br>
-                        base_price += <br>
-                        &nbsp;&nbsp;learning_rate × error
-                    </div>
-                    <p class="text-gray-600 mt-3">
-                        When predictions are wrong, the neuron adjusts its parameters to reduce the error. 
-                        Bigger houses cause bigger adjustments to the price_per_sqft parameter.
-                    </p>
-                </div>
-            </div>
+                </article>
 
-            <div class="mt-8 p-6 bg-gray-50 rounded-lg">
-                <h4 class="font-bold text-lg text-purple-600 mb-3">🧮 The Learning Process Explained</h4>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                    <div class="text-center">
-                        <div class="text-2xl mb-2">🎲</div>
-                        <div class="font-semibold">1. Random Start</div>
-                        <div class="text-gray-600">Neural network begins with random parameter values</div>
+                <!-- Project 2 Placeholder -->
+                <article class="project-featured">
+                    <div class="project-header">
+                        <div class="project-icon">🚀</div>
+                        <div class="project-title">
+                            <h2 class="project-name">Project Name</h2>
+                            <p class="project-tagline">Coming Soon - Innovative Solution</p>
+                        </div>
                     </div>
-                    <div class="text-center">
-                        <div class="text-2xl mb-2">📊</div>
-                        <div class="font-semibold">2. Calculate Error</div>
-                        <div class="text-gray-600">Compare predictions with actual house prices</div>
+
+                    <div class="project-description">
+                        An exciting new project currently in development. This will showcase advanced technology 
+                        implementation with user-centered design principles and cutting-edge functionality.
+                        Stay tuned for more details as development progresses.
                     </div>
-                    <div class="text-center">
-                        <div class="text-2xl mb-2">🔧</div>
-                        <div class="font-semibold">3. Adjust Parameters</div>
-                        <div class="text-gray-600">Use gradients to improve predictions</div>
+
+                    <div class="project-features">
+                        <div class="feature-card">
+                            <span class="feature-icon">⚡</span>
+                            <h4 class="feature-title">Performance</h4>
+                            <p class="feature-desc">Optimized for speed and efficiency</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">🎨</span>
+                            <h4 class="feature-title">Design</h4>
+                            <p class="feature-desc">Modern and intuitive user interface</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">🔧</span>
+                            <h4 class="feature-title">Technology</h4>
+                            <p class="feature-desc">Built with latest development tools</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">📱</span>
+                            <h4 class="feature-title">Responsive</h4>
+                            <p class="feature-desc">Works seamlessly across all devices</p>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="mt-6 p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-400">
-                    <p class="text-sm text-gray-700">
-                        <strong>💡 Key Insight:</strong> The learning rate controls how big steps the neural network takes. 
-                        Too small = slow learning. Too big = parameters explode! Finding the right balance is crucial 
-                        for successful AI training.
-                    </p>
+
+                    <div class="project-actions">
+                        <a href="#" class="action-button primary" onclick="showComingSoon(event)">
+                            🚀 Coming Soon
+                        </a>
+                        <a href="#" class="action-button" onclick="showComingSoon(event)">
+                            📖 Documentation
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Project 3 Placeholder -->
+                <article class="project-featured">
+                    <div class="project-header">
+                        <div class="project-icon">💡</div>
+                        <div class="project-title">
+                            <h2 class="project-name">Innovation Hub</h2>
+                            <p class="project-tagline">Creative Solutions in Development</p>
+                        </div>
+                    </div>
+
+                    <div class="project-description">
+                        A creative platform designed to showcase innovative thinking and problem-solving approaches. 
+                        This project will demonstrate advanced methodologies and creative implementation strategies
+                        for complex technical challenges.
+                    </div>
+
+                    <div class="project-features">
+                        <div class="feature-card">
+                            <span class="feature-icon">💡</span>
+                            <h4 class="feature-title">Innovation</h4>
+                            <p class="feature-desc">Creative problem-solving approaches</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">🔗</span>
+                            <h4 class="feature-title">Integration</h4>
+                            <p class="feature-desc">Seamless system connectivity</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">🛡️</span>
+                            <h4 class="feature-title">Security</h4>
+                            <p class="feature-desc">Enterprise-grade security measures</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">📊</span>
+                            <h4 class="feature-title">Analytics</h4>
+                            <p class="feature-desc">Comprehensive data insights</p>
+                        </div>
+                    </div>
+
+                    <div class="project-actions">
+                        <a href="#" class="action-button primary" onclick="showComingSoon(event)">
+                            💡 In Development
+                        </a>
+                        <a href="#" class="action-button" onclick="showComingSoon(event)">
+                            📋 Project Details
+                        </a>
+                    </div>
+                </article>
+
+                <div class="coming-soon">
+                    <h3>More Projects Coming Soon</h3>
+                    <p>Additional portfolio pieces are in development and will be showcased here as they're completed.</p>
                 </div>
             </div>
-        </div>
+        </main>
+
+        <nav class="navigation">
+            <a href="index.html" class="home-button">
+                ← Back to Home
+            </a>
+        </nav>
     </div>
 
     <script>
-        // Neural Network Implementation
-        let isTraining = false;
-        let currentEpoch = 0;
-        let learningData = [];
-        let neuronParams = {
-            pricePerSqft: Math.random() * 100 + 150,
-            basePrice: Math.random() * 50000 + 25000
-        };
-        let learningRate = 0.0000001;
-        let trainingInterval;
+        // Create animated stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numberOfStars = 100;
 
-        const houseData = [
-            { sqft: 1000, price: 250000 },
-            { sqft: 1500, price: 350000 },
-            { sqft: 2000, price: 450000 },
-            { sqft: 2500, price: 550000 },
-            { sqft: 3000, price: 650000 }
-        ];
-
-        const TRUE_PRICE_PER_SQFT = 200;
-        const TRUE_BASE_PRICE = 50000;
-
-        function predictPrice(sqft, params = neuronParams) {
-            return params.pricePerSqft * sqft + params.basePrice;
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                const size = Math.random() * 3 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                
+                starsContainer.appendChild(star);
+            }
         }
 
-        function calculateError(params = neuronParams) {
-            let totalError = 0;
-            houseData.forEach(house => {
-                const prediction = predictPrice(house.sqft, params);
-                const error = house.price - prediction;
-                totalError += error * error;
+        // Parallax effect on mouse move
+        document.addEventListener('mousemove', (e) => {
+            const stars = document.querySelectorAll('.star');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            stars.forEach((star, index) => {
+                const speed = (index % 5 + 1) * 0.5;
+                const translateX = (x - 0.5) * speed * 10;
+                const translateY = (y - 0.5) * speed * 10;
+                star.style.transform = `translate(${translateX}px, ${translateY}px)`;
             });
-            return Math.sqrt(totalError / houseData.length);
-        }
-
-        function calculateAccuracy(params = neuronParams) {
-            const error = calculateError(params);
-            return Math.max(0, 100 - (error / 100000) * 100);
-        }
-
-        function updateWorkflowVisualization() {
-            // Use the middle house (1500 sqft) as example for workflow
-            const exampleHouse = houseData[1]; // 1500 sqft, $350k
-            const prediction = predictPrice(exampleHouse.sqft);
-            const error = exampleHouse.price - prediction;
-
-            // Update workflow elements
-            document.getElementById('workflow-input').textContent = exampleHouse.sqft;
-            document.getElementById('workflow-weight').textContent = '$' + Math.round(neuronParams.pricePerSqft);
-            document.getElementById('workflow-bias').textContent = '$' + Math.round(neuronParams.basePrice / 1000) + 'k';
-            document.getElementById('workflow-prediction').textContent = '$' + Math.round(prediction / 1000) + 'k';
-            document.getElementById('workflow-error').textContent = (error >= 0 ? '+' : '') + '$' + Math.round(error / 1000) + 'k';
-
-            // Update formula
-            document.getElementById('workflow-formula').innerHTML = `
-                <span class="text-orange-600 font-bold">$${Math.round(prediction / 1000)}k</span> = 
-                <span class="text-blue-600 font-bold">${exampleHouse.sqft}</span> × 
-                <span class="text-green-600 font-bold">$${Math.round(neuronParams.pricePerSqft)}</span> + 
-                <span class="text-purple-600 font-bold">$${Math.round(neuronParams.basePrice / 1000)}k</span>
-            `;
-        }
-
-        function trainOneEpoch() {
-            let totalPriceGradient = 0;
-            let totalBiasGradient = 0;
-            
-            houseData.forEach(house => {
-                const prediction = predictPrice(house.sqft);
-                const error = house.price - prediction;
-                
-                totalPriceGradient += error * house.sqft;
-                totalBiasGradient += error;
-            });
-            
-            const avgPriceGradient = totalPriceGradient / houseData.length;
-            const avgBiasGradient = totalBiasGradient / houseData.length;
-            
-            // Check for explosion
-            const gradientMagnitude = Math.abs(avgPriceGradient) + Math.abs(avgBiasGradient);
-            const isExploding = gradientMagnitude > 100000 || Math.abs(neuronParams.pricePerSqft) > 1000;
-            
-            if (isExploding) {
-                document.getElementById('explosionWarning').classList.remove('hidden');
-                setTimeout(() => {
-                    document.getElementById('explosionWarning').classList.add('hidden');
-                }, 2000);
-            }
-            
-            // Update parameters
-            neuronParams.pricePerSqft += learningRate * avgPriceGradient;
-            neuronParams.basePrice += learningRate * avgBiasGradient;
-            
-            // Safety bounds
-            neuronParams.pricePerSqft = Math.max(-10000, Math.min(10000, neuronParams.pricePerSqft));
-            neuronParams.basePrice = Math.max(-10000000, Math.min(10000000, neuronParams.basePrice));
-        }
-
-        function updateDisplay() {
-            const accuracy = calculateAccuracy();
-            const priceError = Math.abs(neuronParams.pricePerSqft - TRUE_PRICE_PER_SQFT);
-            const baseError = Math.abs(neuronParams.basePrice - TRUE_BASE_PRICE);
-
-            document.getElementById('epochValue').textContent = currentEpoch;
-            document.getElementById('accuracyValue').textContent = accuracy.toFixed(1) + '%';
-            document.getElementById('priceValue').textContent = '$' + neuronParams.pricePerSqft.toFixed(0);
-            document.getElementById('baseValue').textContent = '$' + (neuronParams.basePrice/1000).toFixed(0) + 'k';
-            document.getElementById('priceError').textContent = 'Error: $' + priceError.toFixed(0);
-            document.getElementById('baseError').textContent = 'Error: $' + (baseError/1000).toFixed(0) + 'k';
-            
-            // Update performance section
-            document.getElementById('currentPrice').textContent = '$' + neuronParams.pricePerSqft.toFixed(0);
-            document.getElementById('currentBase').textContent = '$' + (neuronParams.basePrice/1000).toFixed(0) + 'k';
-            document.getElementById('currentAccuracy').textContent = accuracy.toFixed(1) + '%';
-
-            updatePredictions();
-            updateChart();
-            updateWorkflowVisualization();
-        }
-
-        function updatePredictions() {
-            const container = document.getElementById('predictions');
-            container.innerHTML = '';
-            
-            houseData.forEach((house, index) => {
-                const prediction = predictPrice(house.sqft);
-                const error = Math.abs(house.price - prediction);
-                const errorPercent = (error / house.price) * 100;
-                
-                const errorColor = errorPercent > 20 ? 'text-red-600' : 
-                                 errorPercent > 10 ? 'text-yellow-600' : 'text-green-600';
-                
-                container.innerHTML += `
-                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                        <div class="flex-1">
-                            <div class="font-semibold">${house.sqft} sqft</div>
-                            <div class="text-sm text-gray-600">Actual: ${(house.price/1000).toFixed(0)}k</div>
-                        </div>
-                        <div class="flex-1 text-center">
-                            <div class="font-semibold text-blue-600">${(prediction/1000).toFixed(0)}k</div>
-                            <div class="text-sm text-gray-600">Predicted</div>
-                        </div>
-                        <div class="flex-1 text-right">
-                            <div class="font-semibold ${errorColor}">${errorPercent.toFixed(1)}%</div>
-                            <div class="text-sm text-gray-600">Error</div>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function updateChart() {
-            const canvas = document.getElementById('learningChart');
-            const ctx = canvas.getContext('2d');
-            
-            // Set canvas to high DPI for crisp rendering
-            const rect = canvas.getBoundingClientRect();
-            const dpr = window.devicePixelRatio || 1;
-            canvas.width = rect.width * dpr;
-            canvas.height = rect.height * dpr;
-            ctx.scale(dpr, dpr);
-            canvas.style.width = rect.width + 'px';
-            canvas.style.height = rect.height + 'px';
-            
-            // Clear canvas
-            ctx.clearRect(0, 0, rect.width, rect.height);
-            
-            if (learningData.length < 2) return;
-            
-            // Anti-aliasing for smooth lines
-            ctx.imageSmoothingEnabled = true;
-            ctx.imageSmoothingQuality = 'high';
-            
-            // Draw grid
-            ctx.strokeStyle = '#f3f4f6';
-            ctx.lineWidth = 1;
-            
-            // Grid lines
-            for (let i = 1; i < 5; i++) {
-                // Horizontal grid lines
-                const y = 20 + (i * (rect.height - 70) / 5);
-                ctx.beginPath();
-                ctx.moveTo(50, y);
-                ctx.lineTo(rect.width - 20, y);
-                ctx.stroke();
-                
-                // Vertical grid lines
-                const x = 50 + (i * (rect.width - 70) / 5);
-                ctx.beginPath();
-                ctx.moveTo(x, 20);
-                ctx.lineTo(x, rect.height - 50);
-                ctx.stroke();
-            }
-            
-            // Draw axes
-            ctx.strokeStyle = '#d1d5db';
-            ctx.lineWidth = 2;
-            
-            // Y-axis
-            ctx.beginPath();
-            ctx.moveTo(50, 20);
-            ctx.lineTo(50, rect.height - 50);
-            ctx.stroke();
-            
-            // X-axis
-            ctx.beginPath();
-            ctx.moveTo(50, rect.height - 50);
-            ctx.lineTo(rect.width - 20, rect.height - 50);
-            ctx.stroke();
-            
-            // Draw accuracy line with smooth curves
-            ctx.strokeStyle = '#10b981';
-            ctx.lineWidth = 3;
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-            ctx.beginPath();
-            
-            const maxEpoch = Math.max(...learningData.map(d => d.epoch));
-            const maxAccuracy = 100;
-            
-            learningData.forEach((point, index) => {
-                const x = 50 + (point.epoch / maxEpoch) * (rect.width - 70);
-                const y = rect.height - 50 - (point.accuracy / maxAccuracy) * (rect.height - 70);
-                
-                if (index === 0) {
-                    ctx.moveTo(x, y);
-                } else {
-                    ctx.lineTo(x, y);
-                }
-            });
-            
-            ctx.stroke();
-            
-            // Add y-axis labels
-            ctx.fillStyle = '#6b7280';
-            ctx.font = '12px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-            ctx.textAlign = 'right';
-            
-            for (let i = 0; i <= 5; i++) {
-                const accuracy = (i * 20);
-                const y = rect.height - 50 - (accuracy / 100) * (rect.height - 70);
-                ctx.fillText(accuracy + '%', 45, y + 4);
-            }
-            
-            // Add x-axis labels
-            ctx.textAlign = 'center';
-            for (let i = 0; i <= 5; i++) {
-                const epoch = Math.round((i * maxEpoch) / 5);
-                const x = 50 + (i * (rect.width - 70) / 5);
-                ctx.fillText(epoch.toString(), x, rect.height - 30);
-            }
-            
-            // Add axis titles
-            ctx.fillStyle = '#374151';
-            ctx.font = 'bold 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-            ctx.textAlign = 'center';
-            ctx.fillText('Epoch', rect.width / 2, rect.height - 5);
-            
-            ctx.save();
-            ctx.translate(15, rect.height / 2);
-            ctx.rotate(-Math.PI / 2);
-            ctx.fillText('Accuracy (%)', 0, 0);
-            ctx.restore();
-        }
-
-        function startTraining() {
-            if (isTraining) {
-                isTraining = false;
-                clearInterval(trainingInterval);
-                document.getElementById('trainBtn').innerHTML = '▶️ Start Training';
-                document.getElementById('trainBtn').className = document.getElementById('trainBtn').className.replace('bg-red-500 hover:bg-red-600', 'bg-green-500 hover:bg-green-600');
-                return;
-            }
-            
-            isTraining = true;
-            currentEpoch = 0;
-            learningData = [];
-            
-            // Add initial data point
-            learningData.push({
-                epoch: 0,
-                accuracy: calculateAccuracy()
-            });
-            
-            document.getElementById('trainBtn').innerHTML = '⏸️ Pause Training';
-            document.getElementById('trainBtn').className = document.getElementById('trainBtn').className.replace('bg-green-500 hover:bg-green-600', 'bg-red-500 hover:bg-red-600');
-            
-            trainingInterval = setInterval(() => {
-                currentEpoch++;
-                
-                if (currentEpoch >= 200) {
-                    isTraining = false;
-                    clearInterval(trainingInterval);
-                    document.getElementById('trainBtn').innerHTML = '▶️ Start Training';
-                    document.getElementById('trainBtn').className = document.getElementById('trainBtn').className.replace('bg-red-500 hover:bg-red-600', 'bg-green-500 hover:bg-green-600');
-                    return;
-                }
-                
-                trainOneEpoch();
-                
-                learningData.push({
-                    epoch: currentEpoch,
-                    accuracy: calculateAccuracy()
-                });
-                
-                updateDisplay();
-            }, 100);
-        }
-
-        function resetNeuron() {
-            isTraining = false;
-            clearInterval(trainingInterval);
-            currentEpoch = 0;
-            learningData = [];
-            
-            neuronParams = {
-                pricePerSqft: Math.random() * 100 + 150,
-                basePrice: Math.random() * 50000 + 25000
-            };
-            
-            document.getElementById('trainBtn').innerHTML = '▶️ Start Training';
-            document.getElementById('trainBtn').className = 'flex items-center gap-2 px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold transition-all';
-            
-            updateDisplay();
-            
-            // Reset accuracy displays to 0% after reset
-            document.getElementById('accuracyValue').textContent = '0.0%';
-            document.getElementById('currentAccuracy').textContent = '0.0%';
-        }
-
-        function updateLearningRateStatus() {
-            const statusElement = document.getElementById('rateStatus');
-            
-            if (learningRate <= 0.0000001) {
-                statusElement.textContent = '✅ SAFE';
-                statusElement.className = 'font-bold text-sm text-green-600';
-            } else if (learningRate <= 0.000001) {
-                statusElement.textContent = '📈 STABLE';
-                statusElement.className = 'font-bold text-sm text-blue-600';
-            } else if (learningRate <= 0.00001) {
-                statusElement.textContent = '⚡ FAST';
-                statusElement.className = 'font-bold text-sm text-yellow-600';
-            } else if (learningRate <= 0.0001) {
-                statusElement.textContent = '⚠️ RISKY';
-                statusElement.className = 'font-bold text-sm text-orange-600';
-            } else {
-                statusElement.textContent = '💥 BOOM!';
-                statusElement.className = 'font-bold text-sm text-red-600';
-            }
-        }
-
-        // Event listeners
-        document.getElementById('trainBtn').addEventListener('click', startTraining);
-        document.getElementById('resetBtn').addEventListener('click', resetNeuron);
-        document.getElementById('learningRate').addEventListener('change', (e) => {
-            learningRate = parseFloat(e.target.value);
-            updateLearningRateStatus();
         });
 
+        // Show coming soon message
+        function showComingSoon(event) {
+            event.preventDefault();
+            alert('📋 Documentation coming soon! This feature is currently in development.');
+        }
+
         // Initialize
-        updateDisplay();
-        updateLearningRateStatus();
+        createStars();
+
+        // Add smooth scrolling for any internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Add intersection observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        });
+
+        document.querySelectorAll('.project-featured, .feature-card').forEach(el => {
+            observer.observe(el);
+        });
     </script>
 </body>
 </html>
