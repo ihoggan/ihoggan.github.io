@@ -50,6 +50,71 @@
             opacity: 0.9;
         }
 
+        /* GLASSMORPHISM NAVIGATION BUTTONS */
+        .nav-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .glass-nav-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        .glass-nav-button:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+            text-decoration: none;
+            color: white;
+        }
+
+        .glass-nav-button:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-nav-button.home {
+            background: rgba(78, 205, 196, 0.25);
+            border-color: rgba(78, 205, 196, 0.3);
+        }
+
+        .glass-nav-button.home:hover {
+            background: rgba(78, 205, 196, 0.35);
+            border-color: rgba(78, 205, 196, 0.4);
+            color: white;
+        }
+
+        .glass-nav-button.support {
+            background: rgba(255, 107, 107, 0.25);
+            border-color: rgba(255, 107, 107, 0.3);
+        }
+
+        .glass-nav-button.support:hover {
+            background: rgba(255, 107, 107, 0.35);
+            border-color: rgba(255, 107, 107, 0.4);
+            color: white;
+        }
+
         .section {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
@@ -274,6 +339,16 @@
         <div class="hero">
             <h1>🐍 Python Programming</h1>
             <p>Your Gateway to the World of Code</p>
+            
+            <!-- Navigation Buttons -->
+            <div class="nav-buttons">
+                <a href="https://ihoggan.github.io/ihoggan-portfolio/index.html" class="glass-nav-button home">
+                    🏠 Home ↗️
+                </a>
+                <a href="https://github.com/sponsors/ihoggan" target="_blank" class="glass-nav-button support">
+                    ❤️ Support Project ↗️
+                </a>
+            </div>
         </div>
 
         <div class="section">
@@ -624,6 +699,16 @@ get_weather(city)</code>
             <h3>🎯 Next Steps in Your Python Journey</h3>
             <p>You've learned the fundamentals! Continue practicing with small projects and gradually explore more advanced topics. The Python community is welcoming and provides extensive support for learners at all levels.</p>
             
+            <!-- Additional Navigation at Bottom -->
+            <div class="nav-buttons">
+                <a href="https://ihoggan.github.io/ihoggan-portfolio/index.html" class="glass-nav-button home">
+                    🏠 Back to Portfolio ↗️
+                </a>
+                <a href="https://github.com/sponsors/ihoggan" target="_blank" class="glass-nav-button support">
+                    ❤️ Support My Work ↗️
+                </a>
+            </div>
+            
             <div class="terminal">
                 <div class="terminal-header">Keep Learning</div>
                 <code># Explore these topics next:
@@ -637,7 +722,7 @@ get_weather(city)</code>
 
 echo "Happy coding! 🐍✨"</code>
             </div>
-        </div>
+       /div>
     </div>
 </body>
 </html>
