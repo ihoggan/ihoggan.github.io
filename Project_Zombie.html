@@ -25,6 +25,74 @@
             padding: 20px;
         }
 
+        /* NAVIGATION BUTTONS STYLES */
+        .nav-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin: 24px 0;
+            padding: 0 20px;
+        }
+
+        .glass-nav-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            color: #e0e6ed;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+
+        .glass-nav-button:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-decoration: none;
+            color: #e0e6ed;
+        }
+
+        .glass-nav-button:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .glass-nav-button.home {
+            background: rgba(78, 205, 196, 0.1);
+            border-color: rgba(78, 205, 196, 0.2);
+        }
+
+        .glass-nav-button.home:hover {
+            background: rgba(78, 205, 196, 0.15);
+            border-color: rgba(78, 205, 196, 0.3);
+            box-shadow: 0 12px 40px rgba(78, 205, 196, 0.2);
+            color: #e0e6ed;
+        }
+
+        .glass-nav-button.support {
+            background: rgba(255, 107, 107, 0.1);
+            border-color: rgba(255, 107, 107, 0.2);
+        }
+
+        .glass-nav-button.support:hover {
+            background: rgba(255, 107, 107, 0.15);
+            border-color: rgba(255, 107, 107, 0.3);
+            box-shadow: 0 12px 40px rgba(255, 107, 107, 0.2);
+            color: #e0e6ed;
+        }
+
         /* Glassmorphism Cards */
         .glass-card {
             background: rgba(255, 255, 255, 0.05);
@@ -325,6 +393,16 @@
             <div class="badge">51.6M Packets Analyzed</div>
             <div class="badge">Potential Threat Discovered</div>
             <div class="badge">Ethical Dilemma Resolved</div>
+            
+            <!-- Navigation Buttons -->
+            <div class="nav-buttons">
+                <a href="https://ihoggan.github.io/ihoggan-portfolio/index.html" class="glass-nav-button home">
+                    🏠 Home ↗️
+                </a>
+                <a href="https://github.com/sponsors/ihoggan" target="_blank" class="glass-nav-button support">
+                    ❤️ Support Project ↗️
+                </a>
+            </div>
         </div>
 
         <!-- Introduction -->
@@ -980,6 +1058,16 @@ print(f"Zombie distance: ~{estimated_distance:.0f} meters")</pre>
             <div style="text-align: center; padding: 20px;">
                 <h3>🧟‍♂️ The End... or is it?</h3>
                 <p>While we didn't find a real zombie this time, the techniques and knowledge gained prepare us for when we do encounter genuine threats. The neighborhood is a little safer because someone is watching, learning, and ready to act when needed.</p>
+                
+                <!-- Navigation Buttons at Bottom -->
+                <div class="nav-buttons">
+                    <a href="https://ihoggan.github.io/ihoggan-portfolio/index.html" class="glass-nav-button home">
+                        🏠 Back to Portfolio ↗️
+                    </a>
+                    <a href="https://github.com/sponsors/ihoggan" target="_blank" class="glass-nav-button support">
+                        ❤️ Support My Work ↗️
+                    </a>
+                </div>
                 
                 <div class="badge">Educational Use Only</div>
                 <div class="badge">Privacy Protected</div>
