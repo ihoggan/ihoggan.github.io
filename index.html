@@ -223,10 +223,18 @@
             border: 2px solid #00ff88;
             border-radius: 0;
             background: transparent;
+            -webkit-transition: all 0.4s ease;
+            -moz-transition: all 0.4s ease;
+            -ms-transition: all 0.4s ease;
             transition: all 0.4s ease;
             text-transform: uppercase;
             letter-spacing: 1px;
             overflow: hidden;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         .nav-link::before {
@@ -236,19 +244,37 @@
             left: -100%;
             width: 100%;
             height: 100%;
+            background: -webkit-linear-gradient(left, #00ff88, #0099ff);
+            background: -moz-linear-gradient(left, #00ff88, #0099ff);
+            background: -ms-linear-gradient(left, #00ff88, #0099ff);
             background: linear-gradient(90deg, #00ff88, #0099ff);
+            -webkit-transition: left 0.4s ease;
+            -moz-transition: left 0.4s ease;
+            -ms-transition: left 0.4s ease;
             transition: left 0.4s ease;
             z-index: -1;
         }
 
         .nav-link:hover {
             color: #000000;
+            -webkit-transform: translateX(10px);
+            -moz-transform: translateX(10px);
+            -ms-transform: translateX(10px);
             transform: translateX(10px);
+            -webkit-box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+            -moz-box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
             box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
         }
 
         .nav-link:hover::before {
             left: 0;
+        }
+
+        .nav-link:active {
+            -webkit-transform: translateX(5px);
+            -moz-transform: translateX(5px);
+            -ms-transform: translateX(5px);
+            transform: translateX(5px);
         }
 
         /* Alternating layout */
@@ -447,34 +473,48 @@
     </footer>
 
     <script>
-        // Custom cursor
+        // Custom cursor with browser compatibility
         const cursor = document.querySelector('.cursor');
         const trails = [];
+        let isIE = false;
+        let isEdge = false;
         
-        // Create cursor trails
-        for (let i = 0; i < 5; i++) {
-            const trail = document.createElement('div');
-            trail.className = 'cursor-trail';
-            document.body.appendChild(trail);
-            trails.push(trail);
+        // Browser detection
+        if (navigator.userAgent.indexOf('MSIE') !== -1 || navigator.appVersion.indexOf('Trident/') > -1) {
+            isIE = true;
+        }
+        if (navigator.userAgent.indexOf('Edge') !== -1) {
+            isEdge = true;
+        }
+        
+        // Create cursor trails only for compatible browsers
+        if (!isIE && cursor) {
+            for (let i = 0; i < 5; i++) {
+                const trail = document.createElement('div');
+                trail.className = 'cursor-trail';
+                document.body.appendChild(trail);
+                trails.push(trail);
+            }
         }
         
         let mouseX = 0, mouseY = 0;
         let cursorX = 0, cursorY = 0;
         
-        document.addEventListener('mousemove', (e) => {
+        document.addEventListener('mousemove', function(e) {
             mouseX = e.clientX;
             mouseY = e.clientY;
         });
         
         function updateCursor() {
+            if (!cursor || isIE) return;
+            
             cursorX += (mouseX - cursorX) * 0.1;
             cursorY += (mouseY - cursorY) * 0.1;
             
             cursor.style.left = cursorX + 'px';
             cursor.style.top = cursorY + 'px';
             
-            trails.forEach((trail, index) => {
+            trails.forEach(function(trail, index) {
                 const delay = (index + 1) * 0.03;
                 const trailX = cursorX - (mouseX - cursorX) * delay;
                 const trailY = cursorY - (mouseY - cursorY) * delay;
@@ -487,25 +527,64 @@
             requestAnimationFrame(updateCursor);
         }
         
-        updateCursor();
+        if (!isIE) {
+            updateCursor();
+        }
         
-        // Hover effects
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('mouseenter', () => {
-                cursor.style.transform = 'scale(2)';
+        // Hover effects with better browser support
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(function(item) {
+            item.addEventListener('mouseenter', function() {
+                if (cursor && !isIE) {
+                    cursor.style.transform = 'scale(2)';
+                    cursor.style.webkitTransform = 'scale(2)';
+                    cursor.style.msTransform = 'scale(2)';
+                }
             });
             
-            item.addEventListener('mouseleave', () => {
-                cursor.style.transform = 'scale(1)';
+            item.addEventListener('mouseleave', function() {
+                if (cursor && !isIE) {
+                    cursor.style.transform = 'scale(1)';
+                    cursor.style.webkitTransform = 'scale(1)';
+                    cursor.style.msTransform = 'scale(1)';
+                }
             });
         });
         
-        // Smooth scroll
-        document.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
+        // Enhanced click handling for all browsers
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                // Ensure the link works in all browsers
+                const href = this.getAttribute('href');
+                if (href && href !== '#') {
+                    // Add a small delay to allow animation to complete
+                    setTimeout(function() {
+                        window.location.href = href;
+                    }, 100);
+                }
+            });
+            
+            // Add keyboard support
+            link.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.click();
+                }
+            });
+        });
+        
+        // Smooth scroll with fallback
+        document.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset || document.documentElement.scrollTop;
             const parallax = document.querySelector('.geometric-bg');
-            const speed = scrolled * 0.5;
-            parallax.style.transform = `rotate3d(1, 1, 0, 15deg) translate(${-50 + speed * 0.01}%, ${-50 + speed * 0.01}%)`;
+            if (parallax) {
+                const speed = scrolled * 0.5;
+                const transform = 'rotate3d(1, 1, 0, 15deg) translate(' + (-50 + speed * 0.01) + '%, ' + (-50 + speed * 0.01) + '%)';
+                parallax.style.transform = transform;
+                parallax.style.webkitTransform = transform;
+                parallax.style.msTransform = transform;
+            }
         });
     </script>
 </body>
