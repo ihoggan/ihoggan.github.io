@@ -36,7 +36,7 @@ Iain Hoggan is a passionate educator and developer who specializes in transformi
 
 ## Educational Philosophy
 
-Ian believes that the best way to understand complex topics is through hands-on experimentation and real-world application. Rather than traditional lecture-based learning, his projects emphasize:
+Iain believes that the best way to understand complex topics is through hands-on experimentation and real-world application. Rather than traditional lecture-based learning, his projects emphasize:
 
 - **Interactive Exploration**: Learn by doing, not just reading
 - **Real-World Applications**: Every concept tied to practical use cases
