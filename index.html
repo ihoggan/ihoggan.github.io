@@ -5,22 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IHoggan - Digital Portfolio</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap');
         
-        :root {
-            --primary-bg: #0a0a0f;
-            --secondary-bg: #1a1a24;
-            --card-bg: rgba(26, 26, 36, 0.8);
-            --accent-primary: #6366f1;
-            --accent-secondary: #8b5cf6;
-            --accent-tertiary: #06b6d4;
-            --text-primary: #ffffff;
-            --text-secondary: #a1a1aa;
-            --text-muted: #71717a;
-            --border-color: rgba(255, 255, 255, 0.1);
-            --glow: rgba(99, 102, 241, 0.3);
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -28,385 +14,499 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--primary-bg);
-            color: var(--text-primary);
-            line-height: 1.6;
+            font-family: 'Space Grotesk', sans-serif;
+            background: #0f0f0f;
+            color: #ffffff;
             overflow-x: hidden;
-            min-height: 100vh;
+            cursor: none;
         }
 
-        /* Animated background */
-        body::before {
-            content: '';
+        /* Custom cursor */
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #00ff88, #0099ff);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease;
+        }
+
+        .cursor-trail {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: rgba(0, 255, 136, 0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+        }
+
+        /* 3D Scene Container */
+        .scene {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
+            height: 100vh;
+            perspective: 1000px;
             z-index: -1;
-            animation: float 20s ease-in-out infinite;
         }
 
+        .geometric-bg {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: 
+                linear-gradient(45deg, transparent 40%, rgba(0, 255, 136, 0.03) 50%, transparent 60%),
+                linear-gradient(-45deg, transparent 40%, rgba(0, 153, 255, 0.03) 50%, transparent 60%);
+            animation: geometricMove 20s linear infinite;
+            transform: rotate3d(1, 1, 0, 15deg);
+        }
+
+        /* Main container with 3D transform */
         .container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 0 2rem;
             position: relative;
             z-index: 1;
+            transform-style: preserve-3d;
         }
 
-        /* Header Section */
-        header {
-            text-align: center;
-            margin-bottom: 4rem;
-            position: relative;
-        }
-
-        .logo {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 2rem;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            border-radius: 30px;
+        /* Floating header */
+        .hero {
+            height: 100vh;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: center;
-            font-size: 3rem;
-            font-weight: 700;
-            color: white;
+            align-items: center;
+            text-align: center;
             position: relative;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            animation: logoGlow 3s ease-in-out infinite alternate;
         }
 
-        .logo::before {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary));
-            border-radius: 32px;
-            z-index: -1;
-            opacity: 0.5;
-            filter: blur(10px);
+        .hero-content {
+            transform: translateZ(50px);
+            animation: floatHero 6s ease-in-out infinite;
         }
 
-        h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 700;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+        .glitch-text {
+            font-size: clamp(3rem, 8vw, 8rem);
+            font-weight: 900;
+            font-family: 'Orbitron', 'JetBrains Mono', monospace;
+            background: linear-gradient(45deg, #00ff88, #0099ff, #ff0099);
+            background-size: 300% 300%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            letter-spacing: -0.02em;
+            animation: gradientShift 4s ease-in-out infinite;
+            position: relative;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
         }
 
-        .tagline {
-            font-size: 1.25rem;
-            color: var(--text-secondary);
-            font-weight: 400;
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.5;
+        .glitch-text:hover {
+            animation: gradientShift 4s ease-in-out infinite, subtleGlow 2s ease-in-out infinite;
         }
 
-        /* Navigation Grid */
-        .nav-grid {
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 300;
+            margin-bottom: 3rem;
+            transform: translateZ(30px);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            animation: bounce 2s infinite;
+        }
+
+        /* Revolutionary navigation */
+        .nav-section {
+            min-height: 100vh;
+            padding: 5rem 0;
+            position: relative;
+        }
+
+        .nav-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-            margin: 4rem 0;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .nav-item {
+            position: relative;
+            transform-style: preserve-3d;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .nav-item:hover {
+            transform: translateZ(100px) rotateY(10deg);
         }
 
         .nav-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border-color);
-            border-radius: 24px;
-            padding: 2.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 3rem;
             position: relative;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             overflow: hidden;
-            cursor: pointer;
-            group: hover;
+            backdrop-filter: blur(20px);
+            transition: all 0.6s ease;
         }
 
         .nav-card::before {
             content: '';
             position: absolute;
             top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
-            opacity: 0;
-            transition: opacity 0.4s ease;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+            transition: left 0.8s ease;
         }
 
-        .nav-card:hover::before {
-            opacity: 1;
+        .nav-item:hover .nav-card::before {
+            left: 100%;
         }
 
-        .nav-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(99, 102, 241, 0.3);
-            box-shadow: 
-                0 25px 50px rgba(0, 0, 0, 0.4),
-                0 0 40px var(--glow);
-        }
-
-        .card-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-            position: relative;
-            transition: all 0.4s ease;
-        }
-
-        .nav-card:hover .card-icon {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
-        }
-
-        .card-icon::after {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            border-radius: 22px;
-            z-index: -1;
-            opacity: 0;
-            filter: blur(8px);
-            transition: opacity 0.4s ease;
-        }
-
-        .nav-card:hover .card-icon::after {
-            opacity: 0.6;
-        }
-
-        .card-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-            color: var(--text-primary);
-            transition: color 0.3s ease;
-        }
-
-        .card-description {
-            font-size: 1rem;
-            color: var(--text-secondary);
+        .nav-icon {
+            font-size: 4rem;
             margin-bottom: 2rem;
-            line-height: 1.6;
+            display: block;
+            background: linear-gradient(135deg, #00ff88, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transform: translateZ(20px);
         }
 
-        .card-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: rgba(99, 102, 241, 0.1);
-            color: var(--accent-primary);
-            padding: 0.875rem 1.5rem;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95rem;
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            transition: all 0.3s ease;
+        .nav-title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff, #cccccc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-description {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 2.5rem;
+        }
+
+        .nav-link {
+            display: inline-block;
             position: relative;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            font-size: 1rem;
+            color: #00ff88;
+            text-decoration: none;
+            padding: 1rem 2rem;
+            border: 2px solid #00ff88;
+            border-radius: 0;
+            background: transparent;
+            transition: all 0.4s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             overflow: hidden;
         }
 
-        .card-link:hover {
-            background: var(--accent-primary);
-            color: white;
-            transform: translateX(4px);
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #00ff88, #0099ff);
+            transition: left 0.4s ease;
+            z-index: -1;
         }
 
-        .card-link::after {
-            content: '→';
-            transition: transform 0.3s ease;
+        .nav-link:hover {
+            color: #000000;
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
         }
 
-        .card-link:hover::after {
-            transform: translateX(4px);
+        .nav-link:hover::before {
+            left: 0;
         }
 
-        /* Specialty card styles */
-        .nav-card:nth-child(1) .card-icon {
-            background: linear-gradient(135deg, #f59e0b, #f97316);
+        /* Alternating layout */
+        .nav-item:nth-child(even) .nav-container {
+            grid-template-columns: 1fr 1fr;
+            direction: rtl;
         }
 
-        .nav-card:nth-child(2) .card-icon {
-            background: linear-gradient(135deg, #10b981, #059669);
+        .nav-item:nth-child(even) .nav-container > * {
+            direction: ltr;
         }
 
-        .nav-card:nth-child(3) .card-icon {
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        /* Terminal-style footer */
+        .terminal-footer {
+            background: #000000;
+            border-top: 1px solid #00ff88;
+            padding: 2rem;
+            font-family: 'JetBrains Mono', monospace;
+            margin-top: 5rem;
         }
 
-        .nav-card:nth-child(4) .card-icon {
-            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        .terminal-content {
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 4rem;
-            border-top: 1px solid var(--border-color);
-            position: relative;
+        .terminal-line {
+            color: #00ff88;
+            margin-bottom: 0.5rem;
         }
 
-        .footer-content {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            font-weight: 400;
+        .terminal-prompt::before {
+            content: '$ ';
+            color: #0099ff;
+        }
+
+        .terminal-output {
+            color: rgba(255, 255, 255, 0.7);
+            margin-left: 1rem;
         }
 
         /* Animations */
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(30px, -30px) rotate(2deg); }
-            66% { transform: translate(-20px, 20px) rotate(-2deg); }
+        @keyframes geometricMove {
+            0% { transform: rotate3d(1, 1, 0, 15deg) translate(-50%, -50%); }
+            100% { transform: rotate3d(1, 1, 0, 15deg) translate(-51%, -51%); }
         }
 
-        @keyframes logoGlow {
-            0% { box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); }
-            100% { box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px var(--glow); }
+        @keyframes floatHero {
+            0%, 100% { transform: translateZ(50px) translateY(0px); }
+            50% { transform: translateZ(50px) translateY(-20px); }
         }
 
-        @keyframes fadeInUp {
-            0% {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
 
-        .nav-card {
-            animation: fadeInUp 0.6s ease forwards;
+        @keyframes subtleGlow {
+            0%, 100% { text-shadow: 0 0 30px rgba(0, 255, 136, 0.3); }
+            50% { text-shadow: 0 0 40px rgba(0, 153, 255, 0.5), 0 0 60px rgba(0, 255, 136, 0.3); }
         }
 
-        .nav-card:nth-child(1) { animation-delay: 0.1s; }
-        .nav-card:nth-child(2) { animation-delay: 0.2s; }
-        .nav-card:nth-child(3) { animation-delay: 0.3s; }
-        .nav-card:nth-child(4) { animation-delay: 0.4s; }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-
-            .nav-grid {
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .nav-container {
                 grid-template-columns: 1fr;
-                gap: 1.5rem;
-                margin: 3rem 0;
+                gap: 2rem;
             }
+            
+            .nav-item:nth-child(even) .nav-container {
+                grid-template-columns: 1fr;
+                direction: ltr;
+            }
+        }
 
+        @media (max-width: 768px) {
+            .glitch-text {
+                font-size: 3rem;
+            }
+            
             .nav-card {
                 padding: 2rem;
             }
-
-            .logo {
-                width: 100px;
-                height: 100px;
-                font-size: 2.5rem;
+            
+            .nav-title {
+                font-size: 2rem;
             }
-
-            .tagline {
-                font-size: 1.1rem;
+            
+            body {
+                cursor: auto;
             }
-        }
-
-        @media (max-width: 480px) {
-            .nav-card {
-                padding: 1.5rem;
+            
+            .cursor, .cursor-trail {
+                display: none;
             }
-
-            .card-icon {
-                width: 70px;
-                height: 70px;
-                font-size: 1.75rem;
-            }
-        }
-
-        /* Smooth scrolling and focus styles */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        .card-link:focus {
-            outline: 2px solid var(--accent-primary);
-            outline-offset: 2px;
-        }
-
-        /* Loading animation */
-        .container {
-            animation: fadeInUp 0.8s ease forwards;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">IH</div>
-            <h1>Digital Portfolio</h1>
-            <p class="tagline">Crafting exceptional digital experiences with precision, creativity, and professional excellence</p>
-        </header>
-
-        <main>
-            <div class="nav-grid">
-                <div class="nav-card">
-                    <div class="card-icon">👤</div>
-                    <h3 class="card-title">About Me</h3>
-                    <p class="card-description">Discover my professional journey, expertise, and the passion that drives my work in digital innovation.</p>
-                    <a href="about.html" class="card-link">Learn More</a>
-                </div>
-
-                <div class="nav-card">
-                    <div class="card-icon">💼</div>
-                    <h3 class="card-title">Portfolio</h3>
-                    <p class="card-description">Explore my curated collection of projects, showcasing technical excellence and creative problem-solving.</p>
-                    <a href="portfolio.html" class="card-link">View Work</a>
-                </div>
-
-                <div class="nav-card">
-                    <div class="card-icon">📞</div>
-                    <h3 class="card-title">Contact</h3>
-                    <p class="card-description">Ready to collaborate? Let's discuss how we can bring your vision to life with cutting-edge solutions.</p>
-                    <a href="contact.html" class="card-link">Get In Touch</a>
-                </div>
-
-                <div class="nav-card">
-                    <div class="card-icon">📸</div>
-                    <h3 class="card-title">Gallery</h3>
-                    <p class="card-description">Browse through my visual portfolio featuring design work, photography, and creative projects.</p>
-                    <a href="gallery.html" class="card-link">View Gallery</a>
-                </div>
-            </div>
-        </main>
-
-        <footer>
-            <div class="footer-content">
-                <p>&copy; 2025 IHoggan Digital Portfolio. All rights reserved.</p>
-            </div>
-        </footer>
+    <div class="cursor"></div>
+    
+    <div class="scene">
+        <div class="geometric-bg"></div>
     </div>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="glitch-text">IHOGGAN</h1>
+                <p class="hero-subtitle">Digital architect crafting the future</p>
+            </div>
+            <div class="scroll-indicator">↓ Scroll to explore</div>
+        </section>
+
+        <!-- Navigation Sections -->
+        <div class="nav-item">
+            <div class="nav-container">
+                <div class="nav-card">
+                    <span class="nav-icon">👤</span>
+                    <h2 class="nav-title">About</h2>
+                    <p class="nav-description">Journey through my professional evolution, core competencies, and the vision that drives innovation in every project.</p>
+                    <a href="about.html" class="nav-link">Initialize_Profile</a>
+                </div>
+                <div style="transform: translateZ(30px);">
+                    <div style="width: 100%; height: 300px; background: linear-gradient(135deg, rgba(0,255,136,0.1), rgba(0,153,255,0.1)); border-radius: 20px; position: relative; overflow: hidden;">
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 8rem; opacity: 0.3;">👤</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-item">
+            <div class="nav-container">
+                <div style="transform: translateZ(30px);">
+                    <div style="width: 100%; height: 300px; background: linear-gradient(135deg, rgba(0,153,255,0.1), rgba(255,0,153,0.1)); border-radius: 20px; position: relative; overflow: hidden;">
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 8rem; opacity: 0.3;">💼</div>
+                    </div>
+                </div>
+                <div class="nav-card">
+                    <span class="nav-icon">💼</span>
+                    <h2 class="nav-title">Portfolio</h2>
+                    <p class="nav-description">Explore cutting-edge projects showcasing technical mastery, creative problem-solving, and measurable impact across diverse industries.</p>
+                    <a href="portfolio.html" class="nav-link">Load_Projects</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-item">
+            <div class="nav-container">
+                <div class="nav-card">
+                    <span class="nav-icon">📞</span>
+                    <h2 class="nav-title">Contact</h2>
+                    <p class="nav-description">Initiate collaboration on transformative digital solutions. Let's architect something extraordinary together.</p>
+                    <a href="contact.html" class="nav-link">Connect_Now</a>
+                </div>
+                <div style="transform: translateZ(30px);">
+                    <div style="width: 100%; height: 300px; background: linear-gradient(135deg, rgba(255,0,153,0.1), rgba(0,255,136,0.1)); border-radius: 20px; position: relative; overflow: hidden;">
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 8rem; opacity: 0.3;">📞</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-item">
+            <div class="nav-container">
+                <div style="transform: translateZ(30px);">
+                    <div style="width: 100%; height: 300px; background: linear-gradient(135deg, rgba(0,255,136,0.1), rgba(0,153,255,0.1)); border-radius: 20px; position: relative; overflow: hidden;">
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 8rem; opacity: 0.3;">📸</div>
+                    </div>
+                </div>
+                <div class="nav-card">
+                    <span class="nav-icon">📸</span>
+                    <h2 class="nav-title">Gallery</h2>
+                    <p class="nav-description">Visual narratives of creative excellence, showcasing design aesthetics and artistic vision across multimedia projects.</p>
+                    <a href="gallery.html" class="nav-link">Open_Gallery</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terminal Footer -->
+    <footer class="terminal-footer">
+        <div class="terminal-content">
+            <div class="terminal-line terminal-prompt">whoami</div>
+            <div class="terminal-output">IHoggan Digital Portfolio v2.0.25</div>
+            <div class="terminal-line terminal-prompt">status</div>
+            <div class="terminal-output">© 2025 All systems operational. Ready for collaboration.</div>
+        </div>
+    </footer>
+
+    <script>
+        // Custom cursor
+        const cursor = document.querySelector('.cursor');
+        const trails = [];
+        
+        // Create cursor trails
+        for (let i = 0; i < 5; i++) {
+            const trail = document.createElement('div');
+            trail.className = 'cursor-trail';
+            document.body.appendChild(trail);
+            trails.push(trail);
+        }
+        
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+        
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+        
+        function updateCursor() {
+            cursorX += (mouseX - cursorX) * 0.1;
+            cursorY += (mouseY - cursorY) * 0.1;
+            
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            
+            trails.forEach((trail, index) => {
+                const delay = (index + 1) * 0.03;
+                const trailX = cursorX - (mouseX - cursorX) * delay;
+                const trailY = cursorY - (mouseY - cursorY) * delay;
+                
+                trail.style.left = trailX + 'px';
+                trail.style.top = trailY + 'px';
+                trail.style.opacity = 1 - (index * 0.2);
+            });
+            
+            requestAnimationFrame(updateCursor);
+        }
+        
+        updateCursor();
+        
+        // Hover effects
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'scale(2)';
+            });
+            
+            item.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'scale(1)';
+            });
+        });
+        
+        // Smooth scroll
+        document.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.geometric-bg');
+            const speed = scrolled * 0.5;
+            parallax.style.transform = `rotate3d(1, 1, 0, 15deg) translate(${-50 + speed * 0.01}%, ${-50 + speed * 0.01}%)`;
+        });
+    </script>
 </body>
 </html>
