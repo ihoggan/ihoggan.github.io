@@ -69,6 +69,89 @@
             margin: 0 auto;
         }
 
+        /* MINERAL NAVIGATION BUTTONS */
+        .nav-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin: 24px 0;
+            padding: 0 20px;
+        }
+
+        .mineral-nav-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mineral-nav-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .mineral-nav-button:hover::before {
+            left: 100%;
+        }
+
+        .mineral-nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .mineral-nav-button:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .mineral-nav-button.home {
+            background: linear-gradient(45deg, rgba(255, 215, 0, 0.2), rgba(255, 107, 53, 0.2));
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+
+        .mineral-nav-button.home:hover {
+            background: linear-gradient(45deg, #ffd700, #ff6b35);
+            border-color: #ffd700;
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+            color: #000;
+        }
+
+        .mineral-nav-button.support {
+            background: linear-gradient(45deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2));
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .mineral-nav-button.support:hover {
+            background: linear-gradient(45deg, #8b5cf6, #ec4899);
+            border-color: #8b5cf6;
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+            color: #fff;
+        }
+
         .nav-tabs {
             display: flex;
             justify-content: center;
@@ -353,6 +436,16 @@
     <header class="header">
         <h1>🌍 Earth's Hidden Treasures</h1>
         <p>Explore the fascinating world of minerals, gemstones, and precious metals - from your backyard to the rarest radioactive specimens on Earth</p>
+        
+        <!-- Navigation Buttons -->
+        <div class="nav-buttons">
+            <a href="https://ihoggan.github.io/ihoggan-portfolio/index.html" class="mineral-nav-button home">
+                🏠 Home ↗️
+            </a>
+            <a href="https://github.com/sponsors/ihoggan" target="_blank" class="mineral-nav-button support">
+                ❤️ Support Project ↗️
+            </a>
+        </div>
     </header>
 
     <nav class="nav-tabs">
@@ -964,6 +1057,16 @@
         <p>🌍 Earth's Hidden Treasures - Educational Resource for Mineral Enthusiasts</p>
         <p>Remember: Always respect private property, follow local laws, and practice Leave No Trace principles when collecting.</p>
         <p>For radioactive specimens, prioritize safety and check regulations in your area.</p>
+        
+        <!-- Navigation Buttons at Bottom -->
+        <div class="nav-buttons">
+            <a href="https://ihoggan.github.io/ihoggan-portfolio/index.html" class="mineral-nav-button home">
+                🏠 Back to Portfolio ↗️
+            </a>
+            <a href="https://github.com/sponsors/ihoggan" target="_blank" class="mineral-nav-button support">
+                ❤️ Support My Work ↗️
+            </a>
+        </div>
     </footer>
 
     <script>
