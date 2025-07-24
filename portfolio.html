@@ -286,23 +286,6 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
 
-        .coming-soon {
-            text-align: center;
-            padding: 3rem;
-            animation: fadeIn 1.5s ease;
-        }
-
-        .coming-soon h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            opacity: 0.7;
-        }
-
-        .coming-soon p {
-            opacity: 0.6;
-            font-style: italic;
-        }
-
         .navigation {
             text-align: center;
             animation: fadeInUp 1s ease;
@@ -424,6 +407,7 @@
             </section>
 
             <div class="portfolio-grid">
+                <!-- Project 1: S.M.A.R.T. Neural Network -->
                 <article class="project-featured">
                     <div class="project-header">
                         <div class="project-icon">🧠</div>
@@ -435,7 +419,7 @@
 
                     <div class="project-description">
                         An interactive neural network playground that makes machine learning accessible and visual. 
-                        Experiment with different architectures, watch training in real-time, and understand how 
+                        Experiment with different learning rates, watch training in real-time, and understand how 
                         artificial intelligence learns through hands-on exploration and adaptive reasoning demonstrations.
                     </div>
 
@@ -453,7 +437,7 @@
                         <div class="feature-card">
                             <span class="feature-icon">⚡</span>
                             <h4 class="feature-title">Adaptive Training</h4>
-                            <p class="feature-desc">Experiment with different architectures and parameters</p>
+                            <p class="feature-desc">Experiment with different parameters</p>
                         </div>
                         <div class="feature-card">
                             <span class="feature-icon">🎯</span>
@@ -463,117 +447,370 @@
                     </div>
 
                     <div class="project-actions">
-                        <a href="neural_playground.html" class="action-button primary">
+                        <a href="https://ihoggan.github.io/ihoggan-portfolio/neural_playground.html" class="action-button primary">
                             🧠 Explore Neural Playground
-                        </a>
-                        <a href="#" class="action-button" onclick="showComingSoon(event)">
-                            📖 View Documentation
                         </a>
                     </div>
                 </article>
 
-                <!-- Project 2 Placeholder -->
+                <!-- Project 2: Linux Guide -->
                 <article class="project-featured">
                     <div class="project-header">
-                        <div class="project-icon">🚀</div>
+                        <div class="project-icon">🐧</div>
                         <div class="project-title">
-                            <h2 class="project-name">Project Name</h2>
-                            <p class="project-tagline">Coming Soon - Innovative Solution</p>
+                            <h2 class="project-name">Linux Guide</h2>
+                            <p class="project-tagline">Complete Linux System Mastery</p>
                         </div>
                     </div>
 
                     <div class="project-description">
-                        An exciting new project currently in development. This will showcase advanced technology 
-                        implementation with user-centered design principles and cutting-edge functionality.
-                        Stay tuned for more details as development progresses.
+                        A comprehensive guide to Linux systems, from beginner basics to advanced administration. 
+                        Covers command line mastery, system configuration, security practices, and automation 
+                        techniques for modern Linux environments.
                     </div>
 
                     <div class="project-features">
                         <div class="feature-card">
-                            <span class="feature-icon">⚡</span>
-                            <h4 class="feature-title">Performance</h4>
-                            <p class="feature-desc">Optimized for speed and efficiency</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">🎨</span>
-                            <h4 class="feature-title">Design</h4>
-                            <p class="feature-desc">Modern and intuitive user interface</p>
+                            <span class="feature-icon">💻</span>
+                            <h4 class="feature-title">Command Line</h4>
+                            <p class="feature-desc">Master terminal commands and shell scripting</p>
                         </div>
                         <div class="feature-card">
                             <span class="feature-icon">🔧</span>
-                            <h4 class="feature-title">Technology</h4>
-                            <p class="feature-desc">Built with latest development tools</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">📱</span>
-                            <h4 class="feature-title">Responsive</h4>
-                            <p class="feature-desc">Works seamlessly across all devices</p>
-                        </div>
-                    </div>
-
-                    <div class="project-actions">
-                        <a href="#" class="action-button primary" onclick="showComingSoon(event)">
-                            🚀 Coming Soon
-                        </a>
-                        <a href="#" class="action-button" onclick="showComingSoon(event)">
-                            📖 Documentation
-                        </a>
-                    </div>
-                </article>
-
-                <!-- Project 3 Placeholder -->
-                <article class="project-featured">
-                    <div class="project-header">
-                        <div class="project-icon">💡</div>
-                        <div class="project-title">
-                            <h2 class="project-name">Innovation Hub</h2>
-                            <p class="project-tagline">Creative Solutions in Development</p>
-                        </div>
-                    </div>
-
-                    <div class="project-description">
-                        A creative platform designed to showcase innovative thinking and problem-solving approaches. 
-                        This project will demonstrate advanced methodologies and creative implementation strategies
-                        for complex technical challenges.
-                    </div>
-
-                    <div class="project-features">
-                        <div class="feature-card">
-                            <span class="feature-icon">💡</span>
-                            <h4 class="feature-title">Innovation</h4>
-                            <p class="feature-desc">Creative problem-solving approaches</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">🔗</span>
-                            <h4 class="feature-title">Integration</h4>
-                            <p class="feature-desc">Seamless system connectivity</p>
+                            <h4 class="feature-title">System Admin</h4>
+                            <p class="feature-desc">Learn system configuration and maintenance</p>
                         </div>
                         <div class="feature-card">
                             <span class="feature-icon">🛡️</span>
                             <h4 class="feature-title">Security</h4>
-                            <p class="feature-desc">Enterprise-grade security measures</p>
+                            <p class="feature-desc">Implement robust security practices</p>
                         </div>
                         <div class="feature-card">
-                            <span class="feature-icon">📊</span>
-                            <h4 class="feature-title">Analytics</h4>
-                            <p class="feature-desc">Comprehensive data insights</p>
+                            <span class="feature-icon">⚙️</span>
+                            <h4 class="feature-title">Automation</h4>
+                            <p class="feature-desc">Automate tasks with scripts and tools</p>
                         </div>
                     </div>
 
                     <div class="project-actions">
-                        <a href="#" class="action-button primary" onclick="showComingSoon(event)">
-                            💡 In Development
-                        </a>
-                        <a href="#" class="action-button" onclick="showComingSoon(event)">
-                            📋 Project Details
+                        <a href="https://ihoggan.github.io/ihoggan-portfolio/Linux_Guide.html" class="action-button primary">
+                            🐧 Explore Linux Guide
                         </a>
                     </div>
                 </article>
 
-                <div class="coming-soon">
-                    <h3>More Projects Coming Soon</h3>
-                    <p>Additional portfolio pieces are in development and will be showcased here as they're completed.</p>
-                </div>
+                <!-- Project 3: Project Zombie -->
+                <article class="project-featured">
+                    <div class="project-header">
+                        <div class="project-icon">🧟</div>
+                        <div class="project-title">
+                            <h2 class="project-name">Project Zombie</h2>
+                            <p class="project-tagline">Zombie Device Detection </p>
+                        </div>
+                    </div>
+
+                    <div class="project-description">
+                        A project used to find zombie devices up to no good in the local area. 
+                        Making good use of professional tools, TShark, Airmon and Data Analysis.
+                    </div>
+
+                    <div class="project-features">
+                        <div class="feature-card">
+                            <span class="feature-icon">🏗️</span>
+                            <h4 class="feature-title">Wireless Monitoring</h4>
+                            <p class="feature-desc">Make use of professional grade tools</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">📦</span>
+                            <h4 class="feature-title">Wireshark/TShark</h4>
+                            <p class="feature-desc">Examine packets in cyberspace</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">⚔️</span>
+                            <h4 class="feature-title">Data Analysis</h4>
+                            <p class="feature-desc">Make sense of the collected dataset</p>
+                        </div>
+                        
+                    </div>
+
+                    <div class="project-actions">
+                        <a href="https://ihoggan.github.io/ihoggan-portfolio/Project_Zombie.html" class="action-button primary">
+                            🧟 Project Zombie
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Project 4: Python Programming -->
+                <article class="project-featured">
+                    <div class="project-header">
+                        <div class="project-icon">🐍</div>
+                        <div class="project-title">
+                            <h2 class="project-name">Python Programming</h2>
+                            <p class="project-tagline">Complete Python Development Hub</p>
+                        </div>
+                    </div>
+
+                    <div class="project-description">
+                        A comprehensive Python programming resource covering everything from basics to advanced topics. 
+                        Includes interactive examples, best practices, data science applications, and modern Python 
+                        development techniques for real-world projects.
+                    </div>
+
+                    <div class="project-features">
+                        <div class="feature-card">
+                            <span class="feature-icon">📚</span>
+                            <h4 class="feature-title">Learning Path</h4>
+                            <p class="feature-desc">Structured learning from beginner to expert</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">💡</span>
+                            <h4 class="feature-title">Interactive Examples</h4>
+                            <p class="feature-desc">Hands-on coding exercises and projects</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">📊</span>
+                            <h4 class="feature-title">Data Science</h4>
+                            <p class="feature-desc">Data analysis and visualization techniques</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">🚀</span>
+                            <h4 class="feature-title">Modern Python</h4>
+                            <p class="feature-desc">Latest Python features and best practices</p>
+                        </div>
+                    </div>
+
+                    <div class="project-actions">
+                        <a href="https://ihoggan.github.io/ihoggan-portfolio/Python.html" class="action-button primary">
+                            🐍 Learn Python
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Project 5: Quantum-ness -->
+                <article class="project-featured">
+                    <div class="project-header">
+                        <div class="project-icon">⚛️</div>
+                        <div class="project-title">
+                            <h2 class="project-name">Quantum-ness</h2>
+                            <p class="project-tagline">Quantum Computing Explorer</p>
+                        </div>
+                    </div>
+
+                    <div class="project-description">
+                        Dive into the fascinating world of quantum computing with interactive simulations, quantum 
+                        algorithms, and visual representations of quantum phenomena. Explore qubits, superposition, 
+                        entanglement, and quantum gates in an accessible format.
+                    </div>
+
+                    <div class="project-features">
+                        <div class="feature-card">
+                            <span class="feature-icon">🌀</span>
+                            <h4 class="feature-title">Quantum Simulation</h4>
+                            <p class="feature-desc">Interactive quantum state visualizations</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">🔗</span>
+                            <h4 class="feature-title">Entanglement</h4>
+                            <p class="feature-desc">Explore quantum entanglement phenomena</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">🎛️</span>
+                            <h4 class="feature-title">Quantum Gates</h4>
+                            <p class="feature-desc">Learn quantum gate operations and circuits</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">🧮</span>
+                            <h4 class="feature-title">Algorithms</h4>
+                            <p class="feature-desc">Implement famous quantum algorithms</p>
+                        </div>
+                    </div>
+
+                    <div class="project-actions">
+                        <a href="https://ihoggan.github.io/ihoggan-portfolio/Quantum_ness.html" class="action-button primary">
+                            ⚛️ Explore Quantum
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Project 6: Raspberry Pi -->
+                <article class="project-featured">
+                    <div class="project-header">
+                        <div class="project-icon">🍓</div>
+                        <div class="project-title">
+                            <h2 class="project-name">Raspberry Pi Hub</h2>
+                            <p class="project-tagline">IoT & Embedded Systems</p>
+                        </div>
+                    </div>
+
+                    <div class="project-description">
+                        A complete guide to Raspberry Pi development, from basic setup to advanced IoT projects. 
+                        Covers GPIO programming, sensor integration, home automation, and embedded system design 
+                        with practical, hands-on projects.
+                    </div>
+
+                    <div class="project-features">
+                        <div class="feature-card">
+                            <span class="feature-icon">🔌</span>
+                            <h4 class="feature-title">GPIO Programming</h4>
+                            <p class="feature-desc">Control hardware through GPIO pins</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">📡</span>
+                            <h4 class="feature-title">IoT Projects</h4>
+                            <p class="feature-desc">Build connected devices and sensors</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">🏠</span>
+                            <h4 class="feature-title">Home Automation</h4>
+                            <p class="feature-desc">Create smart home solutions</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">🛠️</span>
+                            <h4 class="feature-title">Embedded Systems</h4>
+                            <p class="feature-desc">Develop embedded applications</p>
+                        </div>
+                    </div>
+
+                    <div class="project-actions">
+                        <a href="https://ihoggan.github.io/ihoggan-portfolio/Raspberry_Pi.html" class="action-button primary">
+                            🍓 Explore Raspberry Pi
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Project 7: Rocks, Minerals & Metals -->
+                <article class="project-featured">
+                    <div class="project-header">
+                        <div class="project-icon">💎</div>
+                        <div class="project-title">
+                            <h2 class="project-name">Geological Explorer</h2>
+                            <p class="project-tagline">Rocks, Minerals & Metals Database</p>
+                        </div>
+                    </div>
+
+                    <div class="project-description">
+                        An interactive geological database featuring comprehensive information about rocks, minerals, 
+                        and metals. Explore crystal structures, formation processes, identification guides, and 
+                        practical applications in modern technology and industry.
+                    </div>
+
+                    <div class="project-features">
+                        <div class="feature-card">
+                            <span class="feature-icon">🔍</span>
+                            <h4 class="feature-title">Identification Guide</h4>
+                            <p class="feature-desc">Learn to identify rocks and minerals</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">⚗️</span>
+                            <h4 class="feature-title">Formation Process</h4>
+                            <p class="feature-desc">Understand geological formation processes</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">🏭</span>
+                            <h4 class="feature-title">Industrial Uses</h4>
+                            <p class="feature-desc">Explore applications in technology</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">📊</span>
+                            <h4 class="feature-title">Interactive Database</h4>
+                            <p class="feature-desc">Searchable geological specimen database</p>
+                        </div>
+                    </div>
+
+                    <div class="project-actions">
+                        <a href="https://ihoggan.github.io/ihoggan-portfolio/Rocks_Minerals_Metals.html" class="action-button primary">
+                            💎 Explore Geology
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Project 8: Space Anomaly -->
+                <article class="project-featured">
+                    <div class="project-header">
+                        <div class="project-icon">🚀</div>
+                        <div class="project-title">
+                            <h2 class="project-name">Space Anomaly</h2>
+                            <p class="project-tagline">I3/ATLAS - Recent Visitor from another galaxy</p>
+                        </div>
+                    </div>
+
+                    <div class="project-description">
+                        Look at the data story made from the recent I3/ATLAS anomoly detected in our solar system
+                    </div>
+
+                    <div class="project-features">
+                        <div class="feature-card">
+                            <span class="feature-icon">🌌</span>
+                            <h4 class="feature-title">Data Exploration</h4>
+                            <p class="feature-desc">Explore the data story</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">🕳️</span>
+                            <h4 class="feature-title">Anomalies</h4>
+                            <p class="feature-desc">Discover and investigate space anomalies</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">🪐</span>
+                            <h4 class="feature-title">Alien Worlds</h4>
+                            <p class="feature-desc">Visits from beyond our world</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">🔬</span>
+                            <h4 class="feature-title">Scientific Discovery</h4>
+                            <p class="feature-desc">Uncover cosmic mysteries and phenomena</p>
+                        </div>
+                    </div>
+
+                    <div class="project-actions">
+                        <a href="https://ihoggan.github.io/ihoggan-portfolio/Space_Anomoly.html" class="action-button primary">
+                            🚀 Explore Space
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Project 9: TradeWar -->
+                <article class="project-featured">
+                    <div class="project-header">
+                        <div class="project-icon">⚔️</div>
+                        <div class="project-title">
+                            <h2 class="project-name">TradeWar</h2>
+                            <p class="project-tagline">Economic Strategy Battle</p>
+                        </div>
+                    </div>
+
+                    <div class="project-description">
+                        A strategic human and AI trading game. Can you beat the AI Bot and win big?
+                    </div>
+
+                    <div class="project-features">
+                        <div class="feature-card">
+                            <span class="feature-icon">💰</span>
+                            <h4 class="feature-title">Trading System</h4>
+                            <p class="feature-desc">Complex market dynamics and trading mechanics</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">🤝</span>
+                            <h4 class="feature-title">Diplomacy</h4>
+                            <p class="feature-desc">See how algorithmic trading works</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">🏛️</span>
+                            <h4 class="feature-title">Empire Building</h4>
+                            <p class="feature-desc">Expand your economic influence</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">📈</span>
+                            <h4 class="feature-title">Market Analysis</h4>
+                            <p class="feature-desc">Advanced economic modeling and strategy</p>
+                        </div>
+                    </div>
+
+                    <div class="project-actions">
+                        <a href="https://ihoggan.github.io/ihoggan-portfolio/TradeWar.html" class="action-button primary">
+                            ⚔️ Play TradeWar
+                        </a>
+                    </div>
+                </article>
             </div>
         </main>
 
@@ -619,12 +856,6 @@
                 star.style.transform = `translate(${translateX}px, ${translateY}px)`;
             });
         });
-
-        // Show coming soon message
-        function showComingSoon(event) {
-            event.preventDefault();
-            alert('📋 Documentation coming soon! This feature is currently in development.');
-        }
 
         // Initialize
         createStars();
