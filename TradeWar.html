@@ -503,6 +503,37 @@
             transform: none;
         }
 
+        /* New navigation buttons */
+        .navigation-buttons {
+            text-align: center;
+            margin: 30px 0 20px 0;
+        }
+
+        .nav-btn {
+            background: linear-gradient(45deg, #96ceb4, #feca57);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(45deg, #84b8a0, #fbb342);
+        }
+
+        .nav-btn:visited {
+            color: white;
+        }
+
         .disclaimer {
             margin-top: 30px;
             padding: 15px;
@@ -528,6 +559,12 @@
                 width: 60px;
                 height: 60px;
                 font-size: 18px;
+            }
+
+            .nav-btn {
+                display: block;
+                margin: 10px auto;
+                width: 200px;
             }
         }
     </style>
@@ -693,6 +730,12 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="navigation-buttons">
+            <a href="https://ihoggan.github.io/ihoggan-portfolio/index.html" class="nav-btn" target="_blank">🏠 HomePage</a>
+            <a href="https://github.com/sponsors/ihoggan" class="nav-btn" target="_blank">❤️ Support</a>
         </div>
 
         <!-- Disclaimer -->
