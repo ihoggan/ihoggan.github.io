@@ -1,392 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Me</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: white;
-            overflow-x: hidden;
-        }
-
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            animation: twinkle 3s infinite;
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
-
-        .container {
-            position: relative;
-            z-index: 2;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 3rem;
-            animation: fadeInDown 1s ease;
-        }
-
-        .logo {
-            font-size: 4rem;
-            font-weight: 900;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57);
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: gradient 3s ease infinite;
-            margin-bottom: 1rem;
-            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
-        }
-
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            font-weight: 300;
-            letter-spacing: 3px;
-        }
-
-        .main-content {
-            flex: 1;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center;
-            margin-bottom: 3rem;
-        }
-
-        .profile-section {
-            animation: slideInLeft 1s ease;
-        }
-
-        .profile-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 2.5rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .profile-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
-        }
-
-        .avatar {
-            width: 150px;
-            height: 150px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-radius: 50%;
-            margin: 0 auto 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        .info-section {
-            animation: slideInRight 1s ease;
-        }
-
-        .info-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .info-card:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateX(10px);
-        }
-
-        .info-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: #4ecdc4;
-        }
-
-        .info-text {
-            line-height: 1.6;
-            opacity: 0.9;
-        }
-
-        .skills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .skill-tag {
-            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: transform 0.3s ease;
-        }
-
-        .skill-tag:hover {
-            transform: scale(1.1) rotate(5deg);
-        }
-
-        .navigation {
-            text-align: center;
-            animation: fadeInUp 1s ease;
-        }
-
-        .home-button {
-            display: inline-block;
-            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
-            color: white;
-            text-decoration: none;
-            padding: 1rem 3rem;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .home-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .home-button:hover::before {
-            left: 100%;
-        }
-
-        .home-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-100px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(100px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-            
-            .logo {
-                font-size: 3rem;
-            }
-            
-            .container {
-                padding: 1rem;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Iain Hoggan</title>
+<meta name="description" content="Network technician and hobbyist developer building interactive tools for learning hard subjects.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+.skills{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.skills span{font-family:var(--mono);font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-2);
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);border-radius:3px;padding:7px 12px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+</style>
 </head>
 <body>
-    <div class="stars" id="stars"></div>
-    
-    <div class="container">
-        <header class="header">
-            <h1 class="logo">IHoggan</h1>
-            <p class="subtitle">ABOUT THE CREATOR</p>
-        </header>
 
-        <main class="main-content">
-            <section class="profile-section">
-                <div class="profile-card">
-                    <div class="avatar">👨‍💻</div>
-                    <h2 style="text-align: center; font-size: 1.8rem; margin-bottom: 1rem;">The Developer</h2>
-                    <p style="text-align: center; opacity: 0.9; line-height: 1.6;">
-                        A passionate creator who believes in building tools that make complex tasks simple and accessible to everyone.
-                    </p>
-                </div>
-            </section>
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html" aria-current="page">About</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
 
-            <section class="info-section">
-                <div class="info-card">
-                    <h3 class="info-title">Philosophy</h3>
-                    <p class="info-text">
-                        Technology should empower, not complicate. Every project is an opportunity to solve real problems and create meaningful impact through thoughtful design and implementation.
-                    </p>
-                </div>
+<header class="hero">
+  <div class="wrap col">
+    <p class="tag">About</p>
+    <h1>I build the tool,<br>not the lecture</h1>
+    <p class="lede">Network technician by trade, builder by habit. Everything on this site started because I wanted to understand something and couldn't find a version of it I could <strong>touch</strong>.</p>
+  </div>
+</header>
 
-                <div class="info-card">
-                    <h3 class="info-title">Approach</h3>
-                    <p class="info-text">
-                        Clean code, user-first design, and continuous learning. Believing in the power of open-source collaboration and knowledge sharing to drive innovation forward.
-                    </p>
-                </div>
+<main class="wrap col">
 
-                <div class="info-card">
-                    <h3 class="info-title">Focus Areas</h3>
-                    <p class="info-text">Web development, automation, and creating tools that bridge the gap between complex functionality and intuitive user experience.</p>
-                    <div class="skills">
-                        <span class="skill-tag">JavaScript</span>
-                        <span class="skill-tag">Python</span>
-                        <span class="skill-tag">Web APIs</span>
-                        <span class="skill-tag">UI/UX</span>
-                        <span class="skill-tag">Automation</span>
-                    </div>
-                </div>
-            </section>
-        </main>
+<section>
+  <h2>What I do</h2>
+  <p>My day job is IT and network support — the practical end of computing, where things have to actually work on real hardware for real people. That background shapes everything here. I'm less interested in the theory of a subject than in what it does when you poke it, and most of these projects exist because I wanted to see a concept behave rather than read a description of it.</p>
+  <p>So the neural network playground lets you break the training on purpose. The wireless security piece is a real 48-hour investigation with the dead ends left in. The Raspberry Pi guide gives you the pinout instead of assuming you know it. If a page here doesn't do something when you interact with it, it probably shouldn't exist.</p>
+</section>
 
-        <nav class="navigation">
-            <a href="https://ihoggan.github.io/ihoggan-portfolio/index.html" class="home-button">
-                ← Back to Home
-            </a>
-        </nav>
-    </div>
+<section>
+  <h2>How I work</h2>
+  <p>Slowly, and by measuring. The longest-running thing I've built is a pool physics engine that took seventy revisions, and the useful part wasn't the game — it was learning that almost every confident explanation I had for a bug was wrong, and that the only reliable way to settle an argument is to go and measure the thing.</p>
+  <p>That project produced a working method I now open every new project with: decide before you build, report numbers instead of adjectives, and break your own tests deliberately to find out whether they'd catch anything. It's written up honestly, including the parts where I was wrong for three revisions running.</p>
+  <p><a class="btn" href="Hustler.html">Read the HUSTLER case study</a></p>
+</section>
 
-    <script>
-        // Create animated stars
-        function createStars() {
-            const starsContainer = document.getElementById('stars');
-            const numberOfStars = 100;
+<section>
+  <h2>Outside that</h2>
+  <p>Hobbyist game development, mostly simulations where AI plays against AI so I can watch what emerges from the rules rather than scripting the behaviour. Software-defined radio and electronics. Raspberry Pi hardware for anything that needs to touch the physical world.</p>
+  <div class="skills">
+    <span>Python</span><span>JavaScript</span><span>Linux</span>
+    <span>Networking</span><span>Packet analysis</span><span>Raspberry Pi</span>
+    <span>pygame / pymunk</span><span>SDR</span><span>Git &amp; CI</span>
+  </div>
+</section>
 
-            for (let i = 0; i < numberOfStars; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                
-                const size = Math.random() * 3 + 1;
-                star.style.width = size + 'px';
-                star.style.height = size + 'px';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.animationDelay = Math.random() * 3 + 's';
-                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                
-                starsContainer.appendChild(star);
-            }
-        }
+<section>
+  <h2>Why it's all free</h2>
+  <p>Because the barrier to learning this stuff usually isn't difficulty, it's access — paywalls, sign-ups, courses that want your email before they'll show you anything. Everything on this site runs client-side in your browser, costs nothing, and asks for nothing. If it's useful to you, that's the whole point.</p>
+  <p><a class="btn btn-primary" href="portfolio.html">See the projects</a></p>
+</section>
 
-        // Parallax effect on mouse move
-        document.addEventListener('mousemove', (e) => {
-            const stars = document.querySelectorAll('.star');
-            const x = e.clientX / window.innerWidth;
-            const y = e.clientY / window.innerHeight;
-            
-            stars.forEach((star, index) => {
-                const speed = (index % 5 + 1) * 0.5;
-                const translateX = (x - 0.5) * speed * 10;
-                const translateY = (y - 0.5) * speed * 10;
-                star.style.transform = `translate(${translateX}px, ${translateY}px)`;
-            });
-        });
+</main>
 
-        // Initialize
-        createStars();
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">Home</a>
+    <a href="portfolio.html">Projects</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="contact.html">Get in touch</a>
+    <a href="https://github.com/ihoggan">GitHub</a>
+    <span class="tag">© 2026 Iain Hoggan</span>
+  </div>
+</footer>
 
-        // Add smooth scrolling for any internal links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
 </body>
 </html>
