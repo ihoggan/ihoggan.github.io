@@ -1,887 +1,222 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: white;
-            overflow-x: hidden;
-        }
-
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            animation: twinkle 3s infinite;
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
-
-        .container {
-            position: relative;
-            z-index: 2;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 3rem;
-            animation: fadeInDown 1s ease;
-        }
-
-        .logo {
-            font-size: 4rem;
-            font-weight: 900;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57);
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: gradient 3s ease infinite;
-            margin-bottom: 1rem;
-            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
-        }
-
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            font-weight: 300;
-            letter-spacing: 3px;
-        }
-
-        .main-content {
-            flex: 1;
-            margin-bottom: 3rem;
-        }
-
-        .intro-section {
-            text-align: center;
-            margin-bottom: 4rem;
-            animation: fadeIn 1.2s ease;
-        }
-
-        .intro-text {
-            font-size: 1.3rem;
-            line-height: 1.8;
-            max-width: 800px;
-            margin: 0 auto;
-            opacity: 0.9;
-        }
-
-        .portfolio-grid {
-            display: grid;
-            gap: 3rem;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .project-featured {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 25px;
-            padding: 3rem;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-            transition: all 0.5s ease;
-            animation: slideInUp 1s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .project-featured::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57);
-            background-size: 300% 300%;
-            border-radius: 25px;
-            z-index: -1;
-            animation: gradient 3s ease infinite;
-        }
-
-        .project-featured:hover {
-            transform: translateY(-15px) scale(1.02);
-            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
-        }
-
-        .project-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 2rem;
-            gap: 1rem;
-        }
-
-        .project-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        .project-title {
-            flex: 1;
-        }
-
-        .project-name {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .project-tagline {
-            font-size: 1.1rem;
-            opacity: 0.8;
-            font-style: italic;
-        }
-
-        .project-description {
-            font-size: 1.1rem;
-            line-height: 1.7;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-
-        .project-features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2.5rem;
-        }
-
-        .feature-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 1.5rem;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .feature-card:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-5px);
-        }
-
-        .feature-icon {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        .feature-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: #4ecdc4;
-        }
-
-        .feature-desc {
-            font-size: 0.9rem;
-            opacity: 0.8;
-            line-height: 1.5;
-        }
-
-        .project-actions {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .action-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
-            color: white;
-            text-decoration: none;
-            padding: 1rem 2.5rem;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .action-button.primary {
-            background: linear-gradient(135deg, #4ecdc4, #45b7d1);
-            font-size: 1.2rem;
-            padding: 1.2rem 3rem;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-        }
-
-        .action-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .action-button:hover::before {
-            left: 100%;
-        }
-
-        .action-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .navigation {
-            text-align: center;
-            animation: fadeInUp 1s ease;
-        }
-
-        .home-button {
-            display: inline-block;
-            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
-            color: white;
-            text-decoration: none;
-            padding: 1rem 3rem;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .home-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .home-button:hover::before {
-            left: 100%;
-        }
-
-        .home-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(100px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .project-header {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .project-actions {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .logo {
-                font-size: 3rem;
-            }
-            
-            .container {
-                padding: 1rem;
-            }
-
-            .project-featured {
-                padding: 2rem;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projects — Iain Hoggan</title>
+<meta name="description" content="Nine interactive tools for learning hard subjects — neural network training, wireless packet capture, quantum simulation, Raspberry Pi hardware — plus a case study of a pool physics engine.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+.entry{border-top:1px solid var(--rule);padding:30px 0;display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,320px);gap:32px;align-items:start}
+.entry:first-of-type{border-top:0}
+.entry h2{font-size:clamp(1.3rem,2.4vw,1.75rem)}
+.entry .lede{font-size:1rem;margin-bottom:18px}
+.does{list-style:none;display:grid;gap:8px}
+.does li{font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-2);
+  padding-bottom:8px;border-bottom:1px solid var(--rule)}
+.does li:last-child{border-bottom:0;padding-bottom:0}
+.does li b{display:block;font-family:var(--body);font-size:14px;
+  letter-spacing:0;text-transform:none;color:var(--ink);font-weight:600;margin-bottom:1px}
+.inline-dot{display:inline-block;vertical-align:middle;margin-right:6px}
+@media(max-width:760px){.entry{grid-template-columns:1fr;gap:20px}}
+</style>
 </head>
 <body>
-    <div class="stars" id="stars"></div>
-    
-    <div class="container">
-        <header class="header">
-            <h1 class="logo">Portfolio</h1>
-            <p class="subtitle">PORTFOLIO SHOWCASE</p>
-        </header>
 
-        <main class="main-content">
-            <section class="intro-section">
-                <p class="intro-text">
-                    Explore innovative projects that combine cutting-edge technology with practical solutions. 
-                    Each project represents a commitment to excellence, user experience, and meaningful impact.
-                </p>
-            </section>
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html" aria-current="page">Projects</a>
+      <a href="about.html">About</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
 
-            <div class="portfolio-grid">
-                <!-- Project 1: S.M.A.R.T. Neural Network -->
-                <article class="project-featured">
-                    <div class="project-header">
-                        <div class="project-icon">🧠</div>
-                        <div class="project-title">
-                            <h2 class="project-name">S.M.A.R.T.</h2>
-                            <p class="project-tagline">See Machine Adaptive Reasoning Training</p>
-                        </div>
-                    </div>
+<header class="hero">
+  <div class="wrap col">
+    <p class="tag">Everything on the bench</p>
+    <h1>Projects</h1>
+    <p class="lede">Nine tools that run in your browser and do something when you touch them, and one case study about building a physics engine. <strong>All free, all client-side, no sign-up.</strong></p>
+  </div>
+</header>
 
-                    <div class="project-description">
-                        Watch neural networks learn in real-time! Experiment with learning rates to see what happens when 
-                        AI "explodes" - perfect for understanding why balance is crucial in AI training.
-                    </div>
+<main class="wrap">
 
-                    <div class="project-features">
-                        <div class="feature-card">
-                            <span class="feature-icon">🧠</span>
-                            <h4 class="feature-title">Neural Networks</h4>
-                            <p class="feature-desc">Interactive playground for exploring machine learning concepts</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">👁️</span>
-                            <h4 class="feature-title">Visual Learning</h4>
-                            <p class="feature-desc">Watch AI training processes unfold in real-time</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">⚡</span>
-                            <h4 class="feature-title">Adaptive Training</h4>
-                            <p class="feature-desc">Experiment with different parameters</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">🎯</span>
-                            <h4 class="feature-title">Reasoning Demo</h4>
-                            <p class="feature-desc">See how machines develop reasoning capabilities</p>
-                        </div>
-                    </div>
-
-                    <div class="project-actions">
-                        <a href="https://ihoggan.github.io/ihoggan-portfolio/neural_playground.html" class="action-button primary">
-                            🧠 Explore Neural Playground
-                        </a>
-                    </div>
-                </article>
-
-                <!-- Project 2: Linux Guide -->
-                <article class="project-featured">
-                    <div class="project-header">
-                        <div class="project-icon">🐧</div>
-                        <div class="project-title">
-                            <h2 class="project-name">Linux Guide</h2>
-                            <p class="project-tagline">Complete Linux System Mastery</p>
-                        </div>
-                    </div>
-
-                    <div class="project-description">
-                        Complete Linux tutorial with safe, hands-on commands. Learn file management, text processing, 
-                        system monitoring, and terminal skills through practical exercises.
-                    </div>
-
-                    <div class="project-features">
-                        <div class="feature-card">
-                            <span class="feature-icon">💻</span>
-                            <h4 class="feature-title">Command Line</h4>
-                            <p class="feature-desc">Master terminal commands and shell scripting</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">🔧</span>
-                            <h4 class="feature-title">System Admin</h4>
-                            <p class="feature-desc">Learn system configuration and maintenance</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">🛡️</span>
-                            <h4 class="feature-title">Security</h4>
-                            <p class="feature-desc">Implement robust security practices</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">⚙️</span>
-                            <h4 class="feature-title">Automation</h4>
-                            <p class="feature-desc">Automate tasks with scripts and tools</p>
-                        </div>
-                    </div>
-
-                    <div class="project-actions">
-                        <a href="https://ihoggan.github.io/ihoggan-portfolio/Linux_Guide.html" class="action-button primary">
-                            🐧 Explore Linux Guide
-                        </a>
-                    </div>
-                </article>
-
-                <!-- Project 3: Project Zombie -->
-                <article class="project-featured">
-                    <div class="project-header">
-                        <div class="project-icon">🧟</div>
-                        <div class="project-title">
-                            <h2 class="project-name">Project Zombie</h2>
-                            <p class="project-tagline">Zombie Device Detection </p>
-                        </div>
-                    </div>
-
-                    <div class="project-description">
-                        Real-world cybersecurity case study! Follow a 48-hour investigation using 
-                        Raspberry Pi to hunt for potential botnet "zombies" using wireless monitoring 
-                        and packet analysis.
-                    </div>
-
-                    <div class="project-features">
-                        <div class="feature-card">
-                            <span class="feature-icon">🏗️</span>
-                            <h4 class="feature-title">Wireless Monitoring</h4>
-                            <p class="feature-desc">Make use of professional grade tools</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">📦</span>
-                            <h4 class="feature-title">Wireshark/TShark</h4>
-                            <p class="feature-desc">Examine packets in cyberspace</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">⚔️</span>
-                            <h4 class="feature-title">Data Analysis</h4>
-                            <p class="feature-desc">Make sense of the collected dataset</p>
-                        </div>
-                        
-                    </div>
-
-                    <div class="project-actions">
-                        <a href="https://ihoggan.github.io/ihoggan-portfolio/Project_Zombie.html" class="action-button primary">
-                            🧟 Project Zombie
-                        </a>
-                    </div>
-                </article>
-
-                <!-- Project 4: Python Programming -->
-                <article class="project-featured">
-                    <div class="project-header">
-                        <div class="project-icon">🐍</div>
-                        <div class="project-title">
-                            <h2 class="project-name">Python Programming</h2>
-                            <p class="project-tagline">Complete Python Development Hub</p>
-                        </div>
-                    </div>
-
-                    <div class="project-description">
-                        Complete Python learning journey with interactive tutorials and real-world projects. 
-                        Build calculators, file organizers, weather apps, and automation scripts.
-                    </div>
-
-                    <div class="project-features">
-                        <div class="feature-card">
-                            <span class="feature-icon">📚</span>
-                            <h4 class="feature-title">Learning Path</h4>
-                            <p class="feature-desc">Structured learning from beginner to expert</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">💡</span>
-                            <h4 class="feature-title">Interactive Examples</h4>
-                            <p class="feature-desc">Hands-on coding exercises and projects</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">📊</span>
-                            <h4 class="feature-title">Data Science</h4>
-                            <p class="feature-desc">Data analysis and visualization techniques</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">🚀</span>
-                            <h4 class="feature-title">Modern Python</h4>
-                            <p class="feature-desc">Latest Python features and best practices</p>
-                        </div>
-                    </div>
-
-                    <div class="project-actions">
-                        <a href="https://ihoggan.github.io/ihoggan-portfolio/Python.html" class="action-button primary">
-                            🐍 Learn Python
-                        </a>
-                    </div>
-                </article>
-
-                <!-- Project 5: Quantum-ness -->
-                <article class="project-featured">
-                    <div class="project-header">
-                        <div class="project-icon">⚛️</div>
-                        <div class="project-title">
-                            <h2 class="project-name">Quantum-ness</h2>
-                            <p class="project-tagline">Quantum Computing Explorer</p>
-                        </div>
-                    </div>
-
-                    <div class="project-description">
-                        Interactive quantum computing demo using superposition, entanglement, and quantum parallelism
-                        for prediction problems. Experience the "quantum-ness-ness" of qubits!
-                    </div>
-
-                    <div class="project-features">
-                        <div class="feature-card">
-                            <span class="feature-icon">🌀</span>
-                            <h4 class="feature-title">Quantum Simulation</h4>
-                            <p class="feature-desc">Interactive quantum state visualizations</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">🔗</span>
-                            <h4 class="feature-title">Entanglement</h4>
-                            <p class="feature-desc">Explore quantum entanglement phenomena</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">🎛️</span>
-                            <h4 class="feature-title">Quantum Gates</h4>
-                            <p class="feature-desc">Learn quantum gate operations and circuits</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">🧮</span>
-                            <h4 class="feature-title">Algorithms</h4>
-                            <p class="feature-desc">Implement famous quantum algorithms</p>
-                        </div>
-                    </div>
-
-                    <div class="project-actions">
-                        <a href="https://ihoggan.github.io/ihoggan-portfolio/Quantum_ness.html" class="action-button primary">
-                            ⚛️ Explore Quantum
-                        </a>
-                    </div>
-                </article>
-
-                <!-- Project 6: Raspberry Pi -->
-                <article class="project-featured">
-                    <div class="project-header">
-                        <div class="project-icon">🍓</div>
-                        <div class="project-title">
-                            <h2 class="project-name">Raspberry Pi Hub</h2>
-                            <p class="project-tagline">IoT & Embedded Systems</p>
-                        </div>
-                    </div>
-
-                    <div class="project-description">
-                        Complete guide to Pi programming and hardware interfacing. Build LED controllers, 
-                        temperature web servers, motion detectors, and IoT projects with step-by-step tutorials.
-                    </div>
-
-                    <div class="project-features">
-                        <div class="feature-card">
-                            <span class="feature-icon">🔌</span>
-                            <h4 class="feature-title">GPIO Programming</h4>
-                            <p class="feature-desc">Control hardware through GPIO pins</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">📡</span>
-                            <h4 class="feature-title">IoT Projects</h4>
-                            <p class="feature-desc">Build connected devices and sensors</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">🏠</span>
-                            <h4 class="feature-title">Home Automation</h4>
-                            <p class="feature-desc">Create smart home solutions</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">🛠️</span>
-                            <h4 class="feature-title">Embedded Systems</h4>
-                            <p class="feature-desc">Develop embedded applications</p>
-                        </div>
-                    </div>
-
-                    <div class="project-actions">
-                        <a href="https://ihoggan.github.io/ihoggan-portfolio/Raspberry_Pi.html" class="action-button primary">
-                            🍓 Explore Raspberry Pi
-                        </a>
-                    </div>
-                </article>
-
-                <!-- Project 7: Rocks, Minerals & Metals -->
-                <article class="project-featured">
-                    <div class="project-header">
-                        <div class="project-icon">💎</div>
-                        <div class="project-title">
-                            <h2 class="project-name">Geological Explorer</h2>
-                            <p class="project-tagline">Rocks, Minerals & Metals Database</p>
-                        </div>
-                    </div>
-
-                    <div class="project-description">
-                        Explore minerals, gemstones, and precious metals from beginner to expert level. 
-                        Learn about geodes, famous mineral localities, and rare specimens.
-                    </div>
-
-                    <div class="project-features">
-                        <div class="feature-card">
-                            <span class="feature-icon">🔍</span>
-                            <h4 class="feature-title">Identification Guide</h4>
-                            <p class="feature-desc">Learn to identify rocks and minerals</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">⚗️</span>
-                            <h4 class="feature-title">Formation Process</h4>
-                            <p class="feature-desc">Understand geological formation processes</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">🏭</span>
-                            <h4 class="feature-title">Industrial Uses</h4>
-                            <p class="feature-desc">Explore applications in technology</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">📊</span>
-                            <h4 class="feature-title">Interactive Database</h4>
-                            <p class="feature-desc">Searchable geological specimen database</p>
-                        </div>
-                    </div>
-
-                    <div class="project-actions">
-                        <a href="https://ihoggan.github.io/ihoggan-portfolio/Rocks_Minerals_Metals.html" class="action-button primary">
-                            💎 Explore Geology
-                        </a>
-                    </div>
-                </article>
-
-                <!-- Project 8: Space Anomaly -->
-                <article class="project-featured">
-                    <div class="project-header">
-                        <div class="project-icon">🚀</div>
-                        <div class="project-title">
-                            <h2 class="project-name">Space Anomaly</h2>
-                            <p class="project-tagline">I3/ATLAS - Recent Visitor from another galaxy</p>
-                        </div>
-                    </div>
-
-                    <div class="project-description">
-                        Master AI anomaly detection by analyzing 3I/ATLAS, the third interstellar visitor ever discovered. 
-                        Complete self-study guide using real astronomical data and ML algorithms.
-                    </div>
-
-                    <div class="project-features">
-                        <div class="feature-card">
-                            <span class="feature-icon">🌌</span>
-                            <h4 class="feature-title">Data Exploration</h4>
-                            <p class="feature-desc">Explore the data story</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">🕳️</span>
-                            <h4 class="feature-title">Anomalies</h4>
-                            <p class="feature-desc">Discover and investigate space anomalies</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">🪐</span>
-                            <h4 class="feature-title">Alien Worlds</h4>
-                            <p class="feature-desc">Visits from beyond our world</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">🔬</span>
-                            <h4 class="feature-title">Scientific Discovery</h4>
-                            <p class="feature-desc">Uncover cosmic mysteries and phenomena</p>
-                        </div>
-                    </div>
-
-                    <div class="project-actions">
-                        <a href="https://ihoggan.github.io/ihoggan-portfolio/Space_Anomaly.html" class="action-button primary">
-                            🚀 Explore Space
-                        </a>
-                    </div>
-                </article>
-
-                <!-- Project 9: TradeWar -->
-                <article class="project-featured">
-                    <div class="project-header">
-                        <div class="project-icon">⚔️</div>
-                        <div class="project-title">
-                            <h2 class="project-name">TradeWar</h2>
-                            <p class="project-tagline">Economic Strategy Battle</p>
-                        </div>
-                    </div>
-
-                    <div class="project-description">
-                        Live trading simulation where humans compete against AI algorithms. 
-                        Test your skills against emotionless AI bots with perfect discipline in real-time market scenarios.
-                    </div>
-
-                    <div class="project-features">
-                        <div class="feature-card">
-                            <span class="feature-icon">💰</span>
-                            <h4 class="feature-title">Trading System</h4>
-                            <p class="feature-desc">Complex market dynamics and trading mechanics</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">🤝</span>
-                            <h4 class="feature-title">Diplomacy</h4>
-                            <p class="feature-desc">See how algorithmic trading works</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">🏛️</span>
-                            <h4 class="feature-title">Empire Building</h4>
-                            <p class="feature-desc">Expand your economic influence</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">📈</span>
-                            <h4 class="feature-title">Market Analysis</h4>
-                            <p class="feature-desc">Advanced economic modeling and strategy</p>
-                        </div>
-                    </div>
-
-                    <div class="project-actions">
-                        <a href="https://ihoggan.github.io/ihoggan-portfolio/TradeWar.html" class="action-button primary">
-                            ⚔️ Play TradeWar
-                        </a>
-                    </div>
-                </article>
-            </div>
-        </main>
-
-        <nav class="navigation">
-            <a href="index.html" class="home-button">
-                ← Back to Home
-            </a>
-        </nav>
+  <article class="entry">
+    <div>
+      <p class="tag eyebrow"><span class="dot inline-dot"></span>Start here · live training</p>
+      <h2>S.M.A.R.T.</h2>
+      <p class="lede">See Machine Adaptive Reasoning Training. Watch a neural network learn one step at a time, then turn the learning rate up and watch it tear itself apart. The fastest way I know to understand why that one number decides whether training works at all.</p>
+      <a class="btn btn-primary" href="neural_playground.html">Open the playground</a>
     </div>
+    <ul class="does">
+      <li><b>Live training</b>Weights update on screen, step by step</li>
+      <li><b>Learning rate control</b>Find the edge where it stops converging</li>
+      <li><b>Divergence</b>See what "exploding" actually looks like</li>
+      <li><b>No maths required</b>The behaviour teaches the concept</li>
+    </ul>
+  </article>
 
-    <script>
-        // Create animated stars
-        function createStars() {
-            const starsContainer = document.getElementById('stars');
-            const numberOfStars = 100;
+  <article class="entry">
+    <div>
+      <p class="tag eyebrow">802.11 monitor · 48-hour capture</p>
+      <h2>Project Zombie</h2>
+      <p class="lede">A real investigation, written up as it happened: hunting for botnet traffic on a home network using a Raspberry Pi in monitor mode, Wireshark and tshark. Includes the dead ends, not just the conclusion.</p>
+      <a class="btn btn-primary" href="Project_Zombie.html">Read the case</a>
+    </div>
+    <ul class="does">
+      <li><b>Wireless monitoring</b>Capturing traffic with professional tooling</li>
+      <li><b>Packet analysis</b>Reading what a device is actually saying</li>
+      <li><b>Working the dataset</b>Turning 48 hours of capture into an answer</li>
+      <li><b>Ethics</b>Where the line is, and staying the right side of it</li>
+    </ul>
+  </article>
 
-            for (let i = 0; i < numberOfStars; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                
-                const size = Math.random() * 3 + 1;
-                star.style.width = size + 'px';
-                star.style.height = size + 'px';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.animationDelay = Math.random() * 3 + 's';
-                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                
-                starsContainer.appendChild(star);
-            }
-        }
+  <article class="entry">
+    <div>
+      <p class="tag eyebrow">GPIO · 40 pins</p>
+      <h2>Raspberry Pi Hub</h2>
+      <p class="lede">Wire something up tonight. LED controllers, a temperature web server, motion detectors and IoT builds, with the pinouts and the wiring spelled out rather than assumed.</p>
+      <a class="btn btn-primary" href="Raspberry_Pi.html">Open the hub</a>
+    </div>
+    <ul class="does">
+      <li><b>GPIO programming</b>Driving real hardware from Python</li>
+      <li><b>Sensors</b>Reading the physical world and acting on it</li>
+      <li><b>Web-connected builds</b>Serving readings over your network</li>
+      <li><b>Home automation</b>Projects that stay useful afterwards</li>
+    </ul>
+  </article>
 
-        // Parallax effect on mouse move
-        document.addEventListener('mousemove', (e) => {
-            const stars = document.querySelectorAll('.star');
-            const x = e.clientX / window.innerWidth;
-            const y = e.clientY / window.innerHeight;
-            
-            stars.forEach((star, index) => {
-                const speed = (index % 5 + 1) * 0.5;
-                const translateX = (x - 0.5) * speed * 10;
-                const translateY = (y - 0.5) * speed * 10;
-                star.style.transform = `translate(${translateX}px, ${translateY}px)`;
-            });
-        });
+  <article class="entry">
+    <div>
+      <p class="tag eyebrow">Qubits · superposition</p>
+      <h2>Quantum-ness</h2>
+      <p class="lede">Gates, entanglement and quantum parallelism you can operate rather than read about. Built for people who bounced off the maths the first time and want the behaviour first.</p>
+      <a class="btn btn-primary" href="Quantum_ness.html">Explore it</a>
+    </div>
+    <ul class="does">
+      <li><b>State visualisation</b>See superposition instead of reading about it</li>
+      <li><b>Entanglement</b>Measure one, watch the other</li>
+      <li><b>Gate operations</b>Build a circuit and run it</li>
+      <li><b>Algorithms</b>Why quantum parallelism helps at all</li>
+    </ul>
+  </article>
 
-        // Initialize
-        createStars();
+  <article class="entry">
+    <div>
+      <p class="tag eyebrow">3I/ATLAS · real observations</p>
+      <h2>Space Anomaly</h2>
+      <p class="lede">A self-study guide to machine learning anomaly detection, using real astronomical data from 3I/ATLAS — only the third interstellar object ever discovered passing through our solar system.</p>
+      <a class="btn btn-primary" href="Space_Anomaly.html">Start the guide</a>
+    </div>
+    <ul class="does">
+      <li><b>Real data</b>Actual observations, not a toy dataset</li>
+      <li><b>Anomaly detection</b>How an algorithm decides something is odd</li>
+      <li><b>Exploration first</b>Look at the data before modelling it</li>
+      <li><b>Self-paced</b>Structured so you can finish it</li>
+    </ul>
+  </article>
 
-        // Add smooth scrolling for any internal links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
+  <article class="entry">
+    <div>
+      <p class="tag eyebrow">Market sim · human vs bot</p>
+      <h2>TradeWar</h2>
+      <p class="lede">Trade live against algorithms that never panic, never revenge-trade and never get bored. It's a lesson about discipline disguised as a game, and the algorithms usually win.</p>
+      <a class="btn btn-primary" href="TradeWar.html">Play it</a>
+    </div>
+    <ul class="does">
+      <li><b>Live market sim</b>Prices move whether you act or not</li>
+      <li><b>Algorithmic opponents</b>Rules-based traders with no emotions</li>
+      <li><b>Position management</b>Exposure, timing and cutting losses</li>
+      <li><b>Honest feedback</b>Your results against theirs</li>
+    </ul>
+  </article>
 
-        // Add intersection observer for animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animationPlayState = 'running';
-                }
-            });
-        });
+  <article class="entry">
+    <div>
+      <p class="tag eyebrow">Shell · safe to paste</p>
+      <h2>Linux Guide</h2>
+      <p class="lede">Files, text processing, system monitoring and scripting, worked through hands-on. Every command is safe to run on your own machine — nothing here will bite you.</p>
+      <a class="btn btn-primary" href="Linux_Guide.html">Open the guide</a>
+    </div>
+    <ul class="does">
+      <li><b>Command line</b>The commands you'll actually use daily</li>
+      <li><b>Text processing</b>grep, sed, awk and pipelines</li>
+      <li><b>System monitoring</b>Finding out what a machine is doing</li>
+      <li><b>Scripting</b>Turning a repeated task into one command</li>
+    </ul>
+  </article>
 
-        document.querySelectorAll('.project-featured, .feature-card').forEach(el => {
-            observer.observe(el);
-        });
-    </script>
+  <article class="entry">
+    <div>
+      <p class="tag eyebrow">Python 3 · buildable projects</p>
+      <h2>Python</h2>
+      <p class="lede">Beginner to working developer through things you actually finish: a calculator, a file organiser, a weather app, automation scripts. Projects with an end, rather than tutorials with no destination.</p>
+      <a class="btn btn-primary" href="Python.html">Start learning</a>
+    </div>
+    <ul class="does">
+      <li><b>Structured path</b>Each project builds on the last</li>
+      <li><b>Hands-on</b>Code you run, not code you read</li>
+      <li><b>Data handling</b>Analysis and visualisation basics</li>
+      <li><b>Automation</b>Scripts that save you real time</li>
+    </ul>
+  </article>
+
+  <article class="entry">
+    <div>
+      <p class="tag eyebrow">Specimens · searchable</p>
+      <h2>Rocks, Minerals &amp; Metals</h2>
+      <p class="lede">Identify what you picked up on the beach. Formation processes, famous localities, industrial uses, and the rare specimens worth knowing about — beginner through to collector.</p>
+      <a class="btn btn-primary" href="Rocks_Minerals_Metals.html">Open the database</a>
+    </div>
+    <ul class="does">
+      <li><b>Identification</b>Work out what you're holding</li>
+      <li><b>Formation</b>How it got made and where</li>
+      <li><b>Industrial use</b>Where these end up in technology</li>
+      <li><b>Searchable</b>Look a specimen up directly</li>
+    </ul>
+  </article>
+
+  <article class="entry">
+    <div>
+      <p class="tag eyebrow">Longer read · case study</p>
+      <h2>HUSTLER</h2>
+      <p class="lede">A UK blackball pool physics sandbox in Python — 70 revisions, 129 assertions, two source files, no asset files. The write-up is about what went wrong and how each fault was found, including a calibration bug that had the AI rating nearly every shot as a certainty.</p>
+      <a class="btn btn-primary" href="Hustler.html">Read the case study</a>
+    </div>
+    <div class="well meas" style="margin:0">
+      <div class="cap">Headline numbers</div>
+      <dl>
+        <dt>AI predicted pot rate</dt><dd>91.5%</dd>
+        <dt>Actual pot rate</dt><dd class="bad">18.3%</dd>
+        <dt>Wrong hypotheses</dt><dd class="bad">5</dd>
+        <dt>Assertions today</dt><dd>129</dd>
+      </dl>
+    </div>
+  </article>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="contact.html">Get in touch</a>
+    <a href="https://github.com/ihoggan">GitHub</a>
+    <span class="tag">© 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
 </body>
 </html>
