@@ -62,7 +62,7 @@ body{
   border-bottom:1px solid var(--rule);
   background:linear-gradient(180deg,var(--engrave),var(--panel-2));
 }
-.rail .wrap{display:flex;align-items:center;gap:18px;height:64px}
+.rail .wrap{display:flex;align-items:center;gap:18px;min-height:64px;flex-wrap:wrap}
 .plate{
   width:38px;height:38px;flex:none;
   display:grid;place-items:center;
@@ -248,6 +248,33 @@ input[type=range]:focus-visible{outline:2px solid var(--lamp);outline-offset:3px
 }
 .card:hover .go{color:var(--ink)}
 
+/* case study band */
+.study{
+  margin-top:34px;
+  display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:0;
+  border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 2px rgba(23,32,43,.1);
+}
+.study-text{background:linear-gradient(180deg,var(--engrave),var(--panel-2));padding:26px 26px 28px}
+.study-text h3{
+  font-family:Archivo,sans-serif;font-variation-settings:"wdth" 112,"wght" 750;
+  text-transform:uppercase;font-size:1.5rem;line-height:1;margin:12px 0 10px;
+}
+.study-text p{font-size:.97rem;color:var(--ink-2);margin-bottom:18px;max-width:34em}
+.study-panel{
+  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen));
+  padding:26px;display:flex;flex-direction:column;justify-content:center;gap:14px;
+  box-shadow:inset 3px 0 12px rgba(0,0,0,.5);
+}
+.study-panel .row{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:#93A79E;
+  border-bottom:1px solid rgba(87,199,154,.14);padding-bottom:9px}
+.study-panel .row:last-child{border-bottom:0;padding-bottom:0}
+.study-panel .row b{font-size:15px;color:var(--trace);font-variant-numeric:tabular-nums;letter-spacing:0}
+.study-panel .row b.bad{color:#E0603F}
+@media(max-width:760px){ .study{grid-template-columns:1fr} }
+
 /* ---------- footer ---------- */
 footer{border-top:1px solid var(--rule);background:linear-gradient(180deg,var(--panel-2),#CDD1CA);padding:34px 0}
 .foot{display:flex;gap:24px;flex-wrap:wrap;align-items:center}
@@ -264,8 +291,8 @@ footer{border-top:1px solid var(--rule);background:linear-gradient(180deg,var(--
   .wrap{padding:0 18px}
   .grid{grid-template-columns:1fr}
   .hero{padding:44px 0 40px}
-  .rail-nav{gap:16px}
-  .rail-nav a:nth-child(n+3){display:none}
+  .rail .wrap{min-height:0;height:auto;flex-wrap:wrap;padding-top:10px;padding-bottom:10px}
+  .rail-nav{margin-left:0;width:100%;gap:18px;padding-top:2px}
   canvas{height:190px}
 }
 @media(prefers-reduced-motion:reduce){
@@ -397,10 +424,28 @@ footer{border-top:1px solid var(--rule);background:linear-gradient(180deg,var(--
       <span class="go">Open →</span>
     </a>
   </div>
+
+  <div class="study">
+    <div class="study-text">
+      <span class="tag">Longer read · case study</span>
+      <h3>HUSTLER</h3>
+      <p>A UK blackball pool physics sandbox in Python — 70 revisions, 129 assertions, two source files and no asset files at all. The write-up isn't a feature list: it's what was wrong, how each fault was found, and what it cost. Including the calibration bug that made the AI think it potted nearly everything, and five confident explanations that all died on contact with data.</p>
+      <a class="btn btn-primary" href="Hustler.html">Read the case study</a>
+    </div>
+    <div class="study-panel" aria-hidden="true">
+      <div class="row"><span>AI predicted pot rate</span><b>91.5%</b></div>
+      <div class="row"><span>Actual pot rate</span><b class="bad">18.3%</b></div>
+      <div class="row"><span>Hypotheses that were wrong</span><b class="bad">5</b></div>
+      <div class="row"><span>Assertions today</span><b>129</b></div>
+    </div>
+  </div>
 </main>
 
 <footer>
   <div class="wrap foot">
+    <a href="about.html">About</a>
+    <a href="portfolio.html">Projects</a>
+    <a href="gallery.html">Gallery</a>
     <a href="contact.html">Get in touch</a>
     <a href="https://github.com/ihoggan">GitHub</a>
     <a href="https://github.com/sponsors/ihoggan">Support these projects</a>
