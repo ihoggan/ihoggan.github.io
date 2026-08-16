@@ -5,7 +5,7 @@
 
 ## Professional Summary
 
-Iain Hoggan is a passionate educator and developer who specializes in transforming complex technical concepts into engaging, interactive learning experiences. With expertise spanning artificial intelligence, cybersecurity, quantum computing, and hardware programming, Ian creates educational tools that make advanced topics accessible to learners at all levels.
+Iain Hoggan is a passionate educator and developer who specializes in transforming complex technical concepts into engaging, interactive learning experiences. With expertise spanning artificial intelligence, cybersecurity, quantum computing, and hardware programming, Iain creates educational tools that make advanced topics accessible to learners at all levels.
 
 ## Core Expertise
 
@@ -55,7 +55,7 @@ Iain believes that the best way to understand complex topics is through hands-on
 
 ## Impact & Reach
 
-Ian's educational projects serve students, educators, and professionals across multiple disciplines:
+Iain's educational projects serve students, educators, and professionals across multiple disciplines:
 
 - **Students** gain practical skills through hands-on experimentation
 - **Educators** access ready-to-use interactive teaching tools
