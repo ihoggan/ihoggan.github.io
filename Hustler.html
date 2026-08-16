@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HUSTLER — building a pool physics engine, and being wrong in public</title>
+<meta name="description" content="A case study of HUSTLER, a UK blackball pool physics sandbox in Python: the calibration bug that made the AI think it never missed, five confident wrong answers, and what seventy revisions taught me about testing.">
+<meta property="og:title" content="HUSTLER — building a pool physics engine, and being wrong in public">
+<meta property="og:description" content="Seventy revisions of a pool physics sandbox. The bugs, the measurements that settled them, and the working method that came out of it.">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --panel:#E4E6E1; --panel-2:#DADDD6; --bezel:#B7BCB4; --engrave:#F2F3F0;
+  --ink:#17202B; --ink-2:#57616E; --ink-3:#8A929C;
+  --screen:#0F181E; --screen-2:#16232B;
+  --trace:#57C79A; --lamp:#E0982B; --alarm:#BE3A1F;
+  --rule:rgba(23,32,43,.16);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--panel); color:var(--ink);
+  font-family:"Source Serif 4",Georgia,serif; font-size:17px; line-height:1.66;
+  -webkit-font-smoothing:antialiased;
+  background-image:
+    linear-gradient(180deg,rgba(255,255,255,.5),transparent 240px),
+    repeating-linear-gradient(90deg,rgba(23,32,43,.018) 0 1px,transparent 1px 3px);
+}
+.wrap{max-width:1160px;margin:0 auto;padding:0 28px}
+.col{max-width:720px}
+
+.tag{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:500;
+     letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+
+/* rail */
+.rail{border-bottom:1px solid var(--rule);background:linear-gradient(180deg,var(--engrave),var(--panel-2))}
+.rail .wrap{display:flex;align-items:center;gap:18px;min-height:64px;flex-wrap:wrap;padding-top:8px;padding-bottom:8px}
+.plate{width:38px;height:38px;flex:none;display:grid;place-items:center;
+  background:var(--panel-2);border:1px solid var(--bezel);border-radius:3px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 2px rgba(23,32,43,.14);
+  font-family:Archivo,sans-serif;font-variation-settings:"wdth" 92,"wght" 800;font-size:15px}
+.rail-name{font-family:Archivo,sans-serif;font-variation-settings:"wdth" 100,"wght" 700;
+  text-transform:uppercase;letter-spacing:.09em;font-size:14px}
+.rail-nav{margin-left:auto;display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+.rail-nav a{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-2);text-decoration:none;padding:4px 0;
+  border-bottom:1px solid transparent}
+.rail-nav a:hover{color:var(--ink);border-bottom-color:var(--lamp)}
+
+/* hero */
+.hero{padding:60px 0 40px;border-bottom:1px solid var(--rule)}
+h1{font-family:Archivo,sans-serif;font-variation-settings:"wdth" 120,"wght" 780;
+  text-transform:uppercase;font-size:clamp(2.3rem,5.2vw,4.2rem);line-height:.9;
+  letter-spacing:-.015em;margin:14px 0 20px}
+.standfirst{font-size:1.12rem;color:var(--ink-2);max-width:34em}
+.standfirst strong{color:var(--ink);font-weight:600}
+
+/* spec strip */
+.spec{display:flex;flex-wrap:wrap;gap:0;margin-top:34px;
+  border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.spec div{flex:1 1 120px;padding:12px 16px;border-right:1px solid var(--rule)}
+.spec div:last-child{border-right:0}
+.spec b{display:block;font-family:Archivo,sans-serif;font-variation-settings:"wdth" 100,"wght" 720;
+  font-size:1.35rem;line-height:1.1;font-variant-numeric:tabular-nums}
+.spec span{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-3)}
+
+/* body */
+main{padding:56px 0 40px}
+section{margin-bottom:52px}
+h2{font-family:Archivo,sans-serif;font-variation-settings:"wdth" 114,"wght" 750;
+  text-transform:uppercase;font-size:clamp(1.35rem,2.6vw,1.9rem);line-height:1.04;
+  margin:0 0 6px;max-width:18em}
+.eyebrow{margin-bottom:10px}
+section p{margin-bottom:16px;max-width:38em}
+section p:last-child{margin-bottom:0}
+strong{font-weight:600}
+code{font-family:"IBM Plex Mono",monospace;font-size:.86em;
+  background:rgba(23,32,43,.07);padding:1px 5px;border-radius:2px}
+
+/* measurement readout */
+.meas{background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen));
+  border:1px solid #060B0E;border-radius:3px;
+  box-shadow:inset 0 3px 12px rgba(0,0,0,.55);
+  padding:16px 18px;margin:22px 0;max-width:38em}
+.meas .cap{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:#6E8A80;margin-bottom:10px}
+.meas dl{display:grid;grid-template-columns:1fr auto;gap:6px 18px;margin:0}
+.meas dt{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:#93A79E}
+.meas dd{font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--trace);
+  text-align:right;font-variant-numeric:tabular-nums;margin:0}
+.meas dd.bad{color:#E0603F}
+.meas .note{margin-top:12px;padding-top:10px;border-top:1px solid rgba(87,199,154,.18);
+  font-family:"IBM Plex Mono",monospace;font-size:11px;line-height:1.55;color:#8FA69C}
+
+/* pull-out lesson */
+.lesson{border-left:3px solid var(--lamp);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.lesson p{font-size:1.04rem;margin:0}
+.lesson .tag{display:block;margin-bottom:4px;color:var(--lamp)}
+
+hr.div{border:0;border-top:1px solid var(--rule);margin:0}
+
+/* takeaways */
+.takeaways{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:26px}
+.take{background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);border-radius:4px;padding:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.take h3{font-family:Archivo,sans-serif;font-variation-settings:"wdth" 104,"wght" 720;
+  text-transform:uppercase;font-size:1rem;line-height:1.1;margin-bottom:8px}
+.take p{font-size:.94rem;color:var(--ink-2);margin:0}
+
+/* footer */
+footer{border-top:1px solid var(--rule);background:linear-gradient(180deg,var(--panel-2),#CDD1CA);padding:32px 0;margin-top:20px}
+.foot{display:flex;gap:22px;flex-wrap:wrap;align-items:center}
+.foot a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--rule)}
+.foot a:hover{border-bottom-color:var(--lamp)}
+.foot .tag{margin-left:auto}
+
+@media(max-width:600px){
+  .wrap{padding:0 18px}
+  .hero{padding:40px 0 30px}
+  .rail-nav{margin-left:0;width:100%;gap:18px}
+  .spec div{flex:1 1 45%}
+}
+</style>
+</head>
+<body>
+
+<div class="rail">
+  <div class="wrap">
+    <div class="plate">IH</div>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap col">
+    <p class="tag">Case study · Python · pygame · pymunk</p>
+    <h1>HUSTLER</h1>
+    <p class="standfirst">A UK blackball pool physics sandbox, built over seventy revisions. This is not a feature list — it's an account of <strong>the things that were wrong, how they were found, and what each one cost.</strong> Almost every real bug was caught by a measurement that contradicted a confident explanation, including several of mine.</p>
+
+    <div class="spec">
+      <div><b>70</b><span>revisions</span></div>
+      <div><b>129</b><span>assertions</span></div>
+      <div><b>2</b><span>source files</span></div>
+      <div><b>0</b><span>asset files</span></div>
+      <div><b>6.4k</b><span>lines</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap col">
+
+<section>
+  <p class="tag eyebrow">What it is</p>
+  <h2>A real table, to real specification</h2>
+  <p>Two Python files — the game and the cushion geometry — running on pygame and pymunk with no other dependencies. No asset files at all: every sound is synthesised and every graphic drawn from code. The physics layer works in genuine WEPF units, metres and kilograms and metres per second, on a 7ft table with 81.3mm corner pockets and 100mm middles.</p>
+  <p>You can play it solo against the clock, against an AI, or watch two AIs play each other while the engine writes a machine-readable log of every shot. There is a league, a play-off bracket, Bradley–Terry rankings, and a career that saves between sessions.</p>
+  <p>None of that is the interesting part.</p>
+</section>
+
+<hr class="div">
+
+<section style="padding-top:44px">
+  <p class="tag eyebrow">Episode 00</p>
+  <h2>The brief I got wrong before a line was written</h2>
+  <p>I asked for a pool table. What I should have asked for was <em>this</em> pool table, to <em>this</em> specification. A pool table is a generic noun attached to a real, published spec — pocket mouths measured to a tenth of a millimetre, cushion noses cut on a defined angle — and I skipped straight past that to "build a table".</p>
+  <p>The cost was paid over the following weeks in geometry that had to be torn out and redone. Getting the pockets right was, honestly, a nightmare, and the tangent-true cushion-nose geometry that finally worked was a rewrite rather than a repair.</p>
+  <div class="lesson">
+    <span class="tag">Lesson</span>
+    <p>When you hand over a generic noun for something that has a real specification, name the specification. "Build a table" and "build a 7ft blackball table with 81.3mm corners" are different projects.</p>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Episode 01</p>
+  <h2>The AI that thought it never missed</h2>
+  <p>The engine can play thousands of AI-versus-AI frames and log every shot. The very first study run turned up something ugly: the AI's own estimate of whether a shot would go in bore almost no relation to whether it did.</p>
+
+  <div class="meas">
+    <div class="cap">First study run · 584 shots</div>
+    <dl>
+      <dt>Mean predicted pot chance</dt><dd>91.5%</dd>
+      <dt>Actual pot rate</dt><dd class="bad">18.3%</dd>
+      <dt>Shots rated above 0.8</dt><dd class="bad">559 / 584</dd>
+    </dl>
+    <div class="note">Wrong by roughly 5×. The estimate sits at the heart of the AI — the whole shot-choice utility is multiplied by it — so with everything rated near-certain, the "don't attempt it" threshold never fired and the AI took on nearly every shot it could see.</div>
+  </div>
+
+  <p>The temptation was to tune it. The actual cause was conceptual: the code was comparing <strong>an aiming error measured at the cue ball</strong> with <strong>a pocket-acceptance angle measured at the object ball</strong>, as if they were the same quantity. They aren't — there is a whole cue-to-object travel distance between them, and that distance is exactly what turns a small aiming error into a big miss.</p>
+  <p>The fix was a lever-arm term that scales the acceptable error by the geometry of the shot: 1.0 at point-blank, shrinking with distance. No amount of parameter tuning would ever have found it, because none of the parameters were wrong.</p>
+  <p>It also broke a test — and that turned out to be the more useful discovery. One of the frozen test positions had been captured while the model was broken, so its expected values encoded the bug. <strong>A test tuned against a fault defends the fault.</strong></p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Episode 02</p>
+  <h2>Measuring the wrong thing entirely</h2>
+  <p>Two AI personalities: SHARK, aggressive and positional; STEADY, cautious. SHARK won about 90% of frames, and I was ready to write that up as a finding about strategy.</p>
+  <p>It wasn't. The personalities differed on strategy <em>and</em> on aim jitter — how straight they shoot. Aim jitter is skill. Threshold, greed and caution are strategy. Bundling them meant the study was measuring which player aimed straighter and calling it tactics.</p>
+
+  <div class="meas">
+    <div class="cap">SHARK win rate · isolating skill from strategy</div>
+    <dl>
+      <dt>As shipped</dt><dd>90%</dd>
+      <dt>Aim jitter matched</dt><dd>65%</dd>
+      <dt>Aim jitter swapped</dt><dd class="bad">45%</dd>
+    </dl>
+    <div class="note">Swapping the skill parameter alone flips the result. Any conclusion drawn from the first number would have been an artefact of the confound.</div>
+  </div>
+
+  <p>With skill held equal, the first honest result was worth having: over 60 matched frames SHARK won 41–19, a 68.3% win rate with a confidence interval of 55.8–78.7%. Aggressive positional play genuinely beats cautious play — but only once you can prove you're measuring the strategy and not the hands. A test now exists purely to stop that confound creeping back in.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Episode 03</p>
+  <h2>Five confident answers, all wrong</h2>
+  <p>Even after the calibration fix, a gap remained between predicted and actual pot rates during real frames. I chased it through five explanations across three revisions. Shot power and jaw-rattle. Cut angle. Corridor width. Contamination from free shots. An irreducible "miss floor" in the physics.</p>
+  <p>Every one of them was argued confidently. Every one died on contact with data. Two produced genuine improvements to the code that did not fix the thing they were aimed at, which is its own kind of trap — a fix that works is not evidence that your diagnosis was right.</p>
+  <p>What ended it was building a controlled Monte Carlo rig: the same shot, repeated hundreds of times, in isolation.</p>
+
+  <div class="meas">
+    <div class="cap">Controlled rig · same shot, repeated</div>
+    <dl>
+      <dt>Predicted</dt><dd>89.3%</dd>
+      <dt>Actually potted</dt><dd>88.7%</dd>
+      <dt>Effect of clutter balls</dt><dd>none measurable</dd>
+    </dl>
+    <div class="note">The estimator was basically honest. The 2.6× gap seen during real frames was a shot-selection artefact — a fact about which shots the AI chose to attempt, not about the physics. There was no bug to find. I had spent three revisions hunting one.</div>
+  </div>
+
+  <div class="lesson">
+    <span class="tag">Lesson</span>
+    <p>"Stop guessing and measure" is not sufficient advice, because you can measure the wrong population with total rigour. Ask <em>who</em> a fault affects before asking <em>why</em> it happens — and build the controlled rig first, not after five hypotheses have died.</p>
+  </div>
+
+  <p>The rig did earn its keep. It showed the distance term from the earlier fix was over-harsh: a dead-straight long pot rated at 9% actually lands about 24% of the time. That one is still open, and it's written down as open, because the honest fix is to fit it against the rig rather than derive it from first principles and hope.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Episode 04</p>
+  <h2>Tests that cannot fail</h2>
+  <p>The project has 129 assertions and a validation chain that must pass before anything ships. The chain is worth little on its own — the useful practice is <strong>mutation testing</strong>: deliberately reintroduce a bug and confirm the test catches it. An assertion that has never failed is an assertion you have no evidence about.</p>
+  <p>Doing that consistently found several tests that were quietly worthless:</p>
+  <p><strong>A circular assertion.</strong> The play-off bracket seeding was checked against the output of the seeding function itself. A mutant that seeded players <em>alphabetically</em> survived — helped by test data whose runaway leader also happened to be first in the alphabet. Two independent weaknesses hiding each other. The cure was to assert a property that holds regardless of implementation (points never rise as you go down the seeding) and to pin a literal value rather than compare a function to itself.</p>
+  <p><strong>An assertion on a function nobody called.</strong> A test proved a text-formatting helper worked correctly. It did. But in half the game's modes, no render path ever reached it, and the test passed happily through two releases while the feature was visibly broken on screen.</p>
+  <p><strong>An assertion on source text rather than behaviour.</strong> A test checked that a particular call appeared in the code. A mutant gutted the logic <em>inside</em> that call — the line was still written, the effect was gone, the test still passed.</p>
+  <div class="lesson">
+    <span class="tag">Lesson</span>
+    <p>Assert behaviour, not self-consistency and not source text. If a test compares a function to its own output, it will pass forever and tell you nothing.</p>
+  </div>
+  <p>One more, which I now check for by reflex: twice in a single session a mutation failed to apply at all, and the resulting clean run looked exactly like a test catching the bug. <strong>A mutation that never applied is indistinguishable from one that was caught.</strong> The helper hard-fails now if it can't find what it's patching.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Episode 05</p>
+  <h2>The commit that shipped a file from months earlier</h2>
+  <p>One release pushed the wrong file entirely — a build from many revisions back, sitting in a downloads folder shadowing every newer copy. Not truncated or corrupted. Complete, compiling, internally consistent, and about half the size of the current code.</p>
+  <p>The guard I'd written to catch exactly this ran the test suite and checked it said "ALL PASS". It did. The old file's own tests pass perfectly — there were just 35 of them instead of 69.</p>
+
+  <div class="meas">
+    <div class="cap">Wrong-file push · what each check reported</div>
+    <dl>
+      <dt>Compiles</dt><dd>pass</dd>
+      <dt>Test suite</dt><dd>ALL PASS (35)</dd>
+      <dt>Batch simulation</dt><dd>0 escapes</dd>
+      <dt>Smoke run</dt><dd>90 frames</dd>
+      <dt>Render snapshot md5</dt><dd class="bad">MISMATCH</dd>
+    </dl>
+    <div class="note">The render snapshot is a byte-for-byte md5 of a fixed headless frame, compared in CI. It was the only check that could tell the difference, and it had only recently stopped being allowed to fail silently.</div>
+  </div>
+
+  <p>A validation chain proves a file is internally consistent. It cannot prove it is the <em>right</em> file. Every commit block now checks the file's identity by hash before copying it anywhere, and asserts the test <em>count</em>, not just that the tests passed.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Episode 06</p>
+  <h2>The only way to find some bugs is to play</h2>
+  <p>Four rules bugs shipped past the entire automated chain and were found in ordinary single-player frames. The AI potted its final colour and play passed back to me. Spin didn't reset between shots. The cue ball couldn't be repositioned after a scratch. Potted balls stacked up wrongly because two features wanted one variable to mean two different things.</p>
+  <p>None were exotic. All were invisible to a test suite that had never actually played a frame from break to black. That is why a scripted play-through test now exists: eight shots covering a dry break, an open-table pot, a continuation, a miss, a foul, the free shot it buys, the last colour of a suit, and the black — checked against eleven named invariants rather than a frozen recording.</p>
+  <p>The same principle produced the single best decision in the project. The shot log showed that <strong>solo practice was 65% of every shot I had ever logged, and none of it was being recorded</strong>, while eleven consecutive releases had built an elaborate record-keeping system for a league I had played exactly zero fixtures of. The roadmap and the actual usage disagreed, and the usage was right.</p>
+  <div class="lesson">
+    <span class="tag">Lesson</span>
+    <p>When the roadmap and the way the thing is actually used disagree, the usage wins. Instrument early enough to know which is which.</p>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Episode 07</p>
+  <h2>Getting it to people who don't have Python</h2>
+  <p>The last stretch was packaging a Windows executable so friends could test it without installing anything. Two findings worth recording.</p>
+  <p>The build succeeded and then failed at launch, with a missing-module error naming a package I'd never heard of. My first fix was reasoned from the error message, and it was <strong>wrong rather than incomplete</strong> — it addressed the symptom's neighbour instead of its cause. The real fix was to exclude the package that was dragging in the whole broken chain in the first place, which the no-asset-files rule made safe to do.</p>
+  <p>The larger lesson is that I could have reproduced the entire failure on Linux in about ten minutes, instead of testing guesses across two machines over several rounds.</p>
+  <p>The other one: the test suite contained file paths written as literals. They were correct on Linux and could never be correct on Windows, because the platform rewrites separators and prepends a drive letter. Fixing the one assertion that failed was the wrong move — the fault was in the technique, not the line, so every path assertion in the file needed the same treatment.</p>
+  <div class="lesson">
+    <span class="tag">Lesson</span>
+    <p>Assert relationships, not spellings. Test which path something resolves from and that all the stores agree — never the punctuation of the path itself.</p>
+  </div>
+</section>
+
+<hr class="div">
+
+<section style="padding-top:44px">
+  <p class="tag eyebrow">What came out of it</p>
+  <h2>The method is the deliverable</h2>
+  <p>The game works. I play it. But the thing I'll actually reuse is the working method that fell out of seventy revisions of being wrong in traceable ways — now written down as a playbook I open every new project with.</p>
+
+  <div class="takeaways">
+    <div class="take">
+      <h3>Decide, then build</h3>
+      <p>Anything with a genuine fork gets the options written out and a decision made before any code exists. It's much cheaper to reject a design than to reject a build.</p>
+    </div>
+    <div class="take">
+      <h3>Report numbers, not adjectives</h3>
+      <p>"Tests passed" is not a result. 129 assertions, 30 frames with zero escapes, snapshot hash unmoved — those are results, and they're checkable.</p>
+    </div>
+    <div class="take">
+      <h3>Mutate every test</h3>
+      <p>Break the code on purpose and confirm the test notices. Any assertion that has never failed is unproven, however good it looks.</p>
+    </div>
+    <div class="take">
+      <h3>Measure before designing</h3>
+      <p>More than once, taking a measurement first changed the design outright — including one feature that was cancelled because the space it needed didn't exist.</p>
+    </div>
+    <div class="take">
+      <h3>One reset, not four</h3>
+      <p>If state is reset in more than one place, those places will drift apart. The cure is structural — one constructor, one routine, every route calling it.</p>
+    </div>
+    <div class="take">
+      <h3>Derive, don't hand-total</h3>
+      <p>A fixed pixel inside a scaled layout is a bug waiting for a bigger screen. It bit seven separate times. The answer is a cursor, not more careful arithmetic.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">← Back to the bench</a>
+    <a href="contact.html">Get in touch</a>
+    <span class="tag">© 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
+</body>
+</html>
