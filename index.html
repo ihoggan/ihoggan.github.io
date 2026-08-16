@@ -1,311 +1,529 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IHoggan - Digital Portfolio - C</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iain Hoggan — nine things you can actually run</title>
+<meta name="description" content="Interactive instruments for learning hard subjects: neural network training, wireless packet capture, quantum simulation, Raspberry Pi hardware. Every one runs in your browser.">
+<meta property="og:title" content="Iain Hoggan — nine things you can actually run">
+<meta property="og:description" content="Neural networks, packet capture, quantum simulation, Pi hardware. Interactive, in the browser, free.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --panel:#E4E6E1;
+  --panel-2:#DADDD6;
+  --bezel:#B7BCB4;
+  --engrave:#F2F3F0;
+  --ink:#17202B;
+  --ink-2:#57616E;
+  --ink-3:#8A929C;
+  --screen:#0F181E;
+  --screen-2:#16232B;
+  --trace:#57C79A;
+  --lamp:#E0982B;
+  --alarm:#BE3A1F;
+  --rule:rgba(23,32,43,.16);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--panel);
+  color:var(--ink);
+  font-family:"Source Serif 4",Georgia,serif;
+  font-size:17px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  background-image:
+    linear-gradient(180deg,rgba(255,255,255,.5),transparent 240px),
+    repeating-linear-gradient(90deg,rgba(23,32,43,.018) 0 1px,transparent 1px 3px);
+}
+.wrap{max-width:1160px;margin:0 auto;padding:0 28px}
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #0a0a0f;
-            color: #ffffff;
-            line-height: 1.6;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
+/* ---------- shared type roles ---------- */
+.tag{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:11px;font-weight:500;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-3);
+}
+.display{
+  font-family:Archivo,"Helvetica Neue",sans-serif;
+  font-variation-settings:"wdth" 118,"wght" 750;
+  text-transform:uppercase;
+  letter-spacing:-.005em;
+  line-height:.94;
+}
 
-        /* Animated background */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(119, 198, 255, 0.15) 0%, transparent 50%);
-            z-index: -1;
-        }
+/* ---------- top rail ---------- */
+.rail{
+  border-bottom:1px solid var(--rule);
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+}
+.rail .wrap{display:flex;align-items:center;gap:18px;height:64px}
+.plate{
+  width:38px;height:38px;flex:none;
+  display:grid;place-items:center;
+  background:var(--panel-2);
+  border:1px solid var(--bezel);
+  border-radius:3px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 2px rgba(23,32,43,.14);
+  font-family:Archivo,sans-serif;
+  font-variation-settings:"wdth" 92,"wght" 800;
+  font-size:15px;letter-spacing:.02em;
+}
+.rail-name{
+  font-family:Archivo,sans-serif;
+  font-variation-settings:"wdth" 100,"wght" 700;
+  text-transform:uppercase;letter-spacing:.09em;font-size:14px;
+}
+.rail-nav{margin-left:auto;display:flex;gap:26px;align-items:center}
+.rail-nav a{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-2);text-decoration:none;padding:4px 0;
+  border-bottom:1px solid transparent;
+}
+.rail-nav a:hover{color:var(--ink);border-bottom-color:var(--lamp)}
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-            position: relative;
-            z-index: 1;
-        }
+/* ---------- hero ---------- */
+.hero{padding:64px 0 56px;border-bottom:1px solid var(--rule)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.02fr);gap:56px;align-items:center}
+h1{
+  font-family:Archivo,sans-serif;
+  font-variation-settings:"wdth" 120,"wght" 780;
+  text-transform:uppercase;
+  font-size:clamp(2.5rem,5.4vw,4.5rem);
+  line-height:.9;
+  letter-spacing:-.015em;
+  margin:16px 0 22px;
+}
+h1 em{font-style:normal;color:var(--lamp)}
+.lede{font-size:1.06rem;color:var(--ink-2);max-width:36em}
+.lede strong{color:var(--ink);font-weight:600}
+.hero-cta{margin-top:28px;display:flex;gap:14px;flex-wrap:wrap}
 
-        /* Header Section */
-        header {
-            text-align: center;
-            margin-bottom: 4rem;
-            padding: 3rem 0;
-        }
+/* ---------- buttons ---------- */
+.btn{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:12px;font-weight:500;letter-spacing:.13em;text-transform:uppercase;
+  padding:13px 22px;
+  color:var(--ink);
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);
+  border-radius:3px;
+  text-decoration:none;display:inline-block;cursor:pointer;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 1px 2px rgba(23,32,43,.16);
+}
+.btn:hover{background:linear-gradient(180deg,#fff,var(--panel-2))}
+.btn:active{
+  transform:translateY(1px);
+  box-shadow:inset 0 2px 4px rgba(23,32,43,.22);
+}
+.btn-primary{
+  background:linear-gradient(180deg,#20303E,var(--ink));
+  color:var(--engrave);border-color:#0C1319;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 1px 3px rgba(23,32,43,.3);
+}
+.btn-primary:hover{background:linear-gradient(180deg,#2A3D4E,#1D2833)}
 
-        .logo {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 2rem;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: white;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
+/* ---------- scope ---------- */
+.scope{
+  background:linear-gradient(180deg,var(--panel-2),#CBCFC8);
+  border:1px solid var(--bezel);
+  border-radius:5px;
+  padding:16px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.85),0 6px 22px rgba(23,32,43,.16);
+}
+.scope-head{display:flex;align-items:baseline;gap:12px;margin-bottom:12px}
+.scope-head .tag{color:var(--ink-2)}
+.lamp{
+  width:9px;height:9px;border-radius:50%;margin-left:auto;flex:none;
+  background:#8E9691;box-shadow:inset 0 1px 1px rgba(0,0,0,.3);
+}
+.lamp.on{background:var(--lamp);box-shadow:0 0 9px var(--lamp)}
+.lamp.alarm{background:var(--alarm);box-shadow:0 0 9px var(--alarm)}
+.well{
+  position:relative;
+  background:radial-gradient(120% 130% at 50% 0%,var(--screen-2),var(--screen));
+  border-radius:3px;
+  border:1px solid #060B0E;
+  box-shadow:inset 0 3px 12px rgba(0,0,0,.65);
+  overflow:hidden;
+}
+canvas{display:block;width:100%;height:236px}
+.readout{
+  display:flex;gap:26px;flex-wrap:wrap;
+  padding:10px 12px 2px;
+  font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.08em;
+  color:var(--ink-2);text-transform:uppercase;
+}
+.readout b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+#status.diverged{color:var(--alarm)}
 
-        h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 700;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #ffffff, #cccccc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -0.02em;
-        }
+/* control */
+.control{margin-top:14px;padding-top:14px;border-top:1px solid rgba(23,32,43,.14)}
+.control label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:"IBM Plex Mono",monospace;font-size:11px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);
+}
+.control label b{font-size:14px;color:var(--ink);font-variant-numeric:tabular-nums}
+input[type=range]{
+  -webkit-appearance:none;appearance:none;
+  width:100%;height:26px;margin-top:6px;background:transparent;cursor:grab;
+}
+input[type=range]::-webkit-slider-runnable-track{
+  height:5px;border-radius:2px;
+  background:linear-gradient(90deg,#9AA29B 0 76%,var(--alarm) 76% 100%);
+  box-shadow:inset 0 1px 2px rgba(0,0,0,.35);
+}
+input[type=range]::-moz-range-track{
+  height:5px;border-radius:2px;
+  background:linear-gradient(90deg,#9AA29B 0 76%,var(--alarm) 76% 100%);
+  box-shadow:inset 0 1px 2px rgba(0,0,0,.35);
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:15px;height:24px;margin-top:-10px;
+  background:linear-gradient(180deg,var(--engrave),#B6BBB4);
+  border:1px solid #8E958D;border-radius:2px;
+  box-shadow:0 1px 3px rgba(23,32,43,.4);
+}
+input[type=range]::-moz-range-thumb{
+  width:15px;height:24px;
+  background:linear-gradient(180deg,var(--engrave),#B6BBB4);
+  border:1px solid #8E958D;border-radius:2px;
+}
+input[type=range]:focus-visible{outline:2px solid var(--lamp);outline-offset:3px}
+.scale{
+  position:relative;height:14px;
+  font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;
+  color:var(--ink-3);margin-top:-2px;
+}
+.scale span{position:absolute;top:0;transform:translateX(-50%);white-space:nowrap}
+.scale span:first-child{transform:none;left:0}
+.scale span:last-child{transform:none;right:0;left:auto}
+.scale .thresh{color:var(--alarm)}
 
-        .tagline {
-            font-size: 1.25rem;
-            color: rgba(255, 255, 255, 0.7);
-            font-weight: 400;
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.5;
-        }
+/* ---------- bench ---------- */
+.bench{padding:64px 0 72px}
+.bench-head{display:flex;align-items:baseline;gap:20px;margin-bottom:32px;flex-wrap:wrap}
+.bench-head h2{
+  font-family:Archivo,sans-serif;
+  font-variation-settings:"wdth" 118,"wght" 760;
+  text-transform:uppercase;font-size:clamp(1.6rem,3vw,2.3rem);line-height:1;
+}
+.bench-head p{color:var(--ink-2);font-size:.98rem;margin-left:auto;max-width:30em}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{
+  display:flex;flex-direction:column;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);border-radius:4px;
+  padding:20px 20px 22px;
+  text-decoration:none;color:inherit;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 2px rgba(23,32,43,.1);
+  transition:box-shadow .16s ease,transform .16s ease;
+}
+.card:hover{
+  transform:translateY(-2px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,1),0 8px 18px rgba(23,32,43,.16);
+}
+.card:active{transform:translateY(0);box-shadow:inset 0 2px 5px rgba(23,32,43,.2)}
+.card:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.card-tag{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.card .dot{width:7px;height:7px;border-radius:50%;background:var(--lamp);box-shadow:0 0 6px var(--lamp);flex:none}
+.card h3{
+  font-family:Archivo,sans-serif;
+  font-variation-settings:"wdth" 104,"wght" 720;
+  text-transform:uppercase;font-size:1.16rem;line-height:1.06;
+  margin-bottom:9px;letter-spacing:.005em;
+}
+.card p{font-size:.95rem;color:var(--ink-2);line-height:1.5}
+.card .go{
+  margin-top:16px;
+  font-family:"IBM Plex Mono",monospace;font-size:10.5px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);
+}
+.card:hover .go{color:var(--ink)}
 
-        /* Navigation Grid */
-        .nav-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin: 4rem 0;
-        }
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--rule);background:linear-gradient(180deg,var(--panel-2),#CDD1CA);padding:34px 0}
+.foot{display:flex;gap:24px;flex-wrap:wrap;align-items:center}
+.foot a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--rule)}
+.foot a:hover{border-bottom-color:var(--lamp)}
+.foot .tag{margin-left:auto}
 
-        .nav-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 2.5rem;
-            position: relative;
-            transition: all 0.3s ease;
-            overflow: hidden;
-        }
-
-        .nav-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .nav-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .nav-card:hover::before {
-            opacity: 1;
-        }
-
-        .card-icon {
-            width: 70px;
-            height: 70px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .nav-card:hover .card-icon {
-            transform: scale(1.05);
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .card-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-            color: #ffffff;
-        }
-
-        .card-description {
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 2rem;
-            line-height: 1.6;
-        }
-
-        .card-link {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            color: #ffffff;
-            padding: 12px 24px;
-            text-decoration: none;
-            border-radius: 10px;
-            font-weight: 500;
-            font-size: 0.95rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .card-link:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 4rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .footer-content {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 1.5rem;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.9rem;
-            font-weight: 400;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-
-            .nav-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-                margin: 3rem 0;
-            }
-
-            .nav-card {
-                padding: 2rem;
-            }
-
-            .logo {
-                width: 80px;
-                height: 80px;
-                font-size: 2rem;
-            }
-
-            .tagline {
-                font-size: 1.1rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .nav-card {
-                padding: 1.5rem;
-            }
-
-            .card-icon {
-                width: 60px;
-                height: 60px;
-                font-size: 1.75rem;
-            }
-        }
-
-        /* Smooth loading animation */
-        .container {
-            animation: fadeIn 0.8s ease forwards;
-        }
-
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
+@media(max-width:900px){
+  .hero-grid{grid-template-columns:1fr;gap:36px}
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .bench-head p{margin-left:0}
+}
+@media(max-width:600px){
+  .wrap{padding:0 18px}
+  .grid{grid-template-columns:1fr}
+  .hero{padding:44px 0 40px}
+  .rail-nav{gap:16px}
+  .rail-nav a:nth-child(n+3){display:none}
+  canvas{height:190px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{transition:none!important}
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">IH</div>
-            <h1>Digital Portfolio</h1>
-            <p class="tagline">Crafting exceptional digital experiences with precision, creativity, and professional excellence</p>
-        </header>
 
-        <main>
-            <div class="nav-grid">
-                <div class="nav-card">
-                    <div class="card-icon">👤</div>
-                    <h3 class="card-title">About Me</h3>
-                    <p class="card-description">Discover my professional journey, expertise, and the passion that drives my work in digital innovation.</p>
-                    <a href="about.html" class="card-link">Learn More</a>
-                </div>
+<div class="rail">
+  <div class="wrap">
+    <div class="plate">IH</div>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
 
-                <div class="nav-card">
-                    <div class="card-icon">💼</div>
-                    <h3 class="card-title">Portfolio</h3>
-                    <p class="card-description">Explore my curated collection of projects, showcasing technical excellence and creative problem-solving.</p>
-                    <a href="portfolio.html" class="card-link">View Work</a>
-                </div>
-
-                <div class="nav-card">
-                    <div class="card-icon">📞</div>
-                    <h3 class="card-title">Contact</h3>
-                    <p class="card-description">Ready to collaborate? Let's discuss how we can bring your vision to life with cutting-edge solutions.</p>
-                    <a href="contact.html" class="card-link">Get In Touch</a>
-                </div>
-
-                <div class="nav-card">
-                    <div class="card-icon">📸</div>
-                    <h3 class="card-title">Gallery</h3>
-                    <p class="card-description">Browse through my visual portfolio featuring design work, photography, and creative projects.</p>
-                    <a href="gallery.html" class="card-link">View Gallery</a>
-                </div>
-            </div>
-        </main>
-
-        <footer>
-            <div class="footer-content">
-                <p>&copy; 2025 IHoggan Digital Portfolio. All rights reserved.</p>
-            </div>
-        </footer>
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="tag">Interactive learning tools · Wirral, UK</p>
+      <h1>Nine things<br>you can <em>actually run</em></h1>
+      <p class="lede">I build the tool, not the lecture. Neural network training, wireless packet capture, quantum simulation, Raspberry&nbsp;Pi hardware — each one opens in your browser and does something when you touch it. <strong>Start on the right: drag the learning rate past 1.00 and watch the network tear itself apart.</strong></p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="neural_playground.html">Open the full playground</a>
+        <a class="btn" href="#bench">See all nine</a>
+      </div>
     </div>
+
+    <div class="scope">
+      <div class="scope-head">
+        <span class="tag">Gradient descent · loss per step</span>
+        <span class="lamp" id="lamp" aria-hidden="true"></span>
+      </div>
+      <div class="well">
+        <canvas id="scope" aria-label="Live plot of training loss falling each step. The learning rate control below changes how it behaves."></canvas>
+      </div>
+      <div class="readout" aria-live="polite">
+        <span>Step <b id="step">0</b></span>
+        <span>Loss <b id="loss">0.000</b></span>
+        <span>Status <b id="status">Converging</b></span>
+      </div>
+      <div class="control">
+        <label for="lr">Learning rate <b id="lrval">0.12</b></label>
+        <input id="lr" type="range" min="0.05" max="1.30" step="0.01" value="0.12">
+        <div class="scale">
+          <span>0.05</span>
+          <span style="left:36%">0.50</span>
+          <span class="thresh" style="left:76%">1.00 unstable →</span>
+          <span>1.30</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="bench wrap" id="bench">
+  <div class="bench-head">
+    <h2>On the bench</h2>
+    <p>Everything here is free, runs client-side, and asks you to change something. No sign-up, no video, no waiting.</p>
+  </div>
+
+  <div class="grid">
+    <a class="card" href="neural_playground.html">
+      <div class="card-tag"><span class="dot"></span><span class="tag">Start here · live training</span></div>
+      <h3>S.M.A.R.T.</h3>
+      <p>Watch a neural network learn in real time, then push the learning rate until it explodes. The fastest way to understand why the number matters.</p>
+      <span class="go">Open →</span>
+    </a>
+
+    <a class="card" href="Project_Zombie.html">
+      <div class="card-tag"><span class="tag">802.11 monitor · 48-hour capture</span></div>
+      <h3>Project Zombie</h3>
+      <p>A real investigation, written up as it happened: hunting botnet traffic on a home network with a Raspberry Pi, Wireshark and tshark.</p>
+      <span class="go">Read the case →</span>
+    </a>
+
+    <a class="card" href="Raspberry_Pi.html">
+      <div class="card-tag"><span class="tag">GPIO · 40 pins</span></div>
+      <h3>Raspberry Pi Hub</h3>
+      <p>Wire something up tonight: LED controllers, a temperature web server, motion detectors, IoT builds with the pinouts spelled out.</p>
+      <span class="go">Open →</span>
+    </a>
+
+    <a class="card" href="Quantum_ness.html">
+      <div class="card-tag"><span class="tag">Qubits · superposition</span></div>
+      <h3>Quantum-ness</h3>
+      <p>Gates, entanglement and quantum parallelism you can operate rather than read about. Built for people who bounced off the maths.</p>
+      <span class="go">Open →</span>
+    </a>
+
+    <a class="card" href="Space_Anomoly.html">
+      <div class="card-tag"><span class="tag">3I/ATLAS · real observations</span></div>
+      <h3>Space Anomaly</h3>
+      <p>Run anomaly detection on 3I/ATLAS, the third interstellar object ever found, using the actual astronomical data.</p>
+      <span class="go">Open →</span>
+    </a>
+
+    <a class="card" href="TradeWar.html">
+      <div class="card-tag"><span class="tag">Market sim · human vs bot</span></div>
+      <h3>TradeWar</h3>
+      <p>Trade live against algorithms that never panic, never revenge-trade, and never get bored. Find out how long your discipline lasts.</p>
+      <span class="go">Play →</span>
+    </a>
+
+    <a class="card" href="Linux_Guide.html">
+      <div class="card-tag"><span class="tag">Shell · safe to paste</span></div>
+      <h3>Linux Guide</h3>
+      <p>Files, text processing, system monitoring and scripting — hands-on, with every command safe to run on your own machine.</p>
+      <span class="go">Open →</span>
+    </a>
+
+    <a class="card" href="Python.html">
+      <div class="card-tag"><span class="tag">Python 3 · buildable projects</span></div>
+      <h3>Python</h3>
+      <p>Beginner to working developer through things you finish: a calculator, a file organiser, a weather app, automation scripts.</p>
+      <span class="go">Open →</span>
+    </a>
+
+    <a class="card" href="Rocks_Minerals_Metals.html">
+      <div class="card-tag"><span class="tag">Specimens · searchable</span></div>
+      <h3>Rocks, Minerals &amp; Metals</h3>
+      <p>Identify what you picked up on the beach. Formation, famous localities, industrial uses, and the rare stuff worth knowing about.</p>
+      <span class="go">Open →</span>
+    </a>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <a href="contact.html">Get in touch</a>
+    <a href="https://github.com/ihoggan">GitHub</a>
+    <a href="https://github.com/sponsors/ihoggan">Support these projects</a>
+    <span class="tag">© 2026 Iain Hoggan · MIT licensed</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var cv=document.getElementById('scope'), ctx=cv.getContext('2d');
+  var lrEl=document.getElementById('lr'), lrVal=document.getElementById('lrval');
+  var stepEl=document.getElementById('step'), lossEl=document.getElementById('loss');
+  var statusEl=document.getElementById('status'), lamp=document.getElementById('lamp');
+  var reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // loss(w) = w^2   grad = 2w   update: w <- w - lr*2w = w(1 - 2*lr)
+  // |1 - 2*lr| > 1  <=>  lr > 1.00  -> divergence. The printed threshold is real.
+  var LOG_HI=1.2, LOG_LO=-5, MAX_STEPS=30, W0=1.75, WCLAMP=2.4;
+  var w=W0, loss=[], weight=[], diverged=false, hold=0, lr=parseFloat(lrEl.value);
+
+  function fit(){
+    var r=cv.getBoundingClientRect(), d=window.devicePixelRatio||1;
+    cv.width=Math.round(r.width*d); cv.height=Math.round(r.height*d);
+    ctx.setTransform(d,0,0,d,0,0);
+    draw();
+  }
+
+  function reset(){ w=W0; loss=[]; weight=[]; diverged=false; hold=0; }
+
+  function stepOnce(){
+    var l=w*w;
+    loss.push(l); weight.push(w);
+    w=w-lr*(2*w);
+    if(!isFinite(w)||l>1e7) diverged=true;
+  }
+
+  function yLoss(l,H){
+    var t=(LOG_HI-Math.log10(Math.max(l,1e-9)))/(LOG_HI-LOG_LO);
+    return Math.max(-0.3,Math.min(1.3,t))*H;
+  }
+  function yWeight(v,H){
+    var t=Math.max(-1,Math.min(1,v/WCLAMP));
+    return H/2 - t*(H/2)*0.86;
+  }
+
+  function poly(arr,fn,H,W,n,colour,width,glow){
+    if(arr.length<2) return;
+    ctx.beginPath();
+    for(var k=0;k<arr.length;k++){
+      var px=W*k/(n-1), py=fn(arr[k],H);
+      k?ctx.lineTo(px,py):ctx.moveTo(px,py);
+    }
+    ctx.strokeStyle=colour; ctx.lineWidth=width; ctx.lineJoin='round';
+    ctx.shadowColor=glow; ctx.shadowBlur=glow?8:0;
+    ctx.stroke(); ctx.shadowBlur=0;
+  }
+
+  function draw(){
+    var W=cv.clientWidth, H=cv.clientHeight, n=MAX_STEPS;
+    ctx.clearRect(0,0,W,H);
+
+    ctx.strokeStyle='rgba(87,199,154,.12)'; ctx.lineWidth=1;
+    for(var i=1;i<10;i++){ctx.beginPath();ctx.moveTo(W*i/10,0);ctx.lineTo(W*i/10,H);ctx.stroke();}
+    for(var j=1;j<6;j++){ctx.beginPath();ctx.moveTo(0,H*j/6);ctx.lineTo(W,H*j/6);ctx.stroke();}
+
+    // zero line for the weight trace
+    ctx.strokeStyle='rgba(224,152,43,.22)';
+    ctx.beginPath();ctx.moveTo(0,H/2);ctx.lineTo(W,H/2);ctx.stroke();
+
+    poly(weight,yWeight,H,W,n,'rgba(224,152,43,.85)',1.5,'');
+    poly(loss,yLoss,H,W,n,diverged?'#E0603F':'#57C79A',2,
+         diverged?'rgba(224,96,63,.8)':'rgba(87,199,154,.7)');
+
+    if(loss.length){
+      var lx=W*(loss.length-1)/(n-1), ly=yLoss(loss[loss.length-1],H);
+      if(ly>-10&&ly<H+10){
+        ctx.beginPath(); ctx.arc(lx,ly,3,0,6.284);
+        ctx.fillStyle=diverged?'#E0603F':'#8CE8C2'; ctx.fill();
+      }
+    }
+  }
+
+  function readout(){
+    var last=loss.length?loss[loss.length-1]:0;
+    stepEl.textContent=loss.length;
+    lossEl.textContent=(last>=1e4||(last>0&&last<1e-3))?last.toExponential(1):last.toFixed(3);
+    var first=loss.length?loss[0]:1, state='Converging';
+    if(diverged) state='Diverged';
+    else if(last<1e-4) state='Settled';
+    else if(loss.length>3&&last>first*1.02) state='Unstable';
+    else if(loss.length>3&&Math.abs(last-first)<first*0.02) state='Marginal';
+    statusEl.textContent=state;
+    statusEl.className=diverged?'diverged':'';
+    lamp.className='lamp '+(diverged?'alarm':'on');
+  }
+
+  function settle(){ for(var i=0;i<MAX_STEPS&&!diverged;i++) stepOnce(); draw(); readout(); }
+
+  var acc=0, prev=0;
+  function loop(t){
+    if(!prev) prev=t;
+    acc+=t-prev; prev=t;
+    if(acc>95){
+      acc=0;
+      if(diverged||loss.length>=MAX_STEPS){
+        if(!hold) hold=t+1500; else if(t>hold) reset();
+      } else stepOnce();
+      draw(); readout();
+    }
+    requestAnimationFrame(loop);
+  }
+
+  lrEl.addEventListener('input',function(){
+    lr=parseFloat(lrEl.value);
+    lrVal.textContent=lr.toFixed(2);
+    reset();
+    if(reduced) settle();
+  });
+
+  window.addEventListener('resize',fit);
+  fit();
+  if(reduced) settle(); else requestAnimationFrame(loop);
+})();
+</script>
 </body>
 </html>
