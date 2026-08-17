@@ -3,8 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>S.M.A.R.T - Neural Network Learning Playground</title>
+    <title>S.M.A.R.T. Neural Network Playground — Iain Hoggan</title>
+<meta name="description" content="Watch a neural network train step by step, then push the learning rate past the point where it stops converging. An interactive playground for understanding why that one number decides everything.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+
     <script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['"Source Serif 4"','Georgia','serif'],
+        mono: ['"IBM Plex Mono"','ui-monospace','monospace'],
+        display: ['Archivo','sans-serif'],
+      },
+      colors: {
+        white:  '#F2F3F0',
+        gray:   {50:'#F2F3F0',100:'#E4E6E1',200:'#DADDD6',300:'#C3C8C0',400:'#9AA29B',
+                 500:'#8A929C',600:'#57616E',700:'#3C4653',800:'#26313D',900:'#17202B'},
+        blue:   {50:'#E7EBEA',100:'#D9DFDD',200:'#BCC6C6',300:'#8FA0A5',400:'#5B7180',
+                 500:'#20303E',600:'#1A2733',700:'#17202B',800:'#111922',900:'#0C1319'},
+        indigo: {50:'#E7EBEA',100:'#D9DFDD',500:'#20303E',600:'#17202B',700:'#111922'},
+        green:  {50:'#E4EDE8',100:'#D3E4DA',200:'#B2D0C0',300:'#87B7A0',400:'#4F9C7C',
+                 500:'#2F7D62',600:'#286A53',700:'#215544',800:'#1A4235',900:'#133227'},
+        red:    {50:'#F5E4DF',100:'#EFD3CB',200:'#E3B2A5',300:'#D48A76',400:'#C85F45',
+                 500:'#BE3A1F',600:'#A3311A',700:'#872815',800:'#6B2011',900:'#51180D'},
+        orange: {50:'#F8EFDE',100:'#F3E3C6',200:'#EBD09C',300:'#E7B863',400:'#E3A63F',
+                 500:'#E0982B',600:'#C48124',700:'#A16A1E',800:'#7E5317',900:'#5C3D11'},
+        yellow: {50:'#F8EFDE',100:'#F3E3C6',200:'#EBD09C',300:'#E7B863',400:'#E3A63F',
+                 500:'#E0982B',600:'#C48124',700:'#A16A1E',800:'#7E5317',900:'#5C3D11'},
+        purple: {50:'#EAECE9',100:'#DEE1DD',200:'#C4CAC7',300:'#A0A8AB',400:'#77828C',
+                 500:'#55606D',600:'#47515C',700:'#39424B',800:'#2B333A',900:'#1E252B'},
+        pink:   {50:'#EAECE9',100:'#DEE1DD',500:'#55606D',600:'#47515C'},
+      },
+      borderRadius: { xl:'4px', lg:'3px', full:'999px' },
+      boxShadow: {
+        lg:'inset 0 1px 0 rgba(255,255,255,.9), 0 1px 2px rgba(23,32,43,.12)',
+        md:'inset 0 1px 0 rgba(255,255,255,.9), 0 1px 2px rgba(23,32,43,.10)',
+      },
+    }
+  }
+}
+</script>
+
     <style>
         .gradient-bg { background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%); }
         .animate-bounce { animation: bounce 1s infinite; }
@@ -12,14 +56,42 @@
             0%, 100% { transform: translateY(-25%); }
             50% { transform: none; }
         }
+
+        body { font-family: var(--body); background: var(--panel); color: var(--ink); }
+        .gradient-bg { background: linear-gradient(180deg, var(--engrave), var(--panel-2)) !important;
+                       border: 1px solid var(--bezel); }
+        h1, h2, h3 { font-family: var(--display); font-variation-settings: "wdth" 112, "wght" 740;
+                     text-transform: uppercase; letter-spacing: .005em; color: var(--ink); }
+        h1 { font-variation-settings: "wdth" 120, "wght" 780; letter-spacing: -.01em; }
+        .font-mono, code, pre { font-family: var(--mono) !important; }
+        /* the rail and footer must survive Tailwind's preflight */
+        .rail .wrap, .foot { display: flex !important; }
+        .rail-nav { display: flex !important; }
+        .plate { display: grid !important; }
+        .read-next { border-top: 1px solid var(--rule); padding: 44px 0 8px; }
+        .read-next .card { margin-top: 14px; max-width: 640px; display: flex !important; }
     </style>
 </head>
 <body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
     <div class="w-full max-w-7xl mx-auto p-6 gradient-bg min-h-screen">
         <!-- Header -->
         <div class="mb-8 text-center">
             <div class="flex items-center justify-center gap-3 mb-4">
-                <div class="text-blue-600 text-4xl">🧠</div>
+                <div class="text-blue-600 text-4xl"></div>
                 <h1 class="text-3xl font-bold text-gray-800">S.M.A.R.T Neural Network Playground</h1>
             </div>
             <p class="text-lg text-gray-600 max-w-3xl mx-auto mb-4">
@@ -30,19 +102,19 @@
             <div class="flex flex-wrap items-center justify-center gap-4 mb-6">
                 <a href="https://ihoggan.github.io/ihoggan-portfolio/index.html" target="_blank"
                    class="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-900 text-white rounded-lg font-semibold transition-all">
-                    📂 Home Page ↗️
+                     Home Page ↗
                 </a>
                 <a href="./smart-see-machine-adaptive-reasoning-training.ipynb" download
                    class="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-all">
-                    📓 Download Notebook ⬇️
+                     Download Notebook ⬇
                 </a>
                 <a href="https://colab.research.google.com/github/ihoggan/S.M.A.R.T./blob/main/smart-see-machine-adaptive-reasoning-training.ipynb" target="_blank"
                    class="flex items-center gap-2 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold transition-all">
-                    🚀 Open with Colab ↗️
+                     Open with Colab ↗
                 </a>
                 <a href="https://github.com/sponsors/ihoggan" target="_blank"
                    class="flex items-center gap-2 px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white rounded-lg font-semibold transition-all">
-                    ❤️ Support Project ↗️
+                     Support Project ↗
                 </a>
             </div>
         </div>
@@ -50,12 +122,12 @@
         <!-- Instructions Panel -->
         <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl shadow-lg p-8 mb-8 border-l-4 border-blue-500">
             <div class="flex items-start gap-4">
-                <div class="text-3xl">🎓</div>
+                <div class="text-3xl"></div>
                 <div class="flex-1">
                     <h2 class="text-2xl font-bold text-gray-800 mb-4">Welcome to Neural Network Training!</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <h3 class="text-lg font-semibold text-blue-700 mb-3">🤖 What You're Seeing</h3>
+                            <h3 class="text-lg font-semibold text-blue-700 mb-3"> What You're Seeing</h3>
                             <ul class="space-y-2 text-gray-700">
                                 <li class="flex items-start gap-2">
                                     <span class="text-blue-500 font-bold">•</span>
@@ -72,7 +144,7 @@
                             </ul>
                         </div>
                         <div>
-                            <h3 class="text-lg font-semibold text-green-700 mb-3">🚀 How to Use</h3>
+                            <h3 class="text-lg font-semibold text-green-700 mb-3"> How to Use</h3>
                             <ol class="space-y-2 text-gray-700">
                                 <li class="flex items-start gap-2">
                                     <span class="bg-green-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">1</span>
@@ -91,7 +163,7 @@
                     </div>
                     <div class="mt-6 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
                         <div class="flex items-center gap-2 mb-2">
-                            <span class="text-xl">💡</span>
+                            <span class="text-xl"></span>
                             <span class="font-semibold text-yellow-800">Pro Tip:</span>
                         </div>
                         <p class="text-yellow-700 text-sm">
@@ -105,7 +177,7 @@
 
         <!-- Neural Network Workflow Visualization -->
         <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">🧠 How This Neural Network Works</h2>
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center"> How This Neural Network Works</h2>
             
             <div class="relative">
                 <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-300 hidden lg:block"></div>
@@ -115,7 +187,7 @@
                     <div class="relative bg-blue-50 rounded-lg p-4 border-2 border-blue-200">
                         <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">1</div>
                         <div class="text-center mt-2">
-                            <div class="text-2xl mb-2">📏</div>
+                            <div class="text-2xl mb-2"></div>
                             <div class="font-bold text-blue-700 text-sm">Input Feature</div>
                             <div class="text-xs text-gray-600 mt-1">Square Feet</div>
                             <div class="text-lg font-bold text-blue-600 mt-1" id="workflow-input">1500</div>
@@ -125,7 +197,7 @@
                     <div class="relative bg-green-50 rounded-lg p-4 border-2 border-green-200">
                         <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">2</div>
                         <div class="text-center mt-2">
-                            <div class="text-2xl mb-2">⚖️</div>
+                            <div class="text-2xl mb-2"></div>
                             <div class="font-bold text-green-700 text-sm">Weight (W)</div>
                             <div class="text-xs text-gray-600 mt-1">Price per SqFt</div>
                             <div class="text-lg font-bold text-green-600 mt-1" id="workflow-weight">$100</div>
@@ -139,7 +211,7 @@
                     <div class="relative bg-purple-50 rounded-lg p-4 border-2 border-purple-200">
                         <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-purple-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">4</div>
                         <div class="text-center mt-2">
-                            <div class="text-2xl mb-2">➕</div>
+                            <div class="text-2xl mb-2"></div>
                             <div class="font-bold text-purple-700 text-sm">Bias (B)</div>
                             <div class="text-xs text-gray-600 mt-1">Base Price</div>
                             <div class="text-lg font-bold text-purple-600 mt-1" id="workflow-bias">$50k</div>
@@ -153,7 +225,7 @@
                     <div class="relative bg-orange-50 rounded-lg p-4 border-2 border-orange-200">
                         <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-orange-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">6</div>
                         <div class="text-center mt-2">
-                            <div class="text-2xl mb-2">💲</div>
+                            <div class="text-2xl mb-2"></div>
                             <div class="font-bold text-orange-700 text-sm">Prediction (Y')</div>
                             <div class="text-xs text-gray-600 mt-1">Estimated Price</div>
                             <div class="text-lg font-bold text-orange-600 mt-1" id="workflow-prediction">$200k</div>
@@ -163,7 +235,7 @@
                     <div class="relative bg-red-50 rounded-lg p-4 border-2 border-red-200">
                         <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">7</div>
                         <div class="text-center mt-2">
-                            <div class="text-2xl mb-2">📉</div>
+                            <div class="text-2xl mb-2"></div>
                             <div class="font-bold text-red-700 text-sm">Error (E)</div>
                             <div class="text-xs text-gray-600 mt-1">Actual - Prediction</div>
                             <div class="text-lg font-bold text-red-600 mt-1" id="workflow-error">-$50k</div>
@@ -188,24 +260,24 @@
             <div class="flex flex-wrap items-center justify-between gap-4">
                 <div class="flex items-center gap-4">
                     <button id="trainBtn" class="flex items-center gap-2 px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold transition-all">
-                        ▶️ Start Training
+                        ▶ Start Training
                     </button>
                     <button id="resetBtn" class="flex items-center gap-2 px-4 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg font-semibold transition-all">
-                        🔄 Reset Neuron
+                         Reset Neuron
                     </button>
                 </div>
                 
                 <div class="flex items-center gap-4">
                     <div class="flex items-center gap-2 px-3 py-1 bg-gray-100 rounded-full">
-                        ⚙️ <label class="text-sm font-medium text-gray-700">Learning Rate:</label>
-                        <span id="rateStatus" class="font-bold text-sm text-green-600">✅ SAFE</span>
+                         <label class="text-sm font-medium text-gray-700">Learning Rate:</label>
+                        <span id="rateStatus" class="font-bold text-sm text-green-600"> SAFE</span>
                     </div>
                     <select id="learningRate" class="px-3 py-1 border border-gray-300 rounded">
                         <option value="0.0000001">0.0000001 (Safe & Stable)</option>
                         <option value="0.000001">0.000001 (Moderate)</option>
                         <option value="0.00001">0.00001 (Fast)</option>
-                        <option value="0.0001">0.0001 (⚠️ May Explode!)</option>
-                        <option value="0.001">0.001 (💥 Definitely Explodes!)</option>
+                        <option value="0.0001">0.0001 ( May Explode!)</option>
+                        <option value="0.001">0.001 ( Definitely Explodes!)</option>
                     </select>
                 </div>
             </div>
@@ -215,7 +287,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <div class="bg-white rounded-xl shadow-lg p-6">
                 <div class="flex items-center gap-3 mb-2">
-                    <span>⚡</span>
+                    <span></span>
                     <h3 class="font-bold text-gray-800">Training Progress</h3>
                 </div>
                 <div id="epochValue" class="text-2xl font-bold text-blue-600">0</div>
@@ -224,9 +296,9 @@
 
             <div class="bg-white rounded-xl shadow-lg p-6">
                 <div class="flex items-center gap-3 mb-2">
-                    <span>📈</span>
+                    <span></span>
                     <h3 class="font-bold text-gray-800">Accuracy</h3>
-                    <div id="explosionWarning" class="hidden text-red-600 animate-bounce">💥 EXPLODING!</div>
+                    <div id="explosionWarning" class="hidden text-red-600 animate-bounce"> EXPLODING!</div>
                 </div>
                 <div id="accuracyValue" class="text-2xl font-bold text-green-600">0.0%</div>
                 <div class="text-sm text-gray-600">prediction accuracy</div>
@@ -263,7 +335,7 @@
 
         <!-- Challenge Section -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <h3 class="text-xl font-bold text-gray-800 mb-4">🏠 The Neural Network Challenge</h3>
+            <h3 class="text-xl font-bold text-gray-800 mb-4"> The Neural Network Challenge</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <h4 class="font-bold text-green-600 mb-2">The Hidden Pattern</h4>
@@ -291,7 +363,7 @@
             
             <div class="mt-6 p-4 bg-yellow-50 rounded-lg">
                 <p class="text-sm text-gray-700">
-                    <strong>🎯 Your Mission:</strong> Experiment with different learning rates to help the neural network 
+                    <strong> Your Mission:</strong> Experiment with different learning rates to help the neural network 
                     discover the hidden relationship. Watch what happens when you use learning rates that are too high!
                 </p>
             </div>
@@ -332,20 +404,20 @@
             </div>
 
             <div class="mt-8 p-6 bg-gray-50 rounded-lg">
-                <h4 class="font-bold text-lg text-purple-600 mb-3">🧮 The Learning Process Explained</h4>
+                <h4 class="font-bold text-lg text-purple-600 mb-3"> The Learning Process Explained</h4>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                     <div class="text-center">
-                        <div class="text-2xl mb-2">🎲</div>
+                        <div class="text-2xl mb-2"></div>
                         <div class="font-semibold">1. Random Start</div>
                         <div class="text-gray-600">Neural network begins with random parameter values</div>
                     </div>
                     <div class="text-center">
-                        <div class="text-2xl mb-2">📊</div>
+                        <div class="text-2xl mb-2"></div>
                         <div class="font-semibold">2. Calculate Error</div>
                         <div class="text-gray-600">Compare predictions with actual house prices</div>
                     </div>
                     <div class="text-center">
-                        <div class="text-2xl mb-2">🔧</div>
+                        <div class="text-2xl mb-2"></div>
                         <div class="font-semibold">3. Adjust Parameters</div>
                         <div class="text-gray-600">Use gradients to improve predictions</div>
                     </div>
@@ -353,7 +425,7 @@
                 
                 <div class="mt-6 p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-400">
                     <p class="text-sm text-gray-700">
-                        <strong>💡 Key Insight:</strong> The learning rate controls how big steps the neural network takes. 
+                        <strong> Key Insight:</strong> The learning rate controls how big steps the neural network takes. 
                         Too small = slow learning. Too big = parameters explode! Finding the right balance is crucial 
                         for successful AI training.
                     </p>
@@ -726,5 +798,27 @@
         updateDisplay();
         updateLearningRateStatus();
     </script>
+
+<section class="read-next">
+  <div class="wrap col">
+    <p class="tag">Read this next</p>
+    <a class="card" href="Space_Anomaly.html">
+      <h3>Space Anomaly Detection</h3>
+      <p>Take the same statistical instinct outward: finding the observation that does not fit, using real data from an interstellar comet.</p>
+      <span class="go">Open &rarr;</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Get in touch</a>
+    <span class="tag">&copy; 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
 </body>
 </html>
