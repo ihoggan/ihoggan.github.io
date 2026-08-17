@@ -4,7 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Space Anomaly Detection — Iain Hoggan</title>
-    <meta name="description" content="Learn anomaly detection with real data from 3I/ATLAS, the third interstellar object ever found — statistical outliers, Isolation Forest and time-series methods, updated with what Webb discovered about its origin.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+
+    <meta name="description" content="Learn anomaly detection with real data from 3I/ATLAS, the third interstellar object ever found — statistical outliers, Isolation Forest and time-series methods.">
     <meta name="keywords" content="anomaly detection, machine learning, space AI, astronomy education, data science tutorials, 3I/ATLAS, interstellar objects, self-study">
     
     <style>
@@ -562,13 +567,123 @@
         .atlas-timeline .tl-date { display: block; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.75; margin-bottom: 0.25rem; }
         .atlas-timeline .tl-item p { margin: 0; line-height: 1.6; }
         .atlas-timeline .tl-item:last-child { padding-bottom: 0; }
-    </style>
+    
+/* ==== faceplate override layer (site.css tokens) — appended last, wins on order ==== */
+body{
+  font-family:var(--body)!important;
+  background:var(--panel)!important;
+  color:var(--ink)!important;
+  background-image:
+    linear-gradient(180deg,rgba(255,255,255,.5),transparent 240px),
+    repeating-linear-gradient(90deg,rgba(23,32,43,.018) 0 1px,transparent 1px 3px)!important;
+}
+.container{max-width:1160px;margin:0 auto;padding:0 28px}
+.hero,.header{background:transparent!important;color:var(--ink)!important;
+  border-bottom:1px solid var(--rule);padding:56px 0 44px!important}
+.hero-content,.header .container{text-align:left!important}
+.hero h1,.header h1,h1{font-family:var(--display)!important;
+  font-variation-settings:"wdth" 120,"wght" 780;text-transform:uppercase;
+  color:var(--ink)!important;-webkit-text-fill-color:var(--ink)!important;
+  background:none!important;letter-spacing:-.015em;line-height:.92}
+.hero-subtitle,.subtitle{color:var(--ink-2)!important;font-size:1.1rem!important;
+  max-width:36em;margin-left:0!important;margin-right:0!important}
+h2,h3,h4{font-family:var(--display)!important;text-transform:uppercase;
+  color:var(--ink)!important;letter-spacing:.005em}
+h2{font-variation-settings:"wdth" 114,"wght" 750}
+h3,h4{font-variation-settings:"wdth" 106,"wght" 720}
+.section-title,.section-title.dark{color:var(--ink)!important;text-align:left!important}
+p,li{color:var(--ink-2)}
+strong,b{color:var(--ink)}
+
+.section,.section-white,.section-gray,.section-dark{
+  background:transparent!important;color:var(--ink)!important;
+  border-top:1px solid var(--rule);padding:52px 0!important}
+.section-gray{background:rgba(23,32,43,.025)!important}
+
+/* panels, cards and boxes become faceplate surfaces */
+.concept-card,.domain-card,.stat-card,.glass-card,.metric,.story-step,
+.explanation-box,.summary-box,.key-points,.note,.interactive-panel,
+.decision-option,.moral-dilemma,.timeline-item,.step-content,.data-viz,
+.discovery-content,.discovery-visual,.insight-box{
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))!important;
+  border:1px solid var(--bezel)!important;border-radius:4px!important;
+  color:var(--ink)!important;backdrop-filter:none!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 2px rgba(23,32,43,.1)!important}
+
+/* readouts stay dark — the one recessed surface */
+.code-block,.trajectory-animation{
+  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen))!important;
+  border:1px solid #060B0E!important;border-radius:3px!important;
+  color:#CBD8D2!important;font-family:var(--mono)!important;
+  box-shadow:inset 0 3px 12px rgba(0,0,0,.55)!important}
+.code-block *{color:inherit!important}
+
+.stat-number,.metric-value{font-family:var(--display)!important;
+  font-variation-settings:"wdth" 100,"wght" 720;color:var(--ink)!important;
+  -webkit-text-fill-color:var(--ink)!important;background:none!important;
+  font-variant-numeric:tabular-nums}
+.stat-label,.metric-label,.tl-date,.badge,.step-number,.note-icon,.domain-icon{
+  font-family:var(--mono)!important;letter-spacing:.12em;text-transform:uppercase;
+  font-size:11px!important;color:var(--ink-3)!important;background:none!important}
+.step-number{color:var(--lamp)!important}
+.highlight{color:var(--ink)!important;background:rgba(224,152,43,.22)!important;
+  -webkit-text-fill-color:var(--ink)!important;padding:0 3px;border-radius:2px}
+
+/* buttons */
+.nav-button,.space-nav-button,.glass-nav-button,.nav-links a,.quick-nav a{
+  font-family:var(--mono)!important;font-size:12px!important;letter-spacing:.13em;
+  text-transform:uppercase;padding:12px 20px!important;color:var(--ink)!important;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))!important;
+  border:1px solid var(--bezel)!important;border-radius:3px!important;
+  backdrop-filter:none!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 1px 2px rgba(23,32,43,.16)!important}
+.nav-button:hover,.space-nav-button:hover,.glass-nav-button:hover{
+  background:linear-gradient(180deg,#fff,var(--panel-2))!important;transform:none!important}
+.nav-button:active,.space-nav-button:active,.glass-nav-button:active{
+  transform:translateY(1px)!important;
+  box-shadow:inset 0 2px 4px rgba(23,32,43,.22)!important}
+
+/* timeline rails pick up the lamp colour */
+.atlas-timeline{border-left-color:var(--bezel)!important}
+.atlas-timeline .tl-item::before,.timeline-marker{background:var(--lamp)!important;
+  box-shadow:0 0 6px var(--lamp)!important}
+.timeline::before,.timeline::after{background:var(--bezel)!important}
+
+/* threat / status colours retuned to the signal set */
+.threat-high{color:var(--alarm)!important}
+.threat-medium{color:var(--lamp)!important}
+.threat-low{color:#2F7D62!important}
+.glow,.warning-glow,.pulse{animation:none!important;text-shadow:none!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 2px rgba(23,32,43,.1)!important}
+
+/* the page's own footer block is replaced by the shared one */
+.footer-content{display:none!important}
+
+.read-next{border-top:1px solid var(--rule);padding:44px 0 8px}
+.read-next .card{margin-top:14px;max-width:640px}
+@media(max-width:600px){.container{padding:0 18px}}
+
+</style>
 </head>
 <body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
     <header>
         <nav class="container">
             <div class="logo">
-                🛰️ Space Anomaly Detection Guide
+                 Space Anomaly Detection Guide
             </div>
             <ul class="nav-links">
                 <li><a href="#discovery">The Discovery</a></li>
@@ -580,7 +695,7 @@
         <div style="background: rgba(100, 181, 246, 0.1); border-bottom: 1px solid rgba(100, 181, 246, 0.3); padding: 0.5rem 0; text-align: center;">
             <div class="container">
                 <p style="color: #64b5f6; font-size: 0.9rem; margin: 0;">
-                    🌟 Interactive animations work best in Chrome or Edge browsers
+                     Interactive animations work best in Chrome or Edge browsers
                 </p>
             </div>
         </div>
@@ -601,19 +716,19 @@
                     <!-- Navigation Buttons -->
                     <div class="nav-buttons">
                         <a href="https://ihoggan.github.io/ihoggan-portfolio/index.html" class="space-nav-button home">
-                            🏠 Home ↗️
+                             Home ↗
                         </a>
                         <a href="https://github.com/sponsors/ihoggan" target="_blank" class="space-nav-button support">
-                            ❤️ Support Project ↗️
+                             Support Project ↗
                         </a>
                     </div>
                     
                     <div class="quick-nav">
-                        <a href="#discovery" class="nav-button">📡 The Discovery</a>
-                        <a href="#whathappened" class="nav-button">📅 What Happened Next</a>
-                        <a href="#concepts" class="nav-button">🧠 Learn Concepts</a>
-                        <a href="#implementation" class="nav-button">💻 See Code</a>
-                        <a href="#applications" class="nav-button">🌍 Applications</a>
+                        <a href="#discovery" class="nav-button"> The Discovery</a>
+                        <a href="#whathappened" class="nav-button"> What Happened Next</a>
+                        <a href="#concepts" class="nav-button"> Learn Concepts</a>
+                        <a href="#implementation" class="nav-button"> See Code</a>
+                        <a href="#applications" class="nav-button"> Applications</a>
                     </div>
                 </div>
             </div>
@@ -782,7 +897,7 @@
                 
                 <div class="concept-grid">
                     <div class="concept-card">
-                        <h3>🎯 Statistical Outliers</h3>
+                        <h3> Statistical Outliers</h3>
                         <p>Data points that fall outside expected patterns. In 3I/ATLAS data, these appear as brightness measurements that don't follow the predicted curve as the object approaches the Sun.</p>
                         <div class="explanation-box">
                             <h4>Example:</h4>
@@ -793,7 +908,7 @@
                     </div>
                     
                     <div class="concept-card">
-                        <h3>📈 Time Series Anomalies</h3>
+                        <h3> Time Series Anomalies</h3>
                         <p>Patterns that change unexpectedly over time. We track how 3I/ATLAS's properties evolve as it moves through space, looking for sudden changes that might indicate new physics.</p>
                         <div class="explanation-box">
                             <h4>Key Insight:</h4>
@@ -803,7 +918,7 @@
                     </div>
                     
                     <div class="concept-card">
-                        <h3>🔍 Multi-Modal Detection</h3>
+                        <h3> Multi-Modal Detection</h3>
                         <p>Combining different types of measurements (brightness, position, spectroscopy) to detect anomalies that might be invisible when looking at each measurement type separately.</p>
                         <div class="explanation-box">
                             <h4>Power of Combination:</h4>
@@ -812,7 +927,7 @@
                     </div>
                     
                     <div class="concept-card">
-                        <h3>🎲 Probability & Confidence</h3>
+                        <h3> Probability & Confidence</h3>
                         <p>Not all unusual measurements are real anomalies—some are just noise. We use statistical methods to calculate how confident we are that a detected pattern is genuinely anomalous.</p>
                         <div class="explanation-box">
                             <h4>Confidence Levels:</h4>
@@ -1019,37 +1134,37 @@ time_anomalies = detect_time_series_anomalies(observations, 'magnitude', 'days_s
                 
                 <div class="domains-grid">
                     <div class="domain-card">
-                        <div class="domain-icon">🛰️</div>
+                        <div class="domain-icon"></div>
                         <h4>Space Exploration</h4>
                         <p>Detect unusual behavior in spacecraft, identify new celestial objects, and monitor space weather anomalies that could affect missions.</p>
                     </div>
                     
                     <div class="domain-card">
-                        <div class="domain-icon">🏥</div>
+                        <div class="domain-icon"></div>
                         <h4>Medical Diagnosis</h4>
                         <p>Find abnormal patterns in patient data, detect early signs of disease, and identify unusual treatment responses.</p>
                     </div>
                     
                     <div class="domain-card">
-                        <div class="domain-icon">🔒</div>
+                        <div class="domain-icon"></div>
                         <h4>Cybersecurity</h4>
                         <p>Identify network intrusions, detect malware behavior, and spot unusual user activity patterns before they cause damage.</p>
                     </div>
                     
                     <div class="domain-card">
-                        <div class="domain-icon">🏭</div>
+                        <div class="domain-icon"></div>
                         <h4>Industrial Monitoring</h4>
                         <p>Predict equipment failures, detect quality issues in manufacturing, and optimize production processes.</p>
                     </div>
                     
                     <div class="domain-card">
-                        <div class="domain-icon">💰</div>
+                        <div class="domain-icon"></div>
                         <h4>Financial Fraud</h4>
                         <p>Detect unusual transaction patterns, identify credit card fraud, and spot market manipulation attempts.</p>
                     </div>
                     
                     <div class="domain-card">
-                        <div class="domain-icon">🌊</div>
+                        <div class="domain-icon"></div>
                         <h4>Environmental Science</h4>
                         <p>Monitor climate change indicators, detect pollution events, and identify unusual weather patterns.</p>
                     </div>
@@ -1061,22 +1176,22 @@ time_anomalies = detect_time_series_anomalies(observations, 'magnitude', 'days_s
                     
                     <div class="key-points">
                         <div class="key-point">
-                            <h4>🎯 Multiple Approaches</h4>
+                            <h4> Multiple Approaches</h4>
                             <p>Combine statistical methods, machine learning, and domain expertise for robust detection.</p>
                         </div>
                         
                         <div class="key-point">
-                            <h4>📊 Data Quality Matters</h4>
+                            <h4> Data Quality Matters</h4>
                             <p>Clean, well-structured data is essential for accurate anomaly detection.</p>
                         </div>
                         
                         <div class="key-point">
-                            <h4>🧠 Context is King</h4>
+                            <h4> Context is King</h4>
                             <p>Understanding the domain helps distinguish real anomalies from noise.</p>
                         </div>
                         
                         <div class="key-point">
-                            <h4>⚖️ Balance Sensitivity</h4>
+                            <h4> Balance Sensitivity</h4>
                             <p>Too sensitive = false alarms, too lenient = missed discoveries.</p>
                         </div>
                     </div>
@@ -1088,20 +1203,42 @@ time_anomalies = detect_time_series_anomalies(observations, 'magnitude', 'days_s
     <footer>
         <div class="container">
             <div class="footer-content">
-                <p>🌟 Built with real 3I/ATLAS discovery data for educational purposes</p>
+                <p> Built with real 3I/ATLAS discovery data for educational purposes</p>
                 <p>Learn more about space anomaly detection and contribute to citizen science!</p>
                 
                 <!-- Navigation Buttons at Bottom -->
                 <div class="nav-buttons">
                     <a href="https://ihoggan.github.io/ihoggan-portfolio/index.html" class="space-nav-button home">
-                        🏠 Back to Portfolio ↗️
+                         Back to Portfolio ↗
                     </a>
                     <a href="https://github.com/sponsors/ihoggan" target="_blank" class="space-nav-button support">
-                        ❤️ Support My Work ↗️
+                         Support My Work ↗
                     </a>
                 </div>
             </div>
         </div>
     </footer>
+
+<section class="read-next">
+  <div class="wrap col">
+    <p class="tag">Read this next</p>
+    <a class="card" href="Project_Zombie.html">
+      <h3>Project Zombie</h3>
+      <p>Anomaly detection applied to a live network instead of a comet: 48 hours of wireless capture, hunting botnet traffic with a Raspberry Pi and Wireshark.</p>
+      <span class="go">Open &rarr;</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Get in touch</a>
+    <span class="tag">&copy; 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
 </body>
 </html>
