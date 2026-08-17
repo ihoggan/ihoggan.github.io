@@ -3,7 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Linux: The Open Source Revolution</title>
+    <title>Linux Guide — Iain Hoggan</title>
+<meta name="description" content="Files, text processing, system monitoring and shell scripting, worked through hands-on. Every command is safe to run on your own machine.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+
     <style>
         * {
             margin: 0;
@@ -370,22 +376,130 @@
                 grid-template-columns: 1fr;
             }
         }
-    </style>
+    
+/* ==== faceplate override layer (site.css tokens) — appended last, wins on order ==== */
+body{
+  font-family:var(--body)!important;
+  background:var(--panel)!important;
+  color:var(--ink)!important;
+  background-image:
+    linear-gradient(180deg,rgba(255,255,255,.5),transparent 240px),
+    repeating-linear-gradient(90deg,rgba(23,32,43,.018) 0 1px,transparent 1px 3px)!important;
+}
+.container{max-width:1160px;margin:0 auto;padding:0 28px}
+.hero,.header{background:transparent!important;color:var(--ink)!important;
+  border-bottom:1px solid var(--rule);padding:56px 0 44px!important}
+.hero-content,.header .container{text-align:left!important}
+.hero h1,.header h1,h1{font-family:var(--display)!important;
+  font-variation-settings:"wdth" 120,"wght" 780;text-transform:uppercase;
+  color:var(--ink)!important;-webkit-text-fill-color:var(--ink)!important;
+  background:none!important;letter-spacing:-.015em;line-height:.92}
+.hero-subtitle,.subtitle{color:var(--ink-2)!important;font-size:1.1rem!important;
+  max-width:36em;margin-left:0!important;margin-right:0!important}
+h2,h3,h4{font-family:var(--display)!important;text-transform:uppercase;
+  color:var(--ink)!important;letter-spacing:.005em}
+h2{font-variation-settings:"wdth" 114,"wght" 750}
+h3,h4{font-variation-settings:"wdth" 106,"wght" 720}
+.section-title,.section-title.dark{color:var(--ink)!important;text-align:left!important}
+p,li{color:var(--ink-2)}
+strong,b{color:var(--ink)}
+
+.section,.section-white,.section-gray,.section-dark{
+  background:transparent!important;color:var(--ink)!important;
+  border-top:1px solid var(--rule);padding:52px 0!important}
+.section-gray{background:rgba(23,32,43,.025)!important}
+
+/* panels, cards and boxes become faceplate surfaces */
+.concept-card,.domain-card,.stat-card,.glass-card,.metric,.story-step,
+.explanation-box,.summary-box,.key-points,.note,.interactive-panel,
+.decision-option,.moral-dilemma,.timeline-item,.step-content,.data-viz,
+.discovery-content,.discovery-visual,.insight-box{
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))!important;
+  border:1px solid var(--bezel)!important;border-radius:4px!important;
+  color:var(--ink)!important;backdrop-filter:none!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 2px rgba(23,32,43,.1)!important}
+
+/* readouts stay dark — the one recessed surface */
+.code-block,.trajectory-animation{
+  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen))!important;
+  border:1px solid #060B0E!important;border-radius:3px!important;
+  color:#CBD8D2!important;font-family:var(--mono)!important;
+  box-shadow:inset 0 3px 12px rgba(0,0,0,.55)!important}
+.code-block *{color:inherit!important}
+
+.stat-number,.metric-value{font-family:var(--display)!important;
+  font-variation-settings:"wdth" 100,"wght" 720;color:var(--ink)!important;
+  -webkit-text-fill-color:var(--ink)!important;background:none!important;
+  font-variant-numeric:tabular-nums}
+.stat-label,.metric-label,.tl-date,.badge,.step-number,.note-icon,.domain-icon{
+  font-family:var(--mono)!important;letter-spacing:.12em;text-transform:uppercase;
+  font-size:11px!important;color:var(--ink-3)!important;background:none!important}
+.step-number{color:var(--lamp)!important}
+.highlight{color:var(--ink)!important;background:rgba(224,152,43,.22)!important;
+  -webkit-text-fill-color:var(--ink)!important;padding:0 3px;border-radius:2px}
+
+/* buttons */
+.nav-button,.space-nav-button,.glass-nav-button,.nav-links a,.quick-nav a{
+  font-family:var(--mono)!important;font-size:12px!important;letter-spacing:.13em;
+  text-transform:uppercase;padding:12px 20px!important;color:var(--ink)!important;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))!important;
+  border:1px solid var(--bezel)!important;border-radius:3px!important;
+  backdrop-filter:none!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 1px 2px rgba(23,32,43,.16)!important}
+.nav-button:hover,.space-nav-button:hover,.glass-nav-button:hover{
+  background:linear-gradient(180deg,#fff,var(--panel-2))!important;transform:none!important}
+.nav-button:active,.space-nav-button:active,.glass-nav-button:active{
+  transform:translateY(1px)!important;
+  box-shadow:inset 0 2px 4px rgba(23,32,43,.22)!important}
+
+/* timeline rails pick up the lamp colour */
+.atlas-timeline{border-left-color:var(--bezel)!important}
+.atlas-timeline .tl-item::before,.timeline-marker{background:var(--lamp)!important;
+  box-shadow:0 0 6px var(--lamp)!important}
+.timeline::before,.timeline::after{background:var(--bezel)!important}
+
+/* threat / status colours retuned to the signal set */
+.threat-high{color:var(--alarm)!important}
+.threat-medium{color:var(--lamp)!important}
+.threat-low{color:#2F7D62!important}
+.glow,.warning-glow,.pulse{animation:none!important;text-shadow:none!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 2px rgba(23,32,43,.1)!important}
+
+/* the page's own footer block is replaced by the shared one */
+.footer-content{display:none!important}
+
+.read-next{border-top:1px solid var(--rule);padding:44px 0 8px}
+.read-next .card{margin-top:14px;max-width:640px}
+@media(max-width:600px){.container{padding:0 18px}}
+
+</style>
 </head>
 <body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
     <div class="container">
         <div class="hero">
-            <h1>🐧 Linux</h1>
+            <h1>Linux</h1>
             <p>The Open Source Operating System Revolution</p>
             
             <!-- Navigation Buttons at Top -->
             <div class="nav-buttons">
-                <a href="https://ihoggan.github.io/ihoggan-portfolio/index.html" class="glass-nav-button home">
-                    🏠 Home ↗️
-                </a>
-                <a href="https://github.com/sponsors/ihoggan" target="_blank" class="glass-nav-button support">
-                    ❤️ Support Project ↗️
-                </a>
+                <a href="https://ihoggan.github.io/ihoggan-portfolio/index.html" class="glass-nav-button home"> Home ↗
+</a>
+                <a href="https://github.com/sponsors/ihoggan" target="_blank" class="glass-nav-button support"> Support Project ↗
+</a>
             </div>
         </div>
 
@@ -395,26 +509,26 @@
             
             <div class="features-grid">
                 <div class="feature-item">
-                    <h4>🔓 Open Source</h4>
+                    <h4>Open Source</h4>
                     <p>View, modify, and distribute the source code freely</p>
                 </div>
                 <div class="feature-item">
-                    <h4>🛡️ Secure</h4>
+                    <h4>Secure</h4>
                     <p>Robust permission system and active security community</p>
                 </div>
                 <div class="feature-item">
-                    <h4>⚡ Fast</h4>
+                    <h4>Fast</h4>
                     <p>Efficient resource usage and optimized performance</p>
                 </div>
                 <div class="feature-item">
-                    <h4>🔧 Customizable</h4>
+                    <h4>Customizable</h4>
                     <p>Adapt every aspect to your needs and preferences</p>
                 </div>
             </div>
         </div>
 
         <div class="highlight-box">
-            <h3>🚀 Master Linux Commands Today!</h3>
+            <h3>Master Linux Commands Today!</h3>
             <p>The best way to learn Linux is by using the terminal. Every command below is safe to try and will help you understand how Linux works. Open your terminal and follow along!</p>
         </div>
 
@@ -424,19 +538,19 @@
             
             <div class="distro-grid">
                 <div class="distro-card">
-                    <h4>🎯 Ubuntu</h4>
+                    <h4>Ubuntu</h4>
                     <p>Perfect for beginners with user-friendly interface and great community support</p>
                 </div>
                 <div class="distro-card">
-                    <h4>🏛️ Debian</h4>
+                    <h4>Debian</h4>
                     <p>Rock-solid stability and the foundation for many other distributions</p>
                 </div>
                 <div class="distro-card">
-                    <h4>🔬 Fedora</h4>
+                    <h4>Fedora</h4>
                     <p>Cutting-edge features and latest Linux technologies</p>
                 </div>
                 <div class="distro-card">
-                    <h4>🏢 CentOS/Rocky</h4>
+                    <h4>CentOS/Rocky</h4>
                     <p>Enterprise-grade stability for servers and business use</p>
                 </div>
             </div>
@@ -444,7 +558,7 @@
 
         <div class="tutorial-container">
             <div class="section">
-                <h2>🎯 Essential Linux Commands Tutorial</h2>
+                <h2>Essential Linux Commands Tutorial</h2>
                 
                 <div class="tutorial-step">
                     <h4>Getting Started: Your First Commands</h4>
@@ -562,7 +676,7 @@ free -h          # Memory usage</code>
             
             <div class="command-grid">
                 <div class="command-card">
-                    <h4>📦 Ubuntu/Debian (APT)</h4>
+                    <h4>Ubuntu/Debian (APT)</h4>
                     <div class="bash-code">
                         <code># Update package database
 sudo apt update
@@ -580,7 +694,7 @@ apt search python</code>
                 </div>
                 
                 <div class="command-card">
-                    <h4>🎩 Red Hat/Fedora (DNF)</h4>
+                    <h4>Red Hat/Fedora (DNF)</h4>
                     <div class="bash-code">
                         <code># Update system
 sudo dnf update
@@ -597,7 +711,7 @@ dnf search python</code>
                 </div>
                 
                 <div class="command-card">
-                    <h4>📱 Universal (Snap)</h4>
+                    <h4>Universal (Snap)</h4>
                     <div class="bash-code">
                         <code># Install snap packages
 sudo snap install code
@@ -612,7 +726,7 @@ sudo snap refresh</code>
                 </div>
                 
                 <div class="command-card">
-                    <h4>🌐 Network Commands</h4>
+                    <h4>Network Commands</h4>
                     <div class="bash-code">
                         <code># Test connectivity
 ping google.com
@@ -631,7 +745,7 @@ ip addr show</code>
         </div>
 
         <div class="project-box">
-            <h2>🛠️ Hands-On Project: Personal File Organization System</h2>
+            <h2>Hands-On Project: Personal File Organization System</h2>
             <p>Follow this step-by-step project to practice Linux commands:</p>
             
             <h4>Step 1: Set up your workspace</h4>
@@ -683,7 +797,7 @@ cat logs/summary.txt</code>
         </div>
 
         <div class="challenge-box">
-            <h3>🎯 Practice Challenge: Create a Backup Script</h3>
+            <h3>Practice Challenge: Create a Backup Script</h3>
             <p><strong>Your mission:</strong></p>
             <ol>
                 <li>Create a new file called <code>backup.sh</code></li>
@@ -693,7 +807,7 @@ cat logs/summary.txt</code>
             </ol>
             
             <details>
-                <summary style="cursor: pointer; margin: 1rem 0;">💡 Click here for the solution (try it yourself first!)</summary>
+                <summary style="cursor: pointer; margin: 1rem 0;"> Click here for the solution (try it yourself first!)</summary>
                 <div class="bash-code" style="margin-top: 1rem;">
                     <code>#!/bin/bash
 backup_dir="daily_backup_$(date +%Y%m%d)"
@@ -714,7 +828,7 @@ echo "Backup completed to $backup_dir"
             
             <div class="command-grid">
                 <div class="command-card">
-                    <h4>🔐 Permissions & Security</h4>
+                    <h4>Permissions & Security</h4>
                     <div class="bash-code">
                         <code># Change file permissions
 chmod 755 script.sh   # rwxr-xr-x
@@ -729,7 +843,7 @@ ls -la</code>
                 </div>
                 
                 <div class="command-card">
-                    <h4>⚙️ Process Management</h4>
+                    <h4>Process Management</h4>
                     <div class="bash-code">
                         <code># View processes
 ps aux | grep python
@@ -745,7 +859,7 @@ nohup command &</code>
                 </div>
                 
                 <div class="command-card">
-                    <h4>🔧 System Services</h4>
+                    <h4>System Services</h4>
                     <div class="bash-code">
                         <code># Manage services (systemd)
 sudo systemctl start service
@@ -756,7 +870,7 @@ sudo systemctl enable service</code>
                 </div>
                 
                 <div class="command-card">
-                    <h4>📊 Monitoring & Logs</h4>
+                    <h4>Monitoring & Logs</h4>
                     <div class="bash-code">
                         <code># View system logs
 journalctl -f
@@ -772,17 +886,15 @@ nethogs  # Network monitoring</code>
         </div>
 
         <div class="highlight-box">
-            <h3>🎯 Next Steps in Your Linux Journey</h3>
+            <h3>Next Steps in Your Linux Journey</h3>
             <p>You've learned the fundamentals! Continue practicing these commands daily. Try setting up a Linux virtual machine or dual-boot system to get hands-on experience. Join Linux communities and don't be afraid to experiment!</p>
             
             <!-- Navigation Buttons at Bottom -->
             <div class="nav-buttons">
-                <a href="https://ihoggan.github.io/ihoggan-portfolio/index.html" class="glass-nav-button home">
-                    🏠 Back to Portfolio ↗️
-                </a>
-                <a href="https://github.com/sponsors/ihoggan" target="_blank" class="glass-nav-button support">
-                    ❤️ Support My Work ↗️
-                </a>
+                <a href="https://ihoggan.github.io/ihoggan-portfolio/index.html" class="glass-nav-button home"> Back to Portfolio ↗
+</a>
+                <a href="https://github.com/sponsors/ihoggan" target="_blank" class="glass-nav-button support"> Support My Work ↗
+</a>
             </div>
             
             <div class="terminal">
@@ -799,5 +911,27 @@ echo "Happy Linux journey! 🐧"</code>
             </div>
         </div>
     </div>
+
+<section class="read-next">
+  <div class="wrap col">
+    <p class="tag">Read this next</p>
+    <a class="card" href="Python.html">
+      <h3>Python</h3>
+      <p>The natural next step once the shell stops being enough: automating the jobs you were doing by hand.</p>
+      <span class="go">Open &rarr;</span>
+</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Get in touch</a>
+    <span class="tag">&copy; 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
 </body>
 </html>

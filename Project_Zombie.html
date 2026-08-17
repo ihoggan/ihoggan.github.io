@@ -503,7 +503,7 @@ strong,b{color:var(--ink)}
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <h1> The Neighborhood Zombie Hunter</h1>
+            <h1>The Neighborhood Zombie Hunter</h1>
             <p class="subtitle">A Real-World Cybersecurity Investigation</p>
             <div class="badge">48-Hour Network Surveillance</div>
             <div class="badge">51.6M Packets Analyzed</div>
@@ -512,18 +512,16 @@ strong,b{color:var(--ink)}
             
             <!-- Navigation Buttons -->
             <div class="nav-buttons">
-                <a href="https://ihoggan.github.io/ihoggan-portfolio/index.html" class="glass-nav-button home">
-                     Home ↗
-                </a>
-                <a href="https://github.com/sponsors/ihoggan" target="_blank" class="glass-nav-button support">
-                     Support Project ↗
-                </a>
+                <a href="https://ihoggan.github.io/ihoggan-portfolio/index.html" class="glass-nav-button home"> Home ↗
+</a>
+                <a href="https://github.com/sponsors/ihoggan" target="_blank" class="glass-nav-button support"> Support Project ↗
+</a>
             </div>
         </div>
 
         <!-- Introduction -->
         <div class="glass-card">
-            <h2> The Mission</h2>
+            <h2>The Mission</h2>
             <p>What started as curiosity about wireless security in my neighborhood quickly evolved into a serious cybersecurity investigation. Armed with a Raspberry Pi 4, some WiFi adapters, and an insatiable curiosity about network security, I embarked on a 48-hour surveillance mission that would uncover what appeared to be a "zombie" device in my neighborhood.</p>
             
             <div class="data-viz">
@@ -550,12 +548,12 @@ strong,b{color:var(--ink)}
         <div class="story-step">
             <div class="glass-card">
                 <div class="step-number">1</div>
-                <h2 class="step-title"> The Setup</h2>
+                <h2 class="step-title">The Setup</h2>
                 <div class="step-content">
                     <p>Every good cybersecurity investigation starts with the right tools. Here's what I assembled for this neighborhood reconnaissance mission:</p>
                     
                     <div class="interactive-panel">
-                        <h3> Hardware Arsenal</h3>
+                        <h3>Hardware Arsenal</h3>
                         <ul>
                             <li><strong>Raspberry Pi 4 (8GB RAM)</strong> - Our command center</li>
                             <li><strong>ALFA AR9271 USB WiFi Adapter</strong> - For monitor mode packet capture</li>
@@ -565,7 +563,7 @@ strong,b{color:var(--ink)}
                     </div>
 
                     <div class="interactive-panel">
-                        <h3> Software Stack</h3>
+                        <h3>Software Stack</h3>
                         <ul>
                             <li><strong>tshark</strong> - Command-line packet analysis</li>
                             <li><strong>airodump-ng</strong> - WiFi network discovery</li>
@@ -589,12 +587,12 @@ sudo tshark -i wlan1mon -w wireless_capture.pcap -F pcap</pre>
         <div class="story-step">
             <div class="glass-card threat-high">
                 <div class="step-number">2</div>
-                <h2 class="step-title"> The Discovery</h2>
+                <h2 class="step-title">The Discovery</h2>
                 <div class="step-content">
                     <p>After 48 hours of continuous monitoring, the data told a concerning story. Hidden within millions of routine packets was a pattern that made my cybersecurity instincts tingle...</p>
                     
                     <div class="data-viz glow">
-                        <h3> What We Found</h3>
+                        <h3>What We Found</h3>
                         <div class="timeline">
                             <div class="timeline-item">
                                 <div class="timeline-marker"></div>
@@ -636,12 +634,12 @@ print(f"Dataset loaded: {df.shape[0]:,} packets")</pre>
         <div class="story-step">
             <div class="glass-card threat-high warning-glow">
                 <div class="step-number">3</div>
-                <h2 class="step-title"> Identifying the Zombie</h2>
+                <h2 class="step-title">Identifying the Zombie</h2>
                 <div class="step-content">
                     <p>The data revealed a chilling pattern: <strong>34 deauthentication attacks</strong> over 40+ minutes, all targeting a single LG smart device. The attacker? A Technicolor router that appeared to be operating as a botnet zombie.</p>
                     
                     <div class="interactive-panel warning-glow">
-                        <h3> Attack Profile</h3>
+                        <h3>Attack Profile</h3>
                         <div class="metric">
                             <span class="metric-value">TCNLR_B94X33</span>
                             <span class="metric-label">Attacker Device</span>
@@ -676,12 +674,12 @@ print(f"   Duration: {attack_duration:.1f} minutes")</pre>
                     </div>
 
                     <div class="data-viz">
-                        <h3> Attack Timeline Analysis</h3>
+                        <h3>Attack Timeline Analysis</h3>
                         <p><strong>Burst Patterns Detected:</strong> The attacks came in systematic bursts, suggesting automated rather than manual execution. This is a classic signature of botnet zombie behavior.</p>
                         <ul>
-                            <li> <strong>10:54-11:00:</strong> Initial reconnaissance phase</li>
-                            <li> <strong>11:16-11:26:</strong> Major attack burst (8 packets)</li>
-                            <li> <strong>11:44:</strong> Final attack packet</li>
+                            <li><strong>10:54-11:00:</strong> Initial reconnaissance phase</li>
+                            <li><strong>11:16-11:26:</strong> Major attack burst (8 packets)</li>
+                            <li><strong>11:44:</strong> Final attack packet</li>
                         </ul>
                     </div>
                 </div>
@@ -692,13 +690,13 @@ print(f"   Duration: {attack_duration:.1f} minutes")</pre>
         <div class="story-step">
             <div class="moral-dilemma">
                 <div class="step-number">4</div>
-                <h2 class="step-title"> The Moral Dilemma</h2>
+                <h2 class="step-title">The Moral Dilemma</h2>
                 <div class="step-content">
                     <p>With evidence of a potential botnet zombie in my neighborhood, I faced a critical decision that every cybersecurity professional encounters: <strong>What's the right thing to do?</strong></p>
                     
                     <div class="decision-tree">
                         <div class="decision-option">
-                            <h3> Approach the Neighbor</h3>
+                            <h3>Approach the Neighbor</h3>
                             <p><strong>Pros:</strong></p>
                             <ul>
                                 <li>Directly address the threat</li>
@@ -714,7 +712,7 @@ print(f"   Duration: {attack_duration:.1f} minutes")</pre>
                         </div>
                         
                         <div class="decision-option">
-                            <h3> Contact Authorities</h3>
+                            <h3>Contact Authorities</h3>
                             <p><strong>Pros:</strong></p>
                             <ul>
                                 <li>Official channels for investigation</li>
@@ -730,7 +728,7 @@ print(f"   Duration: {attack_duration:.1f} minutes")</pre>
                         </div>
                         
                         <div class="decision-option">
-                            <h3> Continue Monitoring</h3>
+                            <h3>Continue Monitoring</h3>
                             <p><strong>Pros:</strong></p>
                             <ul>
                                 <li>Gather more evidence</li>
@@ -747,7 +745,7 @@ print(f"   Duration: {attack_duration:.1f} minutes")</pre>
                     </div>
 
                     <div class="interactive-panel">
-                        <h3> The Internal Debate</h3>
+                        <h3>The Internal Debate</h3>
                         <p><em>"How will they react when a stranger shows up claiming their router is attacking neighbors? Will they think I'm paranoid? A hacker? Should I call the police? What if I'm wrong?"</em></p>
                         
                         <p>These questions kept me awake at night. The cybersecurity community often faces this challenge - the responsibility to act on discovered threats while respecting privacy and avoiding unintended consequences.</p>
@@ -760,12 +758,12 @@ print(f"   Duration: {attack_duration:.1f} minutes")</pre>
         <div class="story-step">
             <div class="glass-card threat-medium">
                 <div class="step-number">5</div>
-                <h2 class="step-title"> Deeper Investigation</h2>
+                <h2 class="step-title">Deeper Investigation</h2>
                 <div class="step-content">
                     <p>Before making any decisions, I needed to be absolutely certain. Was this really an attack, or could there be an innocent explanation?</p>
                     
                     <div class="interactive-panel">
-                        <h3> Checking for False Positives</h3>
+                        <h3>Checking for False Positives</h3>
                         <p>The most likely innocent explanation: <strong>Both devices are in the same household</strong>. What if the Technicolor router was legitimately managing network issues with the LG smart TV?</p>
                     </div>
 
@@ -789,10 +787,10 @@ print(f"Bidirectional: {len(all_traffic[all_traffic['source'] == lg_device]) > 0
                     </div>
 
                     <div class="data-viz">
-                        <h3> Evidence Analysis</h3>
+                        <h3>Evidence Analysis</h3>
                         <div class="decision-tree">
                             <div class="decision-option threat-high">
-                                <h4> Attack Indicators</h4>
+                                <h4>Attack Indicators</h4>
                                 <ul>
                                     <li>Systematic timing patterns</li>
                                     <li>Extended duration (40+ minutes)</li>
@@ -801,7 +799,7 @@ print(f"Bidirectional: {len(all_traffic[all_traffic['source'] == lg_device]) > 0
                                 </ul>
                             </div>
                             <div class="decision-option threat-low">
-                                <h4> Legitimate Indicators</h4>
+                                <h4>Legitimate Indicators</h4>
                                 <ul>
                                     <li>Consumer devices (router + TV)</li>
                                     <li>Geographic proximity</li>
@@ -819,36 +817,36 @@ print(f"Bidirectional: {len(all_traffic[all_traffic['source'] == lg_device]) > 0
         <div class="story-step">
             <div class="glass-card threat-low">
                 <div class="step-number">6</div>
-                <h2 class="step-title"> The Resolution</h2>
+                <h2 class="step-title">The Resolution</h2>
                 <div class="step-content">
                     <p>After extensive analysis, pattern recognition, and careful consideration of the evidence, I reached a conclusion that balanced technical accuracy with ethical responsibility.</p>
                     
                     <div class="interactive-panel glow">
-                        <h3> Final Assessment: Likely False Positive</h3>
+                        <h3>Final Assessment: Likely False Positive</h3>
                         <p>The evidence pointed toward a <strong>legitimate network management scenario</strong> rather than a malicious attack:</p>
                         <ul>
-                            <li> Both devices are consumer-grade equipment</li>
-                            <li> Geographic proximity suggests same household</li>
-                            <li> Smart TV WiFi issues are common</li>
-                            <li> Router deauth can be normal network management</li>
-                            <li> No evidence of malicious intent or broader attack</li>
+                            <li>Both devices are consumer-grade equipment</li>
+                            <li>Geographic proximity suggests same household</li>
+                            <li>Smart TV WiFi issues are common</li>
+                            <li>Router deauth can be normal network management</li>
+                            <li>No evidence of malicious intent or broader attack</li>
                         </ul>
                     </div>
 
                     <div class="moral-dilemma">
-                        <h3> The Ethical Decision</h3>
+                        <h3>The Ethical Decision</h3>
                         <p>Rather than potentially alarming neighbors over what was likely legitimate network behavior, I chose to:</p>
                         <div class="decision-tree">
                             <div class="decision-option">
-                                <h4> Document & Learn</h4>
+                                <h4>Document & Learn</h4>
                                 <p>Create educational materials from the investigation for cybersecurity training purposes</p>
                             </div>
                             <div class="decision-option">
-                                <h4> Continue Monitoring</h4>
+                                <h4>Continue Monitoring</h4>
                                 <p>Maintain passive surveillance for genuine threats while respecting privacy</p>
                             </div>
                             <div class="decision-option">
-                                <h4> Strengthen Defenses</h4>
+                                <h4>Strengthen Defenses</h4>
                                 <p>Focus on securing my own network and developing detection capabilities</p>
                             </div>
                         </div>
@@ -859,9 +857,9 @@ print(f"Bidirectional: {len(all_traffic[all_traffic['source'] == lg_device]) > 0
 
         <!-- Lessons Learned -->
         <div class="glass-card">
-            <h2> Lessons Learned</h2>
+            <h2>Lessons Learned</h2>
             <div class="interactive-panel">
-                <h3> Technical Skills Developed</h3>
+                <h3>Technical Skills Developed</h3>
                 <ul>
                     <li><strong>Large-scale packet analysis</strong> - Processing 51.6M packets efficiently</li>
                     <li><strong>Pattern recognition</strong> - Identifying attack signatures in network traffic</li>
@@ -872,7 +870,7 @@ print(f"Bidirectional: {len(all_traffic[all_traffic['source'] == lg_device]) > 0
             </div>
 
             <div class="interactive-panel">
-                <h3> Ethical Considerations</h3>
+                <h3>Ethical Considerations</h3>
                 <ul>
                     <li><strong>Privacy balance</strong> - Monitoring for security vs respecting privacy</li>
                     <li><strong>False positive management</strong> - The importance of thorough investigation</li>
@@ -882,7 +880,7 @@ print(f"Bidirectional: {len(all_traffic[all_traffic['source'] == lg_device]) > 0
             </div>
 
             <div class="interactive-panel">
-                <h3> Tools & Techniques Mastered</h3>
+                <h3>Tools & Techniques Mastered</h3>
                 <div class="code-block">
                     <pre># Key technical achievements
 - Passive WiFi monitoring with Raspberry Pi
@@ -897,7 +895,7 @@ print(f"Bidirectional: {len(all_traffic[all_traffic['source'] == lg_device]) > 0
 
         <!-- Conclusion -->
         <div class="glass-card">
-            <h2> The Value of the Investigation</h2>
+            <h2>The Value of the Investigation</h2>
             <p>While we didn't uncover a genuine botnet zombie, this 48-hour investigation provided immense value:</p>
             
             <div class="data-viz">
@@ -920,20 +918,20 @@ print(f"Bidirectional: {len(all_traffic[all_traffic['source'] == lg_device]) > 0
             </div>
 
             <div class="interactive-panel pulse">
-                <h3> What's Next?</h3>
+                <h3>What's Next?</h3>
                 <p>This investigation opened doors to advanced cybersecurity research, community education, and continuous learning. The real zombie was the skills we developed along the way!</p>
                 
                 <div class="decision-tree">
                     <div class="decision-option">
-                        <h4> Educational Impact</h4>
+                        <h4>Educational Impact</h4>
                         <p>Transform real-world investigations into teaching resources for cybersecurity students</p>
                     </div>
                     <div class="decision-option">
-                        <h4> Research Applications</h4>
+                        <h4>Research Applications</h4>
                         <p>Apply learned techniques to IoT security research and threat intelligence</p>
                     </div>
                     <div class="decision-option">
-                        <h4> Community Defense</h4>
+                        <h4>Community Defense</h4>
                         <p>Share knowledge to help others secure their networks and detect threats</p>
                     </div>
                 </div>
@@ -942,11 +940,11 @@ print(f"Bidirectional: {len(all_traffic[all_traffic['source'] == lg_device]) > 0
 
         <!-- Technical Deep Dive Section -->
         <div class="glass-card">
-            <h2> Technical Deep Dive</h2>
+            <h2>Technical Deep Dive</h2>
             <p>For those interested in the technical details, here's how we built our neighborhood cybersecurity monitoring system:</p>
 
             <div class="interactive-panel">
-                <h3> Packet Capture Setup</h3>
+                <h3>Packet Capture Setup</h3>
                 <div class="code-block">
                     <pre># Setting up monitor mode for packet capture
 sudo airmon-ng start wlan1
@@ -959,7 +957,7 @@ sudo tshark -i wlan1mon -w capture.pcap -b filesize:1000000 -b files:50</pre>
             </div>
 
             <div class="interactive-panel">
-                <h3> Data Processing Pipeline</h3>
+                <h3>Data Processing Pipeline</h3>
                 <div class="code-block">
                     <pre># Processing massive datasets efficiently
 import pandas as pd
@@ -985,7 +983,7 @@ def detect_anomalies(df):
             </div>
 
             <div class="interactive-panel">
-                <h3> Attack Pattern Recognition</h3>
+                <h3>Attack Pattern Recognition</h3>
                 <div class="code-block">
                     <pre># Identifying deauthentication attack patterns
 def analyze_deauth_attacks(df):
@@ -1013,7 +1011,7 @@ def analyze_deauth_attacks(df):
             </div>
 
             <div class="interactive-panel">
-                <h3> Signal Strength Analysis</h3>
+                <h3>Signal Strength Analysis</h3>
                 <div class="code-block">
                     <pre># Estimating device distance from signal strength
 def estimate_distance(signal_dbm, frequency_mhz=2400):
@@ -1037,11 +1035,11 @@ print(f"Zombie distance: ~{estimated_distance:.0f} meters")</pre>
 
         <!-- Interactive Learning Section -->
         <div class="glass-card">
-            <h2> Interactive Learning Points</h2>
+            <h2>Interactive Learning Points</h2>
             <p>Click through these key cybersecurity concepts demonstrated in our investigation:</p>
 
             <div class="interactive-panel" onclick="toggleDetails('concept1')">
-                <h3> False Positive Management</h3>
+                <h3>False Positive Management</h3>
                 <div id="concept1" style="display: none; margin-top: 15px;">
                     <p><strong>Key Learning:</strong> Not every suspicious pattern is malicious. Critical thinking and thorough investigation are essential.</p>
                     <ul>
@@ -1054,7 +1052,7 @@ print(f"Zombie distance: ~{estimated_distance:.0f} meters")</pre>
             </div>
 
             <div class="interactive-panel" onclick="toggleDetails('concept2')">
-                <h3> Ethical Cybersecurity</h3>
+                <h3>Ethical Cybersecurity</h3>
                 <div id="concept2" style="display: none; margin-top: 15px;">
                     <p><strong>Key Learning:</strong> With great power comes great responsibility. Cybersecurity professionals must balance detection capabilities with ethical considerations.</p>
                     <ul>
@@ -1067,7 +1065,7 @@ print(f"Zombie distance: ~{estimated_distance:.0f} meters")</pre>
             </div>
 
             <div class="interactive-panel" onclick="toggleDetails('concept3')">
-                <h3> RF Intelligence</h3>
+                <h3>RF Intelligence</h3>
                 <div id="concept3" style="display: none; margin-top: 15px;">
                     <p><strong>Key Learning:</strong> Radio frequency analysis provides valuable intelligence about device locations and network topology.</p>
                     <ul>
@@ -1080,7 +1078,7 @@ print(f"Zombie distance: ~{estimated_distance:.0f} meters")</pre>
             </div>
 
             <div class="interactive-panel" onclick="toggleDetails('concept4')">
-                <h3> Automation Detection</h3>
+                <h3>Automation Detection</h3>
                 <div id="concept4" style="display: none; margin-top: 15px;">
                     <p><strong>Key Learning:</strong> Statistical analysis can distinguish between human and automated behavior patterns.</p>
                     <ul>
@@ -1095,12 +1093,12 @@ print(f"Zombie distance: ~{estimated_distance:.0f} meters")</pre>
 
         <!-- Educational Resources -->
         <div class="glass-card">
-            <h2> Educational Resources</h2>
+            <h2>Educational Resources</h2>
             <p>Want to conduct your own neighborhood cybersecurity investigation? Here are the resources to get started:</p>
 
             <div class="decision-tree">
                 <div class="decision-option">
-                    <h3> Hardware Requirements</h3>
+                    <h3>Hardware Requirements</h3>
                     <ul>
                         <li>Raspberry Pi 4 (4GB+ RAM recommended)</li>
                         <li>USB WiFi adapter with monitor mode support</li>
@@ -1111,7 +1109,7 @@ print(f"Zombie distance: ~{estimated_distance:.0f} meters")</pre>
                 </div>
 
                 <div class="decision-option">
-                    <h3> Software Stack</h3>
+                    <h3>Software Stack</h3>
                     <ul>
                         <li>Kali Linux or Ubuntu on Raspberry Pi</li>
                         <li>Aircrack-ng suite for WiFi analysis</li>
@@ -1122,7 +1120,7 @@ print(f"Zombie distance: ~{estimated_distance:.0f} meters")</pre>
                 </div>
 
                 <div class="decision-option">
-                    <h3> Learning Path</h3>
+                    <h3>Learning Path</h3>
                     <ul>
                         <li>Network fundamentals (OSI model, TCP/IP)</li>
                         <li>WiFi protocol basics (802.11 standards)</li>
@@ -1134,7 +1132,7 @@ print(f"Zombie distance: ~{estimated_distance:.0f} meters")</pre>
             </div>
 
             <div class="interactive-panel">
-                <h3> Legal and Ethical Guidelines</h3>
+                <h3>Legal and Ethical Guidelines</h3>
                 <p><strong>Important:</strong> Always conduct security research ethically and legally:</p>
                 <ul>
                     <li>Only monitor from your own property</li>
@@ -1148,22 +1146,22 @@ print(f"Zombie distance: ~{estimated_distance:.0f} meters")</pre>
 
         <!-- Call to Action -->
         <div class="glass-card glow">
-            <h2> Join the Cybersecurity Community</h2>
+            <h2>Join the Cybersecurity Community</h2>
             <p>This investigation demonstrates that cybersecurity isn't just for large corporations - it's a community effort. Whether you're a student, professional, or curious enthusiast, there's a place for you in making our digital neighborhoods safer.</p>
 
             <div class="decision-tree">
                 <div class="decision-option pulse">
-                    <h3> For Students</h3>
+                    <h3>For Students</h3>
                     <p>Use this case study as inspiration for your own projects. Real-world experience is invaluable in cybersecurity education.</p>
                 </div>
 
                 <div class="decision-option pulse">
-                    <h3> For Professionals</h3>
+                    <h3>For Professionals</h3>
                     <p>Consider how residential monitoring techniques might apply to enterprise security and threat hunting.</p>
                 </div>
 
                 <div class="decision-option pulse">
-                    <h3> For Homeowners</h3>
+                    <h3>For Homeowners</h3>
                     <p>Learn about IoT security and how to protect your smart home devices from real threats.</p>
                 </div>
             </div>
@@ -1172,17 +1170,15 @@ print(f"Zombie distance: ~{estimated_distance:.0f} meters")</pre>
         <!-- Footer -->
         <div class="glass-card">
             <div style="text-align: center; padding: 20px;">
-                <h3> The End... or is it?</h3>
+                <h3>The End... or is it?</h3>
                 <p>While we didn't find a real zombie this time, the techniques and knowledge gained prepare us for when we do encounter genuine threats. The neighborhood is a little safer because someone is watching, learning, and ready to act when needed.</p>
                 
                 <!-- Navigation Buttons at Bottom -->
                 <div class="nav-buttons">
-                    <a href="https://ihoggan.github.io/ihoggan-portfolio/index.html" class="glass-nav-button home">
-                         Back to Portfolio ↗
-                    </a>
-                    <a href="https://github.com/sponsors/ihoggan" target="_blank" class="glass-nav-button support">
-                         Support My Work ↗
-                    </a>
+                    <a href="https://ihoggan.github.io/ihoggan-portfolio/index.html" class="glass-nav-button home"> Back to Portfolio ↗
+</a>
+                    <a href="https://github.com/sponsors/ihoggan" target="_blank" class="glass-nav-button support"> Support My Work ↗
+</a>
                 </div>
                 
                 <div class="badge">Educational Use Only</div>
@@ -1193,7 +1189,7 @@ print(f"Zombie distance: ~{estimated_distance:.0f} meters")</pre>
                 <p style="margin-top: 20px; font-size: 0.9em; color: #a0a9ba;">
                     <em>This case study is based on real network analysis but uses anonymized data to protect privacy. 
                     All monitoring was conducted legally from the researcher's own property for educational and defensive purposes.</em>
-                </p>
+</p>
             </div>
         </div>
     </div>
@@ -1247,7 +1243,7 @@ print(f"Zombie distance: ~{estimated_distance:.0f} meters")</pre>
       <h3>Space Anomaly Detection</h3>
       <p>The same instinct pointed at the sky: finding the signal that does not fit, using real observations of an interstellar comet.</p>
       <span class="go">Open &rarr;</span>
-    </a>
+</a>
   </div>
 </section>
 

@@ -3,7 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Human vs AI Trading Battle</title>
+    <title>TradeWar — Human vs Algorithm — Iain Hoggan</title>
+<meta name="description" content="Trade live against algorithms that never panic and never get bored. A lesson about discipline disguised as a game.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+
     <style>
         * {
             margin: 0;
@@ -567,20 +573,130 @@
                 width: 200px;
             }
         }
-    </style>
+    
+/* ==== faceplate override layer (site.css tokens) — appended last, wins on order ==== */
+body{
+  font-family:var(--body)!important;
+  background:var(--panel)!important;
+  color:var(--ink)!important;
+  background-image:
+    linear-gradient(180deg,rgba(255,255,255,.5),transparent 240px),
+    repeating-linear-gradient(90deg,rgba(23,32,43,.018) 0 1px,transparent 1px 3px)!important;
+}
+.container{max-width:1160px;margin:0 auto;padding:0 28px}
+.hero,.header{background:transparent!important;color:var(--ink)!important;
+  border-bottom:1px solid var(--rule);padding:56px 0 44px!important}
+.hero-content,.header .container{text-align:left!important}
+.hero h1,.header h1,h1{font-family:var(--display)!important;
+  font-variation-settings:"wdth" 120,"wght" 780;text-transform:uppercase;
+  color:var(--ink)!important;-webkit-text-fill-color:var(--ink)!important;
+  background:none!important;letter-spacing:-.015em;line-height:.92}
+.hero-subtitle,.subtitle{color:var(--ink-2)!important;font-size:1.1rem!important;
+  max-width:36em;margin-left:0!important;margin-right:0!important}
+h2,h3,h4{font-family:var(--display)!important;text-transform:uppercase;
+  color:var(--ink)!important;letter-spacing:.005em}
+h2{font-variation-settings:"wdth" 114,"wght" 750}
+h3,h4{font-variation-settings:"wdth" 106,"wght" 720}
+.section-title,.section-title.dark{color:var(--ink)!important;text-align:left!important}
+p,li{color:var(--ink-2)}
+strong,b{color:var(--ink)}
+
+.section,.section-white,.section-gray,.section-dark{
+  background:transparent!important;color:var(--ink)!important;
+  border-top:1px solid var(--rule);padding:52px 0!important}
+.section-gray{background:rgba(23,32,43,.025)!important}
+
+/* panels, cards and boxes become faceplate surfaces */
+.concept-card,.domain-card,.stat-card,.glass-card,.metric,.story-step,
+.explanation-box,.summary-box,.key-points,.note,.interactive-panel,
+.decision-option,.moral-dilemma,.timeline-item,.step-content,.data-viz,
+.discovery-content,.discovery-visual,.insight-box{
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))!important;
+  border:1px solid var(--bezel)!important;border-radius:4px!important;
+  color:var(--ink)!important;backdrop-filter:none!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 2px rgba(23,32,43,.1)!important}
+
+/* readouts stay dark — the one recessed surface */
+.code-block,.trajectory-animation{
+  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen))!important;
+  border:1px solid #060B0E!important;border-radius:3px!important;
+  color:#CBD8D2!important;font-family:var(--mono)!important;
+  box-shadow:inset 0 3px 12px rgba(0,0,0,.55)!important}
+.code-block *{color:inherit!important}
+
+.stat-number,.metric-value{font-family:var(--display)!important;
+  font-variation-settings:"wdth" 100,"wght" 720;color:var(--ink)!important;
+  -webkit-text-fill-color:var(--ink)!important;background:none!important;
+  font-variant-numeric:tabular-nums}
+.stat-label,.metric-label,.tl-date,.badge,.step-number,.note-icon,.domain-icon{
+  font-family:var(--mono)!important;letter-spacing:.12em;text-transform:uppercase;
+  font-size:11px!important;color:var(--ink-3)!important;background:none!important}
+.step-number{color:var(--lamp)!important}
+.highlight{color:var(--ink)!important;background:rgba(224,152,43,.22)!important;
+  -webkit-text-fill-color:var(--ink)!important;padding:0 3px;border-radius:2px}
+
+/* buttons */
+.nav-button,.space-nav-button,.glass-nav-button,.nav-links a,.quick-nav a{
+  font-family:var(--mono)!important;font-size:12px!important;letter-spacing:.13em;
+  text-transform:uppercase;padding:12px 20px!important;color:var(--ink)!important;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))!important;
+  border:1px solid var(--bezel)!important;border-radius:3px!important;
+  backdrop-filter:none!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 1px 2px rgba(23,32,43,.16)!important}
+.nav-button:hover,.space-nav-button:hover,.glass-nav-button:hover{
+  background:linear-gradient(180deg,#fff,var(--panel-2))!important;transform:none!important}
+.nav-button:active,.space-nav-button:active,.glass-nav-button:active{
+  transform:translateY(1px)!important;
+  box-shadow:inset 0 2px 4px rgba(23,32,43,.22)!important}
+
+/* timeline rails pick up the lamp colour */
+.atlas-timeline{border-left-color:var(--bezel)!important}
+.atlas-timeline .tl-item::before,.timeline-marker{background:var(--lamp)!important;
+  box-shadow:0 0 6px var(--lamp)!important}
+.timeline::before,.timeline::after{background:var(--bezel)!important}
+
+/* threat / status colours retuned to the signal set */
+.threat-high{color:var(--alarm)!important}
+.threat-medium{color:var(--lamp)!important}
+.threat-low{color:#2F7D62!important}
+.glow,.warning-glow,.pulse{animation:none!important;text-shadow:none!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 2px rgba(23,32,43,.1)!important}
+
+/* the page's own footer block is replaced by the shared one */
+.footer-content{display:none!important}
+
+.read-next{border-top:1px solid var(--rule);padding:44px 0 8px}
+.read-next .card{margin-top:14px;max-width:640px}
+@media(max-width:600px){.container{padding:0 18px}}
+
+</style>
 </head>
 <body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <h1>🤖⚔️👨 HUMAN vs AI TRADING BATTLE</h1>
+            <h1>HUMAN vs AI TRADING BATTLE</h1>
             <p>Can you beat the AI trading bot? Let the battle begin!</p>
         </div>
 
         <!-- Battle Status -->
         <div class="battle-status">
             <div class="competitor" id="humanCompetitor">
-                <div class="competitor-title human-title">👨 HUMAN TRADER</div>
+                <div class="competitor-title human-title"> HUMAN TRADER</div>
                 <div class="balance-display" id="humanBalance">$10,000</div>
                 <div class="pnl-display" id="humanPnl">$0 (0.0%)</div>
             </div>
@@ -588,7 +704,7 @@
             <div class="vs-indicator">VS</div>
             
             <div class="competitor" id="aiCompetitor">
-                <div class="competitor-title ai-title">🤖 AI TRADING BOT</div>
+                <div class="competitor-title ai-title"> AI TRADING BOT</div>
                 <div class="balance-display" id="aiBalance">$10,000</div>
                 <div class="pnl-display" id="aiPnl">$0 (0.0%)</div>
             </div>
@@ -624,8 +740,8 @@
 
         <!-- Battle Controls -->
         <div class="battle-controls">
-            <button class="battle-btn" onclick="startBattle()" id="startBtn">🚀 START BATTLE</button>
-            <button class="battle-btn" onclick="resetBattle()" id="resetBtn">🔄 RESET BATTLE</button>
+            <button class="battle-btn" onclick="startBattle()" id="startBtn">START BATTLE</button>
+            <button class="battle-btn" onclick="resetBattle()" id="resetBtn">RESET BATTLE</button>
         </div>
 
         <!-- Main Content -->
@@ -650,14 +766,13 @@
                     </div>
                     
                     <!-- Signal Indicator -->
-                    <div id="chartSignal" class="signal-indicator" style="display: none;">
-                        🎯 SIGNAL
+                    <div id="chartSignal" class="signal-indicator" style="display: none;"> SIGNAL
                     </div>
                 </div>
 
                 <!-- Trading Signals -->
                 <div class="signals-panel">
-                    <h3 style="color: #60efff; margin-bottom: 8px; font-size: 14px;">📊 Trading Signals</h3>
+                    <h3 style="color: #60efff; margin-bottom: 8px; font-size: 14px;">Trading Signals</h3>
                     
                     <div class="current-signal" id="mainSignal">
                         <div>
@@ -671,7 +786,7 @@
 
             <!-- Human Trading Panel -->
             <div class="trading-panel">
-                <div class="panel-title">👨 Human Trader</div>
+                <div class="panel-title"> Human Trader</div>
                 
                 <div class="form-group">
                     <label class="form-label">Position Size ($)</label>
@@ -686,25 +801,24 @@
                     <input type="number" class="form-input" id="takeProfit" value="30" min="5" max="100">
                 </div>
                 <div class="button-group">
-                    <button class="btn btn-buy" onclick="humanTrade('BUY')">📈 BUY</button>
-                    <button class="btn btn-sell" onclick="humanTrade('SELL')">📉 SELL</button>
+                    <button class="btn btn-buy" onclick="humanTrade('BUY')">BUY</button>
+                    <button class="btn btn-sell" onclick="humanTrade('SELL')">SELL</button>
                 </div>
 
-                <div style="font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #ff6b6b;">📋 Human Positions (<span id="humanPositionCount">0</span>)</div>
+                <div style="font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #ff6b6b;"> Human Positions (<span id="humanPositionCount">0</span>)</div>
                 <div class="positions" id="humanPositions">
-                    <div style="text-align: center; opacity: 0.6; padding: 15px; font-size: 11px;">
-                        No open positions
+                    <div style="text-align: center; opacity: 0.6; padding: 15px; font-size: 11px;"> No open positions
                     </div>
                 </div>
             </div>
 
             <!-- AI Trading Panel -->
             <div class="trading-panel ai-panel">
-                <div class="panel-title">🤖 AI Trading Bot</div>
+                <div class="panel-title"> AI Trading Bot</div>
                 
                 <!-- AI Status -->
                 <div class="ai-status" id="aiStatus">
-                    <div style="font-weight: bold; font-size: 12px; margin-bottom: 5px;">🧠 AI Status</div>
+                    <div style="font-weight: bold; font-size: 12px; margin-bottom: 5px;"> AI Status</div>
                     <div style="font-size: 10px;" id="aiStatusText">Waiting for battle to start...</div>
                 </div>
 
@@ -716,17 +830,15 @@
                     <div>• No emotions or hesitation</div>
                 </div>
 
-                <div style="font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #4ecdc4;">📋 AI Positions (<span id="aiPositionCount">0</span>)</div>
+                <div style="font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #4ecdc4;"> AI Positions (<span id="aiPositionCount">0</span>)</div>
                 <div class="positions" id="aiPositions">
-                    <div style="text-align: center; opacity: 0.6; padding: 15px; font-size: 11px;">
-                        No open positions
+                    <div style="text-align: center; opacity: 0.6; padding: 15px; font-size: 11px;"> No open positions
                     </div>
                 </div>
 
-                <div style="font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #4ecdc4;">📊 AI Actions</div>
+                <div style="font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #4ecdc4;"> AI Actions</div>
                 <div class="positions" id="aiTradeLog" style="max-height: 120px;">
-                    <div style="text-align: center; opacity: 0.6; padding: 15px; font-size: 11px;">
-                        AI activity will appear here
+                    <div style="text-align: center; opacity: 0.6; padding: 15px; font-size: 11px;"> AI activity will appear here
                     </div>
                 </div>
             </div>
@@ -734,18 +846,17 @@
 
         <!-- Navigation Buttons -->
         <div class="navigation-buttons">
-            <a href="https://ihoggan.github.io/ihoggan-portfolio/index.html" class="nav-btn" target="_blank">🏠 HomePage</a>
-            <a href="https://github.com/sponsors/ihoggan" class="nav-btn" target="_blank">❤️ Support</a>
+            <a href="https://ihoggan.github.io/ihoggan-portfolio/index.html" class="nav-btn" target="_blank">HomePage</a>
+            <a href="https://github.com/sponsors/ihoggan" class="nav-btn" target="_blank">Support</a>
         </div>
 
         <!-- Disclaimer -->
         <div class="disclaimer">
-            <h3 style="margin-bottom: 8px;">⚠️ Important Disclaimer</h3>
-            <p>
-                This is a <strong>simulation for educational purposes only</strong>. Neither the AI bot nor the signals represent real financial advice. 
+            <h3 style="margin-bottom: 8px;">Important Disclaimer</h3>
+            <p> This is a <strong>simulation for educational purposes only</strong>. Neither the AI bot nor the signals represent real financial advice. 
                 Real forex trading involves substantial risk. If you think this simulation means you can beat the markets with real money, 
                 you're about to learn an expensive lesson. <strong>Don't quit your day job!</strong>
-            </p>
+</p>
         </div>
     </div>
 
@@ -1373,5 +1484,27 @@
             setTimeout(init, 500);
         });
     </script>
+
+<section class="read-next">
+  <div class="wrap col">
+    <p class="tag">Read this next</p>
+    <a class="card" href="neural_playground.html">
+      <h3>S.M.A.R.T. Neural Playground</h3>
+      <p>Meet the other side of the algorithm: watch a network learn, then push it until it falls apart.</p>
+      <span class="go">Open &rarr;</span>
+</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Get in touch</a>
+    <span class="tag">&copy; 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
 </body>
 </html>

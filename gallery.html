@@ -3,7 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gallery</title>
+    <title>Gallery — Iain Hoggan</title>
+<meta name="description" content="A gallery of AI-generated work, currently being put together.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+
     <style>
         * {
             margin: 0;
@@ -415,9 +421,119 @@
                 padding: 2rem;
             }
         }
-    </style>
+    
+/* ==== faceplate override layer (site.css tokens) — appended last, wins on order ==== */
+body{
+  font-family:var(--body)!important;
+  background:var(--panel)!important;
+  color:var(--ink)!important;
+  background-image:
+    linear-gradient(180deg,rgba(255,255,255,.5),transparent 240px),
+    repeating-linear-gradient(90deg,rgba(23,32,43,.018) 0 1px,transparent 1px 3px)!important;
+}
+.container{max-width:1160px;margin:0 auto;padding:0 28px}
+.hero,.header{background:transparent!important;color:var(--ink)!important;
+  border-bottom:1px solid var(--rule);padding:56px 0 44px!important}
+.hero-content,.header .container{text-align:left!important}
+.hero h1,.header h1,h1{font-family:var(--display)!important;
+  font-variation-settings:"wdth" 120,"wght" 780;text-transform:uppercase;
+  color:var(--ink)!important;-webkit-text-fill-color:var(--ink)!important;
+  background:none!important;letter-spacing:-.015em;line-height:.92}
+.hero-subtitle,.subtitle{color:var(--ink-2)!important;font-size:1.1rem!important;
+  max-width:36em;margin-left:0!important;margin-right:0!important}
+h2,h3,h4{font-family:var(--display)!important;text-transform:uppercase;
+  color:var(--ink)!important;letter-spacing:.005em}
+h2{font-variation-settings:"wdth" 114,"wght" 750}
+h3,h4{font-variation-settings:"wdth" 106,"wght" 720}
+.section-title,.section-title.dark{color:var(--ink)!important;text-align:left!important}
+p,li{color:var(--ink-2)}
+strong,b{color:var(--ink)}
+
+.section,.section-white,.section-gray,.section-dark{
+  background:transparent!important;color:var(--ink)!important;
+  border-top:1px solid var(--rule);padding:52px 0!important}
+.section-gray{background:rgba(23,32,43,.025)!important}
+
+/* panels, cards and boxes become faceplate surfaces */
+.concept-card,.domain-card,.stat-card,.glass-card,.metric,.story-step,
+.explanation-box,.summary-box,.key-points,.note,.interactive-panel,
+.decision-option,.moral-dilemma,.timeline-item,.step-content,.data-viz,
+.discovery-content,.discovery-visual,.insight-box{
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))!important;
+  border:1px solid var(--bezel)!important;border-radius:4px!important;
+  color:var(--ink)!important;backdrop-filter:none!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 2px rgba(23,32,43,.1)!important}
+
+/* readouts stay dark — the one recessed surface */
+.code-block,.trajectory-animation{
+  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen))!important;
+  border:1px solid #060B0E!important;border-radius:3px!important;
+  color:#CBD8D2!important;font-family:var(--mono)!important;
+  box-shadow:inset 0 3px 12px rgba(0,0,0,.55)!important}
+.code-block *{color:inherit!important}
+
+.stat-number,.metric-value{font-family:var(--display)!important;
+  font-variation-settings:"wdth" 100,"wght" 720;color:var(--ink)!important;
+  -webkit-text-fill-color:var(--ink)!important;background:none!important;
+  font-variant-numeric:tabular-nums}
+.stat-label,.metric-label,.tl-date,.badge,.step-number,.note-icon,.domain-icon{
+  font-family:var(--mono)!important;letter-spacing:.12em;text-transform:uppercase;
+  font-size:11px!important;color:var(--ink-3)!important;background:none!important}
+.step-number{color:var(--lamp)!important}
+.highlight{color:var(--ink)!important;background:rgba(224,152,43,.22)!important;
+  -webkit-text-fill-color:var(--ink)!important;padding:0 3px;border-radius:2px}
+
+/* buttons */
+.nav-button,.space-nav-button,.glass-nav-button,.nav-links a,.quick-nav a{
+  font-family:var(--mono)!important;font-size:12px!important;letter-spacing:.13em;
+  text-transform:uppercase;padding:12px 20px!important;color:var(--ink)!important;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))!important;
+  border:1px solid var(--bezel)!important;border-radius:3px!important;
+  backdrop-filter:none!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 1px 2px rgba(23,32,43,.16)!important}
+.nav-button:hover,.space-nav-button:hover,.glass-nav-button:hover{
+  background:linear-gradient(180deg,#fff,var(--panel-2))!important;transform:none!important}
+.nav-button:active,.space-nav-button:active,.glass-nav-button:active{
+  transform:translateY(1px)!important;
+  box-shadow:inset 0 2px 4px rgba(23,32,43,.22)!important}
+
+/* timeline rails pick up the lamp colour */
+.atlas-timeline{border-left-color:var(--bezel)!important}
+.atlas-timeline .tl-item::before,.timeline-marker{background:var(--lamp)!important;
+  box-shadow:0 0 6px var(--lamp)!important}
+.timeline::before,.timeline::after{background:var(--bezel)!important}
+
+/* threat / status colours retuned to the signal set */
+.threat-high{color:var(--alarm)!important}
+.threat-medium{color:var(--lamp)!important}
+.threat-low{color:#2F7D62!important}
+.glow,.warning-glow,.pulse{animation:none!important;text-shadow:none!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 2px rgba(23,32,43,.1)!important}
+
+/* the page's own footer block is replaced by the shared one */
+.footer-content{display:none!important}
+
+.read-next{border-top:1px solid var(--rule);padding:44px 0 8px}
+.read-next .card{margin-top:14px;max-width:640px}
+@media(max-width:600px){.container{padding:0 18px}}
+
+</style>
 </head>
 <body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
     <div class="stars" id="stars"></div>
     
     <div class="container">
@@ -428,15 +544,14 @@
 
         <main class="main-content">
             <section class="intro-section">
-                <p class="intro-text">
-                    Exploring the intersection of artificial intelligence and creative expression. 
-                    Each piece represents a unique collaboration between human imagination and machine learning algorithms.
-                </p>
+                <p class="intro-text"> Exploring the intersection of artificial intelligence and creative expression. 
+                    This section is still being built. The descriptions below are placeholders for pieces in progress, not finished work.
+</p>
                 
                 <div class="gallery-stats">
                     <div class="stat-item">
-                        <span class="stat-number">6</span>
-                        <span class="stat-label">Artworks</span>
+                        <span class="stat-number">&mdash;</span>
+                        <span class="stat-label">In progress</span>
                     </div>
                     <div class="stat-item">
                         <span class="stat-number">AI</span>
@@ -450,8 +565,8 @@
             </section>
 
             <div class="gallery-grid">
-                <div class="gallery-item" onclick="openModal(this)">
-                    <div class="image-placeholder">🎨</div>
+                <div class="gallery-item" aria-disabled="true" onclick="openModal(this)">
+                    <div class="image-placeholder"></div>
                     <div class="gallery-info">
                         <h3 class="gallery-title">Digital Dreams</h3>
                         <p class="gallery-description">Abstract landscapes generated through neural style transfer, blending reality with algorithmic interpretation.</p>
@@ -463,8 +578,8 @@
                     </div>
                 </div>
 
-                <div class="gallery-item" onclick="openModal(this)">
-                    <div class="image-placeholder">🌌</div>
+                <div class="gallery-item" aria-disabled="true" onclick="openModal(this)">
+                    <div class="image-placeholder"></div>
                     <div class="gallery-info">
                         <h3 class="gallery-title">Cosmic Synthesis</h3>
                         <p class="gallery-description">Otherworldly compositions exploring space and time through generative adversarial networks.</p>
@@ -476,8 +591,8 @@
                     </div>
                 </div>
 
-                <div class="gallery-item" onclick="openModal(this)">
-                    <div class="image-placeholder">🏛️</div>
+                <div class="gallery-item" aria-disabled="true" onclick="openModal(this)">
+                    <div class="image-placeholder"></div>
                     <div class="gallery-info">
                         <h3 class="gallery-title">Architectural Fusion</h3>
                         <p class="gallery-description">Impossible structures and dreamlike buildings created through diffusion model exploration.</p>
@@ -489,8 +604,8 @@
                     </div>
                 </div>
 
-                <div class="gallery-item" onclick="openModal(this)">
-                    <div class="image-placeholder">🦋</div>
+                <div class="gallery-item" aria-disabled="true" onclick="openModal(this)">
+                    <div class="image-placeholder"></div>
                     <div class="gallery-info">
                         <h3 class="gallery-title">Bio-Digital Forms</h3>
                         <p class="gallery-description">Organic patterns and life-like structures emerging from machine learning interpretations of nature.</p>
@@ -502,8 +617,8 @@
                     </div>
                 </div>
 
-                <div class="gallery-item" onclick="openModal(this)">
-                    <div class="image-placeholder">⚡</div>
+                <div class="gallery-item" aria-disabled="true" onclick="openModal(this)">
+                    <div class="image-placeholder"></div>
                     <div class="gallery-info">
                         <h3 class="gallery-title">Energy Flows</h3>
                         <p class="gallery-description">Dynamic representations of energy and movement captured through latent space manipulation.</p>
@@ -515,8 +630,8 @@
                     </div>
                 </div>
 
-                <div class="gallery-item" onclick="openModal(this)">
-                    <div class="image-placeholder">🎭</div>
+                <div class="gallery-item" aria-disabled="true" onclick="openModal(this)">
+                    <div class="image-placeholder"></div>
                     <div class="gallery-info">
                         <h3 class="gallery-title">Portrait Synthesis</h3>
                         <p class="gallery-description">AI-generated portraits exploring identity and human expression through computational creativity.</p>
@@ -530,16 +645,16 @@
             </div>
 
             <section class="upload-section">
-                <div class="upload-icon">📁</div>
-                <p class="upload-text">Gallery placeholders ready for your AI artwork</p>
-                <p class="upload-note">Replace the placeholder content above with your actual AI-generated images</p>
+                <div class="upload-icon"></div>
+                <p class="upload-text">Gallery in progress</p>
+                <p class="upload-note">These pieces are being prepared and will appear here as they are finished.</p>
             </section>
         </main>
 
         <nav class="navigation">
             <a href="https://ihoggan.github.io/ihoggan-portfolio/index.html" class="home-button">
                 ← Back to Home
-            </a>
+</a>
         </nav>
     </div>
 
@@ -662,5 +777,27 @@
             observer.observe(item);
         });
     </script>
+
+<section class="read-next">
+  <div class="wrap col">
+    <p class="tag">Read this next</p>
+    <a class="card" href="portfolio.html">
+      <h3>All projects</h3>
+      <p>Nine interactive tools and a case study — the part of the site that is finished.</p>
+      <span class="go">Open &rarr;</span>
+</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Get in touch</a>
+    <span class="tag">&copy; 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
 </body>
 </html>
