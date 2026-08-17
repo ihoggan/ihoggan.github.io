@@ -3,7 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Earth's Hidden Treasures - Interactive Mineral Explorer</title>
+    <title>Rocks, Minerals and Metals — Iain Hoggan</title>
+<meta name="description" content="Identify what you picked up on the beach: formation, famous localities, industrial uses and the rare specimens worth knowing about.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+
     <style>
         * {
             margin: 0;
@@ -428,32 +434,140 @@
                 gap: 1rem;
             }
         }
-    </style>
+    
+/* ==== faceplate override layer (site.css tokens) — appended last, wins on order ==== */
+body{
+  font-family:var(--body)!important;
+  background:var(--panel)!important;
+  color:var(--ink)!important;
+  background-image:
+    linear-gradient(180deg,rgba(255,255,255,.5),transparent 240px),
+    repeating-linear-gradient(90deg,rgba(23,32,43,.018) 0 1px,transparent 1px 3px)!important;
+}
+.container{max-width:1160px;margin:0 auto;padding:0 28px}
+.hero,.header{background:transparent!important;color:var(--ink)!important;
+  border-bottom:1px solid var(--rule);padding:56px 0 44px!important}
+.hero-content,.header .container{text-align:left!important}
+.hero h1,.header h1,h1{font-family:var(--display)!important;
+  font-variation-settings:"wdth" 120,"wght" 780;text-transform:uppercase;
+  color:var(--ink)!important;-webkit-text-fill-color:var(--ink)!important;
+  background:none!important;letter-spacing:-.015em;line-height:.92}
+.hero-subtitle,.subtitle{color:var(--ink-2)!important;font-size:1.1rem!important;
+  max-width:36em;margin-left:0!important;margin-right:0!important}
+h2,h3,h4{font-family:var(--display)!important;text-transform:uppercase;
+  color:var(--ink)!important;letter-spacing:.005em}
+h2{font-variation-settings:"wdth" 114,"wght" 750}
+h3,h4{font-variation-settings:"wdth" 106,"wght" 720}
+.section-title,.section-title.dark{color:var(--ink)!important;text-align:left!important}
+p,li{color:var(--ink-2)}
+strong,b{color:var(--ink)}
+
+.section,.section-white,.section-gray,.section-dark{
+  background:transparent!important;color:var(--ink)!important;
+  border-top:1px solid var(--rule);padding:52px 0!important}
+.section-gray{background:rgba(23,32,43,.025)!important}
+
+/* panels, cards and boxes become faceplate surfaces */
+.concept-card,.domain-card,.stat-card,.glass-card,.metric,.story-step,
+.explanation-box,.summary-box,.key-points,.note,.interactive-panel,
+.decision-option,.moral-dilemma,.timeline-item,.step-content,.data-viz,
+.discovery-content,.discovery-visual,.insight-box{
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))!important;
+  border:1px solid var(--bezel)!important;border-radius:4px!important;
+  color:var(--ink)!important;backdrop-filter:none!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 2px rgba(23,32,43,.1)!important}
+
+/* readouts stay dark — the one recessed surface */
+.code-block,.trajectory-animation{
+  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen))!important;
+  border:1px solid #060B0E!important;border-radius:3px!important;
+  color:#CBD8D2!important;font-family:var(--mono)!important;
+  box-shadow:inset 0 3px 12px rgba(0,0,0,.55)!important}
+.code-block *{color:inherit!important}
+
+.stat-number,.metric-value{font-family:var(--display)!important;
+  font-variation-settings:"wdth" 100,"wght" 720;color:var(--ink)!important;
+  -webkit-text-fill-color:var(--ink)!important;background:none!important;
+  font-variant-numeric:tabular-nums}
+.stat-label,.metric-label,.tl-date,.badge,.step-number,.note-icon,.domain-icon{
+  font-family:var(--mono)!important;letter-spacing:.12em;text-transform:uppercase;
+  font-size:11px!important;color:var(--ink-3)!important;background:none!important}
+.step-number{color:var(--lamp)!important}
+.highlight{color:var(--ink)!important;background:rgba(224,152,43,.22)!important;
+  -webkit-text-fill-color:var(--ink)!important;padding:0 3px;border-radius:2px}
+
+/* buttons */
+.nav-button,.space-nav-button,.glass-nav-button,.nav-links a,.quick-nav a{
+  font-family:var(--mono)!important;font-size:12px!important;letter-spacing:.13em;
+  text-transform:uppercase;padding:12px 20px!important;color:var(--ink)!important;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))!important;
+  border:1px solid var(--bezel)!important;border-radius:3px!important;
+  backdrop-filter:none!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 1px 2px rgba(23,32,43,.16)!important}
+.nav-button:hover,.space-nav-button:hover,.glass-nav-button:hover{
+  background:linear-gradient(180deg,#fff,var(--panel-2))!important;transform:none!important}
+.nav-button:active,.space-nav-button:active,.glass-nav-button:active{
+  transform:translateY(1px)!important;
+  box-shadow:inset 0 2px 4px rgba(23,32,43,.22)!important}
+
+/* timeline rails pick up the lamp colour */
+.atlas-timeline{border-left-color:var(--bezel)!important}
+.atlas-timeline .tl-item::before,.timeline-marker{background:var(--lamp)!important;
+  box-shadow:0 0 6px var(--lamp)!important}
+.timeline::before,.timeline::after{background:var(--bezel)!important}
+
+/* threat / status colours retuned to the signal set */
+.threat-high{color:var(--alarm)!important}
+.threat-medium{color:var(--lamp)!important}
+.threat-low{color:#2F7D62!important}
+.glow,.warning-glow,.pulse{animation:none!important;text-shadow:none!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 2px rgba(23,32,43,.1)!important}
+
+/* the page's own footer block is replaced by the shared one */
+.footer-content{display:none!important}
+
+.read-next{border-top:1px solid var(--rule);padding:44px 0 8px}
+.read-next .card{margin-top:14px;max-width:640px}
+@media(max-width:600px){.container{padding:0 18px}}
+
+</style>
 </head>
 <body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
     <div class="stars" id="stars"></div>
 
     <header class="header">
-        <h1>🌍 Earth's Hidden Treasures</h1>
+        <h1>Earth's Hidden Treasures</h1>
         <p>Explore the fascinating world of minerals, gemstones, and precious metals - from your backyard to the rarest radioactive specimens on Earth</p>
         
         <!-- Navigation Buttons -->
         <div class="nav-buttons">
-            <a href="https://ihoggan.github.io/ihoggan-portfolio/index.html" class="mineral-nav-button home">
-                🏠 Home ↗️
-            </a>
-            <a href="https://github.com/sponsors/ihoggan" target="_blank" class="mineral-nav-button support">
-                ❤️ Support Project ↗️
-            </a>
+            <a href="https://ihoggan.github.io/ihoggan-portfolio/index.html" class="mineral-nav-button home"> Home ↗
+</a>
+            <a href="https://github.com/sponsors/ihoggan" target="_blank" class="mineral-nav-button support"> Support Project ↗
+</a>
         </div>
     </header>
 
     <nav class="nav-tabs">
-        <button class="tab-button active" onclick="showTab('rarity')">🏆 By Rarity</button>
-        <button class="tab-button" onclick="showTab('countries')">🌎 By Country</button>
-        <button class="tab-button" onclick="showTab('geodes')">🔮 Geode Gallery</button>
-        <button class="tab-button" onclick="showTab('gemstones')">💎 Precious Gems</button>
-        <button class="tab-button" onclick="showTab('radioactive')">☢️ Radioactive</button>
+        <button class="tab-button active" onclick="showTab('rarity')">By Rarity</button>
+        <button class="tab-button" onclick="showTab('countries')">By Country</button>
+        <button class="tab-button" onclick="showTab('geodes')">Geode Gallery</button>
+        <button class="tab-button" onclick="showTab('gemstones')">Precious Gems</button>
+        <button class="tab-button" onclick="showTab('radioactive')">Radioactive</button>
     </nav>
 
     <div class="search-container">
@@ -465,8 +579,7 @@
         <div class="rarity-grid">
             <div class="rarity-card common">
                 <div class="rarity-title">
-                    <span class="rarity-icon">🪨</span>
-                    Common Treasures
+                    <span class="rarity-icon"></span> Common Treasures
                 </div>
                 <p>Perfect for beginners! These minerals are abundant and great for learning identification skills.</p>
                 
@@ -500,8 +613,7 @@
 
             <div class="rarity-card uncommon">
                 <div class="rarity-title">
-                    <span class="rarity-icon">💙</span>
-                    Uncommon Finds
+                    <span class="rarity-icon"></span> Uncommon Finds
                 </div>
                 <p>Stepping up the challenge! These minerals require more specific geological conditions.</p>
                 
@@ -535,8 +647,7 @@
 
             <div class="rarity-card rare">
                 <div class="rarity-title">
-                    <span class="rarity-icon">🌟</span>
-                    Rare Specimens
+                    <span class="rarity-icon"></span> Rare Specimens
                 </div>
                 <p>Serious collector territory! These minerals form under special conditions or specific localities.</p>
                 
@@ -570,8 +681,7 @@
 
             <div class="rarity-card precious">
                 <div class="rarity-title">
-                    <span class="rarity-icon">👑</span>
-                    Precious Metals & Gems
+                    <span class="rarity-icon"></span> Precious Metals & Gems
                 </div>
                 <p>The crown jewels of mineral collecting! Investment-grade specimens and precious metals.</p>
                 
@@ -609,8 +719,7 @@
     <section id="countries" class="content-section">
         <div class="country-section">
             <div class="country-title">
-                <span class="country-flag">🇺🇸</span>
-                United States - Land of Mineral Diversity
+                <span class="country-flag">🇺🇸</span> United States - Land of Mineral Diversity
             </div>
             <div class="rarity-grid">
                 <div class="mineral-item">
@@ -630,8 +739,7 @@
 
         <div class="country-section">
             <div class="country-title">
-                <span class="country-flag">🇲🇽</span>
-                Mexico - Collector's Paradise
+                <span class="country-flag">🇲🇽</span> Mexico - Collector's Paradise
             </div>
             <div class="rarity-grid">
                 <div class="mineral-item">
@@ -651,8 +759,7 @@
 
         <div class="country-section">
             <div class="country-title">
-                <span class="country-flag">🇧🇷</span>
-                Brazil - Gemstone Giant
+                <span class="country-flag">🇧🇷</span> Brazil - Gemstone Giant
             </div>
             <div class="rarity-grid">
                 <div class="mineral-item">
@@ -672,8 +779,7 @@
 
         <div class="country-section">
             <div class="country-title">
-                <span class="country-flag">🇲🇦</span>
-                Morocco - African Treasure House
+                <span class="country-flag">🇲🇦</span> Morocco - African Treasure House
             </div>
             <div class="rarity-grid">
                 <div class="mineral-item">
@@ -695,15 +801,14 @@
     <!-- Geodes Tab -->
     <section id="geodes" class="content-section">
         <div class="geode-showcase">
-            <div class="geode-title">🔮 The Magic of Geodes</div>
+            <div class="geode-title"> The Magic of Geodes</div>
             <p>Nature's surprise packages - ordinary rocks hiding crystal treasures inside!</p>
         </div>
 
         <div class="rarity-grid">
             <div class="rarity-card">
                 <div class="rarity-title">
-                    <span class="rarity-icon">🇺🇸</span>
-                    Keokuk Geodes (Iowa/Illinois)
+                    <span class="rarity-icon">🇺🇸</span> Keokuk Geodes (Iowa/Illinois)
                 </div>
                 <p><strong>Formation:</strong> Lower Warsaw Formation, 350 million years old</p>
                 <p><strong>Size:</strong> Typically 2-6 inches, some up to 30 inches!</p>
@@ -716,8 +821,7 @@
 
             <div class="rarity-card">
                 <div class="rarity-title">
-                    <span class="rarity-icon">🇧🇷</span>
-                    Brazilian Amethyst Cathedrals
+                    <span class="rarity-icon">🇧🇷</span> Brazilian Amethyst Cathedrals
                 </div>
                 <p><strong>Formation:</strong> Volcanic basalt flows, 130 million years ago</p>
                 <p><strong>Size:</strong> Room-sized specimens weighing tons!</p>
@@ -729,8 +833,7 @@
 
             <div class="rarity-card">
                 <div class="rarity-title">
-                    <span class="rarity-icon">🏔️</span>
-                    Dugway Geode Beds (Utah)
+                    <span class="rarity-icon"></span> Dugway Geode Beds (Utah)
                 </div>
                 <p><strong>Formation:</strong> Volcanic ash deposits</p>
                 <p><strong>Size:</strong> Golf ball to basketball sized</p>
@@ -741,8 +844,7 @@
 
             <div class="rarity-card">
                 <div class="rarity-title">
-                    <span class="rarity-icon">🌵</span>
-                    Thunder Eggs (Oregon)
+                    <span class="rarity-icon"></span> Thunder Eggs (Oregon)
                 </div>
                 <p><strong>Formation:</strong> Rhyolite volcanic flows</p>
                 <p><strong>Size:</strong> Walnut to football sized</p>
@@ -753,7 +855,7 @@
         </div>
 
         <div class="country-section">
-            <h3>🔍 How to Identify Geodes in the Field</h3>
+            <h3>How to Identify Geodes in the Field</h3>
             <div class="mineral-item">
                 <div class="mineral-name">Weight Test</div>
                 <div class="mineral-description">Hollow geodes feel lighter than solid rocks of the same size</div>
@@ -778,8 +880,7 @@
         <div class="rarity-grid">
             <div class="rarity-card precious">
                 <div class="rarity-title">
-                    <span class="rarity-icon">💎</span>
-                    The "Big Four" Precious Gems
+                    <span class="rarity-icon"></span> The "Big Four" Precious Gems
                 </div>
                 
                 <div class="mineral-item">
@@ -821,8 +922,7 @@
 
             <div class="rarity-card">
                 <div class="rarity-title">
-                    <span class="rarity-icon">🌈</span>
-                    Phenomenal Gems
+                    <span class="rarity-icon"></span> Phenomenal Gems
                 </div>
                 
                 <div class="mineral-item">
@@ -859,8 +959,7 @@
 
             <div class="rarity-card">
                 <div class="rarity-title">
-                    <span class="rarity-icon">💰</span>
-                    Investment Grade Locations
+                    <span class="rarity-icon"></span> Investment Grade Locations
                 </div>
                 
                 <div class="mineral-item">
@@ -888,17 +987,13 @@
 
     <!-- Radioactive Tab -->
     <section id="radioactive" class="content-section">
-        <div class="warning-banner">
-            ⚠️ RADIOACTIVE MINERALS WARNING ⚠️<br>
-            Handle with extreme caution! Store in lead-lined containers away from living areas.<br>
-            Use Geiger counter for monitoring. Check local regulations for possession limits.
+        <div class="warning-banner"> RADIOACTIVE MINERALS WARNING <br> Handle with extreme caution! Store in lead-lined containers away from living areas.<br> Use Geiger counter for monitoring. Check local regulations for possession limits.
         </div>
 
         <div class="rarity-grid">
             <div class="rarity-card radioactive">
                 <div class="rarity-title">
-                    <span class="rarity-icon">☢️</span>
-                    Uranium Minerals
+                    <span class="rarity-icon"></span> Uranium Minerals
                 </div>
                 
                 <div class="mineral-item">
@@ -940,8 +1035,7 @@
 
             <div class="rarity-card radioactive">
                 <div class="rarity-title">
-                    <span class="rarity-icon">🌟</span>
-                    Rare Earth Radioactives
+                    <span class="rarity-icon"></span> Rare Earth Radioactives
                 </div>
                 
                 <div class="mineral-item">
@@ -974,8 +1068,7 @@
 
             <div class="rarity-card radioactive">
                 <div class="rarity-title">
-                    <span class="rarity-icon">⚡</span>
-                    Fluorescent Radioactives
+                    <span class="rarity-icon"></span> Fluorescent Radioactives
                 </div>
                 
                 <div class="mineral-item">
@@ -1006,8 +1099,7 @@
 
             <div class="rarity-card radioactive">
                 <div class="rarity-title">
-                    <span class="rarity-icon">🏛️</span>
-                    Historic Radioactive Localities
+                    <span class="rarity-icon"></span> Historic Radioactive Localities
                 </div>
                 
                 <div class="mineral-item">
@@ -1033,7 +1125,7 @@
         </div>
 
         <div class="country-section">
-            <h3>☢️ Safety Guidelines for Radioactive Specimens</h3>
+            <h3>Safety Guidelines for Radioactive Specimens</h3>
             <div class="mineral-item">
                 <div class="mineral-name">Storage Requirements</div>
                 <div class="mineral-description">Lead-lined containers, separate from living areas, proper ventilation</div>
@@ -1054,18 +1146,16 @@
     </section>
 
     <footer class="footer">
-        <p>🌍 Earth's Hidden Treasures - Educational Resource for Mineral Enthusiasts</p>
+        <p>Earth's Hidden Treasures - Educational Resource for Mineral Enthusiasts</p>
         <p>Remember: Always respect private property, follow local laws, and practice Leave No Trace principles when collecting.</p>
         <p>For radioactive specimens, prioritize safety and check regulations in your area.</p>
         
         <!-- Navigation Buttons at Bottom -->
         <div class="nav-buttons">
-            <a href="https://ihoggan.github.io/ihoggan-portfolio/index.html" class="mineral-nav-button home">
-                🏠 Back to Portfolio ↗️
-            </a>
-            <a href="https://github.com/sponsors/ihoggan" target="_blank" class="mineral-nav-button support">
-                ❤️ Support My Work ↗️
-            </a>
+            <a href="https://ihoggan.github.io/ihoggan-portfolio/index.html" class="mineral-nav-button home"> Back to Portfolio ↗
+</a>
+            <a href="https://github.com/sponsors/ihoggan" target="_blank" class="mineral-nav-button support"> Support My Work ↗
+</a>
         </div>
     </footer>
 
@@ -1254,5 +1344,27 @@
             });
         });
     </script>
+
+<section class="read-next">
+  <div class="wrap col">
+    <p class="tag">Read this next</p>
+    <a class="card" href="Space_Anomaly.html">
+      <h3>Space Anomaly Detection</h3>
+      <p>From rocks underfoot to a rock from another star system, and how we worked out what it was made of.</p>
+      <span class="go">Open &rarr;</span>
+</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Get in touch</a>
+    <span class="tag">&copy; 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
 </body>
 </html>

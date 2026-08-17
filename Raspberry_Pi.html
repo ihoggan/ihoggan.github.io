@@ -3,7 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raspberry Pi: Unleashing Creativity with Miniature Computing</title>
+    <title>Raspberry Pi Projects — Iain Hoggan</title>
+<meta name="description" content="GPIO programming, sensors, temperature web servers and home automation on the Raspberry Pi, with the pinouts spelled out rather than assumed.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+
     <style>
         * {
             margin: 0;
@@ -551,19 +557,31 @@
     </style>
 </head>
 <body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
     <div class="main-wrapper">
         <div class="hero">
-            <h1>🍓 Raspberry Pi</h1>
+            <h1>Raspberry Pi</h1>
             <p>Unleashing Creativity with Miniature Computing</p>
             
             <!-- Navigation Buttons -->
             <div class="nav-buttons">
-                <a href="https://ihoggan.github.io/ihoggan-portfolio/index.html" class="pi-nav-button home">
-                    🏠 Home ↗️
-                </a>
-                <a href="https://github.com/sponsors/ihoggan" target="_blank" class="pi-nav-button support">
-                    ❤️ Support Project ↗️
-                </a>
+                <a href="https://ihoggan.github.io/ihoggan-portfolio/index.html" class="pi-nav-button home"> Home ↗
+</a>
+                <a href="https://github.com/sponsors/ihoggan" target="_blank" class="pi-nav-button support"> Support Project ↗
+</a>
             </div>
         </div>
 
@@ -573,26 +591,26 @@
             
             <div class="features-grid">
                 <div class="feature-item">
-                    <h4>💰 Affordable</h4>
+                    <h4>Affordable</h4>
                     <p>Starting from just $35</p>
                 </div>
                 <div class="feature-item">
-                    <h4>🔌 GPIO Pins</h4>
+                    <h4>GPIO Pins</h4>
                     <p>40 pins for hardware interfacing</p>
                 </div>
                 <div class="feature-item">
-                    <h4>🌐 Connected</h4>
+                    <h4>Connected</h4>
                     <p>Wi-Fi, Bluetooth, Ethernet</p>
                 </div>
                 <div class="feature-item">
-                    <h4>🐧 Linux Powered</h4>
+                    <h4>Linux Powered</h4>
                     <p>Runs full Linux operating system</p>
                 </div>
             </div>
         </div>
 
         <div class="highlight-box">
-            <h3>🚀 Start Building Hardware Projects Today!</h3>
+            <h3>Start Building Hardware Projects Today!</h3>
             <p>This guide includes everything you need to get started with Raspberry Pi programming and hardware projects. Every command and code example is ready to try immediately!</p>
         </div>
 
@@ -602,22 +620,22 @@
             
             <div class="model-grid">
                 <div class="model-card">
-                    <h4>🏆 Raspberry Pi 4</h4>
+                    <h4>Raspberry Pi 4</h4>
                     <p><strong>2-8GB RAM</strong></p>
                     <p>Desktop computing, media streaming, complex projects</p>
                 </div>
                 <div class="model-card">
-                    <h4>⚡ Raspberry Pi Zero</h4>
+                    <h4>Raspberry Pi Zero</h4>
                     <p><strong>512MB RAM</strong></p>
                     <p>Ultra-compact, wearables, IoT sensors</p>
                 </div>
                 <div class="model-card">
-                    <h4>🏭 Compute Module</h4>
+                    <h4>Compute Module</h4>
                     <p><strong>Industrial</strong></p>
                     <p>Custom carrier boards, commercial products</p>
                 </div>
                 <div class="model-card">
-                    <h4>🎯 Pico</h4>
+                    <h4>Pico</h4>
                     <p><strong>Microcontroller</strong></p>
                     <p>Real-time projects, embedded systems</p>
                 </div>
@@ -629,7 +647,7 @@
             
             <div class="command-grid">
                 <div class="command-card">
-                    <h4>🔧 System Information</h4>
+                    <h4>System Information</h4>
                     <div class="terminal">
                         <div class="terminal-header">Raspberry Pi Terminal</div>
                         <code># Check system info
@@ -648,7 +666,7 @@ sudo raspi-config</code>
                 </div>
                 
                 <div class="command-card">
-                    <h4>📷 Camera & Media</h4>
+                    <h4>Camera & Media</h4>
                     <div class="terminal">
                         <div class="terminal-header">Camera Commands</div>
                         <code># Take a photo
@@ -663,7 +681,7 @@ raspistill -t 0 -k</code>
                 </div>
                 
                 <div class="command-card">
-                    <h4>🔌 GPIO Control</h4>
+                    <h4>GPIO Control</h4>
                     <div class="terminal">
                         <div class="terminal-header">Hardware Control</div>
                         <code># Show GPIO layout
@@ -677,7 +695,7 @@ echo "1" > /sys/class/gpio/gpio18/value</code>
                 </div>
                 
                 <div class="command-card">
-                    <h4>📦 Python Libraries</h4>
+                    <h4>Python Libraries</h4>
                     <div class="terminal">
                         <div class="terminal-header">Install Libraries</div>
                         <code># Essential GPIO libraries
@@ -695,10 +713,10 @@ pip3 install adafruit-circuitpython-dht</code>
 
         <div class="tutorial-container">
             <div class="content-section">
-                <h2>🎯 Hands-On Hardware Tutorial: Your First LED Project</h2>
+                <h2>Hands-On Hardware Tutorial: Your First LED Project</h2>
                 
                 <div class="hardware-box">
-                    <h3>🛠️ What You'll Need</h3>
+                    <h3>What You'll Need</h3>
                     <ul>
                         <li>Raspberry Pi (any model with GPIO)</li>
                         <li>LED (any color)</li>
@@ -708,7 +726,7 @@ pip3 install adafruit-circuitpython-dht</code>
                 </div>
 
                 <div class="wiring-diagram">
-<strong>🔌 Wiring Diagram:</strong>
+<strong>Wiring Diagram:</strong>
 Raspberry Pi Pin 18 (GPIO) → 220Ω Resistor → LED Long Leg (+)
 LED Short Leg (-) → Raspberry Pi Pin 6 (Ground)
 
@@ -797,7 +815,7 @@ finally:
                     <p>Add a button to control your LED interactively:</p>
                     
                     <div class="wiring-diagram">
-<strong>🔘 Button Wiring (add to existing LED circuit):</strong>
+<strong>Button Wiring (add to existing LED circuit):</strong>
 Raspberry Pi Pin 7 (GPIO4) ── Button ── Raspberry Pi 3.3V (Pin 1)
 Raspberry Pi Pin 7 (GPIO4) ── 10kΩ Resistor ── Ground
                     </div>
@@ -848,7 +866,7 @@ finally:
         </div>
 
         <div class="project-showcase">
-            <h2>🌡️ Advanced Project: Temperature Web Server</h2>
+            <h2>Advanced Project: Temperature Web Server</h2>
             <p>Build a web-based temperature monitoring system:</p>
             
             <h4>Step 1: Install Required Libraries</h4>
@@ -928,7 +946,103 @@ def index():
                 opacity: 0.8;
                 margin-top: 20px;
             }
-        </style>
+        
+/* ==== faceplate override layer (site.css tokens) — appended last, wins on order ==== */
+body{
+  font-family:var(--body)!important;
+  background:var(--panel)!important;
+  color:var(--ink)!important;
+  background-image:
+    linear-gradient(180deg,rgba(255,255,255,.5),transparent 240px),
+    repeating-linear-gradient(90deg,rgba(23,32,43,.018) 0 1px,transparent 1px 3px)!important;
+}
+.container{max-width:1160px;margin:0 auto;padding:0 28px}
+.hero,.header{background:transparent!important;color:var(--ink)!important;
+  border-bottom:1px solid var(--rule);padding:56px 0 44px!important}
+.hero-content,.header .container{text-align:left!important}
+.hero h1,.header h1,h1{font-family:var(--display)!important;
+  font-variation-settings:"wdth" 120,"wght" 780;text-transform:uppercase;
+  color:var(--ink)!important;-webkit-text-fill-color:var(--ink)!important;
+  background:none!important;letter-spacing:-.015em;line-height:.92}
+.hero-subtitle,.subtitle{color:var(--ink-2)!important;font-size:1.1rem!important;
+  max-width:36em;margin-left:0!important;margin-right:0!important}
+h2,h3,h4{font-family:var(--display)!important;text-transform:uppercase;
+  color:var(--ink)!important;letter-spacing:.005em}
+h2{font-variation-settings:"wdth" 114,"wght" 750}
+h3,h4{font-variation-settings:"wdth" 106,"wght" 720}
+.section-title,.section-title.dark{color:var(--ink)!important;text-align:left!important}
+p,li{color:var(--ink-2)}
+strong,b{color:var(--ink)}
+
+.section,.section-white,.section-gray,.section-dark{
+  background:transparent!important;color:var(--ink)!important;
+  border-top:1px solid var(--rule);padding:52px 0!important}
+.section-gray{background:rgba(23,32,43,.025)!important}
+
+/* panels, cards and boxes become faceplate surfaces */
+.concept-card,.domain-card,.stat-card,.glass-card,.metric,.story-step,
+.explanation-box,.summary-box,.key-points,.note,.interactive-panel,
+.decision-option,.moral-dilemma,.timeline-item,.step-content,.data-viz,
+.discovery-content,.discovery-visual,.insight-box{
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))!important;
+  border:1px solid var(--bezel)!important;border-radius:4px!important;
+  color:var(--ink)!important;backdrop-filter:none!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 2px rgba(23,32,43,.1)!important}
+
+/* readouts stay dark — the one recessed surface */
+.code-block,.trajectory-animation{
+  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen))!important;
+  border:1px solid #060B0E!important;border-radius:3px!important;
+  color:#CBD8D2!important;font-family:var(--mono)!important;
+  box-shadow:inset 0 3px 12px rgba(0,0,0,.55)!important}
+.code-block *{color:inherit!important}
+
+.stat-number,.metric-value{font-family:var(--display)!important;
+  font-variation-settings:"wdth" 100,"wght" 720;color:var(--ink)!important;
+  -webkit-text-fill-color:var(--ink)!important;background:none!important;
+  font-variant-numeric:tabular-nums}
+.stat-label,.metric-label,.tl-date,.badge,.step-number,.note-icon,.domain-icon{
+  font-family:var(--mono)!important;letter-spacing:.12em;text-transform:uppercase;
+  font-size:11px!important;color:var(--ink-3)!important;background:none!important}
+.step-number{color:var(--lamp)!important}
+.highlight{color:var(--ink)!important;background:rgba(224,152,43,.22)!important;
+  -webkit-text-fill-color:var(--ink)!important;padding:0 3px;border-radius:2px}
+
+/* buttons */
+.nav-button,.space-nav-button,.glass-nav-button,.nav-links a,.quick-nav a{
+  font-family:var(--mono)!important;font-size:12px!important;letter-spacing:.13em;
+  text-transform:uppercase;padding:12px 20px!important;color:var(--ink)!important;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))!important;
+  border:1px solid var(--bezel)!important;border-radius:3px!important;
+  backdrop-filter:none!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 1px 2px rgba(23,32,43,.16)!important}
+.nav-button:hover,.space-nav-button:hover,.glass-nav-button:hover{
+  background:linear-gradient(180deg,#fff,var(--panel-2))!important;transform:none!important}
+.nav-button:active,.space-nav-button:active,.glass-nav-button:active{
+  transform:translateY(1px)!important;
+  box-shadow:inset 0 2px 4px rgba(23,32,43,.22)!important}
+
+/* timeline rails pick up the lamp colour */
+.atlas-timeline{border-left-color:var(--bezel)!important}
+.atlas-timeline .tl-item::before,.timeline-marker{background:var(--lamp)!important;
+  box-shadow:0 0 6px var(--lamp)!important}
+.timeline::before,.timeline::after{background:var(--bezel)!important}
+
+/* threat / status colours retuned to the signal set */
+.threat-high{color:var(--alarm)!important}
+.threat-medium{color:var(--lamp)!important}
+.threat-low{color:#2F7D62!important}
+.glow,.warning-glow,.pulse{animation:none!important;text-shadow:none!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 2px rgba(23,32,43,.1)!important}
+
+/* the page's own footer block is replaced by the shared one */
+.footer-content{display:none!important}
+
+.read-next{border-top:1px solid var(--rule);padding:44px 0 8px}
+.read-next .card{margin-top:14px;max-width:640px}
+@media(max-width:600px){.container{padding:0 18px}}
+
+</style>
         <meta http-equiv="refresh" content="10">
     </head>
     <body>
@@ -938,7 +1052,29 @@ def index():
             <p>Last Update: {{ update_time }}</p>
             <p class="last-update">Updates every 10 seconds</p>
         </div>
-    </body>
+    
+<section class="read-next">
+  <div class="wrap col">
+    <p class="tag">Read this next</p>
+    <a class="card" href="Python.html">
+      <h3>Python</h3>
+      <p>The language most of these builds are written in, from a calculator through to automation scripts you will actually keep using.</p>
+      <span class="go">Open &rarr;</span>
+</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Get in touch</a>
+    <span class="tag">&copy; 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
+</body>
     </html>
     '''
     return render_template_string(html, temp=current_temp, update_time=last_update)
@@ -960,12 +1096,12 @@ if __name__ == '__main__':
         </div>
 
         <div class="challenge-box">
-            <h3>🎯 Challenge Projects</h3>
+            <h3>Challenge Projects</h3>
             <p>Ready for more? Try these exciting projects:</p>
             
             <div class="command-grid">
                 <div class="command-card" style="background: linear-gradient(135deg, #4ecdc4, #44a08d);">
-                    <h4>🚶 Motion-Activated Light</h4>
+                    <h4>Motion-Activated Light</h4>
                     <p>Use PIR sensor to detect movement and automatically turn on LEDs</p>
                     <div class="python-code">
                         <code>import RPi.GPIO as GPIO
@@ -994,7 +1130,7 @@ except KeyboardInterrupt:
                 </div>
                 
                 <div class="command-card" style="background: linear-gradient(135deg, #667eea, #764ba2);">
-                    <h4>📊 Data Logger</h4>
+                    <h4>Data Logger</h4>
                     <p>Record sensor data to CSV files for analysis</p>
                     <div class="python-code">
                         <code>import csv
@@ -1019,7 +1155,7 @@ while True:
                 </div>
                 
                 <div class="command-card" style="background: linear-gradient(135deg, #ff6b6b, #ee5a52);">
-                    <h4>🎮 Remote Control</h4>
+                    <h4>Remote Control</h4>
                     <p>Control your Pi remotely via web interface</p>
                     <div class="python-code">
                         <code>from flask import Flask, request, jsonify
@@ -1043,7 +1179,7 @@ app.run(host='0.0.0.0', port=5000)</code>
                 </div>
                 
                 <div class="command-card" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
-                    <h4>🌤️ Weather Station</h4>
+                    <h4>Weather Station</h4>
                     <p>Combine multiple sensors for complete weather monitoring</p>
                     <div class="python-code">
                         <code>import time
@@ -1076,7 +1212,7 @@ while True:
             
             <div class="command-grid">
                 <div class="command-card">
-                    <h4>🔧 Performance Optimization</h4>
+                    <h4>Performance Optimization</h4>
                     <div class="terminal">
                         <div class="terminal-header">System Optimization</div>
                         <code># Check CPU frequency
@@ -1094,7 +1230,7 @@ watch -n 1 vcgencmd measure_temp</code>
                 </div>
                 
                 <div class="command-card">
-                    <h4>🌐 Networking Projects</h4>
+                    <h4>Networking Projects</h4>
                     <div class="terminal">
                         <div class="terminal-header">Network Commands</div>
                         <code># Set up access point
@@ -1112,7 +1248,7 @@ sudo nano /etc/dhcpcd.conf</code>
                 </div>
                 
                 <div class="command-card">
-                    <h4>📦 Automation & Services</h4>
+                    <h4>Automation & Services</h4>
                     <div class="terminal">
                         <div class="terminal-header">System Services</div>
                         <code># Create a service for your project
@@ -1128,7 +1264,7 @@ sudo systemctl status myproject.service</code>
                 </div>
                 
                 <div class="command-card">
-                    <h4>🔒 Security & Monitoring</h4>
+                    <h4>Security & Monitoring</h4>
                     <div class="terminal">
                         <div class="terminal-header">Security Setup</div>
                         <code># Enable SSH key authentication
@@ -1149,17 +1285,15 @@ journalctl -f</code>
         </div>
 
         <div class="highlight-box">
-            <h3>🎯 Your Raspberry Pi Journey Continues</h3>
+            <h3>Your Raspberry Pi Journey Continues</h3>
             <p>You've learned the fundamentals of Raspberry Pi programming and hardware interfacing! The possibilities are endless - from home automation to robotics, IoT projects to educational tools. Keep experimenting and building!</p>
             
             <!-- Navigation Buttons at Bottom -->
             <div class="nav-buttons">
-                <a href="https://ihoggan.github.io/ihoggan-portfolio/index.html" class="pi-nav-button home">
-                    🏠 Back to Portfolio ↗️
-                </a>
-                <a href="https://github.com/sponsors/ihoggan" target="_blank" class="pi-nav-button support">
-                    ❤️ Support My Work ↗️
-                </a>
+                <a href="https://ihoggan.github.io/ihoggan-portfolio/index.html" class="pi-nav-button home"> Back to Portfolio ↗
+</a>
+                <a href="https://github.com/sponsors/ihoggan" target="_blank" class="pi-nav-button support"> Support My Work ↗
+</a>
             </div>
             
             <div class="terminal">
@@ -1176,5 +1310,27 @@ echo "Happy making! 🍓⚡"</code>
             </div>
         </div>
     </div>
+
+<section class="read-next">
+  <div class="wrap col">
+    <p class="tag">Read this next</p>
+    <a class="card" href="Python.html">
+      <h3>Python</h3>
+      <p>The language most of these builds are written in, from a calculator through to automation scripts you will actually keep using.</p>
+      <span class="go">Open &rarr;</span>
+</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Get in touch</a>
+    <span class="tag">&copy; 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
 </body>
 </html>
