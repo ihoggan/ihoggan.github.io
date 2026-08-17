@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Space Anomaly Detection | Complete Learning Guide</title>
-    <meta name="description" content="Complete guide to learning AI anomaly detection using real interstellar visitor data. Self-contained educational resource with code examples and explanations.">
+    <title>Space Anomaly Detection — Iain Hoggan</title>
+    <meta name="description" content="Learn anomaly detection with real data from 3I/ATLAS, the third interstellar object ever found — statistical outliers, Isolation Forest and time-series methods, updated with what Webb discovered about its origin.">
     <meta name="keywords" content="anomaly detection, machine learning, space AI, astronomy education, data science tutorials, 3I/ATLAS, interstellar objects, self-study">
     
     <style>
@@ -555,6 +555,13 @@
             color: #f59e0b;
             margin-right: 0.5rem;
         }
+
+        .atlas-timeline { max-width: 46rem; margin: 0 auto; border-left: 2px solid rgba(100,181,246,0.35); padding-left: 1.5rem; }
+        .atlas-timeline .tl-item { position: relative; padding-bottom: 1.6rem; }
+        .atlas-timeline .tl-item::before { content: ''; position: absolute; left: -1.94rem; top: 0.45rem; width: 9px; height: 9px; border-radius: 50%; background: #64b5f6; }
+        .atlas-timeline .tl-date { display: block; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.75; margin-bottom: 0.25rem; }
+        .atlas-timeline .tl-item p { margin: 0; line-height: 1.6; }
+        .atlas-timeline .tl-item:last-child { padding-bottom: 0; }
     </style>
 </head>
 <body>
@@ -603,6 +610,7 @@
                     
                     <div class="quick-nav">
                         <a href="#discovery" class="nav-button">📡 The Discovery</a>
+                        <a href="#whathappened" class="nav-button">📅 What Happened Next</a>
                         <a href="#concepts" class="nav-button">🧠 Learn Concepts</a>
                         <a href="#implementation" class="nav-button">💻 See Code</a>
                         <a href="#applications" class="nav-button">🌍 Applications</a>
@@ -619,32 +627,36 @@
                     <div class="discovery-content">
                         <h3>A Visitor From Another Star System</h3>
                         <p>
-                            In July 2025, astronomers discovered <span class="highlight">3I/ATLAS</span>, only the third interstellar 
-                            object ever observed. This cosmic visitor is racing through our solar system at an incredible 60 km/s, 
-                            carrying secrets from another star system millions of light-years away.
+                            On 1 July 2025, the ATLAS survey telescope in Rio Hurtado, Chile picked up <span class="highlight">3I/ATLAS</span> &mdash;
+                            only the third interstellar object ever observed, after 1I/&lsquo;Oumuamua in 2017 and
+                            2I/Borisov in 2019. It crossed our solar system at roughly 58 km/s, far too fast for the
+                            Sun to hold on to, carrying material from another star system elsewhere in our own
+                            galaxy, the Milky Way.
                         </p>
                         <p>
-                            What makes 3I/ATLAS special isn't just its origin—it's the <strong>anomalies</strong> hidden in its behavior. 
+                            What makes 3I/ATLAS worth studying isn&rsquo;t just its origin &mdash; it is how completely it
+                            refused to match expectations. Every measurement was an <strong>anomaly</strong> against a
+                            reference set built entirely from comets formed around a single star: ours. 
                             Using advanced pattern detection algorithms, researchers found unusual patterns that traditional analysis missed, 
                             revealing new insights about this mysterious visitor.
                         </p>
                         
                         <div class="atlas-stats">
                             <div class="stat-card">
-                                <span class="stat-number">6.30</span>
-                                <span class="stat-label">Orbital Eccentricity<br><small>(Highest Ever Recorded)</small></span>
+                                <span class="stat-number">6.14</span>
+                                <span class="stat-label">Orbital Eccentricity<br><small>Most extreme orbit on record</small></span>
                             </div>
                             <div class="stat-card">
-                                <span class="stat-number">60 km/s</span>
-                                <span class="stat-label">Velocity Through Space<br><small>(Double Previous Visitors)</small></span>
+                                <span class="stat-number">58 km/s</span>
+                                <span class="stat-label">Speed Through The Solar System<br><small>Fastest of the three visitors</small></span>
                             </div>
                             <div class="stat-card">
-                                <span class="stat-number">15</span>
-                                <span class="stat-label">Anomalies Detected<br><small>Using AI Analysis</small></span>
+                                <span class="stat-number">1.2 km</span>
+                                <span class="stat-label">Nucleus Diameter<br><small>Hubble, measured post-perihelion</small></span>
                             </div>
                             <div class="stat-card">
-                                <span class="stat-number">122</span>
-                                <span class="stat-label">Real Observations<br><small>From 31 Observatories</small></span>
+                                <span class="stat-number">30&times;</span>
+                                <span class="stat-label">Heavy Water vs Our Comets<br><small>Webb NIRSpec isotope ratio</small></span>
                             </div>
                         </div>
                     </div>
@@ -684,7 +696,87 @@
             </div>
         </section>
 
-        <section id="concepts" class="section section-gray">
+        <section id="whathappened" class="section section-gray">
+            <div class="container">
+                <h2 class="section-title dark">What Happened Next</h2>
+                <p style="max-width: 46rem; margin: 0 auto 2.5rem; text-align: center; opacity: 0.9;">
+                    This guide first went up shortly after the discovery, when almost nothing was known.
+                    A great deal has been learned since &mdash; more than a dozen NASA missions and most
+                    of the world&rsquo;s major observatories were pointed at it before it left.
+                </p>
+
+                <div class="atlas-timeline">
+                    <div class="tl-item">
+                        <span class="tl-date">May 2025</span>
+                        <p>Found in <em>earlier</em> images after the fact. Rubin Observatory, TESS and ZTF had all
+                        recorded it while it was already active at 6.4 au &mdash; two months before anyone noticed it.</p>
+                    </div>
+                    <div class="tl-item">
+                        <span class="tl-date">1 July 2025</span>
+                        <p>Discovered by the ATLAS survey in Chile and reported to the Minor Planet Center. Its speed
+                        and trajectory made an interstellar origin unmistakable within days.</p>
+                    </div>
+                    <div class="tl-item">
+                        <span class="tl-date">Aug 2025</span>
+                        <p>The James Webb Space Telescope captured its first spectrum, revealing a coma dominated by
+                        carbon dioxide &mdash; a different mix from typical solar system comets.</p>
+                    </div>
+                    <div class="tl-item">
+                        <span class="tl-date">Oct 2025</span>
+                        <p>Passed just inside the orbit of Mars. ESA turned Mars Express and the ExoMars Trace Gas
+                        Orbiter towards it &mdash; spacecraft at Mars had the better seat.</p>
+                    </div>
+                    <div class="tl-item">
+                        <span class="tl-date">30 Oct 2025</span>
+                        <p>Perihelion, at 1.36 au &mdash; still outside Earth&rsquo;s orbit. It reached 9th magnitude
+                        and 246,000 km/h, but sat behind the Sun from our point of view, so Parker Solar Probe and
+                        Europa Clipper did the observing instead.</p>
+                    </div>
+                    <div class="tl-item">
+                        <span class="tl-date">19 Dec 2025</span>
+                        <p>Closest approach to Earth &mdash; 1.8 au, about 270 million km. Never remotely a hazard,
+                        despite a good deal of noise suggesting otherwise.</p>
+                    </div>
+                    <div class="tl-item">
+                        <span class="tl-date">22&ndash;23 Dec 2025</span>
+                        <p>Webb&rsquo;s NIRSpec instrument observed the freshly warmed coma. These two nights produced
+                        the result that reframed everything below.</p>
+                    </div>
+                    <div class="tl-item">
+                        <span class="tl-date">Mar 2026</span>
+                        <p>The isotope papers land. Deuterium &mdash; heavy hydrogen &mdash; measured at roughly
+                        <strong>30 times</strong> the level found in any solar system comet, in both water and methane.
+                        Very little carbon-13.</p>
+                    </div>
+                    <div class="tl-item">
+                        <span class="tl-date">Jun 2026</span>
+                        <p>Published in <em>Nature</em>: that isotope signature points to formation in an extremely
+                        cold cloud, below about 30 K, possibly <strong>10 to 12 billion years ago</strong> &mdash;
+                        older than the Sun, early in the history of the galaxy.</p>
+                    </div>
+                    <div class="tl-item">
+                        <span class="tl-date">Now</span>
+                        <p>Outbound past Jupiter, leaving at the same speed it arrived, never to return. The
+                        observations remain in NASA&rsquo;s public archives, which is where anyone wanting to try
+                        the techniques in this guide should start.</p>
+                    </div>
+                </div>
+
+                <div class="insight-box" style="max-width: 46rem; margin: 2.5rem auto 0;">
+                    <h4>The lesson that matters for anomaly detection</h4>
+                    <p>
+                        3I/ATLAS was odd enough that a serious argument broke out over whether it was
+                        artificial. It wasn&rsquo;t &mdash; the composition is consistent with a comet, just one
+                        unlike any formed around our Sun. That distinction is the whole discipline in miniature:
+                        <strong>an outlier tells you your reference set is incomplete, not what the answer is.</strong>
+                        Every comet we had ever measured formed around one star. The first one that didn&rsquo;t
+                        was always going to look impossible.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="concepts" class="section section-white">
             <div class="container">
                 <h2 class="section-title dark">Core Concepts: What Are Anomalies?</h2>
                 
