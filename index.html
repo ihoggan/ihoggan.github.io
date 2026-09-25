@@ -3,10 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Iain Hoggan — nine things you can actually run</title>
-<meta name="description" content="Interactive instruments for learning hard subjects: neural network training, wireless packet capture, quantum simulation, Raspberry Pi hardware. Every one runs in your browser.">
-<meta property="og:title" content="Iain Hoggan — nine things you can actually run">
-<meta property="og:description" content="Neural networks, packet capture, quantum simulation, Pi hardware. Interactive, in the browser, free.">
+<title>Iain Hoggan — old kit, local AI, and things you can run</title>
+<meta name="description" content="Network technician on the Wirral. I build things on hardware other people throw away, and measure them honestly. Case studies: local AI characters on a rescued 2015 PC, and a pool physics engine built over seventy revisions.">
+<meta property="og:title" content="Iain Hoggan — old kit, local AI, and things you can run">
+<meta property="og:description" content="Local AI characters on a rescued 2015 office PC, a pool physics engine, and interactive tools you can run in your browser.">
+<meta property="og:image" content="https://ihoggan.github.io/ihoggan-portfolio/images/og-reclaim.png">
+<meta name="twitter:card" content="summary_large_image">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -310,7 +312,6 @@ footer{border-top:1px solid var(--rule);background:linear-gradient(180deg,var(--
     <nav class="rail-nav">
       <a href="portfolio.html">Projects</a>
       <a href="about.html">About</a>
-      <a href="gallery.html">Gallery</a>
       <a href="contact.html">Contact</a>
     </nav>
   </div>
@@ -319,13 +320,14 @@ footer{border-top:1px solid var(--rule);background:linear-gradient(180deg,var(--
 <header class="hero">
   <div class="wrap hero-grid">
     <div>
-      <p class="tag">Interactive learning tools · Wirral, UK</p>
-      <h1>Nine things<br>you can <em>actually run</em></h1>
-      <p class="lede">I build the tool, not the lecture. Neural network training, wireless packet capture, quantum simulation, Raspberry&nbsp;Pi hardware — each one opens in your browser and does something when you touch it. <strong>Start on the right: drag the learning rate past 1.00 and watch the network tear itself apart.</strong></p>
+      <p class="tag">Network technician · Wirral, UK</p>
+      <h1>Old kit.<br><em>New tricks.</em></h1>
+      <p class="lede">I build things on hardware other people throw away, and I measure them, including when the measurement says I'm wrong. <strong>Latest: a 2015 office PC that was headed for scrap now runs a local AI, and characters that remember me.</strong></p>
       <div class="hero-cta">
-        <a class="btn btn-primary" href="neural_playground.html">Open the full playground</a>
-        <a class="btn" href="#bench">See all nine</a>
+        <a class="btn btn-primary" href="reclaim.html">Read: saved from the scrap pile</a>
+        <a class="btn" href="#bench">Everything else</a>
       </div>
+      <p class="tag" style="margin-top:22px">Or try the panel: drag the learning rate past 1.00 and watch training fall apart.</p>
     </div>
 
     <div class="scope">
@@ -357,80 +359,30 @@ footer{border-top:1px solid var(--rule);background:linear-gradient(180deg,var(--
 
 <main class="bench wrap" id="bench">
   <div class="bench-head">
-    <h2>On the bench</h2>
-    <p>Everything here is free, runs client-side, and asks you to change something. No sign-up, no video, no waiting.</p>
-  </div>
-
-  <div class="grid">
-    <a class="card" href="neural_playground.html">
-      <div class="card-tag"><span class="dot"></span><span class="tag">Start here · live training</span></div>
-      <h3>S.M.A.R.T.</h3>
-      <p>Watch a neural network learn in real time, then push the learning rate until it explodes. The fastest way to understand why the number matters.</p>
-      <span class="go">Open →</span>
-</a>
-
-    <a class="card" href="Project_Zombie.html">
-      <div class="card-tag"><span class="tag">802.11 monitor · 48-hour capture</span></div>
-      <h3>Project Zombie</h3>
-      <p>A real investigation, written up as it happened: hunting botnet traffic on a home network with a Raspberry Pi, Wireshark and tshark.</p>
-      <span class="go">Read the case →</span>
-</a>
-
-    <a class="card" href="Raspberry_Pi.html">
-      <div class="card-tag"><span class="tag">GPIO · 40 pins</span></div>
-      <h3>Raspberry Pi Hub</h3>
-      <p>Wire something up tonight: LED controllers, a temperature web server, motion detectors, IoT builds with the pinouts spelled out.</p>
-      <span class="go">Open →</span>
-</a>
-
-    <a class="card" href="Quantum_ness.html">
-      <div class="card-tag"><span class="tag">Qubits · superposition</span></div>
-      <h3>Quantum-ness</h3>
-      <p>Gates, entanglement and quantum parallelism you can operate rather than read about. Built for people who bounced off the maths.</p>
-      <span class="go">Open →</span>
-</a>
-
-    <a class="card" href="Space_Anomaly.html">
-      <div class="card-tag"><span class="tag">3I/ATLAS · real observations</span></div>
-      <h3>Space Anomaly</h3>
-      <p>Run anomaly detection on 3I/ATLAS, the third interstellar object ever found, using the actual astronomical data.</p>
-      <span class="go">Open →</span>
-</a>
-
-    <a class="card" href="TradeWar.html">
-      <div class="card-tag"><span class="tag">Market sim · human vs bot</span></div>
-      <h3>TradeWar</h3>
-      <p>Trade live against algorithms that never panic, never revenge-trade, and never get bored. Find out how long your discipline lasts.</p>
-      <span class="go">Play →</span>
-</a>
-
-    <a class="card" href="Linux_Guide.html">
-      <div class="card-tag"><span class="tag">Shell · safe to paste</span></div>
-      <h3>Linux Guide</h3>
-      <p>Files, text processing, system monitoring and scripting — hands-on, with every command safe to run on your own machine.</p>
-      <span class="go">Open →</span>
-</a>
-
-    <a class="card" href="Python.html">
-      <div class="card-tag"><span class="tag">Python 3 · buildable projects</span></div>
-      <h3>Python</h3>
-      <p>Beginner to working developer through things you finish: a calculator, a file organiser, a weather app, automation scripts.</p>
-      <span class="go">Open →</span>
-</a>
-
-    <a class="card" href="Rocks_Minerals_Metals.html">
-      <div class="card-tag"><span class="tag">Specimens · searchable</span></div>
-      <h3>Rocks, Minerals &amp; Metals</h3>
-      <p>Identify what you picked up on the beach. Formation, famous localities, industrial uses, and the rare stuff worth knowing about.</p>
-      <span class="go">Open →</span>
-</a>
+    <h2>Case studies</h2>
+    <p>Longer reads. Not feature lists: what went wrong, how it was found, and what it cost.</p>
   </div>
 
   <div class="study">
     <div class="study-text">
-      <span class="tag">Longer read · case study</span>
+      <span class="tag">New · old hardware · local AI</span>
+      <h3>Saved from the scrap pile</h3>
+      <p>Two 2015 office PCs were about to be scrapped. One now runs Ubuntu, a local AI model at reading pace, and characters that remember me, with no cloud and no subscription. Plus the day I measured the characters' memories and found every one of them was invented, and the fix that checks their memories against my own words.</p>
+      <a class="btn btn-primary" href="reclaim.html">Read the case study</a>
+    </div>
+    <div class="study-panel" aria-hidden="true">
+      <div class="row"><span>The PC</span><b>2015</b></div>
+      <div class="row"><span>Speed, CPU only</span><b>8.0 tok/s</b></div>
+      <div class="row"><span>Memories invented, before</span><b class="bad">35 / 35</b></div>
+      <div class="row"><span>General-knowledge filler, after</span><b>0</b></div>
+    </div>
+  </div>
+
+  <div class="study">
+    <div class="study-text">
+      <span class="tag">Python · physics · testing</span>
       <h3>HUSTLER</h3>
-      <p>A UK blackball pool physics sandbox in Python — 70 revisions, 129 assertions, two source files and no asset files at all. The write-up isn't a feature list: it's what was wrong, how each fault was found, and what it cost. Including the calibration bug that made the AI think it potted nearly everything, and five confident explanations that all died on contact with data.</p>
+      <p>A UK blackball pool physics sandbox in Python: 70 revisions, 129 assertions, two source files and no asset files at all. What was wrong, how each fault was found, and what it cost. Including the calibration bug that made the AI think it potted nearly everything, and five confident explanations that all died on contact with data.</p>
       <a class="btn btn-primary" href="Hustler.html">Read the case study</a>
     </div>
     <div class="study-panel" aria-hidden="true">
@@ -440,13 +392,37 @@ footer{border-top:1px solid var(--rule);background:linear-gradient(180deg,var(--
       <div class="row"><span>Assertions today</span><b>129</b></div>
     </div>
   </div>
+
+  <div class="bench-head" style="margin-top:64px">
+    <h2>Things you can run</h2>
+    <p>Free, in your browser, no sign-up. Each one asks you to change something.</p>
+  </div>
+  <div class="grid">
+    <a class="card" href="neural_playground.html">
+      <div class="card-tag"><span class="dot"></span><span class="tag">Live training</span></div>
+      <h3>S.M.A.R.T.</h3>
+      <p>Watch a neural network learn in real time, then push the learning rate until it explodes. The fastest way to understand why that one number matters.</p>
+      <span class="go">Open →</span>
+    </a>
+    <a class="card" href="TradeWar.html">
+      <div class="card-tag"><span class="tag">Market sim · human vs bot</span></div>
+      <h3>TradeWar</h3>
+      <p>Trade against a rule-following bot that never panics, never revenge-trades and never gets bored. Find out how long your discipline lasts.</p>
+      <span class="go">Play →</span>
+    </a>
+    <a class="card" href="portfolio.html#earlier">
+      <div class="card-tag"><span class="tag">Archive · 2025</span></div>
+      <h3>Earlier learning pages</h3>
+      <p>Beginner guides to Linux, Python and the Raspberry Pi, and a rocks and minerals reference, from when this site started.</p>
+      <span class="go">Browse →</span>
+    </a>
+  </div>
 </main>
 
 <footer>
   <div class="wrap foot">
     <a href="about.html">About</a>
     <a href="portfolio.html">Projects</a>
-    <a href="gallery.html">Gallery</a>
     <a href="contact.html">Get in touch</a>
     <a href="https://github.com/ihoggan">GitHub</a>
     <a href="https://github.com/sponsors/ihoggan">Support these projects</a>

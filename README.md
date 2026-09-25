@@ -1,83 +1,29 @@
-# Iain Hoggan
-**Educational Technology Developer & Interactive Learning Specialist**
+# ihoggan-portfolio
 
----
+The source of my site: **https://ihoggan.github.io/ihoggan-portfolio/**
 
-## Professional Summary
+I'm Iain Hoggan, a network technician on the Wirral. I build things on hardware other people throw away, and I measure them honestly, including when the measurement says I'm wrong.
 
-Iain Hoggan is a passionate educator and developer who specializes in transforming complex technical concepts into engaging, interactive learning experiences. With expertise spanning artificial intelligence, cybersecurity, quantum computing, and hardware programming, Iain creates educational tools that make advanced topics accessible to learners at all levels.
+## What's on it
 
-## Core Expertise
+**Case studies**
+- [Saved from the scrap pile](https://ihoggan.github.io/ihoggan-portfolio/reclaim.html): a 2015 office PC headed for scrap, now running Ubuntu, a local AI model and characters that remember me. Includes the measurement that showed the characters' memories were almost entirely invented, and the fix. Code: [localcast](https://github.com/IHoggan/localcast), [nix6-tools](https://github.com/IHoggan/nix6-tools).
+- [HUSTLER](https://ihoggan.github.io/ihoggan-portfolio/Hustler.html): a UK blackball pool physics sandbox built over seventy revisions, and what the bugs taught me about testing.
 
-**🤖 Artificial Intelligence & Machine Learning**
-- Neural network visualization and training optimization
-- Anomaly detection algorithms for real-world applications
-- Interactive AI education platforms
+**Things you can run in your browser**
+- [S.M.A.R.T.](https://ihoggan.github.io/ihoggan-portfolio/neural_playground.html): watch a single neuron learn, then push the learning rate until it breaks.
+- [TradeWar](https://ihoggan.github.io/ihoggan-portfolio/TradeWar.html): trade against a rule-following bot and see how long your discipline lasts.
 
-**🔒 Cybersecurity & Network Analysis**
-- Wireless security investigation and monitoring
-- Packet analysis and threat detection
-- Ethical hacking methodologies and education
+**Archive (2025):** beginner guides to Linux, Python and the Raspberry Pi, and a rocks and minerals reference.
 
-**⚛️ Quantum Computing**
-- Quantum prediction algorithms and superposition principles
-- Interactive quantum mechanics demonstrations
-- Complex physics made accessible through visualization
+## How it's built
 
-**🛠️ Hardware & Embedded Systems**
-- Raspberry Pi programming and IoT development
-- GPIO interfacing and sensor integration
-- Real-time hardware control systems
+Plain HTML and CSS, one shared stylesheet (`site.css`), no build step, hosted on GitHub Pages. Every page works on a phone.
 
-**💻 Software Development**
-- Python programming education and automation
-- Linux system administration and scripting
-- Web-based interactive learning platforms
+## Corrections
 
-## Educational Philosophy
+Found something wrong? [Open an issue](https://github.com/IHoggan/ihoggan-portfolio/issues). Corrections are genuinely welcome.
 
-Iain believes that the best way to understand complex topics is through hands-on experimentation and real-world application. Rather than traditional lecture-based learning, his projects emphasize:
+## Licence
 
-- **Interactive Exploration**: Learn by doing, not just reading
-- **Real-World Applications**: Every concept tied to practical use cases
-- **Progressive Difficulty**: Carefully structured learning paths from beginner to expert
-- **Immediate Feedback**: See results and understand consequences in real-time
-
-## Notable Projects
-
-**S.M.A.R.T Neural Network Playground** - Interactive platform where learners watch neural networks learn in real-time and experiment with the critical concept of learning rate optimization.
-
-**Project Zombie Cybersecurity Investigation** - Real-world case study documenting a 48-hour wireless security investigation, teaching packet analysis and ethical hacking through authentic scenarios.
-
-**Quantum-ness Prediction Platform** - Makes quantum computing concepts accessible through interactive demonstrations of superposition, entanglement, and quantum parallelism.
-
-**Space Anomaly Detection Laboratory** - Complete self-study guide using real astronomical data from interstellar visitor 3I/ATLAS to teach AI anomaly detection algorithms.
-
-## Impact & Reach
-
-Iain's educational projects serve students, educators, and professionals across multiple disciplines:
-
-- **Students** gain practical skills through hands-on experimentation
-- **Educators** access ready-to-use interactive teaching tools
-- **Professionals** learn cutting-edge techniques through real-world case studies
-- **Enthusiasts** explore complex topics without academic barriers
-
-## Technical Specializations
-
-- Python, JavaScript, Linux systems administration
-- Raspberry Pi hardware programming and IoT development
-- Machine learning algorithms and data analysis
-- Wireless security monitoring and packet analysis
-- Quantum computing simulation and visualization
-- Web-based educational platform development
-
-## Mission
-
-To democratize access to advanced technical education by creating interactive tools that transform abstract concepts into tangible, understandable experiences. Every project is designed with the core belief that complex topics become simple when you can see, touch, and experiment with them yourself.
-
----
-
-*"Stop wondering how technology works - start experiencing it firsthand."*
-
-**Contact & Portfolio**: [GitHub Portfolio](https://ihoggan.github.io/ihoggan-portfolio/) | [Support Educational Projects](https://github.com/sponsors/ihoggan)
-
+MIT. See [LICENSE](LICENSE).
