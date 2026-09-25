@@ -849,9 +849,9 @@ try:
             GPIO.output(LED_PIN, led_state)
             
             if led_state:
-                print("💡 LED ON!")
+                print("LED ON!")
             else:
-                print("🔴 LED OFF!")
+                print("LED OFF!")
             
             # Wait for button release
             while GPIO.input(BUTTON_PIN) == GPIO.HIGH:
@@ -926,7 +926,7 @@ def index():
     <!DOCTYPE html>
     <html>
     <head>
-        <title>🌡️ Raspberry Pi Temperature Monitor</title>
+        <title>Raspberry Pi Temperature Monitor</title>
         <style>
             body { 
                 font-family: Arial, sans-serif; 
@@ -1054,7 +1054,7 @@ strong,b{color:var(--ink)}
     </head>
     <body>
         <div class="container">
-            <h1>🌡️ Temperature Monitor</h1>
+            <h1>Temperature Monitor</h1>
             <div class="temp">{{ temp }}°C</div>
             <p>Last Update: {{ update_time }}</p>
             <p class="last-update">Updates every 10 seconds</p>
@@ -1087,8 +1087,8 @@ strong,b{color:var(--ink)}
     return render_template_string(html, temp=current_temp, update_time=last_update)
 
 if __name__ == '__main__':
-    print("🌐 Starting temperature web server...")
-    print("📱 Visit http://your-pi-ip:5000 in your browser")
+    print("Starting temperature web server...")
+    print("Visit http://your-pi-ip:5000 in your browser")
     app.run(host='0.0.0.0', port=5000)</code>
             </div>
 
@@ -1122,11 +1122,11 @@ GPIO.setup(PIR_PIN, GPIO.IN)
 GPIO.setup(LED_PIN, GPIO.OUT)
 
 try:
-    print("🔍 Motion detector ready!")
+    print("Motion detector ready!")
     while True:
         if GPIO.input(PIR_PIN):
             GPIO.output(LED_PIN, GPIO.HIGH)
-            print("🚶 Motion detected! LED ON")
+            print("Motion detected! LED ON")
             time.sleep(2)
         else:
             GPIO.output(LED_PIN, GPIO.LOW)
@@ -1149,7 +1149,7 @@ def log_data(temperature, humidity):
         writer = csv.writer(file)
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         writer.writerow([timestamp, temperature, humidity])
-        print(f"📝 Logged: {timestamp}, {temperature}°C, {humidity}%")
+        print(f"Logged: {timestamp}, {temperature}°C, {humidity}%")
 
 # Example usage
 while True:
@@ -1201,8 +1201,8 @@ while True:
         temperature = dht.temperature
         humidity = dht.humidity
         
-        print(f"🌡️  Temperature: {temperature:.1f}°C")
-        print(f"💧 Humidity: {humidity:.1f}%")
+        print(f" Temperature: {temperature:.1f}°C")
+        print(f"Humidity: {humidity:.1f}%")
         print("-" * 30)
         
     except RuntimeError as error:
@@ -1313,7 +1313,7 @@ journalctl -f</code>
 # - Industrial automation projects
 # - Solar-powered remote sensors
 
-echo "Happy making! 🍓⚡"</code>
+echo "Happy making! "</code>
             </div>
         </div>
     </div>
