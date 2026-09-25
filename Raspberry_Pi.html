@@ -571,6 +571,12 @@
   </div>
 </div>
 
+<div class="archive-note" style="background:var(--panel-2);border-bottom:1px solid var(--rule)">
+  <div class="wrap" style="padding-top:12px;padding-bottom:12px;font-size:.95rem;color:var(--ink-2)">
+    <span class="tag" style="color:var(--lamp);margin-right:8px">Archive</span>A guide from 2025, kept in the archive and written for the Raspberry Pi 4 and earlier. The camera and install commands below have been updated for current Raspberry Pi OS. On a Pi 5, the <code>RPi.GPIO</code> examples won't work: use <code>gpiozero</code> instead. And <code>pip</code> only works inside a virtual environment (<code>python3 -m venv --system-site-packages venv</code>).
+  </div>
+</div>
+
     <div class="main-wrapper">
         <div class="hero">
             <h1>Raspberry Pi</h1>
@@ -670,13 +676,13 @@ sudo raspi-config</code>
                     <div class="terminal">
                         <div class="terminal-header">Camera Commands</div>
                         <code># Take a photo
-raspistill -o photo.jpg
+rpicam-still -o photo.jpg
 
 # Record video (10 seconds)
-raspivid -o video.h264 -t 10000
+rpicam-vid -t 10000 -o video.h264
 
-# Preview camera
-raspistill -t 0 -k</code>
+# Preview camera (Ctrl+C to stop)
+rpicam-hello -t 0</code>
                     </div>
                 </div>
                 
@@ -688,9 +694,9 @@ raspistill -t 0 -k</code>
 pinout
 
 # Control GPIO (command line)
-echo "18" > /sys/class/gpio/export
-echo "out" > /sys/class/gpio/gpio18/direction
-echo "1" > /sys/class/gpio/gpio18/value</code>
+pinctrl set 18 op dh    # GPIO18 as output, high
+pinctrl set 18 dl       # low
+pinctrl get 18          # check its state</code>
                     </div>
                 </div>
                 
@@ -698,14 +704,13 @@ echo "1" > /sys/class/gpio/gpio18/value</code>
                     <h4>Python Libraries</h4>
                     <div class="terminal">
                         <div class="terminal-header">Install Libraries</div>
-                        <code># Essential GPIO libraries
-pip3 install RPi.GPIO
-pip3 install gpiozero
+                        <code># GPIO and camera libraries come from apt
+sudo apt install python3-gpiozero python3-picamera2
 
-# Camera and sensors
-pip3 install picamera
-pip3 install sense-hat
-pip3 install adafruit-circuitpython-dht</code>
+# Anything from pip goes in a virtual environment
+python3 -m venv --system-site-packages venv
+source venv/bin/activate
+pip install adafruit-circuitpython-dht</code>
                     </div>
                 </div>
             </div>
@@ -872,7 +877,9 @@ finally:
             <h4>Step 1: Install Required Libraries</h4>
             <div class="terminal">
                 <div class="terminal-header">Library Installation</div>
-                <code>pip3 install flask w1thermsensor</code>
+                <code>python3 -m venv --system-site-packages venv
+source venv/bin/activate
+pip install flask w1thermsensor</code>
             </div>
 
             <h4>Step 2: Enable 1-Wire Interface</h4>

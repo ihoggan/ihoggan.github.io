@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saved from the scrap pile: local AI characters on a 2015 office PC — Iain Hoggan</title>
+<meta name="description" content="Two office PCs were headed for scrap. One now runs Ubuntu, a local AI model and characters that remember me, with no cloud and no subscription. What it took, what it costs, and the day I found out the characters' memories were almost entirely invented.">
+<meta property="og:title" content="Saved from the scrap pile: local AI characters on a 2015 office PC">
+<meta property="og:description" content="Ubuntu, a 3B model at 8 tokens a second, and characters that remember you. Plus the measurement that showed their memories were 100% invented, and the fix.">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://ihoggan.github.io/ihoggan-portfolio/images/og-reclaim.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+main.wrap{padding-top:52px;padding-bottom:40px}
+.standfirst{font-size:1.12rem;color:var(--ink-2);max-width:34em}
+.standfirst strong{color:var(--ink);font-weight:600}
+main section p{max-width:38em}
+main h2{max-width:18em;margin-bottom:14px}
+main ul,main ol{max-width:36em;margin:0 0 16px 1.2em}
+main li{margin-bottom:6px}
+pre{
+  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen));
+  border:1px solid #060B0E;border-radius:3px;box-shadow:inset 0 3px 12px rgba(0,0,0,.55);
+  color:#CFE3DA;font-family:var(--mono);font-size:13px;line-height:1.55;
+  padding:14px 16px;margin:18px 0 22px;max-width:40em;overflow-x:auto;white-space:pre;
+}
+pre .me{color:#E8C27A}
+pre .dim{color:#7F968D}
+.takeaways{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:26px}
+.take{background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);border-radius:4px;padding:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.take h3{font-size:1rem;margin-bottom:8px}
+.take p{font-size:.94rem;color:var(--ink-2);margin:0}
+.warn{border-left:3px solid var(--alarm);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.warn .tag{display:block;margin-bottom:4px;color:var(--alarm)}
+.warn p{margin:0}
+.links{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+</style>
+</head>
+<body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html" aria-label="Home">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap col">
+    <p class="tag">Case study · Old hardware · Ubuntu · Local AI</p>
+    <h1>Saved from the scrap pile</h1>
+    <p class="standfirst">Two office PCs from 2015 were about to be scrapped. One of them now runs Ubuntu, a local AI model, and a cast of characters that remember me between conversations. <strong>No cloud, no subscription, no new hardware.</strong> This is how, including the day I measured the characters' memories and found almost every one of them was invented.</p>
+    <div class="spec">
+      <div><b>2015</b><span>the PC</span></div>
+      <div><b>0</b><span>subscriptions</span></div>
+      <div><b>8.0</b><span>tokens / sec</span></div>
+      <div><b>35/35</b><span>memories invented</span></div>
+      <div><b>2.6 GB</b><span>model in memory</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap col">
+
+<section>
+  <p class="tag eyebrow">Part 1</p>
+  <h2>Two PCs nobody wanted</h2>
+  <p>They were sitting in the server room at work: two Dell OptiPlex 3040s, small office desktops from 2015 with 6th-generation Intel Core i5 processors and 16&nbsp;GB of memory. They were going to be scrapped. I asked if I could have them.</p>
+  <p>There's nothing wrong with them. They're just old enough that <a href="https://www.microsoft.com/en-gb/windows/windows-11-specifications">Windows 11 won't officially run on their processor</a>, and that's enough to finish off a lot of perfectly good machines. So I didn't try. I put Linux on one instead.</p>
+  <p>I call it <strong>nix6</strong>.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 2</p>
+  <h2>Ubuntu: the easy part, for me</h2>
+  <p>I installed <strong>Ubuntu 24.04 LTS</strong> from a USB stick. It's supported with security updates until 2029, so this machine has years of life in it. I'm an IT technician, so the install itself was routine. Then I locked it down before doing anything else: a firewall that blocks everything incoming by default, automatic security updates, fail2ban to stop repeated login attempts, and a set of kernel network hardening settings.</p>
+  <p>The install is routine for me, but it won't be for everyone. The two things that stop most people aren't Linux at all: <strong>knowing whether your machine is up to it</strong>, and <strong>getting it to start from the USB stick</strong>. Both are covered in <a href="#diy">Do it yourself</a> below.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 3</p>
+  <h2>Where it actually bit: getting set up to build things</h2>
+  <p>I hadn't used Linux seriously in years; the last time was Red Hat, dual-booted with Windows XP, on an IBM laptop. Installing Ubuntu was fine. Setting it up for Python and GitHub work is where the real problems were, and every one of them was the kind a beginner can't diagnose:</p>
+  <ul>
+    <li><strong>git and the GitHub tool weren't installed</strong> on a fresh Ubuntu. Every guide assumes they are.</li>
+    <li><strong>My first project landed on a branch called <code>master</code></strong>, because I ran <code>git init</code> before telling git to use <code>main</code>. Order matters, and nothing warns you.</li>
+    <li><strong>The GitHub login tool offers "Paste an authentication token"</strong> as one of two options. Pick it and it demands a token you'd have to go and create first. I picked it.</li>
+    <li><strong>I tried to push before telling git where GitHub was</strong>, and got an error that doesn't say that.</li>
+    <li><strong>I named my program <code>chat</code></strong>, and Ubuntu already has a <code>chat</code>: an old modem dialler. Mine silently lost. Now I run <code>which &lt;name&gt;</code> before choosing any command name.</li>
+  </ul>
+  <p>I wrote each one down with its fix, then turned the whole thing into a step-by-step guide with a check after every step, and two scripts that make a new project in one command: <a href="https://github.com/IHoggan/nix6-tools">nix6-tools</a>.</p>
+  <div class="lesson">
+    <span class="tag">Lesson</span>
+    <p>Instructions for beginners have to spell out the answer to every question the computer asks. If there are two options and one is a trap, someone will pick the trap. It was me.</p>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 4</p>
+  <h2>A local AI, and why I wanted one</h2>
+  <p>If the internet goes down, I still want a way to look something up, or just play something. A model that runs on my own machine doesn't need anyone's servers, account or permission.</p>
+  <p>I used <a href="https://ollama.com">Ollama</a>, which makes running a model one command, with <strong>Llama 3.2 3B</strong>, a small model that fits comfortably in this machine's memory. There's no graphics card. It all runs on the 2015 processor.</p>
+  <div class="meas well">
+    <div class="cap">nix6 · llama3.2:3b · ollama run --verbose</div>
+    <dl>
+      <dt>Generation speed</dt><dd>8.0 tokens/s</dd>
+      <dt>A 100-word reply</dt><dd>about 13 s</dd>
+      <dt>Memory used by the model</dt><dd>2.6 GB of 16 GB</dd>
+      <dt>Where it runs</dt><dd>100% CPU</dd>
+    </dl>
+    <div class="note">Roughly reading pace. Slow enough to notice, fast enough to hold a conversation.</div>
+  </div>
+  <p>A 3-billion-parameter model is not ChatGPT. It gets facts wrong, and it will confidently make things up. But it's very good at one thing I didn't expect: <strong>being someone</strong>. Give it a character and it stays in it. The trick I learned is that a reference beats a description. "Think of a particular comedian doing tech support" gets a far better voice than a list of adjectives like "funny, warm, Scottish".</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 5</p>
+  <h2>Characters that remember you</h2>
+  <p>Out of the box, a local model forgets everything the moment you close it: your name, yesterday's conversation, and who it was supposed to be. So I built <a href="https://github.com/IHoggan/localcast">localcast</a>, a small Python program that gives each character a folder with four parts. I call the set its <strong>personality matrix</strong>:</p>
+  <ul>
+    <li><strong>Persona</strong>: who they are, in plain English.</li>
+    <li><strong>Diary</strong>: facts you've told them, carried into every conversation.</li>
+    <li><strong>History</strong>: the last few turns, so they can pick up where you left off.</li>
+    <li><strong>Config</strong>: which model, how spontaneous, how much history.</li>
+  </ul>
+  <p>The main character is <strong>Dave</strong>, a grumpy Northern electrician who has no idea he's a computer program. The diary is filled automatically: when you leave, the model reads the conversation and proposes what Dave should remember, and you approve it.</p>
+  <p>It seemed to work. Dave would bring up things from earlier conversations, and I was pleased with it for about two days.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 6</p>
+  <h2>The day I read Dave's diary</h2>
+  <p>I'd mentioned, once, as a joke, that my van is a 1979 Transit and an embarrassment. When I finally read what Dave had "learned" about me, it said my company has a policy of replacing vans every five years, that management was worried older vans look bad, and that they were phasing them out. None of that was ever said by anyone. Dave's own made-up dog was in there too. So was "a new electrician". <strong>Not one line was a true fact about me.</strong></p>
+  <p>Worse, it was feeding itself. The diary goes into every conversation, so Dave started bringing up the five-year van rule unprompted, which made it look like the truth.</p>
+  <p>Before changing anything, I measured it. Five scripted conversations with known facts, each run three times through the diary step, graded blind: the before and after results were shuffled together with their labels hidden, so the grading couldn't favour the fix.</p>
+  <div class="meas well">
+    <div class="cap">Diary proposals · 15 runs each · graded blind</div>
+    <dl>
+      <dt>Invented, before</dt><dd class="bad">35 / 35</dd>
+      <dt>Invented, after</dt><dd>10 / 22</dd>
+      <dt>General-knowledge filler, before</dt><dd class="bad">19 lines</dd>
+      <dt>General-knowledge filler, after</dt><dd>0</dd>
+      <dt>Real facts captured, before</dt><dd class="bad">0 / 18</dd>
+      <dt>Real facts captured, after</dt><dd>9 / 18</dd>
+    </dl>
+    <div class="note">Before the fix, the diary told Dave that "the M56 is a major motorway in the UK" three times, and not one true thing about me. Full method and raw data in the localcast repo.</div>
+  </div>
+  <p>The cause was simple once I looked. The step that wrote the diary couldn't tell who had said what, and it was asked for facts about "the Maker <em>or the world</em>". Everything Dave invented counted as "the world". And the approval screen defaulted to <em>keep</em>: pressing Enter accepted the lot. I can't honestly tell you whether I read those lines before pressing it.</p>
+  <p>The fix doesn't rely on the model behaving itself:</p>
+  <ul>
+    <li>The diary step only looks at what <em>I</em> said. Dave's lines are marked as fiction.</li>
+    <li><strong>Every proposed fact must quote my exact words</strong>, and the program checks that the quote really appears in something I said. If it doesn't, the fact is thrown away and I'm told why.</li>
+    <li>The approval screen has no default. Nothing gets in unless I type <code>keep</code>.</li>
+  </ul>
+  <div class="lesson">
+    <span class="tag">Lesson</span>
+    <p>An approval step you can pass without reading isn't one. And "the model will be careful" is not a safeguard. A check in code that can say no is.</p>
+  </div>
+  <p>The first real conversation after the fix, from an empty diary:</p>
+<pre><span class="me">Maker:</span> Hows it going Dave, long time no see?
+<span class="dim">dave:</span>  What's up, Maker? Just had a busy day, been up to me elbows in
+       electrics. [...] Just finished a job in Prenton, all sound.
+<span class="me">Maker:</span> The van is good, a old 1979 transit just runs and runs, and we
+       can always get the parts
+<span class="dim">dave:</span>  Blimey, that's old! Me van's a 2015, still running like a top. [...]
+<span class="me">Maker:</span> /exit
+
+<span class="dim">Updating diary…
+Nothing new worth remembering.</span></pre>
+  <p>Dave invented a job in Prenton, his own van, a hotel and a dog. None of it went into his diary. He also missed something true, the Transit, because the fix makes him err towards remembering nothing. That's the right way round to be wrong: a character who forgets is annoying, but a character who "remembers" things you never said is worse.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 7</p>
+  <h2>What it can't do</h2>
+  <ul>
+    <li><strong>Characters invent their own lives.</strong> That's usually what you want from a character, and it's why the diary only accepts your words.</li>
+    <li><strong>They play along with a false premise.</strong> Ask Dave how the Wrexham job went and he'll describe a job that never happened.</li>
+    <li><strong>The diary misses things.</strong> It caught about half the real facts in testing. For anything important, I tell him directly with <code>/remember</code>.</li>
+    <li><strong>It can't tell real life from role-play.</strong> If I tell Dave I'm his boss, that's something I said.</li>
+  </ul>
+</section>
+
+<section id="diy">
+  <p class="tag eyebrow">Part 8</p>
+  <h2>Do it yourself</h2>
+  <p>If you have an old PC that Windows 11 won't take, this is the short version. The detailed guides are linked at each step.</p>
+
+  <div class="warn">
+    <span class="tag">Before anything else</span>
+    <p>Installing Ubuntu the simple way <strong>erases the whole disk</strong>, including Windows and everything on it. Copy off anything you want to keep first.</p>
+  </div>
+
+  <h3>1. Check the machine is up to it</h3>
+  <p>On Windows, press <strong>Windows key + R</strong>, type <code>msinfo32</code> and press Enter. Look for:</p>
+  <ul>
+    <li><strong>System Type</strong>: it should say <strong>x64-based PC</strong> (64-bit).</li>
+    <li><strong>Installed Physical Memory (RAM)</strong>: 8&nbsp;GB will run a small model. 16&nbsp;GB is comfortable.</li>
+    <li><strong>Processor</strong>: roughly 2012 or newer. Mine is a 2015 Core i5.</li>
+  </ul>
+  <p>You'll want a disk of at least 25&nbsp;GB for Ubuntu and the model; more gives you room to work.</p>
+
+  <h3>2. Make a USB installer</h3>
+  <p>You need a USB stick of 8&nbsp;GB or more (it will be wiped). Download Ubuntu 24.04 LTS Desktop from <a href="https://ubuntu.com/download/desktop">ubuntu.com</a> and follow Ubuntu's own <a href="https://ubuntu.com/tutorials/create-a-usb-stick-on-windows">guide to making the USB stick on Windows</a>.</p>
+
+  <h3>3. Start the PC from the USB stick</h3>
+  <p>This is where people get stuck. With the stick plugged in, turn the PC on and immediately tap the <strong>boot menu key</strong> repeatedly. On Dell machines like mine it's <strong>F12</strong>. On others it's often F11, F10, F9 or Esc, and the right key usually flashes on screen for a second at power-on. Choose the USB stick from the list.</p>
+  <p>If it boots straight into Windows, you missed the moment. Restart and tap sooner. You normally don't need to change any BIOS settings: Ubuntu works with Secure Boot left on.</p>
+
+  <h3>4. Install Ubuntu</h3>
+  <p>Choose <strong>Install Ubuntu</strong>, then <strong>Erase disk and install Ubuntu</strong>, and follow the prompts. About twenty minutes.</p>
+
+  <h3>5. Set it up for building things</h3>
+  <p>Part 1 of my <a href="https://github.com/IHoggan/nix6-tools/blob/main/nix6_environments.md">nix6 workflow guide</a>: every command, every prompt's answer, and a check after each step.</p>
+
+  <h3>6. Add the AI and the characters</h3>
+<pre>curl -fsSL https://ollama.com/install.sh | sh
+ollama pull llama3.2:3b
+ollama run llama3.2:3b</pre>
+  <p>That's a working local AI. Type to it; <code>/bye</code> leaves. For characters that remember you, follow the install steps in the <a href="https://github.com/IHoggan/localcast">localcast README</a>.</p>
+
+  <div class="links">
+    <a class="btn btn-primary" href="https://github.com/IHoggan/localcast">localcast on GitHub</a>
+    <a class="btn" href="https://github.com/IHoggan/nix6-tools">nix6-tools on GitHub</a>
+  </div>
+</section>
+
+<hr class="div">
+
+<section style="padding-top:44px">
+  <p class="tag eyebrow">What came out of it</p>
+  <h2>A second life, and a method</h2>
+  <p>A machine that was going to be scrapped is now the most interesting computer in the house. The same working method that built <a href="Hustler.html">HUSTLER</a> carried straight over: measure before you change anything, report numbers rather than adjectives, and don't trust a safeguard until you've watched it say no.</p>
+  <div class="takeaways">
+    <div class="take">
+      <h3>Old isn't obsolete</h3>
+      <p>A 2015 office PC runs a modern Linux, a local AI model at reading pace, and everything I build.</p>
+    </div>
+    <div class="take">
+      <h3>Read what it remembers</h3>
+      <p>Automatic memory from a small model will invent things. Make it quote you, and check the quote in code.</p>
+    </div>
+    <div class="take">
+      <h3>Spell out every answer</h3>
+      <p>Beginners don't fail on the hard parts. They fail on the prompt with two options where one is a trap.</p>
+    </div>
+  </div>
+  <p style="margin-top:26px">Found a mistake, or tried this on your own old PC? <a href="contact.html">Tell me</a>. Corrections are genuinely welcome.</p>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">← Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="contact.html">Get in touch</a>
+    <span class="tag">© 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
+</body>
+</html>

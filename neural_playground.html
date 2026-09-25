@@ -50,6 +50,9 @@ tailwind.config = {
 </script>
 
     <style>
+        /* fallbacks in case the Tailwind CDN fails to load */
+        .hidden{display:none}
+        canvas{max-width:100%}
         .gradient-bg { background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%); }
         .animate-bounce { animation: bounce 1s infinite; }
         @keyframes bounce {
@@ -255,7 +258,7 @@ tailwind.config = {
             <div class="flex flex-wrap items-center justify-between gap-4">
                 <div class="flex items-center gap-4">
                     <button id="trainBtn" class="flex items-center gap-2 px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold transition-all">
-                        ▶ Start Training
+                         Start Training
 </button>
                     <button id="resetBtn" class="flex items-center gap-2 px-4 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg font-semibold transition-all"> Reset Neuron
 </button>
@@ -691,7 +694,7 @@ tailwind.config = {
             if (isTraining) {
                 isTraining = false;
                 clearInterval(trainingInterval);
-                document.getElementById('trainBtn').innerHTML = '▶️ Start Training';
+                document.getElementById('trainBtn').innerHTML = ' Start Training';
                 document.getElementById('trainBtn').className = document.getElementById('trainBtn').className.replace('bg-red-500 hover:bg-red-600', 'bg-green-500 hover:bg-green-600');
                 return;
             }
@@ -706,7 +709,7 @@ tailwind.config = {
                 accuracy: calculateAccuracy()
             });
             
-            document.getElementById('trainBtn').innerHTML = '⏸️ Pause Training';
+            document.getElementById('trainBtn').innerHTML = ' Pause Training';
             document.getElementById('trainBtn').className = document.getElementById('trainBtn').className.replace('bg-green-500 hover:bg-green-600', 'bg-red-500 hover:bg-red-600');
             
             trainingInterval = setInterval(() => {
@@ -715,7 +718,7 @@ tailwind.config = {
                 if (currentEpoch >= 200) {
                     isTraining = false;
                     clearInterval(trainingInterval);
-                    document.getElementById('trainBtn').innerHTML = '▶️ Start Training';
+                    document.getElementById('trainBtn').innerHTML = ' Start Training';
                     document.getElementById('trainBtn').className = document.getElementById('trainBtn').className.replace('bg-red-500 hover:bg-red-600', 'bg-green-500 hover:bg-green-600');
                     return;
                 }
@@ -742,7 +745,7 @@ tailwind.config = {
                 basePrice: Math.random() * 50000 + 25000
             };
             
-            document.getElementById('trainBtn').innerHTML = '▶️ Start Training';
+            document.getElementById('trainBtn').innerHTML = ' Start Training';
             document.getElementById('trainBtn').className = 'flex items-center gap-2 px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold transition-all';
             
             updateDisplay();
@@ -756,19 +759,19 @@ tailwind.config = {
             const statusElement = document.getElementById('rateStatus');
             
             if (learningRate <= 0.0000001) {
-                statusElement.textContent = '✅ SAFE';
+                statusElement.textContent = ' SAFE';
                 statusElement.className = 'font-bold text-sm text-green-600';
             } else if (learningRate <= 0.000001) {
-                statusElement.textContent = '📈 STABLE';
+                statusElement.textContent = ' STABLE';
                 statusElement.className = 'font-bold text-sm text-blue-600';
             } else if (learningRate <= 0.00001) {
-                statusElement.textContent = '⚡ FAST';
+                statusElement.textContent = ' FAST';
                 statusElement.className = 'font-bold text-sm text-yellow-600';
             } else if (learningRate <= 0.0001) {
-                statusElement.textContent = '⚠️ RISKY';
+                statusElement.textContent = ' RISKY';
                 statusElement.className = 'font-bold text-sm text-orange-600';
             } else {
-                statusElement.textContent = '💥 BOOM!';
+                statusElement.textContent = ' BOOM!';
                 statusElement.className = 'font-bold text-sm text-red-600';
             }
         }
@@ -789,10 +792,10 @@ tailwind.config = {
 <section class="read-next">
   <div class="wrap col">
     <p class="tag">Read this next</p>
-    <a class="card" href="Space_Anomaly.html">
-      <h3>Space Anomaly Detection</h3>
-      <p>Take the same statistical instinct outward: finding the observation that does not fit, using real data from an interstellar comet.</p>
-      <span class="go">Open &rarr;</span>
+    <a class="card" href="reclaim.html">
+      <h3>Saved from the scrap pile</h3>
+      <p>From one neuron in your browser to a real language model running on a 2015 office PC, and characters that remember you.</p>
+      <span class="go">Read &rarr;</span>
 </a>
   </div>
 </section>

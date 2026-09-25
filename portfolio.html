@@ -23,6 +23,11 @@
 .does li b{display:block;font-family:var(--body);font-size:14px;
   letter-spacing:0;text-transform:none;color:var(--ink);font-weight:600;margin-bottom:1px}
 .inline-dot{display:inline-block;vertical-align:middle;margin-right:6px}
+.group-head{padding:34px 0 6px;border-top:2px solid var(--ink)}
+.group-head:first-child{border-top:0;padding-top:0}
+.group-title{margin:6px 0 4px}
+.group-head p:last-child{color:var(--ink-2);font-size:.98rem}
+.group-head + .entry{border-top:0}
 @media(max-width:760px){.entry{grid-template-columns:1fr;gap:20px}}
 </style>
 </head>
@@ -36,7 +41,6 @@
       <a href="index.html">Home</a>
       <a href="portfolio.html" aria-current="page">Projects</a>
       <a href="about.html">About</a>
-      <a href="gallery.html">Gallery</a>
       <a href="contact.html">Contact</a>
     </nav>
   </div>
@@ -44,149 +48,33 @@
 
 <header class="hero">
   <div class="wrap col">
-    <p class="tag">Everything on the bench</p>
+    <p class="tag">Everything, in one place</p>
     <h1>Projects</h1>
-    <p class="lede">Nine tools that run in your browser and do something when you touch them, and one case study about building a physics engine. <strong>All free, all client-side, no sign-up.</strong></p>
+    <p class="lede">Two case studies about building things and measuring them honestly, two tools you can run in your browser, and an archive of earlier beginner guides. <strong>All free, no sign-up.</strong></p>
   </div>
 </header>
 
 <main class="wrap">
 
+  <div class="group-head">
+    <p class="tag">Longer reads</p>
+    <h2 class="group-title">Case studies</h2>
+    <p>What went wrong, how it was found, and what it cost.</p>
+  </div>
   <article class="entry">
     <div>
-      <p class="tag eyebrow"><span class="dot inline-dot"></span>Start here · live training</p>
-      <h2>S.M.A.R.T.</h2>
-      <p class="lede">See Machine Adaptive Reasoning Training. Watch a neural network learn one step at a time, then turn the learning rate up and watch it tear itself apart. The fastest way I know to understand why that one number decides whether training works at all.</p>
-      <a class="btn btn-primary" href="neural_playground.html">Open the playground</a>
+      <p class="tag eyebrow"><span class="dot inline-dot"></span>New · case study · old hardware · local AI</p>
+      <h2>Saved from the scrap pile</h2>
+      <p class="lede">Two 2015 office PCs were headed for scrap. One now runs Ubuntu, a local AI model, and characters that remember me, with no cloud and no subscription. Including the measurement that showed their memories were almost entirely invented, and the fix.</p>
+      <a class="btn btn-primary" href="reclaim.html">Read the case study</a>
     </div>
     <ul class="does">
-      <li><b>Live training</b>Weights update on screen, step by step</li>
-      <li><b>Learning rate control</b>Find the edge where it stops converging</li>
-      <li><b>Divergence</b>See what "exploding" actually looks like</li>
-      <li><b>No maths required</b>The behaviour teaches the concept</li>
+      <li><b>Old hardware</b>A 2015 CPU, no graphics card</li>
+      <li><b>Local AI</b>Llama 3.2 3B at 8 tokens a second</li>
+      <li><b>Measured honestly</b>35 of 35 memories invented, then fixed</li>
+      <li><b>Do it yourself</b>Step by step, with the tools on GitHub</li>
     </ul>
   </article>
-
-  <article class="entry">
-    <div>
-      <p class="tag eyebrow">802.11 monitor · 48-hour capture</p>
-      <h2>Project Zombie</h2>
-      <p class="lede">A real investigation, written up as it happened: hunting for botnet traffic on a home network using a Raspberry Pi in monitor mode, Wireshark and tshark. Includes the dead ends, not just the conclusion.</p>
-      <a class="btn btn-primary" href="Project_Zombie.html">Read the case</a>
-    </div>
-    <ul class="does">
-      <li><b>Wireless monitoring</b>Capturing traffic with professional tooling</li>
-      <li><b>Packet analysis</b>Reading what a device is actually saying</li>
-      <li><b>Working the dataset</b>Turning 48 hours of capture into an answer</li>
-      <li><b>Ethics</b>Where the line is, and staying the right side of it</li>
-    </ul>
-  </article>
-
-  <article class="entry">
-    <div>
-      <p class="tag eyebrow">GPIO · 40 pins</p>
-      <h2>Raspberry Pi Hub</h2>
-      <p class="lede">Wire something up tonight. LED controllers, a temperature web server, motion detectors and IoT builds, with the pinouts and the wiring spelled out rather than assumed.</p>
-      <a class="btn btn-primary" href="Raspberry_Pi.html">Open the hub</a>
-    </div>
-    <ul class="does">
-      <li><b>GPIO programming</b>Driving real hardware from Python</li>
-      <li><b>Sensors</b>Reading the physical world and acting on it</li>
-      <li><b>Web-connected builds</b>Serving readings over your network</li>
-      <li><b>Home automation</b>Projects that stay useful afterwards</li>
-    </ul>
-  </article>
-
-  <article class="entry">
-    <div>
-      <p class="tag eyebrow">Qubits · superposition</p>
-      <h2>Quantum-ness</h2>
-      <p class="lede">Gates, entanglement and quantum parallelism you can operate rather than read about. Built for people who bounced off the maths the first time and want the behaviour first.</p>
-      <a class="btn btn-primary" href="Quantum_ness.html">Explore it</a>
-    </div>
-    <ul class="does">
-      <li><b>State visualisation</b>See superposition instead of reading about it</li>
-      <li><b>Entanglement</b>Measure one, watch the other</li>
-      <li><b>Gate operations</b>Build a circuit and run it</li>
-      <li><b>Algorithms</b>Why quantum parallelism helps at all</li>
-    </ul>
-  </article>
-
-  <article class="entry">
-    <div>
-      <p class="tag eyebrow">3I/ATLAS · real observations</p>
-      <h2>Space Anomaly</h2>
-      <p class="lede">A self-study guide to machine learning anomaly detection, using real astronomical data from 3I/ATLAS — only the third interstellar object ever discovered passing through our solar system.</p>
-      <a class="btn btn-primary" href="Space_Anomaly.html">Start the guide</a>
-    </div>
-    <ul class="does">
-      <li><b>Real data</b>Actual observations, not a toy dataset</li>
-      <li><b>Anomaly detection</b>How an algorithm decides something is odd</li>
-      <li><b>Exploration first</b>Look at the data before modelling it</li>
-      <li><b>Self-paced</b>Structured so you can finish it</li>
-    </ul>
-  </article>
-
-  <article class="entry">
-    <div>
-      <p class="tag eyebrow">Market sim · human vs bot</p>
-      <h2>TradeWar</h2>
-      <p class="lede">Trade live against algorithms that never panic, never revenge-trade and never get bored. It's a lesson about discipline disguised as a game, and the algorithms usually win.</p>
-      <a class="btn btn-primary" href="TradeWar.html">Play it</a>
-    </div>
-    <ul class="does">
-      <li><b>Live market sim</b>Prices move whether you act or not</li>
-      <li><b>Algorithmic opponents</b>Rules-based traders with no emotions</li>
-      <li><b>Position management</b>Exposure, timing and cutting losses</li>
-      <li><b>Honest feedback</b>Your results against theirs</li>
-    </ul>
-  </article>
-
-  <article class="entry">
-    <div>
-      <p class="tag eyebrow">Shell · safe to paste</p>
-      <h2>Linux Guide</h2>
-      <p class="lede">Files, text processing, system monitoring and scripting, worked through hands-on. Every command is safe to run on your own machine — nothing here will bite you.</p>
-      <a class="btn btn-primary" href="Linux_Guide.html">Open the guide</a>
-    </div>
-    <ul class="does">
-      <li><b>Command line</b>The commands you'll actually use daily</li>
-      <li><b>Text processing</b>grep, sed, awk and pipelines</li>
-      <li><b>System monitoring</b>Finding out what a machine is doing</li>
-      <li><b>Scripting</b>Turning a repeated task into one command</li>
-    </ul>
-  </article>
-
-  <article class="entry">
-    <div>
-      <p class="tag eyebrow">Python 3 · buildable projects</p>
-      <h2>Python</h2>
-      <p class="lede">Beginner to working developer through things you actually finish: a calculator, a file organiser, a weather app, automation scripts. Projects with an end, rather than tutorials with no destination.</p>
-      <a class="btn btn-primary" href="Python.html">Start learning</a>
-    </div>
-    <ul class="does">
-      <li><b>Structured path</b>Each project builds on the last</li>
-      <li><b>Hands-on</b>Code you run, not code you read</li>
-      <li><b>Data handling</b>Analysis and visualisation basics</li>
-      <li><b>Automation</b>Scripts that save you real time</li>
-    </ul>
-  </article>
-
-  <article class="entry">
-    <div>
-      <p class="tag eyebrow">Specimens · searchable</p>
-      <h2>Rocks, Minerals &amp; Metals</h2>
-      <p class="lede">Identify what you picked up on the beach. Formation processes, famous localities, industrial uses, and the rare specimens worth knowing about — beginner through to collector.</p>
-      <a class="btn btn-primary" href="Rocks_Minerals_Metals.html">Open the database</a>
-    </div>
-    <ul class="does">
-      <li><b>Identification</b>Work out what you're holding</li>
-      <li><b>Formation</b>How it got made and where</li>
-      <li><b>Industrial use</b>Where these end up in technology</li>
-      <li><b>Searchable</b>Look a specimen up directly</li>
-    </ul>
-  </article>
-
   <article class="entry">
     <div>
       <p class="tag eyebrow">Longer read · case study</p>
@@ -204,14 +92,106 @@
       </dl>
     </div>
   </article>
-
+  <div class="group-head">
+    <p class="tag">In your browser</p>
+    <h2 class="group-title">Things you can run</h2>
+    <p>Free, client-side, no sign-up.</p>
+  </div>
+  <article class="entry">
+    <div>
+      <p class="tag eyebrow"><span class="dot inline-dot"></span>Live training</p>
+      <h2>S.M.A.R.T.</h2>
+      <p class="lede">See Machine Adaptive Reasoning Training. Watch a neural network learn one step at a time, then turn the learning rate up and watch it tear itself apart. The fastest way I know to understand why that one number decides whether training works at all.</p>
+      <a class="btn btn-primary" href="neural_playground.html">Open the playground</a>
+    </div>
+    <ul class="does">
+      <li><b>Live training</b>Weights update on screen, step by step</li>
+      <li><b>Learning rate control</b>Find the edge where it stops converging</li>
+      <li><b>Divergence</b>See what "exploding" actually looks like</li>
+      <li><b>No maths required</b>The behaviour teaches the concept</li>
+    </ul>
+  </article>
+  <article class="entry">
+    <div>
+      <p class="tag eyebrow">Market sim · human vs bot</p>
+      <h2>TradeWar</h2>
+      <p class="lede">Trade against a rule-following bot that never panics, never revenge-trades and never gets bored. It's a lesson about discipline disguised as a game, and the algorithms usually win.</p>
+      <a class="btn btn-primary" href="TradeWar.html">Play it</a>
+    </div>
+    <ul class="does">
+      <li><b>Live market sim</b>Prices move whether you act or not</li>
+      <li><b>Algorithmic opponents</b>Rules-based traders with no emotions</li>
+      <li><b>Position management</b>Exposure, timing and cutting losses</li>
+      <li><b>Honest feedback</b>Your results against theirs</li>
+    </ul>
+  </article>
+  <div class="group-head" id="earlier">
+    <p class="tag">Archive · 2025</p>
+    <h2 class="group-title">Earlier learning pages</h2>
+    <p>Beginner guides from when this site started in 2025. They are older and more general than the case studies above, and are kept here as a record. If you spot something out of date, <a href="contact.html">tell me</a>.</p>
+  </div>
+  <article class="entry">
+    <div>
+      <p class="tag eyebrow">GPIO · 40 pins</p>
+      <h2>Raspberry Pi Hub</h2>
+      <p class="lede">Wire something up tonight. LED controllers, a temperature web server, motion detectors and IoT builds, with the pinouts and the wiring spelled out rather than assumed.</p>
+      <a class="btn btn-primary" href="Raspberry_Pi.html">Open the hub</a>
+    </div>
+    <ul class="does">
+      <li><b>GPIO programming</b>Driving real hardware from Python</li>
+      <li><b>Sensors</b>Reading the physical world and acting on it</li>
+      <li><b>Web-connected builds</b>Serving readings over your network</li>
+      <li><b>Home automation</b>Projects that stay useful afterwards</li>
+    </ul>
+  </article>
+  <article class="entry">
+    <div>
+      <p class="tag eyebrow">Shell · safe to paste</p>
+      <h2>Linux Guide</h2>
+      <p class="lede">Files, text processing, system monitoring and scripting, worked through hands-on. Every command is safe to run on your own machine — nothing here will bite you.</p>
+      <a class="btn btn-primary" href="Linux_Guide.html">Open the guide</a>
+    </div>
+    <ul class="does">
+      <li><b>Command line</b>The commands you'll actually use daily</li>
+      <li><b>Text processing</b>grep, sed, awk and pipelines</li>
+      <li><b>System monitoring</b>Finding out what a machine is doing</li>
+      <li><b>Scripting</b>Turning a repeated task into one command</li>
+    </ul>
+  </article>
+  <article class="entry">
+    <div>
+      <p class="tag eyebrow">Python 3 · buildable projects</p>
+      <h2>Python</h2>
+      <p class="lede">Beginner to working developer through things you actually finish: a calculator, a file organiser, a weather app, automation scripts. Projects with an end, rather than tutorials with no destination.</p>
+      <a class="btn btn-primary" href="Python.html">Start learning</a>
+    </div>
+    <ul class="does">
+      <li><b>Structured path</b>Each project builds on the last</li>
+      <li><b>Hands-on</b>Code you run, not code you read</li>
+      <li><b>Data handling</b>Analysis and visualisation basics</li>
+      <li><b>Automation</b>Scripts that save you real time</li>
+    </ul>
+  </article>
+  <article class="entry">
+    <div>
+      <p class="tag eyebrow">Specimens · searchable</p>
+      <h2>Rocks, Minerals &amp; Metals</h2>
+      <p class="lede">Identify what you picked up on the beach. Formation processes, famous localities, industrial uses, and the rare specimens worth knowing about — beginner through to collector.</p>
+      <a class="btn btn-primary" href="Rocks_Minerals_Metals.html">Open the database</a>
+    </div>
+    <ul class="does">
+      <li><b>Identification</b>Work out what you're holding</li>
+      <li><b>Formation</b>How it got made and where</li>
+      <li><b>Industrial use</b>Where these end up in technology</li>
+      <li><b>Searchable</b>Look a specimen up directly</li>
+    </ul>
+  </article>
 </main>
 
 <footer>
   <div class="wrap foot">
     <a href="index.html">Home</a>
     <a href="about.html">About</a>
-    <a href="gallery.html">Gallery</a>
     <a href="contact.html">Get in touch</a>
     <a href="https://github.com/ihoggan">GitHub</a>
     <span class="tag">© 2026 Iain Hoggan</span>
