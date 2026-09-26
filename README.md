@@ -7,7 +7,7 @@ I'm Iain Hoggan, a network technician on the Wirral. I build things on hardware 
 ## What's on it
 
 **Case studies**
-- [Saved from the scrap pile](https://ihoggan.github.io/reclaim.html): a 2015 office PC headed for scrap, now running Ubuntu, a local AI model and characters that remember me. Includes the measurement that showed the characters' memories were almost entirely invented, and the fix. Code: [localcast](https://github.com/IHoggan/localcast), [nix6-tools](https://github.com/IHoggan/nix6-tools).
+- [Saved from the scrap pile](https://ihoggan.github.io/reclaim.html): a 2015 desktop PC headed for scrap, now running Ubuntu, a local AI model and characters that remember me. Includes the measurement that showed the characters' memories were entirely invented, and the fix. Code: [localcast](https://github.com/IHoggan/localcast), [nix6-tools](https://github.com/IHoggan/nix6-tools).
 - [HUSTLER](https://ihoggan.github.io/Hustler.html): a UK blackball pool physics sandbox built over seventy revisions, and what the bugs taught me about testing.
 
 **Things you can run in your browser**
