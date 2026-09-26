@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Would you like a website like this? A free site on GitHub Pages, step by step — Iain Hoggan</title>
+<meta name="description" content="A complete beginner's tutorial: from a new GitHub account to a working website at yourname.github.io. Free, no software to install, with a check after every step and a page builder you can copy from.">
+<meta property="og:title" content="Would you like a website like this?">
+<meta property="og:description" content="From a new GitHub account to your own working website, free, in an evening. Every step, every button, and a check after each one.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+main.wrap{padding-top:52px;padding-bottom:40px}
+.standfirst{font-size:1.12rem;color:var(--ink-2);max-width:34em}
+.standfirst strong{color:var(--ink);font-weight:600}
+main section p{max-width:38em}
+main h2{max-width:18em;margin-bottom:14px}
+main h3{margin:26px 0 10px}
+main ul,main ol{max-width:36em;margin:0 0 16px 1.2em}
+main li{margin-bottom:6px}
+pre{
+  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen));
+  border:1px solid #060B0E;border-radius:3px;box-shadow:inset 0 3px 12px rgba(0,0,0,.55);
+  color:#CFE3DA;font-family:var(--mono);font-size:13px;line-height:1.55;
+  padding:14px 16px;margin:18px 0 22px;max-width:40em;overflow-x:auto;white-space:pre;
+}
+pre .dim{color:#7F968D}
+.warn{border-left:3px solid var(--alarm);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.warn .tag{display:block;margin-bottom:4px;color:var(--alarm)}
+.warn p{margin:0}
+.takeaways{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:26px}
+.take{background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);border-radius:4px;padding:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.take h3{font-size:1rem;margin:0 0 8px}
+.take p{font-size:.94rem;color:var(--ink-2);margin:0}
+
+/* a button or menu name exactly as it appears on GitHub */
+.ui{font-family:var(--mono);font-size:.84em;white-space:nowrap;
+  background:linear-gradient(180deg,#fff,var(--engrave));border:1px solid var(--bezel);
+  border-bottom-width:2px;border-radius:3px;padding:1px 6px;color:var(--ink)}
+.path{font-family:var(--mono);font-size:.84em;color:var(--ink-3)}
+
+/* the check at the end of every step */
+.check{display:flex;gap:14px;align-items:flex-start;max-width:38em;margin:20px 0 6px;
+  border:1px solid var(--bezel);border-radius:4px;padding:14px 16px;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.check .tag{display:block;margin-bottom:4px;color:#2F8A63}
+.check p{margin:0;font-size:.97rem}
+.done{flex:none;margin-left:auto;align-self:center;cursor:pointer;
+  font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;
+  padding:9px 12px;border-radius:3px;border:1px solid var(--bezel);border-bottom-width:2px;
+  background:linear-gradient(180deg,#fff,var(--engrave));color:var(--ink-2)}
+.done[aria-pressed="true"]{background:linear-gradient(180deg,#6FD6AA,var(--trace));border-color:#2F8A63;color:#0B2A1E}
+.done:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+
+/* progress meter in the hero */
+.progress{margin-top:26px;max-width:30em}
+.progress .bar{height:10px;border-radius:5px;background:var(--screen);border:1px solid #060B0E;
+  box-shadow:inset 0 2px 6px rgba(0,0,0,.6);overflow:hidden}
+.progress .fill{height:100%;width:0;background:linear-gradient(90deg,#2F8A63,var(--trace));
+  box-shadow:0 0 10px rgba(87,199,154,.7);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.progress .read{display:flex;justify-content:space-between;margin-top:8px}
+
+/* page builder */
+.builder{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:18px;margin:22px 0 10px}
+.builder .form{border:1px solid var(--bezel);border-radius:4px;padding:18px;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))}
+.builder label{display:block;font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);margin:0 0 6px}
+.builder input,.builder textarea{width:100%;font:1rem var(--body);color:var(--ink);
+  background:#fff;border:1px solid var(--bezel);border-radius:3px;padding:8px 10px;margin-bottom:14px}
+.builder textarea{min-height:92px;resize:vertical}
+.builder input:focus,.builder textarea:focus{outline:2px solid var(--lamp);outline-offset:1px}
+.swatches{display:flex;gap:10px;margin-bottom:4px}
+.sw{width:34px;height:34px;border-radius:50%;cursor:pointer;border:2px solid var(--bezel);box-shadow:inset 0 0 0 3px #fff}
+.sw[aria-pressed="true"]{border-color:var(--ink);transform:scale(1.08)}
+.sw:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.screen{border:1px solid #060B0E;border-radius:4px;overflow:hidden;background:var(--screen);
+  box-shadow:inset 0 3px 12px rgba(0,0,0,.55);display:flex;flex-direction:column}
+.screen .bar{display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid #060B0E}
+.screen .bar i{width:9px;height:9px;border-radius:50%;background:#2B3B44}
+.screen .bar span{margin-left:8px;font:12px var(--mono);color:#93A79E;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.screen iframe{flex:1;width:100%;min-height:330px;border:0;background:#fff}
+.codehead{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:18px}
+#code{max-height:320px;overflow:auto;max-width:none}
+.copied{color:#2F8A63}
+@media(max-width:820px){.builder{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html" aria-label="Home">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap col">
+    <p class="tag">Tutorial · GitHub Pages · Complete beginners</p>
+    <h1>Would you like a website like this?</h1>
+    <p class="standfirst">This site costs me nothing to run. It's a handful of files on GitHub, and GitHub publishes them for free. This is every step from no account at all to <strong>your own working website at <code>yourname.github.io</code></strong>, done entirely in your web browser, with a check after each step so you know it worked before you move on.</p>
+    <div class="spec">
+      <div><b>£0</b><span>to run</span></div>
+      <div><b>0</b><span>installs</span></div>
+      <div><b>1</b><span>file to start</span></div>
+      <div><b>~1 hr</b><span>first time</span></div>
+    </div>
+    <div class="progress" aria-live="polite">
+      <div class="bar"><div class="fill" id="fill"></div></div>
+      <div class="read"><span class="tag" id="progress-text">0 of 6 steps done</span><span class="tag">Tick each check as you pass it</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap col">
+
+<section>
+  <p class="tag eyebrow">Before you start</p>
+  <h2>What you'll end up with, and what it can't do</h2>
+  <p>A real website at an address like <code>jsmith.github.io</code>, that anyone can visit on a phone or a computer, which you can change whenever you like. <a href="https://pages.github.com">GitHub Pages</a> hosts it for free.</p>
+  <p>It's the right tool for a personal site, a CV, a project write-up, a club or a hobby page. It isn't for everything:</p>
+  <ul>
+    <li><strong>No shop, no payments, no logins.</strong> GitHub's rules don't allow it to run an online business or handle passwords or card details.</li>
+    <li><strong>Pages only, no server.</strong> It serves the files you give it. There's no database behind it, so a contact form needs an outside service.</li>
+    <li><strong>It's all public.</strong> On a free account the files behind your site are public too, not just the pages.</li>
+  </ul>
+  <p>All you need is an email address and a web browser. A computer is easier than a phone for this.</p>
+  <div class="warn">
+    <span class="tag">The one rule</span>
+    <p>Everything you put in is public, and GitHub keeps every old version. Deleting something later doesn't remove it from the history. <strong>Never put in a password, your home address, your phone number, or anything from your work.</strong></p>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 1</p>
+  <h2>Make a GitHub account</h2>
+  <p>Go to <a href="https://github.com/signup">github.com/signup</a> and follow the prompts: email, password, then a <strong>username</strong>.</p>
+  <p><strong>Choose the username carefully, because it becomes your web address.</strong> Username <code>jsmith</code> gets <code>jsmith.github.io</code>. Something close to your real name looks better on a CV than a gaming handle.</p>
+  <p>GitHub will email you a code to confirm your address, and will ask you to turn on <strong>two-factor authentication</strong>, a code from an app on your phone as well as your password. Say yes. It's what stops someone else taking over your site.</p>
+  <div class="check" data-step="1">
+    <div><span class="tag">Check</span><p>You're signed in, and your picture in the top-right corner shows your username when you click it.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 2</p>
+  <h2>Make the repository that holds your site</h2>
+  <p>A <strong>repository</strong>, or "repo", is just a folder on GitHub that keeps every version of its files. Your website will live in one, and its name is what makes GitHub publish it.</p>
+  <ol>
+    <li>Click the <span class="ui">+</span> at the top right, then <span class="ui">New repository</span>.</li>
+    <li>In <strong>Repository name</strong>, type your username followed by <code>.github.io</code>, for example <code>jsmith.github.io</code>. <strong>All lower case</strong>, even if your username has capitals.</li>
+    <li>Leave it set to <span class="ui">Public</span>. Free accounts can only publish from public repositories.</li>
+    <li>Turn on the option to add a README (on some screens it's a switch called <span class="ui">Add README</span>, on others a tick box, <span class="ui">Add a README file</span>). It gives the repository a first file, which makes the next step simpler.</li>
+    <li>Click <span class="ui">Create repository</span>.</li>
+  </ol>
+  <div class="check" data-step="2">
+    <div><span class="tag">Check</span><p>You're looking at a page titled <code>yourname / yourname.github.io</code> with one file in it, <code>README.md</code>. If the name has a typo, <span class="ui">Settings</span> at the top of the repository lets you rename it.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step" id="builder">
+  <p class="tag eyebrow">Step 3</p>
+  <h2>Build your first page</h2>
+  <p>A web page is a text file of HTML. Every site needs one called <code>index.html</code>: it's the page people see when they visit your address. You don't have to write it from scratch. Fill in the boxes below, watch the preview change, then copy the result.</p>
+
+  <div class="builder">
+    <div class="form">
+      <label for="f-name">Your name</label>
+      <input id="f-name" type="text" value="Jo Smith" autocomplete="off">
+      <label for="f-line">One line about you</label>
+      <input id="f-line" type="text" value="Bookkeeper, fell walker, and slow but steady learner of Python." autocomplete="off">
+      <label for="f-about">A paragraph or two</label>
+      <textarea id="f-about">I made this site myself, following a free tutorial. It's a small start.
+
+Next, I want to add a page about the walks I've done this year.</textarea>
+      <label for="f-user">GitHub username</label>
+      <input id="f-user" type="text" value="jsmith" autocomplete="off" spellcheck="false">
+      <label id="sw-label">Accent colour</label>
+      <div class="swatches" role="group" aria-labelledby="sw-label">
+        <button class="sw" type="button" aria-pressed="true" aria-label="Teal" data-c="#1F8A70" style="background:#1F8A70"></button>
+        <button class="sw" type="button" aria-pressed="false" aria-label="Blue" data-c="#2F5DAA" style="background:#2F5DAA"></button>
+        <button class="sw" type="button" aria-pressed="false" aria-label="Amber" data-c="#C57A12" style="background:#C57A12"></button>
+        <button class="sw" type="button" aria-pressed="false" aria-label="Plum" data-c="#7A3E78" style="background:#7A3E78"></button>
+        <button class="sw" type="button" aria-pressed="false" aria-label="Slate" data-c="#3C4652" style="background:#3C4652"></button>
+      </div>
+    </div>
+    <div class="screen">
+      <div class="bar"><i></i><i></i><i></i><span id="addr">https://jsmith.github.io</span></div>
+      <iframe id="preview" title="Preview of your page" sandbox=""></iframe>
+    </div>
+  </div>
+
+  <div class="codehead">
+    <span class="tag">Your index.html</span>
+    <button class="btn btn-primary" type="button" id="copy">Copy the code</button>
+    <span class="tag" id="copy-msg" aria-live="polite"></span>
+  </div>
+  <pre id="code" tabindex="0" aria-label="The HTML for your page"></pre>
+
+  <p>Nothing you type here leaves your computer. The page builds itself in your browser.</p>
+
+  <h3>Put the page on GitHub</h3>
+  <ol>
+    <li>In your repository, click <span class="ui">Add file</span>, then <span class="ui">Create new file</span>.</li>
+    <li>In the name box at the top, type <code>index.html</code>, all lower case.</li>
+    <li>Click in the big box underneath and paste the code you copied.</li>
+    <li>Click the green <span class="ui">Commit changes...</span> button, then <span class="ui">Commit changes</span> again in the box that pops up. "Commit" is GitHub's word for save.</li>
+  </ol>
+  <div class="check" data-step="3">
+    <div><span class="tag">Check</span><p>Your repository now lists two files, <code>README.md</code> and <code>index.html</code>. Click <code>index.html</code> and you should see your code.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 4</p>
+  <h2>Switch on GitHub Pages</h2>
+  <p>This tells GitHub to publish the repository as a website.</p>
+  <ol>
+    <li>Click <span class="ui">Settings</span> in the row of tabs at the top of your repository (not your account settings).</li>
+    <li>In the list down the left, click <span class="ui">Pages</span>.</li>
+    <li>Under <strong>Build and deployment</strong>, set <strong>Source</strong> to <span class="ui">Deploy from a branch</span>.</li>
+    <li>Under <strong>Branch</strong>, choose <span class="ui">main</span> and <span class="ui">/ (root)</span>, then click <span class="ui">Save</span>.</li>
+  </ol>
+  <p>Now wait. GitHub says publishing can take up to ten minutes. Usually it's one or two.</p>
+  <div class="check" data-step="4">
+    <div><span class="tag">Check</span><p>Refresh the Pages settings page. Near the top it says <strong>"Your site is live at https://yourname.github.io/"</strong> with a <span class="ui">Visit site</span> button. Not there yet? Click the <span class="ui">Actions</span> tab: a job called <em>pages build and deployment</em> is either still running (yellow) or finished (green tick).</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 5</p>
+  <h2>Visit it, and fix what's wrong</h2>
+  <p>Open <code>https://yourname.github.io</code> in a new tab, then on your phone. That's your website, live on the internet.</p>
+  <h3>If it doesn't work</h3>
+  <ul>
+    <li><strong>"404 There isn't a GitHub Pages site here."</strong> Almost always the repository name. It must be exactly your username, in lower case, plus <code>.github.io</code>. Also check the file is called <code>index.html</code>, not <code>Index.html</code> or <code>index.html.txt</code>.</li>
+    <li><strong>You see the README instead of your page.</strong> <code>index.html</code> is missing or misspelled, so GitHub fell back to the README.</li>
+    <li><strong>Your change doesn't show.</strong> Wait two minutes, then force a fresh copy: <strong>Ctrl + F5</strong> on Windows, <strong>Ctrl + Shift + R</strong> on Linux, <strong>Cmd + Shift + R</strong> on a Mac. Your browser keeps old copies of pages.</li>
+    <li><strong>A link to another page is broken.</strong> Web addresses care about capitals. On this site the HUSTLER page is <code>Hustler.html</code>, so a link to <code>hustler.html</code> goes nowhere.</li>
+  </ul>
+  <div class="check" data-step="5">
+    <div><span class="tag">Check</span><p>Your page opens at your address, on a computer <em>and</em> on a phone. Send the link to someone. It counts once somebody else has seen it.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 6</p>
+  <h2>Change it, and add more pages</h2>
+  <p><strong>To edit a page:</strong> click the file in your repository, click the pencil icon, make your change, then <span class="ui">Commit changes...</span>. The site updates a minute or two later. Every old version is kept, under <span class="ui">History</span>, so you can always see what you changed.</p>
+  <p><strong>To add a page:</strong> create another file the same way, for example <code>walks.html</code>. Copy your <code>index.html</code> as a starting point so the pages match, then link to it from the home page:</p>
+<pre>&lt;a href="walks.html"&gt;My walks this year&lt;/a&gt;</pre>
+  <p><strong>To add a photo:</strong> <span class="ui">Add file</span> → <span class="ui">Upload files</span>, drag the picture in, and commit. Give it a short, lower-case name with no spaces, like <code>helvellyn.jpg</code>, then show it with:</p>
+<pre>&lt;img src="helvellyn.jpg" alt="The view from Helvellyn" width="600"&gt;</pre>
+  <p>The <code>alt</code> text is read aloud to people who can't see the picture. Always fill it in. Shrink big phone photos before uploading: a 5&nbsp;MB picture makes a page slow to open on mobile data.</p>
+  <div class="check" data-step="6">
+    <div><span class="tag">Check</span><p>Your home page links to a second page, the link works, and the second page links back.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Going further</p>
+  <h2>How I actually work on this site</h2>
+  <p>The browser is fine for small changes. For anything bigger I keep a copy of the site on my own computer, preview it there, and send the changes up in one go. On Ubuntu that looks like this:</p>
+<pre><span class="dim"># one-time setup</span>
+sudo apt install git gh
+gh auth login          <span class="dim"># choose GitHub.com, then "Login with a web browser"</span>
+gh repo clone yourname/yourname.github.io
+cd yourname.github.io
+
+<span class="dim"># preview on your own machine: open http://localhost:8000</span>
+python3 -m http.server 8000
+
+<span class="dim"># send your changes to GitHub</span>
+git add .
+git commit -m "Add the walks page"
+git push</pre>
+  <p>One trap, because I fell into it: when <code>gh auth login</code> asks how to log in, pick <strong>"Login with a web browser"</strong>. The other option, "Paste an authentication token", needs a token you'd have to create first. The full set-up, with a check after every command, is in my <a href="https://github.com/IHoggan/nix6-tools/blob/main/nix6_environments.md">nix6 workflow guide</a>.</p>
+
+  <h3>Your own address</h3>
+  <p>If you'd rather have <code>jsmith.co.uk</code> than <code>jsmith.github.io</code>, you can buy a domain name from any registrar, usually around £10 a year, and point it at GitHub. It's the one part of this that costs money, and it's optional. GitHub's guide to <a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site">configuring a custom domain</a> covers it. Tick <strong>Enforce HTTPS</strong> once it's set up.</p>
+
+  <h3>The limits</h3>
+  <p>A published site can be up to 1&nbsp;GB, with a soft limit of 100&nbsp;GB of visitors' downloads a month. For a personal site you won't come near either. The details are in <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits">GitHub's Pages limits</a>.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Before you share it</p>
+  <h2>A two-minute safety check</h2>
+  <p>Remember the one rule: it's public, and it's permanent. Before you send your link around, open every file in the repository and look for:</p>
+  <ul>
+    <li>Passwords, keys, or anything copied from a settings file.</li>
+    <li>Your home address, phone number or date of birth.</li>
+    <li>Anything about your employer, your colleagues or your work systems.</li>
+    <li>Photos of other people who haven't said yes, especially children.</li>
+  </ul>
+  <p>If you find something, don't just delete it and carry on, because the old version is still in the history. The simplest fix for a brand-new site is to delete the repository (<span class="ui">Settings</span>, right at the bottom) and make it again without the problem.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">That's it</p>
+  <h2>What I'd want you to take away</h2>
+  <div class="takeaways">
+    <div class="take">
+      <h3>The name does the work</h3>
+      <p>Most failures are the repository name or the file name. Lower case, spelled exactly.</p>
+    </div>
+    <div class="take">
+      <h3>Check before moving on</h3>
+      <p>Each step is small. Confirm it worked before starting the next, and a mistake is never more than one step back.</p>
+    </div>
+    <div class="take">
+      <h3>Public means public</h3>
+      <p>The history keeps everything. Look before you commit, not after.</p>
+    </div>
+  </div>
+  <p style="margin-top:26px">This site is built exactly this way: plain HTML, one shared stylesheet, no build step. You can read every file of it in <a href="https://github.com/IHoggan/ihoggan.github.io">its repository</a>. Made one? Stuck on a step? <a href="contact.html">Tell me</a>. If a step here is wrong or unclear, that's my fault, and I'll fix it.</p>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">← Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="contact.html">Get in touch</a>
+    <span class="tag">© 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* ---------- step checks and progress meter ---------- */
+  var KEY='website-tutorial-steps';
+  var buttons=[].slice.call(document.querySelectorAll('.check .done'));
+  var saved={};
+  try{ saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){ saved={}; }
+  function update(){
+    var n=buttons.filter(function(b){return b.getAttribute('aria-pressed')==='true';}).length;
+    document.getElementById('fill').style.width=(n/buttons.length*100)+'%';
+    document.getElementById('progress-text').textContent=
+      n===buttons.length ? 'All 6 steps done. You have a website.' : n+' of '+buttons.length+' steps done';
+  }
+  buttons.forEach(function(b){
+    var s=b.parentNode.getAttribute('data-step');
+    if(saved[s]){ b.setAttribute('aria-pressed','true'); b.textContent='Done ✓'; }
+    b.addEventListener('click',function(){
+      var on=b.getAttribute('aria-pressed')!=='true';
+      b.setAttribute('aria-pressed',on?'true':'false');
+      b.textContent=on?'Done ✓':'Done';
+      saved[s]=on;
+      try{ localStorage.setItem(KEY,JSON.stringify(saved)); }catch(e){}
+      update();
+    });
+  });
+  update();
+
+  /* ---------- page builder ---------- */
+  var $=function(id){return document.getElementById(id);};
+  var accent='#1F8A70';
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function slug(s){return String(s).trim().toLowerCase().replace(/[^a-z0-9-]/g,'')||'yourname';}
+
+  function build(){
+    var name=$('f-name').value.trim()||'Your Name';
+    var line=$('f-line').value.trim();
+    var user=slug($('f-user').value);
+    var paras=$('f-about').value.split(/\n\s*\n/).map(function(p){return p.trim();}).filter(Boolean);
+    var L=[];
+    L.push('<!DOCTYPE html>');
+    L.push('<html lang="en">');
+    L.push('<head>');
+    L.push('<meta charset="UTF-8">');
+    L.push('<meta name="viewport" content="width=device-width, initial-scale=1.0">');
+    L.push('<title>'+esc(name)+'</title>');
+    L.push('<meta name="description" content="'+esc(line||name)+'">');
+    L.push('<style>');
+    L.push('  :root { --accent: '+accent+'; }');
+    L.push('  body { margin: 0; font-family: Georgia, "Times New Roman", serif;');
+    L.push('         line-height: 1.6; color: #1d2329; background: #f6f5f1; }');
+    L.push('  header { background: var(--accent); color: #fff; padding: 56px 24px 44px; }');
+    L.push('  main, .inner { max-width: 640px; margin: 0 auto; }');
+    L.push('  main { padding: 36px 24px 56px; font-size: 1.1rem; }');
+    L.push('  h1 { font-family: Helvetica, Arial, sans-serif; font-size: 2.4rem;');
+    L.push('       line-height: 1.1; margin: 0 0 10px; }');
+    L.push('  header p { margin: 0; font-size: 1.15rem; opacity: .92; }');
+    L.push('  a { color: var(--accent); }');
+    L.push('  footer { max-width: 640px; margin: 0 auto; padding: 0 24px 40px;');
+    L.push('           font-family: Helvetica, Arial, sans-serif; font-size: .9rem; color: #6b737b; }');
+    L.push('</style>');
+    L.push('</head>');
+    L.push('<body>');
+    L.push('  <header>');
+    L.push('    <div class="inner">');
+    L.push('      <h1>'+esc(name)+'</h1>');
+    if(line) L.push('      <p>'+esc(line)+'</p>');
+    L.push('    </div>');
+    L.push('  </header>');
+    L.push('  <main>');
+    paras.forEach(function(p){ L.push('    <p>'+esc(p).replace(/\n/g,'<br>')+'</p>'); });
+    L.push('  </main>');
+    L.push('  <footer>');
+    L.push('    <a href="https://github.com/'+user+'">GitHub</a> · Made with GitHub Pages');
+    L.push('  </footer>');
+    L.push('</body>');
+    L.push('</html>');
+    var html=L.join('\n');
+    $('code').textContent=html;
+    $('preview').srcdoc=html;
+    $('addr').textContent='https://'+user+'.github.io';
+    $('copy-msg').textContent='';
+    return html;
+  }
+  ['f-name','f-line','f-about','f-user'].forEach(function(id){ $(id).addEventListener('input',build); });
+  [].slice.call(document.querySelectorAll('.sw')).forEach(function(sw,i,all){
+    sw.addEventListener('click',function(){
+      all.forEach(function(o){o.setAttribute('aria-pressed','false');});
+      sw.setAttribute('aria-pressed','true'); accent=sw.getAttribute('data-c'); build();
+    });
+  });
+  $('copy').addEventListener('click',function(){
+    var text=build(), msg=$('copy-msg');
+    function ok(){ msg.textContent='Copied. Now paste it into index.html on GitHub.'; msg.className='tag copied'; }
+    function fallback(){
+      var r=document.createRange(); r.selectNodeContents($('code'));
+      var s=window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      msg.textContent='Selected. Press Ctrl + C (Cmd + C on a Mac) to copy.'; msg.className='tag';
+    }
+    if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(ok,fallback); }
+    else fallback();
+  });
+  build();
+})();
+</script>
+
+</body>
+</html>
