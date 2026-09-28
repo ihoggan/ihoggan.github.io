@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raspberry Pi GPIO for beginners: hand the switch to a computer — Iain Hoggan</title>
+<meta name="description" content="Take the LED circuit from the electronics guide and let a Raspberry Pi switch it. Blink it from Python, read a button, discover switch bounce, and learn the 3.3 volt rule that stops you killing your Pi. With a tappable map of all 40 pins.">
+<meta property="og:title" content="Raspberry Pi GPIO: hand the switch to a computer">
+<meta property="og:description" content="The same LED circuit, switched by five lines of Python. Then a button, a bug you can see, and the one rule that saves your Pi.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+main.wrap{padding-top:52px;padding-bottom:40px}
+.standfirst{font-size:1.12rem;color:var(--ink-2);max-width:34em}
+.standfirst strong{color:var(--ink);font-weight:600}
+main section p{max-width:38em}
+main h2{max-width:18em;margin-bottom:14px}
+main h3{margin:26px 0 10px}
+main ul,main ol{max-width:36em;margin:0 0 16px 1.2em}
+main li{margin-bottom:6px}
+pre{
+  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen));
+  border:1px solid #060B0E;border-radius:3px;box-shadow:inset 0 3px 12px rgba(0,0,0,.55);
+  color:#CFE3DA;font-family:var(--mono);font-size:13px;line-height:1.55;
+  padding:14px 16px;margin:18px 0 22px;max-width:40em;overflow-x:auto;white-space:pre;
+}
+pre .dim{color:#7F968D}
+pre .pr{color:var(--trace)}
+pre .kw{color:#7FC3E8}
+.warn{border-left:3px solid var(--alarm);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.warn .tag{display:block;margin-bottom:4px;color:var(--alarm)}
+.warn p{margin:0}
+.warn p+p{margin-top:8px}
+.takeaways{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:26px}
+.take{background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);border-radius:4px;padding:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.take h3{font-size:1rem;margin:0 0 8px}
+.take p{font-size:.94rem;color:var(--ink-2);margin:0}
+.ui{font-family:var(--mono);font-size:.84em;white-space:nowrap;
+  background:linear-gradient(180deg,#fff,var(--engrave));border:1px solid var(--bezel);
+  border-bottom-width:2px;border-radius:3px;padding:1px 6px;color:var(--ink)}
+.predict{border-left:3px solid var(--lamp);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.predict .tag{display:block;margin-bottom:4px;color:var(--lamp)}
+.predict p{margin:0}
+details.answer{max-width:38em;margin:10px 0 18px}
+details.answer summary{cursor:pointer;font:600 11px/1.4 var(--mono);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-2)}
+details.answer p{margin-top:8px}
+details.answer pre{margin:10px 0}
+.check{display:flex;gap:14px;align-items:flex-start;max-width:38em;margin:20px 0 6px;
+  border:1px solid var(--bezel);border-radius:4px;padding:14px 16px;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.check .tag{display:block;margin-bottom:4px;color:#2F8A63}
+.check p{margin:0;font-size:.97rem}
+.done{flex:none;margin-left:auto;align-self:center;cursor:pointer;
+  font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;
+  padding:9px 12px;border-radius:3px;border:1px solid var(--bezel);border-bottom-width:2px;
+  background:linear-gradient(180deg,#fff,var(--engrave));color:var(--ink-2)}
+.done[aria-pressed="true"]{background:linear-gradient(180deg,#6FD6AA,var(--trace));border-color:#2F8A63;color:#0B2A1E}
+.done:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.progress{margin-top:26px;max-width:30em}
+.progress .bar{height:10px;border-radius:5px;background:var(--screen);border:1px solid #060B0E;
+  box-shadow:inset 0 2px 6px rgba(0,0,0,.6);overflow:hidden}
+.progress .fill{height:100%;width:0;background:linear-gradient(90deg,#2F8A63,var(--trace));
+  box-shadow:0 0 10px rgba(87,199,154,.7);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.progress .read{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:8px}
+
+/* pin header map */
+.header{max-width:46em;margin:22px 0 10px}
+.header .body{display:grid;grid-template-columns:auto minmax(0,1fr);gap:0}
+.header .pins{padding:16px;border-right:1px solid #060B0E;display:grid;grid-template-columns:repeat(2,34px);gap:6px 8px;align-content:start}
+.pin{width:34px;height:26px;border-radius:3px;border:1px solid #2B3B44;cursor:pointer;
+  font:600 10.5px/1 var(--mono);color:#0B1216;display:grid;place-items:center;padding:0}
+.pin.p5{background:#E0603F}.pin.p3{background:#E7B863}.pin.gnd{background:#2B3B44;color:#A9BFB5}
+.pin.io{background:#57C79A}.pin.sp{background:#7FC3E8}.pin.id{background:#6E7F86}
+.pin[aria-pressed="true"]{outline:3px solid #fff;outline-offset:1px}
+.pin.use{box-shadow:0 0 0 3px #fff inset}
+.pin:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.header .info{padding:16px 18px;font:13px/1.6 var(--mono);color:#A9BFB5}
+.header .info h3{font-family:var(--display);color:#E6F0EC;font-size:1.3rem;margin:0 0 4px;text-transform:uppercase}
+.header .info .sub{color:#7F968D;margin-bottom:10px}
+.header .info .danger{color:#E0603F}
+.header .legend{display:flex;flex-wrap:wrap;gap:10px 16px;margin-top:16px;padding-top:12px;border-top:1px solid rgba(87,199,154,.18)}
+.header .legend span{display:flex;align-items:center;gap:6px;font-size:11px}
+.header .legend i{width:12px;height:12px;border-radius:2px;display:inline-block}
+.header .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.header .row button{font:600 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
+  padding:9px 12px;border-radius:3px;border:1px solid #2B3B44;background:#16232B;color:#A9BFB5;cursor:pointer}
+.header .row button[aria-pressed="true"]{background:linear-gradient(180deg,#6FD6AA,var(--trace));color:#0B2A1E;border-color:#2F8A63}
+.header .row button:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.wiring{max-width:38em;margin:14px 0 18px;border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))}
+.wiring div{display:grid;grid-template-columns:9em 1fr;gap:12px;padding:9px 14px;border-bottom:1px solid var(--rule);font-size:.97rem}
+.wiring div:last-child{border-bottom:0}
+.wiring b{font-family:var(--mono);font-size:.86em}
+.read-next{border-top:1px solid var(--rule);padding:44px 0 8px}
+.read-next .card{margin-top:14px;max-width:640px}
+@media(max-width:600px){.wiring div{grid-template-columns:1fr;gap:2px}}
+</style>
+</head>
+<body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html" aria-label="Home">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap col">
+    <p class="tag">Tutorial · Raspberry Pi · After Electronics part one</p>
+    <h1>Hand the switch to a computer</h1>
+    <p class="standfirst">In <a href="electronics-1.html">the electronics guide</a> your finger flicked the switch. Here, a Raspberry Pi does it, with <strong>five lines of Python</strong>. Then you'll add a button, find a bug you can actually see, and learn the one rule that stops you killing your Pi.</p>
+    <div class="spec">
+      <div><b>6</b><span>short steps</span></div>
+      <div><b>40</b><span>pins, mapped</span></div>
+      <div><b>0</b><span>installs</span></div>
+      <div><b>~1 hr</b><span>first time</span></div>
+    </div>
+    <div class="progress" aria-live="polite">
+      <div class="bar"><div class="fill" id="fill"></div></div>
+      <div class="read"><span class="tag" id="progress-text">0 of 6 steps done</span><span class="tag">Tick each check as you pass it</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap col">
+
+<section>
+  <p class="tag eyebrow">Before you start</p>
+  <h2>What you need</h2>
+  <ul>
+    <li>Any Raspberry Pi with the 40-pin header, running Raspberry Pi OS. I run several, all with their pins in the same place.</li>
+    <li>The breadboard, LED, resistors and jumper wires from <a href="electronics-1.html">Electronics part one</a>. You'll need <strong>female-to-male</strong> jumper wires to reach from the Pi's pins to the breadboard.</li>
+    <li>A small push button that fits a breadboard, for step 5.</li>
+    <li>A terminal on the Pi, either on its own screen or over SSH. <a href="terminal.html">Meet the terminal</a> covers the basics.</li>
+  </ul>
+  <div class="warn">
+    <span class="tag">Two rules for the whole guide</span>
+    <p><strong>Shut the Pi down and unplug it before changing any wiring.</strong> One stray wire touching the wrong pin while it's running can damage it. <code>sudo shutdown now</code>, wait for the green light to stop flickering, then pull the power.</p>
+    <p><strong>The pins are 3.3 volt only.</strong> Step 6 explains why this matters so much. Until then: never connect anything to the pins marked 5V except where this guide says so, and it never will.</p>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 1</p>
+  <h2>Meet the header</h2>
+  <p>The two rows of pins along the edge of the Pi are its <strong>GPIO header</strong>: general-purpose input and output. Some pins supply power, some are ground (the battery's <code>−</code>, in electronics-guide terms), and most can be switched on and off by your programs. Tap any pin below.</p>
+
+  <div class="header well">
+    <div class="body">
+      <div class="pins" id="pins" role="group" aria-label="The 40 GPIO header pins"></div>
+      <div class="info">
+        <div id="pinInfo" aria-live="polite"></div>
+        <div class="row">
+          <button type="button" id="showUsed" aria-pressed="false">Pins this guide uses</button>
+          <button type="button" id="showDanger" aria-pressed="false">Pins to be careful with</button>
+        </div>
+        <div class="legend">
+          <span><i style="background:#E0603F"></i>5 volt power</span>
+          <span><i style="background:#E7B863"></i>3.3 volt power</span>
+          <span><i style="background:#2B3B44;border:1px solid #6E8A80"></i>Ground</span>
+          <span><i style="background:#57C79A"></i>GPIO</span>
+          <span><i style="background:#7FC3E8"></i>GPIO with a second job</span>
+          <span><i style="background:#6E7F86"></i>Reserved</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p>Pins have <strong>two numbers</strong>, and mixing them up is the most common mistake. The <em>physical</em> number is its position, 1 to 40. The <em>GPIO</em> number is its name to the Pi's chip. Physical pin 11 is GPIO17. Your code uses the GPIO number.</p>
+  <p>On the Pi itself, type this. It draws the board and the header, with pin 1 marked:</p>
+<pre><span class="pr">$</span> pinout</pre>
+  <div class="check" data-step="1">
+    <div><span class="tag">Check</span><p>You've found physical pin 1 on your actual Pi, and you can point to pin 11 (GPIO17) and pin 9 (ground).</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 2</p>
+  <h2>Wire the LED, choosing the resistor yourself</h2>
+  <p>It's the same circuit as in the electronics guide, with a Pi pin as the battery. When the program switches GPIO17 on, that pin gives out 3.3 volts.</p>
+  <div class="predict">
+    <span class="tag">Use Ohm's law</span>
+    <p>The pin gives 3.3&nbsp;V. A red LED takes about 2&nbsp;V. A Pi pin shouldn't be asked for much current: aim for about 5&nbsp;mA. What resistor do you need?</p>
+  </div>
+  <details class="answer">
+    <summary>Work it through</summary>
+    <p>The resistor takes what the LED doesn't: 3.3 − 2 = 1.3&nbsp;V. For 5&nbsp;mA, which is 0.005&nbsp;A: <code>R = 1.3 ÷ 0.005 = 260&nbsp;Ω</code>. The nearest common size above that is <strong>330&nbsp;Ω</strong>, giving about 4&nbsp;mA. Bigger is the safe direction: it just makes the LED a little dimmer.</p>
+  </details>
+  <p>With the Pi <strong>off and unplugged</strong>:</p>
+  <div class="wiring">
+    <div><b>Pin 11 (GPIO17)</b><span>to one end of the 330&nbsp;Ω resistor</span></div>
+    <div><b>Resistor, other end</b><span>to the LED's <strong>long</strong> leg</span></div>
+    <div><b>LED short leg</b><span>to pin 9 (ground)</span></div>
+  </div>
+  <p>Check each wire against the map above before powering up. Two wires, one resistor, one LED: it's small enough to check properly.</p>
+  <div class="check" data-step="2">
+    <div><span class="tag">Check</span><p>You chose the resistor with Ohm's law, and the circuit matches the table. The Pi is back on, and the LED is off, because nothing has told the pin to switch on yet.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 3</p>
+  <h2>Blink it from Python</h2>
+  <p>The library that talks to the pins, <strong>GPIO Zero</strong>, comes installed on Raspberry Pi OS. Make a folder for this guide and a file for the program:</p>
+<pre><span class="pr">$</span> mkdir ~/gpio && cd ~/gpio
+<span class="pr">$</span> nano blink.py</pre>
+  <p>Type this in, then save with <span class="ui">Ctrl</span> + <span class="ui">O</span>, <span class="ui">Enter</span>, and leave with <span class="ui">Ctrl</span> + <span class="ui">X</span>:</p>
+<pre><span class="kw">from</span> gpiozero <span class="kw">import</span> LED
+<span class="kw">from</span> time <span class="kw">import</span> sleep
+
+led = LED(17)          <span class="dim"># GPIO17, which is physical pin 11</span>
+
+<span class="kw">while</span> True:
+    led.on()
+    sleep(1)           <span class="dim"># wait one second</span>
+    led.off()
+    sleep(1)</pre>
+<pre><span class="pr">$</span> python3 blink.py</pre>
+  <p>The LED blinks, once a second, forever. <code>while True</code> means "keep doing this until stopped". To stop it, press <span class="ui">Ctrl</span> + <span class="ui">C</span>, the terminal's stop key.</p>
+  <details class="answer">
+    <summary>It doesn't blink</summary>
+    <p>Most likely, in this order: the LED is in backwards (turn it round), the wire is on the wrong pin (count again from pin 1, or check <code>pinout</code>), or the number in the code is the physical pin, 11, rather than the GPIO number, 17.</p>
+    <p>If you use Python virtual environments, make yours with <code>python3 -m venv --system-site-packages venv</code>, so it can see the GPIO Zero that came with the system.</p>
+  </details>
+  <div class="check" data-step="3">
+    <div><span class="tag">Check</span><p>The LED blinks once a second, and <span class="ui">Ctrl</span> + <span class="ui">C</span> stops it.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 4</p>
+  <h2>Make it yours</h2>
+  <p>You now control a real object with code, and the fastest way to understand the code is to change it. Try each of these before looking at the answers:</p>
+  <ol>
+    <li>Make it blink twice as fast.</li>
+    <li>Make it flash briefly, like a lighthouse: on for a fifth of a second, off for two.</li>
+    <li>Make it blink exactly ten times, then stop by itself.</li>
+  </ol>
+  <details class="answer">
+    <summary>Answers</summary>
+    <p>1. Change both <code>sleep(1)</code> lines to <code>sleep(0.5)</code>.</p>
+    <p>2. <code>sleep(0.2)</code> after <code>led.on()</code>, and <code>sleep(2)</code> after <code>led.off()</code>.</p>
+    <p>3. Replace <code>while True:</code> with <code>for i in range(10):</code>. A <code>for</code> loop runs a set number of times; <code>while True</code> never stops on its own.</p>
+  </details>
+  <div class="check" data-step="4">
+    <div><span class="tag">Check</span><p>You've made at least two of the three changes work yourself.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 5</p>
+  <h2>Add a button, and meet a bug you can see</h2>
+  <p>So far the Pi has only <em>given</em> out signals. Now it reads one. Shut down, unplug, and add a push button:</p>
+  <div class="wiring">
+    <div><b>Pin 13 (GPIO27)</b><span>to one side of the button</span></div>
+    <div><b>Pin 14 (ground)</b><span>to the other side</span></div>
+  </div>
+  <p>No resistor this time. GPIO Zero switches on one built into the Pi, which holds the pin "high" until the button connects it to ground. Power up, then make <code>button.py</code>:</p>
+<pre><span class="kw">from</span> gpiozero <span class="kw">import</span> Button, LED
+<span class="kw">from</span> signal <span class="kw">import</span> pause
+
+button = Button(27)    <span class="dim"># GPIO27, physical pin 13</span>
+led = LED(17)
+presses = 0
+
+<span class="kw">def</span> pressed():
+    <span class="kw">global</span> presses
+    presses += 1
+    led.toggle()
+    print(<span class="kw">"Presses so far:"</span>, presses)
+
+button.when_pressed = pressed
+pause()                <span class="dim"># wait here for button presses, until Ctrl + C</span></pre>
+<pre><span class="pr">$</span> python3 button.py</pre>
+  <div class="predict">
+    <span class="tag">Experiment</span>
+    <p>Press the button twenty times, slowly, one press at a time. Does the count always go up by exactly one? Does the LED always change?</p>
+  </div>
+  <details class="answer">
+    <summary>What was going on</summary>
+    <p>With many buttons, some presses count twice, or three times, and the LED seems to ignore you, because it toggled an even number of times. Your code isn't wrong. The button is. Inside it, two bits of metal slam together and <strong>bounce</strong> apart and back several times in a few thousandths of a second. The Pi is fast enough to see every bounce as a separate press.</p>
+    <p>The fix is to ignore any press that comes too soon after the last one. Change the button line to:</p>
+<pre>button = Button(27, bounce_time=0.05)   <span class="dim"># ignore bounces within 50 ms</span></pre>
+    <p>Your button might be a good one and never bounce. Try a cheaper one, or press lightly and quickly, and you'll usually catch it.</p>
+  </details>
+  <div class="check" data-step="5">
+    <div><span class="tag">Check</span><p>Each press toggles the LED and adds exactly one to the count, including with <code>bounce_time</code> added.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 6</p>
+  <h2>The 3.3 volt rule</h2>
+  <p>The Pi's chip works at 3.3 volts. Its GPIO pins can give out 3.3&nbsp;V, and they can read up to 3.3&nbsp;V. <strong>They are not built to take 5 volts.</strong> Put 5&nbsp;V into a GPIO pin and you can damage that pin, or the whole Pi, instantly and for good.</p>
+  <p>It's easy to do by accident, because the header has two 5V pins (2 and 4) right next to the ones you use, and many cheap sensor boards are made for 5&nbsp;V systems and send 5&nbsp;V signals back.</p>
+  <div class="predict">
+    <span class="tag">Use what you know</span>
+    <p>You have a sensor that sends back a 5&nbsp;V signal, and you want to read it on a GPIO pin. Using only resistors, and what you learned about how voltage is shared round a loop, how could you make it safe?</p>
+  </div>
+  <details class="answer">
+    <summary>One answer</summary>
+    <p>A <strong>voltage divider</strong>. Put two resistors in a row between the sensor's signal and ground, and take your GPIO wire from the point between them. The 5&nbsp;V is shared between the two resistors in proportion to their sizes. With 1&nbsp;kΩ on top and 2&nbsp;kΩ underneath, the lower one gets two-thirds of the 5&nbsp;V: about 3.3&nbsp;V. Safe.</p>
+    <p>That's the same "the shares always add up to the whole" you found with the LED and resistor. It's also why electronics is worth learning before the programming: this is how you avoid killing the computer.</p>
+  </details>
+  <div class="check" data-step="6">
+    <div><span class="tag">Check</span><p>You can say which two header pins are 5&nbsp;V, and why a 5&nbsp;V signal must never go straight into a GPIO pin.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">That's it</p>
+  <h2>What I'd want you to take away</h2>
+  <div class="takeaways">
+    <div class="take">
+      <h3>Two numbers per pin</h3>
+      <p>Physical position for your wires, GPIO number for your code. Most "it doesn't work" moments are these two mixed up.</p>
+    </div>
+    <div class="take">
+      <h3>Real things are messy</h3>
+      <p>The button bounced, and your code was right all along. Hardware bugs look like software bugs until you understand the hardware.</p>
+    </div>
+    <div class="take">
+      <h3>3.3 volts, always</h3>
+      <p>Check the voltage of anything before it touches a GPIO pin, and power off before rewiring.</p>
+    </div>
+  </div>
+  <p style="margin-top:26px">Found a mistake, or a step that didn't work on your Pi? <a href="contact.html">Tell me</a>. If a step here was unclear, that's my fault, and I'll fix it.</p>
+</section>
+
+</main>
+
+<section class="read-next">
+  <div class="wrap col">
+    <p class="tag">Read this first if you haven't</p>
+    <a class="card" href="electronics-1.html">
+      <h3>Electronics: first light</h3>
+      <p>The LED, the resistor and Ohm's law this guide builds on, with a circuit you can try in your browser.</p>
+      <span class="go">Read &rarr;</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">← Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="contact.html">Get in touch</a>
+    <span class="tag">© 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* ---------- step checks and progress meter ---------- */
+  var KEY='pi-gpio-steps';
+  var buttons=[].slice.call(document.querySelectorAll('.check .done'));
+  var saved={};
+  try{ saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){ saved={}; }
+  function update(){
+    var n=buttons.filter(function(b){return b.getAttribute('aria-pressed')==='true';}).length;
+    document.getElementById('fill').style.width=(n/buttons.length*100)+'%';
+    document.getElementById('progress-text').textContent=
+      n===buttons.length ? 'All 6 steps done. Your Pi is switching things.' : n+' of '+buttons.length+' steps done';
+  }
+  buttons.forEach(function(b){
+    var s=b.parentNode.getAttribute('data-step');
+    if(saved[s]){ b.setAttribute('aria-pressed','true'); b.textContent='Done ✓'; }
+    b.addEventListener('click',function(){
+      var on=b.getAttribute('aria-pressed')!=='true';
+      b.setAttribute('aria-pressed',on?'true':'false');
+      b.textContent=on?'Done ✓':'Done';
+      saved[s]=on;
+      try{ localStorage.setItem(KEY,JSON.stringify(saved)); }catch(e){}
+      update();
+    });
+  });
+  update();
+
+  /* ---------- pin header map ---------- */
+  /* [physical]: [type, label, description] */
+  var P={
+    1:['p3','3V3','3.3 volt power. Always on while the Pi is on.'],
+    2:['p5','5V','5 volt power, straight from the power supply. Never connect this to a GPIO pin.'],
+    3:['sp','GPIO2','Also the I2C data line (SDA), used by many sensor boards.'],
+    4:['p5','5V','5 volt power, straight from the power supply. Never connect this to a GPIO pin.'],
+    5:['sp','GPIO3','Also the I2C clock line (SCL), used by many sensor boards.'],
+    6:['gnd','GND','Ground: the equivalent of a battery\'s minus.'],
+    7:['io','GPIO4','A general-purpose pin.'],
+    8:['sp','GPIO14','Also the serial port transmit line (TXD).'],
+    9:['gnd','GND','Ground. This guide uses it for the LED.'],
+    10:['sp','GPIO15','Also the serial port receive line (RXD).'],
+    11:['io','GPIO17','A general-purpose pin. This guide uses it to switch the LED.'],
+    12:['sp','GPIO18','Also a PWM pin, often used for dimming LEDs or driving servos.'],
+    13:['io','GPIO27','A general-purpose pin. This guide uses it to read the button.'],
+    14:['gnd','GND','Ground. This guide uses it for the button.'],
+    15:['io','GPIO22','A general-purpose pin.'],
+    16:['io','GPIO23','A general-purpose pin.'],
+    17:['p3','3V3','3.3 volt power.'],
+    18:['io','GPIO24','A general-purpose pin.'],
+    19:['sp','GPIO10','Also the SPI data out line (MOSI).'],
+    20:['gnd','GND','Ground.'],
+    21:['sp','GPIO9','Also the SPI data in line (MISO).'],
+    22:['io','GPIO25','A general-purpose pin.'],
+    23:['sp','GPIO11','Also the SPI clock line (SCLK).'],
+    24:['sp','GPIO8','Also an SPI chip-select line (CE0).'],
+    25:['gnd','GND','Ground.'],
+    26:['sp','GPIO7','Also an SPI chip-select line (CE1).'],
+    27:['id','ID_SD','Reserved for add-on boards to identify themselves. Leave it alone.'],
+    28:['id','ID_SC','Reserved for add-on boards to identify themselves. Leave it alone.'],
+    29:['io','GPIO5','A general-purpose pin.'],
+    30:['gnd','GND','Ground.'],
+    31:['io','GPIO6','A general-purpose pin.'],
+    32:['sp','GPIO12','Also a PWM pin.'],
+    33:['sp','GPIO13','Also a PWM pin.'],
+    34:['gnd','GND','Ground.'],
+    35:['sp','GPIO19','Also a PWM and audio (PCM) pin.'],
+    36:['io','GPIO16','A general-purpose pin.'],
+    37:['io','GPIO26','A general-purpose pin.'],
+    38:['sp','GPIO20','Also an audio (PCM) pin.'],
+    39:['gnd','GND','Ground.'],
+    40:['sp','GPIO21','Also an audio (PCM) pin.']
+  };
+  var USED=[9,11,13,14], DANGER=[2,4];
+  var box=document.getElementById('pins'), info=document.getElementById('pinInfo');
+  var els={};
+  for(var n=1;n<=40;n++){
+    var b=document.createElement('button');
+    b.type='button'; b.className='pin '+P[n][0]; b.textContent=n;
+    b.setAttribute('aria-pressed','false');
+    b.setAttribute('aria-label','Pin '+n+', '+P[n][1]);
+    (function(k){ b.addEventListener('click',function(){ select(k); }); })(n);
+    box.appendChild(b); els[n]=b;
+  }
+  function select(n){
+    for(var k in els) els[k].setAttribute('aria-pressed', +k===n?'true':'false');
+    var d=P[n], side=n%2?'left-hand column':'right-hand column';
+    var extra=/^GPIO/.test(d[1]) ? ' In your code: <b>'+d[1].replace('GPIO','')+'</b>.' : '';
+    info.innerHTML='<h3>Pin '+n+'</h3><div class="sub">'+d[1]+' · '+side+'</div>'+
+      '<div'+(d[0]==='p5'?' class="danger"':'')+'>'+d[2]+extra+'</div>';
+  }
+  function mark(list,btn,other){
+    var on=btn.getAttribute('aria-pressed')!=='true';
+    btn.setAttribute('aria-pressed',on?'true':'false');
+    other.setAttribute('aria-pressed','false');
+    for(var k in els) els[k].classList.remove('use');
+    if(on) list.forEach(function(k){ els[k].classList.add('use'); });
+  }
+  var bu=document.getElementById('showUsed'), bd=document.getElementById('showDanger');
+  bu.addEventListener('click',function(){ mark(USED,bu,bd); });
+  bd.addEventListener('click',function(){ mark(DANGER,bd,bu); });
+  select(11);
+})();
+</script>
+
+</body>
+</html>
