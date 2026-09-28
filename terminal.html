@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meet the terminal: a first look for complete beginners — Iain Hoggan</title>
+<meta name="description" content="Open the terminal on Ubuntu, read what the prompt is telling you, move around, and learn the four habits that trip up Windows users. With a practice terminal that works in your browser, even on a phone.">
+<meta property="og:title" content="Meet the terminal">
+<meta property="og:description" content="The terminal isn't hacking. It's typing instead of clicking. Open it, read it, move around, and try it here first in a practice terminal.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+main.wrap{padding-top:52px;padding-bottom:40px}
+.standfirst{font-size:1.12rem;color:var(--ink-2);max-width:34em}
+.standfirst strong{color:var(--ink);font-weight:600}
+main section p{max-width:38em}
+main h2{max-width:18em;margin-bottom:14px}
+main h3{margin:26px 0 10px}
+main ul,main ol{max-width:36em;margin:0 0 16px 1.2em}
+main li{margin-bottom:6px}
+pre{
+  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen));
+  border:1px solid #060B0E;border-radius:3px;box-shadow:inset 0 3px 12px rgba(0,0,0,.55);
+  color:#CFE3DA;font-family:var(--mono);font-size:13px;line-height:1.55;
+  padding:14px 16px;margin:18px 0 22px;max-width:40em;overflow-x:auto;white-space:pre;
+}
+pre .dim{color:#7F968D}
+pre .pr{color:var(--trace)}
+.warn{border-left:3px solid var(--alarm);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.warn .tag{display:block;margin-bottom:4px;color:var(--alarm)}
+.warn p{margin:0}
+.takeaways{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:26px}
+.take{background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);border-radius:4px;padding:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.take h3{font-size:1rem;margin:0 0 8px}
+.take p{font-size:.94rem;color:var(--ink-2);margin:0}
+
+/* a key or button name exactly as it appears */
+.ui{font-family:var(--mono);font-size:.84em;white-space:nowrap;
+  background:linear-gradient(180deg,#fff,var(--engrave));border:1px solid var(--bezel);
+  border-bottom-width:2px;border-radius:3px;padding:1px 6px;color:var(--ink)}
+
+/* predict-first prompt */
+.predict{border-left:3px solid var(--lamp);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.predict .tag{display:block;margin-bottom:4px;color:var(--lamp)}
+.predict p{margin:0}
+details.answer{max-width:38em;margin:10px 0 18px}
+details.answer summary{cursor:pointer;font:600 11px/1.4 var(--mono);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-2)}
+details.answer p{margin-top:8px}
+
+/* the check at the end of every step */
+.check{display:flex;gap:14px;align-items:flex-start;max-width:38em;margin:20px 0 6px;
+  border:1px solid var(--bezel);border-radius:4px;padding:14px 16px;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.check .tag{display:block;margin-bottom:4px;color:#2F8A63}
+.check p{margin:0;font-size:.97rem}
+.done{flex:none;margin-left:auto;align-self:center;cursor:pointer;
+  font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;
+  padding:9px 12px;border-radius:3px;border:1px solid var(--bezel);border-bottom-width:2px;
+  background:linear-gradient(180deg,#fff,var(--engrave));color:var(--ink-2)}
+.done[aria-pressed="true"]{background:linear-gradient(180deg,#6FD6AA,var(--trace));border-color:#2F8A63;color:#0B2A1E}
+.done:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+
+/* progress meter in the hero */
+.progress{margin-top:26px;max-width:30em}
+.progress .bar{height:10px;border-radius:5px;background:var(--screen);border:1px solid #060B0E;
+  box-shadow:inset 0 2px 6px rgba(0,0,0,.6);overflow:hidden}
+.progress .fill{height:100%;width:0;background:linear-gradient(90deg,#2F8A63,var(--trace));
+  box-shadow:0 0 10px rgba(87,199,154,.7);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.progress .read{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:8px}
+
+/* prompt anatomy */
+.anatomy{max-width:40em;margin:20px 0 8px}
+.anatomy .line{font:clamp(1.3rem,5vw,2rem)/1.2 var(--mono);padding:20px 18px;
+  display:flex;flex-wrap:wrap;align-items:baseline}
+.anatomy button{font:inherit;background:none;border:0;padding:2px 1px;cursor:pointer;
+  border-bottom:2px solid transparent;color:#CFE3DA}
+.anatomy button.u{color:var(--trace)}
+.anatomy button.h{color:#7FC3E8}
+.anatomy button.d{color:#E7B863}
+.anatomy button[aria-pressed="true"]{border-bottom-color:currentColor;background:rgba(255,255,255,.06)}
+.anatomy button:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.anatomy .cur{display:inline-block;width:.55em;height:1em;background:#CFE3DA;margin-left:.2em;
+  animation:blink 1.1s steps(1) infinite;align-self:center}
+@keyframes blink{50%{opacity:0}}
+.anatomy .explain{padding:12px 18px 16px;border-top:1px solid rgba(87,199,154,.18);
+  font:13px/1.55 var(--mono);color:#A9BFB5;min-height:4.6em}
+.anatomy .explain b{color:#E6F0EC;font-weight:600}
+
+/* practice terminal */
+.term{max-width:44em;margin:22px 0 10px;display:flex;flex-direction:column}
+.term .bar{display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid #060B0E}
+.term .bar i{width:9px;height:9px;border-radius:50%;background:#2B3B44}
+.term .bar span{margin-left:8px;font:12px var(--mono);color:#93A79E}
+.term .out{height:300px;overflow-y:auto;padding:12px 14px 4px;font:13.5px/1.5 var(--mono);
+  color:#CFE3DA;white-space:pre-wrap;word-break:break-word}
+.term .out .pr{color:var(--trace)}
+.term .out .note{color:#8FA69C}
+.term .out .err{color:#E0603F}
+.term .out .dir{color:#7FC3E8;font-weight:600}
+.term .inrow{display:flex;align-items:baseline;gap:0;padding:0 14px 12px;font:13.5px/1.5 var(--mono)}
+.term .inrow .pr{color:var(--trace);white-space:pre}
+.term input{flex:1;min-width:0;background:transparent;border:0;color:#E6F0EC;
+  font:inherit;padding:0;caret-color:var(--trace)}
+.term input:focus{outline:none}
+.term .keys{display:flex;gap:8px;flex-wrap:wrap;padding:10px 12px;border-top:1px solid #060B0E;
+  background:rgba(255,255,255,.03)}
+.term .keys button{font:600 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
+  padding:8px 11px;border-radius:3px;border:1px solid #2B3B44;background:#16232B;color:#A9BFB5;cursor:pointer}
+.term .keys button:hover{color:#E6F0EC;border-color:#3E5561}
+.term .keys button:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.term .keys .hint{margin-left:auto;align-self:center;font:11px var(--mono);color:#6E8A80}
+.read-next{border-top:1px solid var(--rule);padding:44px 0 8px}
+.read-next .card{margin-top:14px;max-width:640px}
+@media(max-width:600px){.term .out{height:260px}.term .keys .hint{margin-left:0;width:100%}}
+</style>
+</head>
+<body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html" aria-label="Home">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap col">
+    <p class="tag">Tutorial · Ubuntu · Complete beginners</p>
+    <h1>Meet the terminal</h1>
+    <p class="standfirst">In films the terminal is where hackers work. In real life it's just <strong>typing instructions instead of clicking them</strong>. This page opens it, teaches you to read what it's telling you, and walks you round your own files. Every command here only <em>looks</em> at things, so nothing you do on this page can break your computer.</p>
+    <div class="spec">
+      <div><b>6</b><span>short steps</span></div>
+      <div><b>0</b><span>installs</span></div>
+      <div><b>0</b><span>risk</span></div>
+      <div><b>~20 min</b><span>first time</span></div>
+    </div>
+    <div class="progress" aria-live="polite">
+      <div class="bar"><div class="fill" id="fill"></div></div>
+      <div class="read"><span class="tag" id="progress-text">0 of 6 steps done</span><span class="tag">Tick each check as you pass it</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap col">
+
+<section>
+  <p class="tag eyebrow">Before you start</p>
+  <h2>What you need, and the one rule</h2>
+  <p>A computer running Ubuntu Linux. Mine is a 2015 desktop that was <a href="reclaim.html">headed for the scrap pile</a>. Any recent version of Ubuntu will match what you see here.</p>
+  <p><strong>No Ubuntu yet, or reading this on your phone?</strong> Use the practice terminal just below. It understands every command on this page, and it runs entirely in your browser.</p>
+  <div class="warn">
+    <span class="tag">The one rule</span>
+    <p>Never run a command you've copied from the internet unless you understand what it does. <strong>That includes this page.</strong> Every command here is explained before you're asked to type it. If a guide ever asks you to paste something long starting with <code>sudo</code> without saying why, stop.</p>
+  </div>
+</section>
+
+<section id="practice">
+  <p class="tag eyebrow">Practice terminal</p>
+  <h2>Try it here first</h2>
+  <p>This is a pretend terminal on a pretend computer called <code>old-pc</code>, belonging to a pretend person called Jo. Tap inside it and type <code>help</code>, then press Enter.</p>
+  <div class="term well" id="term">
+    <div class="bar"><i></i><i></i><i></i><span>Practice terminal · jo@old-pc</span></div>
+    <div class="out" id="out" aria-live="polite"></div>
+    <div class="inrow"><label class="pr" id="prompt" for="cmd">jo@old-pc:~$ </label><input id="cmd" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Type a command"></div>
+    <div class="keys">
+      <button type="button" id="k-tab">Tab</button>
+      <button type="button" id="k-up">↑ Last</button>
+      <button type="button" id="k-ctrlc">Ctrl + C</button>
+      <button type="button" id="k-clear">Clear</button>
+      <span class="hint">Buttons for phones that have no Tab or Ctrl key</span>
+    </div>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 1</p>
+  <h2>Open the terminal</h2>
+  <p>The quickest way is a keyboard shortcut. Hold down <span class="ui">Ctrl</span> and <span class="ui">Alt</span>, then press <span class="ui">T</span>.</p>
+  <p>If that does nothing, click <span class="ui">Show Apps</span>, the grid of dots at the bottom of the bar down the left of the screen, and type <code>terminal</code>. Click the icon that appears.</p>
+  <p>You'll use it a lot, so keep it handy: right-click its icon in the bar on the left and choose <span class="ui">Pin to Dash</span>.</p>
+  <div class="check" data-step="1">
+    <div><span class="tag">Check</span><p>A window is open with one line of text ending in <code>$</code>, and a flashing block after it. That line is called the <strong>prompt</strong>: the computer is waiting for you.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 2</p>
+  <h2>Read what the prompt is telling you</h2>
+  <p>The prompt isn't decoration. It answers three questions every time: <strong>who</strong> you are, <strong>which computer</strong> you're typing into, and <strong>where</strong> you are on it. Here's mine. Tap each part.</p>
+
+  <div class="anatomy well">
+    <div class="line" role="group" aria-label="The parts of a prompt">
+      <button type="button" class="u" data-part="user" aria-pressed="true">iain</button><button type="button" data-part="at" aria-pressed="false">@</button><button type="button" class="h" data-part="host" aria-pressed="false">nix6</button><button type="button" data-part="colon" aria-pressed="false">:</button><button type="button" class="d" data-part="dir" aria-pressed="false">~</button><button type="button" data-part="dollar" aria-pressed="false">$</button><span class="cur" aria-hidden="true"></span>
+    </div>
+    <div class="explain" id="explain" aria-live="polite"></div>
+  </div>
+
+  <p>I called my computer <code>nix6</code> when I installed Ubuntu, so that's what my prompt shows, and you'll see it in my other guides. Yours says whatever name was chosen for yours when Ubuntu was installed.</p>
+
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>Before you type anything: what do you think your prompt says your username and computer name are? Say it out loud, then check with these two commands. Type each one and press <span class="ui">Enter</span>.</p>
+  </div>
+<pre><span class="pr">$</span> whoami
+<span class="pr">$</span> hostname</pre>
+  <p><code>whoami</code> prints your username. <code>hostname</code> prints the computer's name. Commands are short and lower case because people have been typing them since the 1970s.</p>
+  <div class="check" data-step="2">
+    <div><span class="tag">Check</span><p>The two answers match the two names in your prompt, before and after the <code>@</code>.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 3</p>
+  <h2>Find out where you are, and move around</h2>
+  <p>The terminal is always "in" one folder, just like a file window is always showing one. The <code>~</code> in your prompt means your <strong>home folder</strong>, where your own files live. Three commands do almost all the moving:</p>
+<pre><span class="pr">$</span> pwd          <span class="dim"># print working directory: where am I?</span>
+<span class="pr">$</span> ls           <span class="dim"># list: what's in here?</span>
+<span class="pr">$</span> cd Documents <span class="dim"># change directory: go into Documents</span></pre>
+  <p>Anything after a <code>#</code> is a comment for you to read. You don't type it. ("Directory" is the older word for a folder. They mean the same thing.)</p>
+
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>After <code>cd Documents</code>, the prompt will change. What do you think it'll say?</p>
+  </div>
+  <details class="answer">
+    <summary>Show me</summary>
+    <p>It becomes <code>iain@nix6:~/Documents$</code>. The <code>~</code> part grew into <code>~/Documents</code>, meaning "the Documents folder inside my home folder". Now type <code>cd ..</code> (two dots) to go back up one level, and <code>cd</code> on its own to jump straight home from anywhere.</p>
+  </details>
+  <p>Capitals matter. <code>cd documents</code> fails because the folder is called <code>Documents</code>. That trips everyone up at least once.</p>
+  <div class="check" data-step="3">
+    <div><span class="tag">Check</span><p>You went into <code>Documents</code>, watched the prompt change, and came back home with <code>cd</code>. The prompt shows just <code>~</code> again.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 4</p>
+  <h2>Let the computer do the typing</h2>
+  <p>Nobody types long names in full. Two keys save you most of the effort, and most of the typos:</p>
+  <ul>
+    <li><span class="ui">Tab</span> finishes a name for you. Type <code>cd Doc</code> and press <span class="ui">Tab</span>: it fills in <code>Documents/</code>.</li>
+    <li><span class="ui">↑</span> brings back the last command you ran. Press it again to go further back.</li>
+  </ul>
+  <div class="predict">
+    <span class="tag">Experiment</span>
+    <p>Type <code>cd D</code> and press <span class="ui">Tab</span>. Nothing happens. Why not? Press <span class="ui">Tab</span> a second time and look at what appears.</p>
+  </div>
+  <details class="answer">
+    <summary>What was going on</summary>
+    <p>Three folders start with <code>D</code>: <code>Desktop</code>, <code>Documents</code> and <code>Downloads</code>. The terminal won't guess, so the first Tab does nothing. The second Tab lists the choices. Type one more letter, <code>o</code>, and it's down to two. Add <code>c</code> and there's only one left, so Tab finishes it.</p>
+  </details>
+  <div class="check" data-step="4">
+    <div><span class="tag">Check</span><p>You've finished a folder name with <span class="ui">Tab</span>, and brought back an old command with <span class="ui">↑</span>.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 5</p>
+  <h2>Four Windows habits that will catch you out</h2>
+  <p>These are the moments when people coming from Windows decide the terminal is broken and close it. It isn't broken. It just has different habits.</p>
+  <h3>Ctrl + C doesn't copy</h3>
+  <p>In the terminal, <span class="ui">Ctrl</span> + <span class="ui">C</span> means <strong>stop</strong>. To feel why that matters, run a command that never finishes on its own. <code>ping</code> checks whether another computer answers, once a second, forever:</p>
+<pre><span class="pr">$</span> ping bbc.co.uk</pre>
+  <p>Watch a few replies arrive, then press <span class="ui">Ctrl</span> + <span class="ui">C</span>. It stops, and prints a summary.</p>
+  <h3>Copy and paste need Shift</h3>
+  <p>Copy is <span class="ui">Ctrl</span> + <span class="ui">Shift</span> + <span class="ui">C</span>, and paste is <span class="ui">Ctrl</span> + <span class="ui">Shift</span> + <span class="ui">V</span>. Right-click also gives you <span class="ui">Copy</span> and <span class="ui">Paste</span>.</p>
+  <h3>Passwords are invisible</h3>
+  <p>When a command asks for your password, <strong>nothing appears as you type</strong>. Not even dots. It is working. Type the password and press <span class="ui">Enter</span>. If you get it wrong, it simply asks again.</p>
+  <h3>No news is good news</h3>
+  <p>Many commands print nothing at all when they succeed. <code>cd Documents</code> just gives you a new prompt. If something goes wrong, you'll get a message saying so.</p>
+  <div class="check" data-step="5">
+    <div><span class="tag">Check</span><p>You started <code>ping</code> and stopped it with <span class="ui">Ctrl</span> + <span class="ui">C</span>, and the prompt came back.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 6</p>
+  <h2>Ask the terminal for help</h2>
+  <p>Every command comes with its own instructions. There are two ways to read them:</p>
+<pre><span class="pr">$</span> ls --help     <span class="dim"># a quick summary, printed straight out</span>
+<span class="pr">$</span> man ls        <span class="dim"># the full manual page</span></pre>
+  <p>The manual fills the window and waits for you to read it. Scroll with the arrow keys or the space bar, and <strong>press <span class="ui">Q</span> to get out</strong>. That last part isn't written anywhere on the screen, which is why it catches everyone.</p>
+  <div class="predict">
+    <span class="tag">Experiment</span>
+    <p>Skim <code>ls --help</code> for an option that shows hidden files. Run <code>ls</code> with it. What appeared that wasn't there before, and what do the new names have in common?</p>
+  </div>
+  <details class="answer">
+    <summary>What you should find</summary>
+    <p>It's <code>ls -a</code>, for "all". The extra names all start with a dot, like <code>.bashrc</code>. On Linux, a name starting with a dot is hidden. These are mostly settings files, which is why they're kept out of the way.</p>
+  </details>
+  <div class="check" data-step="6">
+    <div><span class="tag">Check</span><p>You opened <code>man ls</code>, got out again with <span class="ui">Q</span>, and found the hidden files with <code>ls -a</code>.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">That's it</p>
+  <h2>What I'd want you to take away</h2>
+  <div class="takeaways">
+    <div class="take">
+      <h3>Read the prompt</h3>
+      <p>It tells you who you are, which computer you're on and where you are. Glance at it before every command.</p>
+    </div>
+    <div class="take">
+      <h3>Look before you change</h3>
+      <p><code>pwd</code>, <code>ls</code> and <code>whoami</code> can't break anything. Use them to check where you are before doing anything that can.</p>
+    </div>
+    <div class="take">
+      <h3>Let it type for you</h3>
+      <p><span class="ui">Tab</span> and <span class="ui">↑</span> save time, and they save typos. A name Tab finished for you is spelled correctly.</p>
+    </div>
+  </div>
+  <p style="margin-top:26px">Next on this site: securing Ubuntu, using everything here to lock down a newly installed machine. Stuck on a step, or found something wrong? <a href="contact.html">Tell me</a>. If a step here is unclear, that's my fault, and I'll fix it.</p>
+</section>
+
+</main>
+
+<section class="read-next">
+  <div class="wrap col">
+    <p class="tag">Read this next</p>
+    <a class="card" href="reclaim.html">
+      <h3>Saved from the scrap pile</h3>
+      <p>The 2015 desktop behind this guide: rescued, running Ubuntu, and now running a local AI model and characters that remember you.</p>
+      <span class="go">Read &rarr;</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">← Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="contact.html">Get in touch</a>
+    <span class="tag">© 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* ---------- step checks and progress meter ---------- */
+  var KEY='terminal-tutorial-steps';
+  var buttons=[].slice.call(document.querySelectorAll('.check .done'));
+  var saved={};
+  try{ saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){ saved={}; }
+  function update(){
+    var n=buttons.filter(function(b){return b.getAttribute('aria-pressed')==='true';}).length;
+    document.getElementById('fill').style.width=(n/buttons.length*100)+'%';
+    document.getElementById('progress-text').textContent=
+      n===buttons.length ? 'All 6 steps done. You can use a terminal.' : n+' of '+buttons.length+' steps done';
+  }
+  buttons.forEach(function(b){
+    var s=b.parentNode.getAttribute('data-step');
+    if(saved[s]){ b.setAttribute('aria-pressed','true'); b.textContent='Done ✓'; }
+    b.addEventListener('click',function(){
+      var on=b.getAttribute('aria-pressed')!=='true';
+      b.setAttribute('aria-pressed',on?'true':'false');
+      b.textContent=on?'Done ✓':'Done';
+      saved[s]=on;
+      try{ localStorage.setItem(KEY,JSON.stringify(saved)); }catch(e){}
+      update();
+    });
+  });
+  update();
+
+  /* ---------- prompt anatomy ---------- */
+  var PARTS={
+    user:'<b>iain</b> is <b>who</b> you are: the username you log in with. <code>whoami</code> prints it.',
+    at:'<b>@</b> just means "at", as in an email address: this user, at this computer.',
+    host:'<b>nix6</b> is <b>which computer</b> you are typing into: its hostname. It matters later, when you control one computer from another and both windows look the same. <code>hostname</code> prints it.',
+    colon:'<b>:</b> separates the computer from the folder. Nothing more.',
+    dir:'<b>~</b> is <b>where</b> you are. The squiggle (a tilde) is short for your home folder. Move into another folder and this part changes to show it.',
+    dollar:'<b>$</b> means you are an ordinary user, the safe default. If it ever shows <b>#</b> instead, you are the all-powerful admin account, called root. Slow down.'
+  };
+  var anat=[].slice.call(document.querySelectorAll('.anatomy button'));
+  var explain=document.getElementById('explain');
+  function show(part){
+    anat.forEach(function(b){ b.setAttribute('aria-pressed', b.getAttribute('data-part')===part?'true':'false'); });
+    explain.innerHTML=PARTS[part];
+  }
+  anat.forEach(function(b){ b.addEventListener('click',function(){ show(b.getAttribute('data-part')); }); });
+  show('user');
+
+  /* ---------- practice terminal ---------- */
+  var out=document.getElementById('out'), input=document.getElementById('cmd'), promptEl=document.getElementById('prompt');
+  var HOME=['Desktop','Documents','Downloads','Music','Pictures','Public','snap','Templates','Videos'];
+  var FS={
+    '~':{dirs:HOME, files:[], hidden:['.bash_history','.bash_logout','.bashrc','.cache','.config','.local','.profile']},
+    '~/Documents':{dirs:['recipes'], files:['notes.txt','cv.odt'], hidden:[]},
+    '~/Documents/recipes':{dirs:[], files:['flapjack.txt'], hidden:[]},
+    '~/Downloads':{dirs:[], files:['ubuntu-guide.pdf'], hidden:[]},
+    '~/Pictures':{dirs:[], files:['dog.jpg','holiday.jpg'], hidden:[]}
+  };
+  HOME.forEach(function(d){ if(!FS['~/'+d]) FS['~/'+d]={dirs:[],files:[],hidden:[]}; });
+  var FILES={
+    '~/Documents/notes.txt':'Shopping: milk, bread, tea bags.\nRemember: press Q to get out of man pages!',
+    '~/Documents/recipes/flapjack.txt':'Flapjack: 250g oats, 125g butter, 125g brown sugar, 3 tbsp golden syrup.\n180°C for 20 minutes.'
+  };
+  var cwd='~', history=[], hIndex=0, pinging=null, pingCount=0, tabPrimed='';
+
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function promptText(){ return 'jo@old-pc:'+cwd+'$ '; }
+  function print(html,cls){ var d=document.createElement('div'); if(cls) d.className=cls; d.innerHTML=html; out.appendChild(d); out.scrollTop=out.scrollHeight; }
+  function echoCmd(c){ print('<span class="pr">'+esc(promptText())+'</span>'+esc(c)); }
+  function setPrompt(){ promptEl.textContent=promptText(); }
+
+  function resolve(arg){
+    if(arg===undefined||arg===''||arg==='~') return '~';
+    if(arg==='/') return '/';
+    var parts=(arg.charAt(0)==='~' ? arg.replace(/^~\/?/,'') : arg).split('/').filter(Boolean);
+    var base = arg.charAt(0)==='~' ? ['~'] : cwd.split('/');
+    parts.forEach(function(p){
+      if(p==='.') return;
+      if(p==='..'){ if(base.length>1) base.pop(); return; }
+      base.push(p);
+    });
+    return base.join('/');
+  }
+  function listing(path, all){
+    var n=FS[path]; if(!n) return null;
+    var items=[];
+    n.dirs.forEach(function(d){items.push({d:d});});
+    n.files.forEach(function(f){items.push(f);});
+    items.sort(function(a,b){
+      var x=(typeof a==='object'?a.d:a).toLowerCase(), y=(typeof b==='object'?b.d:b).toLowerCase();
+      return x<y?-1:x>y?1:0;
+    });
+    if(all) items=['.','..'].concat(n.hidden,items);
+    return items.map(function(x){ return typeof x==='object' ? '<span class="dir">'+esc(x.d)+'</span>' : esc(x); }).join('  ');
+  }
+
+  var HELP=[
+    'Commands this practice terminal understands:',
+    '  whoami      who am I logged in as?',
+    '  hostname    what is this computer called?',
+    '  pwd         where am I?',
+    '  ls          what is in this folder? (try ls -a too)',
+    '  cd NAME     go into a folder   cd ..  up one   cd  home',
+    '  cat FILE    show what is in a text file',
+    '  ping NAME   keep checking a computer answers (stop it with Ctrl + C)',
+    '  echo TEXT   print TEXT back',
+    '  clear       wipe the screen',
+    'Keys: Tab finishes names, ↑ brings back old commands.'
+  ].join('\n');
+
+  function run(line){
+    var c=line.trim(); if(!c) return;
+    history.push(c); hIndex=history.length;
+    var parts=c.split(/\s+/), cmd=parts[0], arg=parts.slice(1).join(' ');
+    switch(cmd){
+      case 'help': print(esc(HELP),'note'); break;
+      case 'whoami': print('jo'); break;
+      case 'hostname': print('old-pc'); break;
+      case 'pwd': print(cwd==='~' ? '/home/jo' : '/home/jo'+cwd.slice(1)); break;
+      case 'clear': out.innerHTML=''; break;
+      case 'echo': print(esc(arg)); break;
+      case 'ls': {
+        var flags=parts.filter(function(p){return p.charAt(0)==='-';});
+        var target=parts.slice(1).filter(function(p){return p.charAt(0)!=='-';})[0];
+        var all=flags.some(function(f){return f.indexOf('a')>-1;});
+        if(flags.indexOf('--help')>-1){ print(esc('Usage: ls [OPTION]... [FILE]...\nList information about the FILEs (the current directory by default).\n\n  -a, --all       do not ignore entries starting with .\n  -l              use a long listing format\n  -h              with -l, print sizes like 1K 234M 2G\n\nThis practice terminal only knows -a. Try: ls -a'),'note'); break; }
+        var path=target ? resolve(target) : cwd;
+        var l=listing(path, all);
+        if(l===null){ print(esc("ls: cannot access '"+target+"': No such file or directory"),'err'); }
+        else if(l) print(l);
+        break;
+      }
+      case 'cd': {
+        var p=resolve(arg);
+        if(FS[p]){ cwd=p; }
+        else if(FILES[p]){ print(esc('bash: cd: '+arg+': Not a directory'),'err'); }
+        else {
+          var parent=cwd, name=arg.split('/').pop();
+          var near=(FS[parent]||{dirs:[]}).dirs.filter(function(d){return d.toLowerCase()===name.toLowerCase();})[0];
+          print(esc('bash: cd: '+arg+': No such file or directory'),'err');
+          if(near) print(esc('(Capitals matter. Did you mean cd '+near+' ?)'),'note');
+        }
+        setPrompt(); break;
+      }
+      case 'cat': {
+        var f=resolve(arg);
+        if(!arg) print('cat: which file? Try: cat notes.txt (from inside Documents)','note');
+        else if(FILES[f]) print(esc(FILES[f]));
+        else if(FS[f]) print(esc('cat: '+arg+': Is a directory'),'err');
+        else print(esc('cat: '+arg+': No such file or directory'),'err');
+        break;
+      }
+      case 'man':
+        print(esc('(In a real terminal the manual would fill the window now. Scroll with the arrow keys, and press Q to get out.)\nLS(1)  —  list directory contents.  Try:  ls --help'),'note');
+        break;
+      case 'ping': {
+        var host=arg||'bbc.co.uk';
+        print(esc('PING '+host+' 56(84) bytes of data.'));
+        pingCount=0;
+        input.disabled=true;
+        pinging=setInterval(function(){
+          pingCount++;
+          var ms=(11+Math.random()*6).toFixed(1);
+          print(esc('64 bytes from '+host+': icmp_seq='+pingCount+' ttl=57 time='+ms+' ms'));
+          if(pingCount===4) print('(It will keep going forever. Press Ctrl + C to stop it.)','note');
+        },1000);
+        break;
+      }
+      case 'sudo':
+        print('This practice terminal has no admin account. Commands starting with sudo change your system, so they get their own guide: securing Ubuntu.','note');
+        break;
+      default:
+        print(esc(cmd+': command not found'),'err');
+        if(/^[A-Z]/.test(cmd)) print('(Commands are lower case. Try: '+esc(cmd.toLowerCase())+')','note');
+        else print('Type help to see what this practice terminal understands.','note');
+    }
+  }
+
+  function stopPing(){
+    if(!pinging) return false;
+    clearInterval(pinging); pinging=null;
+    print('^C');
+    print(esc('--- '+'ping statistics ---\n'+pingCount+' packets transmitted, '+pingCount+' received, 0% packet loss'));
+    input.disabled=false; input.focus();
+    return true;
+  }
+
+  function complete(){
+    var v=input.value, m=v.match(/^(\S+\s+)(.*)$/);
+    if(!m) return;
+    var head=m[1], word=m[2];
+    var slash=word.lastIndexOf('/');
+    var dirPart=slash>-1?word.slice(0,slash+1):'', stem=slash>-1?word.slice(slash+1):word;
+    var base=resolve(dirPart||'.');
+    if(dirPart==='' ) base=cwd;
+    var n=FS[base]; if(!n) return;
+    var dirsOnly=/^cd\s/.test(v);
+    var cands=n.dirs.map(function(d){return d+'/';}).concat(dirsOnly?[]:n.files)
+      .filter(function(x){return x.indexOf(stem)===0;});
+    if(cands.length===1){ input.value=head+dirPart+cands[0]; tabPrimed=''; }
+    else if(cands.length>1){
+      var pre=cands.reduce(function(a,b){var i=0;while(i<a.length&&a[i]===b[i])i++;return a.slice(0,i);});
+      if(pre.length>stem.length){ input.value=head+dirPart+pre; tabPrimed=''; }
+      else if(tabPrimed===v){ echoCmd(v); print(cands.map(esc).join('  ')); tabPrimed=''; }
+      else tabPrimed=v;
+    }
+  }
+
+  input.addEventListener('keydown',function(e){
+    if(e.key==='Enter'){ var v=input.value; echoCmd(v); input.value=''; tabPrimed=''; run(v); }
+    else if(e.key==='Tab'){ e.preventDefault(); complete(); }
+    else if(e.key==='ArrowUp'){ e.preventDefault(); if(hIndex>0){ hIndex--; input.value=history[hIndex]; } }
+    else if(e.key==='ArrowDown'){ e.preventDefault(); if(hIndex<history.length){ hIndex++; input.value=history[hIndex]||''; } }
+    else if((e.key==='c'||e.key==='C')&&e.ctrlKey&&!e.shiftKey&&input.selectionStart===input.selectionEnd){
+      e.preventDefault(); if(!stopPing()){ echoCmd(input.value+'^C'); input.value=''; }
+    }
+  });
+  document.addEventListener('keydown',function(e){
+    if(pinging && e.ctrlKey && (e.key==='c'||e.key==='C')){ e.preventDefault(); stopPing(); }
+  });
+  document.getElementById('k-tab').addEventListener('click',function(){ complete(); input.focus(); });
+  document.getElementById('k-up').addEventListener('click',function(){ if(hIndex>0){ hIndex--; input.value=history[hIndex]; } input.focus(); });
+  document.getElementById('k-ctrlc').addEventListener('click',function(){ if(!stopPing()){ echoCmd(input.value+'^C'); input.value=''; input.focus(); } });
+  document.getElementById('k-clear').addEventListener('click',function(){ out.innerHTML=''; input.focus(); });
+  document.getElementById('out').addEventListener('click',function(){ if(!input.disabled && !window.getSelection().toString()) input.focus(); });
+
+  print('Welcome to the practice terminal. Nothing here can break anything.','note');
+  print('Type help and press Enter to begin.','note');
+  setPrompt();
+})();
+</script>
+
+</body>
+</html>
