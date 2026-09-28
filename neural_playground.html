@@ -93,99 +93,71 @@ tailwind.config = {
     <div class="w-full max-w-7xl mx-auto p-6 gradient-bg min-h-screen">
         <!-- Header -->
         <div class="mb-8 text-center">
-            <div class="flex items-center justify-center gap-3 mb-4">
-                <div class="text-blue-600 text-4xl"></div>
-                <h1 class="text-3xl font-bold text-gray-800">S.M.A.R.T Neural Network Playground</h1>
-            </div>
+            <h1 class="text-3xl font-bold text-gray-800 mb-4">S.M.A.R.T Neural Network Playground</h1>
             <p class="text-lg text-gray-600 max-w-3xl mx-auto mb-4">
-                <strong>See Machine Adaptive Reasoning Training</strong> - Watch neural networks learn in real-time!
-</p>
-            
+                <strong>See Machine Adaptive Reasoning Training</strong>: one neuron, five houses and a hidden pattern.
+                Can you tune it to find the answer?
+            </p>
+
             <!-- Project Links -->
             <div class="flex flex-wrap items-center justify-center gap-4 mb-6">
                 <a href="index.html"
-                   class="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-900 text-white rounded-lg font-semibold transition-all"> Home Page ↗
-</a>
+                   class="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-900 text-white rounded-lg font-semibold transition-all">Home Page ↗</a>
                 <a href="./smart-see-machine-adaptive-reasoning-training.ipynb" download
-                   class="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-all"> Download Notebook ⬇
-</a>
-                <a href="https://colab.research.google.com/github/ihoggan/S.M.A.R.T./blob/main/smart-see-machine-adaptive-reasoning-training.ipynb" target="_blank"
-                   class="flex items-center gap-2 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold transition-all"> Open with Colab ↗
-</a>
-                <a href="https://github.com/sponsors/ihoggan" target="_blank"
-                   class="flex items-center gap-2 px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white rounded-lg font-semibold transition-all"> Support Project ↗
-</a>
+                   class="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-all">Download Notebook ⬇</a>
+                <a href="https://colab.research.google.com/github/IHoggan/ihoggan.github.io/blob/main/smart-see-machine-adaptive-reasoning-training.ipynb" target="_blank" rel="noopener"
+                   class="flex items-center gap-2 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold transition-all">Open with Colab ↗</a>
+                <a href="https://github.com/sponsors/ihoggan" target="_blank" rel="noopener"
+                   class="flex items-center gap-2 px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white rounded-lg font-semibold transition-all">Support Project ↗</a>
             </div>
         </div>
 
         <!-- Instructions Panel -->
         <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl shadow-lg p-8 mb-8 border-l-4 border-blue-500">
-            <div class="flex items-start gap-4">
-                <div class="text-3xl"></div>
-                <div class="flex-1">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-4">Welcome to Neural Network Training!</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <h3 class="text-lg font-semibold text-blue-700 mb-3">What You're Seeing</h3>
-                            <ul class="space-y-2 text-gray-700">
-                                <li class="flex items-start gap-2">
-                                    <span class="text-blue-500 font-bold">•</span>
-                                    <span>A single neuron learning to predict house prices from square footage</span>
-</li>
-                                <li class="flex items-start gap-2">
-                                    <span class="text-green-500 font-bold">•</span>
-                                    <span>Real gradient descent happening in your browser</span>
-</li>
-                                <li class="flex items-start gap-2">
-                                    <span class="text-purple-500 font-bold">•</span>
-                                    <span>The neuron discovers the pattern: <strong>Price = $200/sqft × sqft + $50k</strong></span>
-</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-semibold text-green-700 mb-3">How to Use</h3>
-                            <ol class="space-y-2 text-gray-700">
-                                <li class="flex items-start gap-2">
-                                    <span class="bg-green-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">1</span>
-                                    <span>Click <strong>"Reset Neuron"</strong> then <strong>"Start Training"</strong> to watch the neural network learn</span>
-</li>
-                                <li class="flex items-start gap-2">
-                                    <span class="bg-blue-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">2</span>
-                                    <span>Watch accuracy climb and parameters converge to target values</span>
-</li>
-                                <li class="flex items-start gap-2">
-                                    <span class="bg-purple-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">3</span>
-                                    <span>Experiment with different <strong>learning rates</strong> to see what happens!</span>
-</li>
-                            </ol>
-                        </div>
-                    </div>
-                    <div class="mt-6 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-                        <div class="flex items-center gap-2 mb-2">
-                            <span class="text-xl"></span>
-                            <span class="font-semibold text-yellow-800">Pro Tip:</span>
-                        </div>
-                        <p class="text-yellow-700 text-sm"> Try increasing the learning rate to see what happens when neural networks "explode"! 
-                            This demonstrates why finding the right learning rate is crucial in AI training.
-</p>
-                    </div>
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">How to use the playground</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-lg font-semibold text-blue-700 mb-3">What you're looking at</h3>
+                    <ul class="space-y-2 text-gray-700">
+                        <li class="flex items-start gap-2"><span class="text-blue-500 font-bold">•</span>
+                            <span>A single neuron that predicts a house's price from its size.</span></li>
+                        <li class="flex items-start gap-2"><span class="text-green-500 font-bold">•</span>
+                            <span>Five example houses. Their prices follow a hidden pattern.</span></li>
+                        <li class="flex items-start gap-2"><span class="text-purple-500 font-bold">•</span>
+                            <span>Real gradient descent, running in your browser. Nothing is faked.</span></li>
+                    </ul>
                 </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-green-700 mb-3">What to do</h3>
+                    <ol class="space-y-2 text-gray-700">
+                        <li class="flex items-start gap-2"><span class="bg-green-500 text-white rounded-full w-5 h-5 flex-shrink-0 flex items-center justify-center text-xs font-bold">1</span>
+                            <span>Press <strong>Start training</strong> and watch the neuron's guesses change.</span></li>
+                        <li class="flex items-start gap-2"><span class="bg-blue-500 text-white rounded-full w-5 h-5 flex-shrink-0 flex items-center justify-center text-xs font-bold">2</span>
+                            <span>Move the <strong>learning rate</strong> slider. <strong>Reset</strong> gives the neuron a fresh random start.</span></li>
+                        <li class="flex items-start gap-2"><span class="bg-purple-500 text-white rounded-full w-5 h-5 flex-shrink-0 flex items-center justify-center text-xs font-bold">3</span>
+                            <span>Find the fastest learning rate that still works. Then find where it breaks.</span></li>
+                    </ol>
+                </div>
+            </div>
+            <div class="mt-6 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+                <p class="font-semibold text-yellow-800 mb-1">Before you press Start, make a prediction</p>
+                <p class="text-yellow-700 text-sm">At the starting learning rate of 0.1, will the neuron find the pattern within 200 epochs?
+                    What happens if you make the learning rate five times bigger? Write your guesses down, then test them.</p>
             </div>
         </div>
 
         <!-- Neural Network Workflow Visualization -->
         <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
             <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">How This Neural Network Works</h2>
-            
+
             <div class="relative">
                 <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-300 hidden lg:block"></div>
-                
+
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-4 lg:gap-2">
-                    
+
                     <div class="relative bg-blue-50 rounded-lg p-4 border-2 border-blue-200">
                         <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">1</div>
                         <div class="text-center mt-2">
-                            <div class="text-2xl mb-2"></div>
                             <div class="font-bold text-blue-700 text-sm">Input Feature</div>
                             <div class="text-xs text-gray-600 mt-1">Square Feet</div>
                             <div class="text-lg font-bold text-blue-600 mt-1" id="workflow-input">1500</div>
@@ -195,10 +167,9 @@ tailwind.config = {
                     <div class="relative bg-green-50 rounded-lg p-4 border-2 border-green-200">
                         <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">2</div>
                         <div class="text-center mt-2">
-                            <div class="text-2xl mb-2"></div>
                             <div class="font-bold text-green-700 text-sm">Weight (W)</div>
                             <div class="text-xs text-gray-600 mt-1">Price per SqFt</div>
-                            <div class="text-lg font-bold text-green-600 mt-1" id="workflow-weight">$100</div>
+                            <div class="text-lg font-bold text-green-600 mt-1" id="workflow-weight">$0</div>
                         </div>
                     </div>
 
@@ -207,36 +178,33 @@ tailwind.config = {
                     </div>
 
                     <div class="relative bg-purple-50 rounded-lg p-4 border-2 border-purple-200">
-                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-purple-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">4</div>
+                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-purple-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">3</div>
                         <div class="text-center mt-2">
-                            <div class="text-2xl mb-2"></div>
                             <div class="font-bold text-purple-700 text-sm">Bias (B)</div>
                             <div class="text-xs text-gray-600 mt-1">Base Price</div>
-                            <div class="text-lg font-bold text-purple-600 mt-1" id="workflow-bias">$50k</div>
+                            <div class="text-lg font-bold text-purple-600 mt-1" id="workflow-bias">$0k</div>
                         </div>
                     </div>
-                    
+
                     <div class="relative flex items-center justify-center">
                         <div class="bg-gray-100 rounded-full w-10 h-10 flex items-center justify-center text-xl font-bold text-gray-700">+</div>
                     </div>
 
                     <div class="relative bg-orange-50 rounded-lg p-4 border-2 border-orange-200">
-                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-orange-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">6</div>
+                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-orange-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">4</div>
                         <div class="text-center mt-2">
-                            <div class="text-2xl mb-2"></div>
                             <div class="font-bold text-orange-700 text-sm">Prediction (Y')</div>
                             <div class="text-xs text-gray-600 mt-1">Estimated Price</div>
-                            <div class="text-lg font-bold text-orange-600 mt-1" id="workflow-prediction">$200k</div>
+                            <div class="text-lg font-bold text-orange-600 mt-1" id="workflow-prediction">$0k</div>
                         </div>
                     </div>
-                    
+
                     <div class="relative bg-red-50 rounded-lg p-4 border-2 border-red-200">
-                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">7</div>
+                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">5</div>
                         <div class="text-center mt-2">
-                            <div class="text-2xl mb-2"></div>
                             <div class="font-bold text-red-700 text-sm">Error (E)</div>
                             <div class="text-xs text-gray-600 mt-1">Actual - Prediction</div>
-                            <div class="text-lg font-bold text-red-600 mt-1" id="workflow-error">-$50k</div>
+                            <div class="text-lg font-bold text-red-600 mt-1" id="workflow-error">$0k</div>
                         </div>
                     </div>
                 </div>
@@ -244,12 +212,7 @@ tailwind.config = {
 
             <div class="mt-8 text-center bg-gray-50 p-4 rounded-lg border border-gray-200">
                 <p class="text-xl font-semibold text-gray-700 mb-2">Formula: Y' = (Input × W) + B</p>
-                <p class="text-xl font-mono text-gray-800" id="workflow-formula">
-                    <span class="text-orange-600 font-bold">$200k</span> = 
-                    <span class="text-blue-600 font-bold">1500</span> × 
-                    <span class="text-green-600 font-bold">$100</span> + 
-                    <span class="text-purple-600 font-bold">$50k</span>
-</p>
+                <p class="text-xl font-mono text-gray-800" id="workflow-formula"></p>
             </div>
         </div>
 
@@ -257,45 +220,31 @@ tailwind.config = {
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
             <div class="flex flex-wrap items-center justify-between gap-4">
                 <div class="flex items-center gap-4">
-                    <button id="trainBtn" class="flex items-center gap-2 px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold transition-all">
-                         Start Training
-</button>
-                    <button id="resetBtn" class="flex items-center gap-2 px-4 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg font-semibold transition-all"> Reset Neuron
-</button>
+                    <button id="trainBtn" class="flex items-center gap-2 px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold transition-all">Start Training</button>
+                    <button id="resetBtn" class="flex items-center gap-2 px-4 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg font-semibold transition-all">Reset Neuron</button>
                 </div>
-                
-                <div class="flex items-center gap-4">
-                    <div class="flex items-center gap-2 px-3 py-1 bg-gray-100 rounded-full">
-                         <label class="text-sm font-medium text-gray-700">Learning Rate:</label>
-                        <span id="rateStatus" class="font-bold text-sm text-green-600">SAFE</span>
-                    </div>
-                    <select id="learningRate" class="px-3 py-1 border border-gray-300 rounded">
-                        <option value="0.0000001">0.0000001 (Safe & Stable)</option>
-                        <option value="0.000001">0.000001 (Moderate)</option>
-                        <option value="0.00001">0.00001 (Fast)</option>
-                        <option value="0.0001">0.0001 ( May Explode!)</option>
-                        <option value="0.001">0.001 ( Definitely Explodes!)</option>
-                    </select>
+
+                <div class="flex items-center gap-3 flex-1 min-w-[16rem] max-w-md">
+                    <label for="learningRate" class="text-sm font-medium text-gray-700 whitespace-nowrap">Learning rate</label>
+                    <input id="learningRate" type="range" min="-3" max="0" step="0.01" value="-1" class="flex-1" style="accent-color:#20303E">
+                    <span id="rateValue" class="font-mono font-bold text-sm text-gray-800 w-14 text-right">0.10</span>
                 </div>
             </div>
+            <p id="trainMessage" class="text-sm text-gray-600 mt-3"></p>
         </div>
 
         <!-- Status Dashboard -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <div class="bg-white rounded-xl shadow-lg p-6">
-                <div class="flex items-center gap-3 mb-2">
-                    <span></span>
-                    <h3 class="font-bold text-gray-800">Training Progress</h3>
-                </div>
+                <h3 class="font-bold text-gray-800 mb-2">Training Progress</h3>
                 <div id="epochValue" class="text-2xl font-bold text-blue-600">0</div>
                 <div class="text-sm text-gray-600">epochs completed</div>
             </div>
 
             <div class="bg-white rounded-xl shadow-lg p-6">
                 <div class="flex items-center gap-3 mb-2">
-                    <span></span>
                     <h3 class="font-bold text-gray-800">Accuracy</h3>
-                    <div id="explosionWarning" class="hidden text-red-600 animate-bounce"> EXPLODING!</div>
+                    <div id="explosionWarning" class="hidden text-red-600 font-bold text-sm">BLOWN UP</div>
                 </div>
                 <div id="accuracyValue" class="text-2xl font-bold text-green-600">0.0%</div>
                 <div class="text-sm text-gray-600">prediction accuracy</div>
@@ -304,15 +253,15 @@ tailwind.config = {
             <div class="bg-white rounded-xl shadow-lg p-6">
                 <h3 class="font-bold text-gray-800 mb-2">Price per Sqft</h3>
                 <div id="priceValue" class="text-xl font-bold text-purple-600">$0</div>
-                <div class="text-xs text-gray-600">Target: $200</div>
-                <div id="priceError" class="text-xs text-red-500">Error: $0</div>
+                <div id="priceTarget" class="text-xs text-gray-600">Target: ?</div>
+                <div id="priceError" class="text-xs text-red-500">Error: ?</div>
             </div>
 
             <div class="bg-white rounded-xl shadow-lg p-6">
                 <h3 class="font-bold text-gray-800 mb-2">Base Price</h3>
                 <div id="baseValue" class="text-xl font-bold text-purple-600">$0k</div>
-                <div class="text-xs text-gray-600">Target: $50k</div>
-                <div id="baseError" class="text-xs text-red-500">Error: $0k</div>
+                <div id="baseTarget" class="text-xs text-gray-600">Target: ?</div>
+                <div id="baseError" class="text-xs text-red-500">Error: ?</div>
             </div>
         </div>
 
@@ -324,7 +273,8 @@ tailwind.config = {
 
         <!-- Current Predictions -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <h3 class="text-xl font-bold text-gray-800 mb-4">Current Predictions</h3>
+            <h3 class="text-xl font-bold text-gray-800 mb-2">Current Predictions</h3>
+            <p class="text-sm text-gray-600 mb-4">These are the five houses the neuron learns from. Can you spot the pattern in their prices before it does?</p>
             <div id="predictions" class="space-y-3">
                 <!-- Will be populated by JavaScript -->
             </div>
@@ -336,39 +286,40 @@ tailwind.config = {
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <h4 class="font-bold text-green-600 mb-2">The Hidden Pattern</h4>
-                    <div class="bg-green-50 p-4 rounded-lg">
+                    <p class="text-sm text-gray-600 mb-3">Every price follows a rule of the form <strong>price = (a × square feet) + b</strong>.
+                        The neuron's job is to find a and b. Work them out yourself if you can, then check.</p>
+                    <button id="revealBtn" class="px-4 py-2 bg-gray-800 hover:bg-gray-900 text-white rounded-lg font-semibold text-sm transition-all">Reveal the pattern</button>
+                    <div id="patternBox" class="hidden bg-green-50 p-4 rounded-lg mt-3">
                         <div class="font-mono text-lg text-center">
                             <strong>House Price = $200/sqft × Square Feet + $50,000</strong>
                         </div>
                     </div>
-                    <p class="text-sm text-gray-600 mt-2"> This is the secret relationship our neural network must discover!
-</p>
                 </div>
-                
+
                 <div>
                     <h4 class="font-bold text-blue-600 mb-2">Current Performance</h4>
                     <div class="bg-blue-50 p-4 rounded-lg">
                         <div class="text-sm">
-                            <div>Price/sqft: <strong id="currentPrice">$0</strong> (target: $200)</div>
-                            <div>Base price: <strong id="currentBase">$0k</strong> (target: $50k)</div>
+                            <div>Price/sqft: <strong id="currentPrice">$0</strong></div>
+                            <div>Base price: <strong id="currentBase">$0k</strong></div>
                             <div>Accuracy: <strong id="currentAccuracy">0.0%</strong></div>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <div class="mt-6 p-4 bg-yellow-50 rounded-lg">
                 <p class="text-sm text-gray-700">
-                    <strong>Your Mission:</strong> Experiment with different learning rates to help the neural network 
-                    discover the hidden relationship. Watch what happens when you use learning rates that are too high!
-</p>
+                    <strong>Your mission:</strong> find the learning rate that reaches the pattern in the fewest epochs.
+                    Then find the smallest learning rate that blows it up. How far apart are they?
+                </p>
             </div>
         </div>
 
         <!-- Mathematical Explanation Section -->
         <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
             <h3 class="text-xl font-bold text-gray-800 mb-6">Understanding the Mathematics</h3>
-            
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
                     <h4 class="font-bold text-lg text-blue-600 mb-3">The Prediction Formula</h4>
@@ -376,64 +327,76 @@ tailwind.config = {
                         &nbsp;&nbsp;price_per_sqft × square_feet + <br>
                         &nbsp;&nbsp;base_neighborhood_price
                     </div>
-                    <p class="text-gray-600 mt-3"> Our neuron learns two numbers: how much each square foot adds to the price, 
-                        and what the base price is for any house in this neighborhood.
-</p>
+                    <p class="text-gray-600 mt-3">Our neuron learns two numbers: how much each square foot adds to the price,
+                        and what the base price is for any house in this neighborhood.</p>
                 </div>
-                
+
                 <div>
                     <h4 class="font-bold text-lg text-green-600 mb-3">How Learning Works</h4>
-                    <div class="bg-green-50 p-4 rounded-lg font-mono text-sm"> error = actual_price - predicted_price<br><br> price_per_sqft += <br>
-                        &nbsp;&nbsp;learning_rate × error × square_feet<br><br> base_price += <br>
+                    <div class="bg-green-50 p-4 rounded-lg font-mono text-sm"> error = actual_price - predicted_price<br><br>
+                        size = square_feet ÷ 1000<br><br>
+                        price_per_1000sqft += <br>
+                        &nbsp;&nbsp;learning_rate × error × size<br><br> base_price += <br>
                         &nbsp;&nbsp;learning_rate × error
                     </div>
-                    <p class="text-gray-600 mt-3"> When predictions are wrong, the neuron adjusts its parameters to reduce the error. 
-                        Bigger houses cause bigger adjustments to the price_per_sqft parameter.
-</p>
+                    <p class="text-gray-600 mt-3">Each epoch, the neuron averages these corrections over all five houses.
+                        Bigger houses push harder on the price per square foot.</p>
                 </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                <p class="text-sm text-gray-700"><strong>Why divide by 1000?</strong> With raw square feet (1,500 rather than 1.5),
+                    the price per square foot gets pushed millions of times harder than the base price. Any single learning rate is
+                    then far too big for one and far too small for the other: training either explodes or the base price barely moves.
+                    Scaling the input so both numbers learn at a similar pace is called <em>feature scaling</em>, and it gets its own
+                    page later in this series.</p>
             </div>
 
             <div class="mt-8 p-6 bg-gray-50 rounded-lg">
                 <h4 class="font-bold text-lg text-purple-600 mb-3">The Learning Process Explained</h4>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                     <div class="text-center">
-                        <div class="text-2xl mb-2"></div>
                         <div class="font-semibold">1. Random Start</div>
-                        <div class="text-gray-600">Neural network begins with random parameter values</div>
+                        <div class="text-gray-600">The neuron begins with random guesses: $0 to $100 per square foot, and a $0 to $150k base price</div>
                     </div>
                     <div class="text-center">
-                        <div class="text-2xl mb-2"></div>
                         <div class="font-semibold">2. Calculate Error</div>
-                        <div class="text-gray-600">Compare predictions with actual house prices</div>
+                        <div class="text-gray-600">Compare its predictions with the actual house prices</div>
                     </div>
                     <div class="text-center">
-                        <div class="text-2xl mb-2"></div>
                         <div class="font-semibold">3. Adjust Parameters</div>
-                        <div class="text-gray-600">Use gradients to improve predictions</div>
+                        <div class="text-gray-600">Nudge both numbers in the direction that shrinks the error</div>
                     </div>
                 </div>
-                
-                <div class="mt-6 p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-400">
-                    <p class="text-sm text-gray-700">
-                        <strong>Key Insight:</strong> The learning rate controls how big steps the neural network takes. 
-                        Too small = slow learning. Too big = parameters explode! Finding the right balance is crucial 
-                        for successful AI training.
-</p>
-                </div>
+
+                <details class="mt-6 p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-400">
+                    <summary class="text-sm font-semibold text-gray-800 cursor-pointer">Done experimenting? What was going on</summary>
+                    <p class="text-sm text-gray-700 mt-3">
+                        The learning rate is the size of each correction. Too small and the neuron crawls, and the base price is always
+                        the slowest number to settle. Too big and each correction overshoots by more than the last, so the guesses swing
+                        wider and wider until the numbers run away. The gap between the fastest rate that works and the first one that
+                        blows up is much narrower than most people guess.
+                    </p>
+                </details>
             </div>
         </div>
     </div>
 
     <script>
         // Neural Network Implementation
+        // Square feet are scaled to thousands for training (see "Why divide by 1000?").
+        // w is dollars per 1000 sqft; the page shows it as dollars per sqft.
+        const EPOCHS_PER_RUN = 200;
+        const BLOWUP_RMSE = 1e7;
+
         let isTraining = false;
+        let exploded = false;
+        let revealed = false;
         let currentEpoch = 0;
+        let runTarget = EPOCHS_PER_RUN;
         let learningData = [];
-        let neuronParams = {
-            pricePerSqft: Math.random() * 100 + 150,
-            basePrice: Math.random() * 50000 + 25000
-        };
-        let learningRate = 0.0000001;
+        let neuronParams = randomStart();
+        let learningRate = 0.1;
         let trainingInterval;
 
         const houseData = [
@@ -447,98 +410,97 @@ tailwind.config = {
         const TRUE_PRICE_PER_SQFT = 200;
         const TRUE_BASE_PRICE = 50000;
 
-        function predictPrice(sqft, params = neuronParams) {
-            return params.pricePerSqft * sqft + params.basePrice;
+        function randomStart() {
+            return {
+                w: Math.random() * 100000,          // $0-100 per sqft
+                basePrice: Math.random() * 150000   // $0-150k
+            };
         }
 
-        function calculateError(params = neuronParams) {
+        function pricePerSqft() { return neuronParams.w / 1000; }
+
+        function predictPrice(sqft) {
+            return neuronParams.w * (sqft / 1000) + neuronParams.basePrice;
+        }
+
+        function calculateError() {
             let totalError = 0;
             houseData.forEach(house => {
-                const prediction = predictPrice(house.sqft, params);
-                const error = house.price - prediction;
+                const error = house.price - predictPrice(house.sqft);
                 totalError += error * error;
             });
             return Math.sqrt(totalError / houseData.length);
         }
 
-        function calculateAccuracy(params = neuronParams) {
-            const error = calculateError(params);
+        function calculateAccuracy() {
+            const error = calculateError();
+            if (!isFinite(error)) return 0;
             return Math.max(0, 100 - (error / 100000) * 100);
         }
 
+        // Money formatting that survives a blow-up
+        function money(v, inThousands) {
+            if (!isFinite(v) || Math.abs(v) >= 1e9) return (v < 0 ? '-' : '') + '$huge';
+            const sign = v < 0 ? '-' : '';
+            const a = Math.abs(v);
+            return inThousands ? sign + '$' + Math.round(a / 1000).toLocaleString() + 'k'
+                               : sign + '$' + Math.round(a).toLocaleString();
+        }
+
         function updateWorkflowVisualization() {
-            // Use the middle house (1500 sqft) as example for workflow
             const exampleHouse = houseData[1]; // 1500 sqft, $350k
             const prediction = predictPrice(exampleHouse.sqft);
             const error = exampleHouse.price - prediction;
 
-            // Update workflow elements
             document.getElementById('workflow-input').textContent = exampleHouse.sqft;
-            document.getElementById('workflow-weight').textContent = '$' + Math.round(neuronParams.pricePerSqft);
-            document.getElementById('workflow-bias').textContent = '$' + Math.round(neuronParams.basePrice / 1000) + 'k';
-            document.getElementById('workflow-prediction').textContent = '$' + Math.round(prediction / 1000) + 'k';
-            document.getElementById('workflow-error').textContent = (error >= 0 ? '+' : '') + '$' + Math.round(error / 1000) + 'k';
+            document.getElementById('workflow-weight').textContent = money(pricePerSqft());
+            document.getElementById('workflow-bias').textContent = money(neuronParams.basePrice, true);
+            document.getElementById('workflow-prediction').textContent = money(prediction, true);
+            document.getElementById('workflow-error').textContent = (error >= 0 ? '+' : '') + money(error, true);
 
-            // Update formula
             document.getElementById('workflow-formula').innerHTML = `
-                <span class="text-orange-600 font-bold">$${Math.round(prediction / 1000)}k</span> = 
-                <span class="text-blue-600 font-bold">${exampleHouse.sqft}</span> × 
-                <span class="text-green-600 font-bold">$${Math.round(neuronParams.pricePerSqft)}</span> + 
-                <span class="text-purple-600 font-bold">$${Math.round(neuronParams.basePrice / 1000)}k</span>
+                <span class="text-orange-600 font-bold">${money(prediction, true)}</span> =
+                <span class="text-blue-600 font-bold">${exampleHouse.sqft}</span> ×
+                <span class="text-green-600 font-bold">${money(pricePerSqft())}</span> +
+                <span class="text-purple-600 font-bold">${money(neuronParams.basePrice, true)}</span>
             `;
         }
 
         function trainOneEpoch() {
-            let totalPriceGradient = 0;
+            let totalWGradient = 0;
             let totalBiasGradient = 0;
-            
+
             houseData.forEach(house => {
-                const prediction = predictPrice(house.sqft);
-                const error = house.price - prediction;
-                
-                totalPriceGradient += error * house.sqft;
+                const size = house.sqft / 1000;
+                const error = house.price - predictPrice(house.sqft);
+                totalWGradient += error * size;
                 totalBiasGradient += error;
             });
-            
-            const avgPriceGradient = totalPriceGradient / houseData.length;
-            const avgBiasGradient = totalBiasGradient / houseData.length;
-            
-            // Check for explosion
-            const gradientMagnitude = Math.abs(avgPriceGradient) + Math.abs(avgBiasGradient);
-            const isExploding = gradientMagnitude > 100000 || Math.abs(neuronParams.pricePerSqft) > 1000;
-            
-            if (isExploding) {
-                document.getElementById('explosionWarning').classList.remove('hidden');
-                setTimeout(() => {
-                    document.getElementById('explosionWarning').classList.add('hidden');
-                }, 2000);
-            }
-            
-            // Update parameters
-            neuronParams.pricePerSqft += learningRate * avgPriceGradient;
-            neuronParams.basePrice += learningRate * avgBiasGradient;
-            
-            // Safety bounds
-            neuronParams.pricePerSqft = Math.max(-10000, Math.min(10000, neuronParams.pricePerSqft));
-            neuronParams.basePrice = Math.max(-10000000, Math.min(10000000, neuronParams.basePrice));
+
+            neuronParams.w += learningRate * totalWGradient / houseData.length;
+            neuronParams.basePrice += learningRate * totalBiasGradient / houseData.length;
         }
 
         function updateDisplay() {
             const accuracy = calculateAccuracy();
-            const priceError = Math.abs(neuronParams.pricePerSqft - TRUE_PRICE_PER_SQFT);
+            const priceError = Math.abs(pricePerSqft() - TRUE_PRICE_PER_SQFT);
             const baseError = Math.abs(neuronParams.basePrice - TRUE_BASE_PRICE);
 
             document.getElementById('epochValue').textContent = currentEpoch;
             document.getElementById('accuracyValue').textContent = accuracy.toFixed(1) + '%';
-            document.getElementById('priceValue').textContent = '$' + neuronParams.pricePerSqft.toFixed(0);
-            document.getElementById('baseValue').textContent = '$' + (neuronParams.basePrice/1000).toFixed(0) + 'k';
-            document.getElementById('priceError').textContent = 'Error: $' + priceError.toFixed(0);
-            document.getElementById('baseError').textContent = 'Error: $' + (baseError/1000).toFixed(0) + 'k';
-            
-            // Update performance section
-            document.getElementById('currentPrice').textContent = '$' + neuronParams.pricePerSqft.toFixed(0);
-            document.getElementById('currentBase').textContent = '$' + (neuronParams.basePrice/1000).toFixed(0) + 'k';
+            document.getElementById('priceValue').textContent = money(pricePerSqft());
+            document.getElementById('baseValue').textContent = money(neuronParams.basePrice, true);
+
+            document.getElementById('priceTarget').textContent = 'Target: ' + (revealed ? '$200' : '?');
+            document.getElementById('baseTarget').textContent = 'Target: ' + (revealed ? '$50k' : '?');
+            document.getElementById('priceError').textContent = 'Error: ' + (revealed ? money(priceError) : '?');
+            document.getElementById('baseError').textContent = 'Error: ' + (revealed ? money(baseError, true) : '?');
+
+            document.getElementById('currentPrice').textContent = money(pricePerSqft());
+            document.getElementById('currentBase').textContent = money(neuronParams.basePrice, true);
             document.getElementById('currentAccuracy').textContent = accuracy.toFixed(1) + '%';
+
+            document.getElementById('explosionWarning').classList.toggle('hidden', !exploded);
 
             updatePredictions();
             updateChart();
@@ -547,246 +509,199 @@ tailwind.config = {
 
         function updatePredictions() {
             const container = document.getElementById('predictions');
-            container.innerHTML = '';
-            
-            houseData.forEach((house, index) => {
+            let html = '';
+
+            houseData.forEach(house => {
                 const prediction = predictPrice(house.sqft);
                 const error = Math.abs(house.price - prediction);
                 const errorPercent = (error / house.price) * 100;
-                
-                const errorColor = errorPercent > 20 ? 'text-red-600' : 
+
+                const errorColor = errorPercent > 20 ? 'text-red-600' :
                                  errorPercent > 10 ? 'text-yellow-600' : 'text-green-600';
-                
-                container.innerHTML += `
+                const errorText = isFinite(errorPercent) && errorPercent < 10000 ? errorPercent.toFixed(1) + '%' : 'huge';
+
+                html += `
                     <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                         <div class="flex-1">
                             <div class="font-semibold">${house.sqft} sqft</div>
-                            <div class="text-sm text-gray-600">Actual: ${(house.price/1000).toFixed(0)}k</div>
+                            <div class="text-sm text-gray-600">Actual: ${money(house.price, true)}</div>
                         </div>
                         <div class="flex-1 text-center">
-                            <div class="font-semibold text-blue-600">${(prediction/1000).toFixed(0)}k</div>
+                            <div class="font-semibold text-blue-600">${money(prediction, true)}</div>
                             <div class="text-sm text-gray-600">Predicted</div>
                         </div>
                         <div class="flex-1 text-right">
-                            <div class="font-semibold ${errorColor}">${errorPercent.toFixed(1)}%</div>
+                            <div class="font-semibold ${errorColor}">${errorText}</div>
                             <div class="text-sm text-gray-600">Error</div>
                         </div>
                     </div>
                 `;
             });
+            container.innerHTML = html;
         }
 
         function updateChart() {
             const canvas = document.getElementById('learningChart');
             const ctx = canvas.getContext('2d');
-            
-            // Set canvas to high DPI for crisp rendering
+
             const rect = canvas.getBoundingClientRect();
             const dpr = window.devicePixelRatio || 1;
             canvas.width = rect.width * dpr;
             canvas.height = rect.height * dpr;
             ctx.scale(dpr, dpr);
-            canvas.style.width = rect.width + 'px';
-            canvas.style.height = rect.height + 'px';
-            
-            // Clear canvas
+
             ctx.clearRect(0, 0, rect.width, rect.height);
-            
-            if (learningData.length < 2) return;
-            
-            // Anti-aliasing for smooth lines
-            ctx.imageSmoothingEnabled = true;
-            ctx.imageSmoothingQuality = 'high';
-            
-            // Draw grid
-            ctx.strokeStyle = '#f3f4f6';
+
+            const plotW = rect.width - 70, plotH = rect.height - 70;
+            const maxEpoch = Math.max(runTarget, 1);
+
+            // Grid
+            ctx.strokeStyle = '#E4E6E1';
             ctx.lineWidth = 1;
-            
-            // Grid lines
             for (let i = 1; i < 5; i++) {
-                // Horizontal grid lines
-                const y = 20 + (i * (rect.height - 70) / 5);
-                ctx.beginPath();
-                ctx.moveTo(50, y);
-                ctx.lineTo(rect.width - 20, y);
-                ctx.stroke();
-                
-                // Vertical grid lines
-                const x = 50 + (i * (rect.width - 70) / 5);
-                ctx.beginPath();
-                ctx.moveTo(x, 20);
-                ctx.lineTo(x, rect.height - 50);
-                ctx.stroke();
+                const y = 20 + (i * plotH / 5);
+                ctx.beginPath(); ctx.moveTo(50, y); ctx.lineTo(rect.width - 20, y); ctx.stroke();
+                const x = 50 + (i * plotW / 5);
+                ctx.beginPath(); ctx.moveTo(x, 20); ctx.lineTo(x, rect.height - 50); ctx.stroke();
             }
-            
-            // Draw axes
-            ctx.strokeStyle = '#d1d5db';
+
+            // Axes
+            ctx.strokeStyle = '#C3C8C0';
             ctx.lineWidth = 2;
-            
-            // Y-axis
-            ctx.beginPath();
-            ctx.moveTo(50, 20);
-            ctx.lineTo(50, rect.height - 50);
-            ctx.stroke();
-            
-            // X-axis
-            ctx.beginPath();
-            ctx.moveTo(50, rect.height - 50);
-            ctx.lineTo(rect.width - 20, rect.height - 50);
-            ctx.stroke();
-            
-            // Draw accuracy line with smooth curves
-            ctx.strokeStyle = '#10b981';
-            ctx.lineWidth = 3;
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-            ctx.beginPath();
-            
-            const maxEpoch = Math.max(...learningData.map(d => d.epoch));
-            const maxAccuracy = 100;
-            
-            learningData.forEach((point, index) => {
-                const x = 50 + (point.epoch / maxEpoch) * (rect.width - 70);
-                const y = rect.height - 50 - (point.accuracy / maxAccuracy) * (rect.height - 70);
-                
-                if (index === 0) {
-                    ctx.moveTo(x, y);
-                } else {
-                    ctx.lineTo(x, y);
-                }
-            });
-            
-            ctx.stroke();
-            
-            // Add y-axis labels
-            ctx.fillStyle = '#6b7280';
-            ctx.font = '12px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+            ctx.beginPath(); ctx.moveTo(50, 20); ctx.lineTo(50, rect.height - 50); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(50, rect.height - 50); ctx.lineTo(rect.width - 20, rect.height - 50); ctx.stroke();
+
+            // Labels
+            ctx.fillStyle = '#57616E';
+            ctx.font = '12px "IBM Plex Mono", ui-monospace, monospace';
             ctx.textAlign = 'right';
-            
             for (let i = 0; i <= 5; i++) {
-                const accuracy = (i * 20);
-                const y = rect.height - 50 - (accuracy / 100) * (rect.height - 70);
+                const accuracy = i * 20;
+                const y = rect.height - 50 - (accuracy / 100) * plotH;
                 ctx.fillText(accuracy + '%', 45, y + 4);
             }
-            
-            // Add x-axis labels
             ctx.textAlign = 'center';
             for (let i = 0; i <= 5; i++) {
                 const epoch = Math.round((i * maxEpoch) / 5);
-                const x = 50 + (i * (rect.width - 70) / 5);
-                ctx.fillText(epoch.toString(), x, rect.height - 30);
+                ctx.fillText(epoch.toString(), 50 + (i * plotW / 5), rect.height - 30);
             }
-            
-            // Add axis titles
-            ctx.fillStyle = '#374151';
-            ctx.font = 'bold 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-            ctx.textAlign = 'center';
+            ctx.fillStyle = '#26313D';
+            ctx.font = '600 13px "IBM Plex Mono", ui-monospace, monospace';
             ctx.fillText('Epoch', rect.width / 2, rect.height - 5);
-            
             ctx.save();
             ctx.translate(15, rect.height / 2);
             ctx.rotate(-Math.PI / 2);
             ctx.fillText('Accuracy (%)', 0, 0);
             ctx.restore();
+
+            if (learningData.length < 2) return;
+
+            // Accuracy line
+            ctx.strokeStyle = exploded ? '#BE3A1F' : '#2F7D62';
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.beginPath();
+            learningData.forEach((point, index) => {
+                const x = 50 + (point.epoch / maxEpoch) * plotW;
+                const y = rect.height - 50 - (point.accuracy / 100) * plotH;
+                if (index === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            });
+            ctx.stroke();
+        }
+
+        function setTrainButton(training) {
+            const btn = document.getElementById('trainBtn');
+            btn.textContent = training ? 'Pause Training' : (currentEpoch > 0 ? 'Keep Training' : 'Start Training');
+            btn.classList.toggle('bg-green-500', !training);
+            btn.classList.toggle('hover:bg-green-600', !training);
+            btn.classList.toggle('bg-red-500', training);
+            btn.classList.toggle('hover:bg-red-600', training);
+            btn.disabled = exploded;
+            btn.classList.toggle('opacity-50', exploded);
+        }
+
+        function setMessage(text) {
+            document.getElementById('trainMessage').textContent = text;
+        }
+
+        function stopTraining() {
+            isTraining = false;
+            clearInterval(trainingInterval);
+            setTrainButton(false);
         }
 
         function startTraining() {
-            if (isTraining) {
-                isTraining = false;
-                clearInterval(trainingInterval);
-                document.getElementById('trainBtn').innerHTML = ' Start Training';
-                document.getElementById('trainBtn').className = document.getElementById('trainBtn').className.replace('bg-red-500 hover:bg-red-600', 'bg-green-500 hover:bg-green-600');
-                return;
+            if (isTraining) { stopTraining(); return; }
+            if (exploded) return;
+
+            if (currentEpoch === 0) {
+                learningData = [{ epoch: 0, accuracy: calculateAccuracy() }];
             }
-            
+            if (currentEpoch >= runTarget) runTarget = currentEpoch + EPOCHS_PER_RUN;
+
             isTraining = true;
-            currentEpoch = 0;
-            learningData = [];
-            
-            // Add initial data point
-            learningData.push({
-                epoch: 0,
-                accuracy: calculateAccuracy()
-            });
-            
-            document.getElementById('trainBtn').innerHTML = ' Pause Training';
-            document.getElementById('trainBtn').className = document.getElementById('trainBtn').className.replace('bg-green-500 hover:bg-green-600', 'bg-red-500 hover:bg-red-600');
-            
+            setMessage('');
+            setTrainButton(true);
+
             trainingInterval = setInterval(() => {
                 currentEpoch++;
-                
-                if (currentEpoch >= 200) {
-                    isTraining = false;
-                    clearInterval(trainingInterval);
-                    document.getElementById('trainBtn').innerHTML = ' Start Training';
-                    document.getElementById('trainBtn').className = document.getElementById('trainBtn').className.replace('bg-red-500 hover:bg-red-600', 'bg-green-500 hover:bg-green-600');
+                trainOneEpoch();
+
+                const rmse = calculateError();
+                if (!isFinite(rmse) || rmse > BLOWUP_RMSE) {
+                    exploded = true;
+                    learningData.push({ epoch: currentEpoch, accuracy: 0 });
+                    stopTraining();
+                    updateDisplay();
+                    setMessage(`Blown up at epoch ${currentEpoch}: the guesses grew past anything a house could cost. ` +
+                               `Reset the neuron to try again.`);
                     return;
                 }
-                
-                trainOneEpoch();
-                
-                learningData.push({
-                    epoch: currentEpoch,
-                    accuracy: calculateAccuracy()
-                });
-                
+
+                learningData.push({ epoch: currentEpoch, accuracy: calculateAccuracy() });
                 updateDisplay();
-            }, 100);
+
+                if (currentEpoch >= runTarget) {
+                    stopTraining();
+                    setMessage(`Stopped after ${currentEpoch} epochs. Keep training to go further, or reset and try another learning rate.`);
+                }
+            }, 80);
         }
 
         function resetNeuron() {
-            isTraining = false;
-            clearInterval(trainingInterval);
+            stopTraining();
+            exploded = false;
             currentEpoch = 0;
+            runTarget = EPOCHS_PER_RUN;
             learningData = [];
-            
-            neuronParams = {
-                pricePerSqft: Math.random() * 100 + 150,
-                basePrice: Math.random() * 50000 + 25000
-            };
-            
-            document.getElementById('trainBtn').innerHTML = ' Start Training';
-            document.getElementById('trainBtn').className = 'flex items-center gap-2 px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold transition-all';
-            
+            neuronParams = randomStart();
+            setTrainButton(false);
+            setMessage('');
             updateDisplay();
-            
-            // Reset accuracy displays to 0% after reset
-            document.getElementById('accuracyValue').textContent = '0.0%';
-            document.getElementById('currentAccuracy').textContent = '0.0%';
         }
 
-        function updateLearningRateStatus() {
-            const statusElement = document.getElementById('rateStatus');
-            
-            if (learningRate <= 0.0000001) {
-                statusElement.textContent = ' SAFE';
-                statusElement.className = 'font-bold text-sm text-green-600';
-            } else if (learningRate <= 0.000001) {
-                statusElement.textContent = ' STABLE';
-                statusElement.className = 'font-bold text-sm text-blue-600';
-            } else if (learningRate <= 0.00001) {
-                statusElement.textContent = ' FAST';
-                statusElement.className = 'font-bold text-sm text-yellow-600';
-            } else if (learningRate <= 0.0001) {
-                statusElement.textContent = ' RISKY';
-                statusElement.className = 'font-bold text-sm text-orange-600';
-            } else {
-                statusElement.textContent = ' BOOM!';
-                statusElement.className = 'font-bold text-sm text-red-600';
-            }
+        function readLearningRate() {
+            const slider = document.getElementById('learningRate');
+            learningRate = Math.pow(10, parseFloat(slider.value));
+            document.getElementById('rateValue').textContent = learningRate.toPrecision(2);
         }
 
         // Event listeners
         document.getElementById('trainBtn').addEventListener('click', startTraining);
         document.getElementById('resetBtn').addEventListener('click', resetNeuron);
-        document.getElementById('learningRate').addEventListener('change', (e) => {
-            learningRate = parseFloat(e.target.value);
-            updateLearningRateStatus();
+        document.getElementById('learningRate').addEventListener('input', readLearningRate);
+        document.getElementById('revealBtn').addEventListener('click', () => {
+            revealed = !revealed;
+            document.getElementById('patternBox').classList.toggle('hidden', !revealed);
+            document.getElementById('revealBtn').textContent = revealed ? 'Hide the pattern' : 'Reveal the pattern';
+            updateDisplay();
         });
+        window.addEventListener('resize', updateChart);
 
         // Initialize
+        readLearningRate();
         updateDisplay();
-        updateLearningRateStatus();
     </script>
 
 <section class="read-next">
