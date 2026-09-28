@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How networks work: your home network, then an office — Iain Hoggan</title>
+<meta name="description" content="The box your internet provider sent you is five devices in one. Take it apart with commands on your own network, follow a packet out to the internet and back, then see how a business splits those same jobs into separate kit, and why.">
+<meta property="og:title" content="How networks work: your home, then an office">
+<meta property="og:description" content="Your router is five devices in a plastic box. Explore your own network with five commands, then watch the same jobs grow into an office network.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+main.wrap{padding-top:52px;padding-bottom:40px}
+.standfirst{font-size:1.12rem;color:var(--ink-2);max-width:34em}
+.standfirst strong{color:var(--ink);font-weight:600}
+main section p{max-width:38em}
+main h2{max-width:18em;margin-bottom:14px}
+main h3{margin:26px 0 10px}
+main ul,main ol{max-width:36em;margin:0 0 16px 1.2em}
+main li{margin-bottom:6px}
+pre{
+  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen));
+  border:1px solid #060B0E;border-radius:3px;box-shadow:inset 0 3px 12px rgba(0,0,0,.55);
+  color:#CFE3DA;font-family:var(--mono);font-size:13px;line-height:1.55;
+  padding:14px 16px;margin:18px 0 22px;max-width:40em;overflow-x:auto;white-space:pre;
+}
+pre .dim{color:#7F968D}
+pre .pr{color:var(--trace)}
+pre .hl{color:#E7B863}
+.warn{border-left:3px solid var(--alarm);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.warn .tag{display:block;margin-bottom:4px;color:var(--alarm)}
+.warn p{margin:0}
+.takeaways{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:26px}
+.take{background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);border-radius:4px;padding:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.take h3{font-size:1rem;margin:0 0 8px}
+.take p{font-size:.94rem;color:var(--ink-2);margin:0}
+.ui{font-family:var(--mono);font-size:.84em;white-space:nowrap;
+  background:linear-gradient(180deg,#fff,var(--engrave));border:1px solid var(--bezel);
+  border-bottom-width:2px;border-radius:3px;padding:1px 6px;color:var(--ink)}
+.predict{border-left:3px solid var(--lamp);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.predict .tag{display:block;margin-bottom:4px;color:var(--lamp)}
+.predict p{margin:0}
+details.answer{max-width:38em;margin:10px 0 18px}
+details.answer summary{cursor:pointer;font:600 11px/1.4 var(--mono);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-2)}
+details.answer p{margin-top:8px}
+.check{display:flex;gap:14px;align-items:flex-start;max-width:38em;margin:20px 0 6px;
+  border:1px solid var(--bezel);border-radius:4px;padding:14px 16px;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.check .tag{display:block;margin-bottom:4px;color:#2F8A63}
+.check p{margin:0;font-size:.97rem}
+.done{flex:none;margin-left:auto;align-self:center;cursor:pointer;
+  font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;
+  padding:9px 12px;border-radius:3px;border:1px solid var(--bezel);border-bottom-width:2px;
+  background:linear-gradient(180deg,#fff,var(--engrave));color:var(--ink-2)}
+.done[aria-pressed="true"]{background:linear-gradient(180deg,#6FD6AA,var(--trace));border-color:#2F8A63;color:#0B2A1E}
+.done:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.progress{margin-top:26px;max-width:30em}
+.progress .bar{height:10px;border-radius:5px;background:var(--screen);border:1px solid #060B0E;
+  box-shadow:inset 0 2px 6px rgba(0,0,0,.6);overflow:hidden}
+.progress .fill{height:100%;width:0;background:linear-gradient(90deg,#2F8A63,var(--trace));
+  box-shadow:0 0 10px rgba(87,199,154,.7);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.progress .read{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:8px}
+.part{border-top:3px solid var(--ink);padding-top:22px;margin-top:10px}
+
+/* the five jobs */
+.jobs{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;max-width:44em;margin:18px 0 20px}
+.job{border:1px solid var(--bezel);border-radius:4px;padding:14px;background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.job b{display:block;font-family:var(--display);font-variation-settings:"wdth" 106,"wght" 720;text-transform:uppercase;font-size:.98rem;margin-bottom:4px}
+.job span{font-size:.93rem;color:var(--ink-2);line-height:1.5;display:block}
+
+/* packet journey */
+.journey{max-width:46em;margin:22px 0 10px}
+.journey .modes{display:flex;gap:0;border-bottom:1px solid #060B0E}
+.journey .modes button{flex:1;font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;
+  padding:13px 10px;border:0;border-right:1px solid #060B0E;background:transparent;color:#7F968D;cursor:pointer}
+.journey .modes button:last-child{border-right:0}
+.journey .modes button[aria-pressed="true"]{background:rgba(87,199,154,.1);color:var(--trace);box-shadow:inset 0 -2px 0 var(--trace)}
+.journey .body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr)}
+.journey ol.hops{list-style:none;margin:0;padding:14px 16px;border-right:1px solid #060B0E;max-width:none}
+.journey .hop{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:3px;margin:0;
+  font:12.5px/1.3 var(--mono);color:#93A79E;position:relative;cursor:pointer}
+.journey .hop + .hop{margin-top:14px}
+.journey .hop + .hop::before{content:"";position:absolute;left:19px;top:-14px;height:14px;border-left:2px dotted #3E5561}
+.journey .hop i{flex:none;width:20px;height:20px;border-radius:50%;border:2px solid #3E5561;background:#0B1216}
+.journey .hop.done i{border-color:#2F8A63;background:#1a4a37}
+.journey .hop.here{background:rgba(87,199,154,.1);color:#E6F0EC}
+.journey .hop.here i{border-color:var(--trace);background:var(--trace);box-shadow:0 0 10px rgba(87,199,154,.8)}
+.journey .hop small{display:block;color:#6E8A80;font-size:11px}
+.journey .say{padding:16px 18px;font:13px/1.65 var(--mono);color:#A9BFB5}
+.journey .say h3{font-family:var(--display);color:#E6F0EC;font-size:1.2rem;margin:0 0 4px;text-transform:uppercase}
+.journey .say .where{color:#6E8A80;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+.journey .say p{margin:0 0 10px;max-width:none}
+.journey .ctl{display:flex;gap:8px;flex-wrap:wrap;padding:12px 16px;border-top:1px solid #060B0E}
+.journey .ctl button{font:600 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
+  padding:9px 12px;border-radius:3px;border:1px solid #2B3B44;background:#16232B;color:#A9BFB5;cursor:pointer}
+.journey .ctl button.cta{background:linear-gradient(180deg,#6FD6AA,var(--trace));color:#0B2A1E;border-color:#2F8A63}
+.journey button:focus-visible,.journey .hop:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.journey .ctl .count{margin-left:auto;align-self:center;font:11px var(--mono);color:#6E8A80}
+
+.vlans{max-width:38em;margin:14px 0 18px;border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))}
+.vlans div{display:grid;grid-template-columns:8.5em 1fr;gap:12px;padding:9px 14px;border-bottom:1px solid var(--rule);font-size:.96rem}
+.vlans div:last-child{border-bottom:0}
+.vlans b{font-family:var(--mono);font-size:.86em}
+.read-next{border-top:1px solid var(--rule);padding:44px 0 8px}
+.read-next .card{margin-top:14px;max-width:640px}
+@media(max-width:700px){.journey .body{grid-template-columns:1fr}.journey ol.hops{border-right:0;border-bottom:1px solid #060B0E}}
+@media(max-width:600px){.vlans div{grid-template-columns:1fr;gap:2px}}
+</style>
+</head>
+<body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html" aria-label="Home">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap col">
+    <p class="tag">Tutorial · Networking · Ubuntu · Beginners</p>
+    <h1>How networks work</h1>
+    <p class="standfirst">The box your internet provider sent you is <strong>five devices squeezed into one piece of plastic</strong>. In part one you'll take it apart without a screwdriver, using commands on your own network. In part two you'll see how a business splits those same five jobs into separate kit, and why it's worth the cost.</p>
+    <div class="spec">
+      <div><b>2</b><span>parts</span></div>
+      <div><b>7</b><span>short steps</span></div>
+      <div><b>0</b><span>installs</span></div>
+      <div><b>~1 hr</b><span>first time</span></div>
+    </div>
+    <div class="progress" aria-live="polite">
+      <div class="bar"><div class="fill" id="fill"></div></div>
+      <div class="read"><span class="tag" id="progress-text">0 of 7 steps done</span><span class="tag">Tick each check as you pass it</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap col">
+
+<section>
+  <p class="tag eyebrow">Before you start</p>
+  <h2>What you need</h2>
+  <p>An Ubuntu computer on your home network, a terminal, and ideally a phone on the same Wi-Fi. <a href="terminal.html">Meet the terminal</a> covers everything you'll need to type. Every command in part one only looks. Nothing here changes your network.</p>
+  <div class="warn">
+    <span class="tag">Only your own network</span>
+    <p>Explore networks you own or run. Poking around other people's, a café's or an employer's, can break their rules or the law, even when all you're doing is looking.</p>
+  </div>
+</section>
+
+<section class="part">
+  <p class="tag eyebrow">Part one</p>
+  <h2>Your home network</h2>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 1</p>
+  <h2>The box is five devices</h2>
+  <p>It's usually called "the router", but the box from your provider does at least five separate jobs. In an office, each of these is often its own box.</p>
+  <div class="jobs">
+    <div class="job"><b>Modem</b><span>Talks to your provider over the phone line, fibre or cable. It's the door to the outside world.</span></div>
+    <div class="job"><b>Router</b><span>Decides where each piece of traffic goes: stay inside the house, or go out to the internet?</span></div>
+    <div class="job"><b>Switch</b><span>The network sockets on the back. It passes traffic between wired devices in the house.</span></div>
+    <div class="job"><b>Wi-Fi access point</b><span>The same as the switch, but by radio.</span></div>
+    <div class="job"><b>Address desk (DHCP)</b><span>Hands every device an address when it joins, like a receptionist giving out visitor badges.</span></div>
+  </div>
+  <p>It usually does two more jobs as well: a basic <strong>firewall</strong>, and passing on your computer's questions about names like <code>bbc.co.uk</code> (<strong>DNS</strong>). Keep those in mind: they come back in steps 4 and 5.</p>
+  <p>Now follow one request, from your laptop to a website and back, through those jobs. Press <span class="ui">Next</span>, or tap any stop.</p>
+
+  <div class="journey well" id="journey">
+    <div class="modes" role="group" aria-label="Which network">
+      <button type="button" data-mode="home" aria-pressed="true">Home</button>
+      <button type="button" data-mode="office" aria-pressed="false">Office</button>
+    </div>
+    <div class="body">
+      <ol class="hops" id="hops"></ol>
+      <div class="say" id="say" aria-live="polite"></div>
+    </div>
+    <div class="ctl">
+      <button type="button" id="prev">Back</button>
+      <button type="button" class="cta" id="next">Next</button>
+      <button type="button" id="play">Play</button>
+      <span class="count" id="count"></span>
+    </div>
+  </div>
+
+  <div class="check" data-step="1">
+    <div><span class="tag">Check</span><p>You can name the five jobs the box does, and say which one gave your laptop its address.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 2</p>
+  <h2>Find your own address, and the router's</h2>
+  <p>Every device on the network has an <strong>address</strong>, a set of four numbers. Ask your computer for its own, and for the way out:</p>
+<pre><span class="pr">$</span> hostname -I        <span class="dim"># my address on this network</span>
+<span class="pr">$</span> ip route           <span class="dim"># where does traffic go?</span></pre>
+  <p>In the <code>ip route</code> output, find the line starting <code>default via</code>. It reads something like <code>default via <span class="hl">192.168.0.1</span> dev wlp2s0</code>: "anything not on this network, send it to 192.168.0.1". That address is your router. The <code>dev</code> part is which connection it goes out through: names starting <code>wl</code> are Wi-Fi, <code>en</code> is a cable.</p>
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>Look at your address and the router's. What do you notice about the first three numbers? Why might that be?</p>
+  </div>
+  <details class="answer">
+    <summary>Why</summary>
+    <p>They usually match, for example <code>192.168.0.23</code> and <code>192.168.0.1</code>. Addresses work a bit like postcodes: the first part says which network, the last part says which device on it. Everything at home shares the same "street", and the router is usually number 1. Addresses starting <code>192.168.</code>, <code>10.</code>, or <code>172.16.</code> to <code>172.31.</code> are <strong>private</strong>: they're reused inside millions of homes, and never appear on the internet itself.</p>
+  </details>
+  <div class="check" data-step="2">
+    <div><span class="tag">Check</span><p>You know your computer's address, your router's address, and whether you're on Wi-Fi or a cable.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 3</p>
+  <h2>Who else is here?</h2>
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>Before you check, count: how many devices do you think are on your home network right now? Phones, TVs, speakers, the lot.</p>
+  </div>
+<pre><span class="pr">$</span> ip neigh</pre>
+  <p>This lists the neighbours your computer has talked to recently: each one's address, and a <strong>hardware address</strong> (the <code>lladdr</code>, sometimes called a MAC address) that's built into its network chip. It only shows devices your computer has spoken to, so it undercounts.</p>
+  <p>For the full list, ask the router. Type its address from step 2 into your browser, for example <code>http://192.168.0.1</code>, and log in with the password printed on the box or its card. Look for a page called something like <span class="ui">Connected devices</span>.</p>
+  <details class="answer">
+    <summary>What most people find</summary>
+    <p>More than they guessed, often twice as many. Smart TVs, a speaker, a doorbell, the printer, a phone someone forgot. Every one of them shares your network, which is why the <a href="secure-ubuntu.html">Securing Ubuntu</a> firewall matters even at home. If there's something you genuinely can't identify, change your Wi-Fi password: everything legitimate will have to rejoin, and whatever doesn't was never meant to be there.</p>
+  </details>
+  <div class="check" data-step="3">
+    <div><span class="tag">Check</span><p>You've seen your router's list of connected devices, and you can say what most of them are.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 4</p>
+  <h2>The address the world sees</h2>
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>When you visit a website, it sees an address for you. Do you think it's the one <code>hostname -I</code> showed? Check: search for <strong>"what is my IP"</strong> in your browser.</p>
+  </div>
+  <details class="answer">
+    <summary>What's going on</summary>
+    <p>It's completely different. That's your <strong>public address</strong>: the one your provider gave the whole house. Every device inside shares it.</p>
+    <p>The router does this with a trick called <strong>NAT</strong>, network address translation. As your request leaves, the router swaps your private address for the public one and keeps a note. When the reply comes back, it checks the note and passes it to the right device. It's like a company switchboard: one outside number, and the receptionist knows which extension asked.</p>
+    <p>It's also why your home is fairly well protected by default. A stranger's request that arrives unasked matches no note, so the router has nowhere to send it and drops it.</p>
+  </details>
+  <div class="check" data-step="4">
+    <div><span class="tag">Check</span><p>You've compared your private address with your public one, and you can explain why they're different.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 5</p>
+  <h2>Follow a packet out</h2>
+  <p>Traffic travels in small pieces called <strong>packets</strong>. Two commands show the two halves of every visit to a website: first finding the address, then the journey there.</p>
+<pre><span class="pr">$</span> resolvectl query bbc.co.uk    <span class="dim"># name to address: that's DNS</span>
+<span class="pr">$</span> tracepath -n bbc.co.uk        <span class="dim"># every stop on the way</span></pre>
+  <p><code>tracepath</code> prints one line per <strong>hop</strong>, each a router passing your packet on. It takes a little while. If it sits on <code>no reply</code> lines, press <span class="ui">Ctrl</span> + <span class="ui">C</span>: some routers simply don't answer.</p>
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>What do you think the very first hop will be?</p>
+  </div>
+  <details class="answer">
+    <summary>What you should see</summary>
+    <p>Your own router, the <code>default via</code> address from step 2. That's the only way out. Next come your provider's routers, often with a jump in the time column where the traffic enters its network, then the big internet routers, then the website. Each line's time is the round trip to that hop, in milliseconds.</p>
+  </details>
+  <div class="check" data-step="5">
+    <div><span class="tag">Check</span><p>You've looked up a name with <code>resolvectl</code>, and seen your router as the first hop of a <code>tracepath</code>.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="part">
+  <p class="tag eyebrow">Part two</p>
+  <h2>Scaling up to an office</h2>
+  <p>An office network does exactly the same jobs as the box at home. What changes is the numbers: a hundred people instead of four, hundreds of devices, visitors who need Wi-Fi but mustn't see the accounts, and a business that stops if the network does.</p>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 6</p>
+  <h2>Why a business splits the box</h2>
+  <p>Go back to the packet journey in step 1 and switch it to <span class="ui">Office</span>. The same request now passes through separate boxes, each doing one job and doing it properly:</p>
+  <ul>
+    <li><strong>A proper firewall</strong>, with rules written for the business: which services can reach what, and a record of what tried.</li>
+    <li><strong>Managed switches</strong>, dozens of ports each, set up and monitored from one place. Usually one per floor or area (the "access" switches), all joined to a bigger one in the middle (the "core").</li>
+    <li><strong>Many Wi-Fi access points</strong> in the ceilings, often powered through their network cable (called PoE, power over Ethernet), all managed together so people can walk the building without dropping off.</li>
+    <li><strong>DHCP and DNS on servers</strong>, with room for thousands of devices and names for the office's own systems.</li>
+    <li><strong>Structured cabling</strong>: every desk's socket wired back to a numbered <strong>patch panel</strong> in a comms cabinet, so any socket can be connected to anything without new cable.</li>
+    <li><strong>No single point of failure</strong> where it matters: two internet lines from different providers, and a battery backup (a UPS) that keeps the network running through a power cut.</li>
+  </ul>
+  <div class="predict">
+    <span class="tag">Think about it</span>
+    <p>The home box does all of this in one cheap piece of plastic. What's the price of that convenience?</p>
+  </div>
+  <details class="answer">
+    <summary>My answer</summary>
+    <p>When it breaks, <em>everything</em> breaks, all at once, and you can't upgrade one job without replacing the lot. At home, that's an annoying evening. In a business, it's a hundred people unable to work. Splitting the jobs costs money, but each piece can be chosen, upgraded, doubled up or fixed on its own.</p>
+  </details>
+  <div class="check" data-step="6">
+    <div><span class="tag">Check</span><p>You've followed the office journey, and can say what each extra box does that the home one doesn't.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 7</p>
+  <h2>One set of cables, several networks: VLANs</h2>
+  <p>An office doesn't want the visitors' Wi-Fi on the same network as the accounts computer, and it doesn't want to lay four sets of cables either. So managed switches split one physical network into several separate ones, called <strong>VLANs</strong> (virtual LANs). Each packet carries a small tag saying which VLAN it belongs to, and the switches keep them apart. A typical office might have:</p>
+  <div class="vlans">
+    <div><b>Staff</b><span>Everyone's computers, and the systems they need.</span></div>
+    <div><b>Guests</b><span>Internet only. Can't see anything else in the building.</span></div>
+    <div><b>Phones and printers</b><span>Kept on their own, so a problem there doesn't spread.</span></div>
+    <div><b>Cameras and building kit</b><span>Often the least secure devices, so they're fenced off from everything.</span></div>
+  </div>
+  <p>Traffic between VLANs has to pass through the firewall, which decides what's allowed. A guest can reach the internet but not the staff network, and it's all on the same cables.</p>
+  <div class="predict">
+    <span class="tag">Experiment at home</span>
+    <p>Many home routers have a <strong>guest Wi-Fi</strong> you can switch on in their settings: a small VLAN of your own. Run the test web server from <a href="secure-ubuntu.html">Securing Ubuntu, question 3</a> on your computer, with its firewall switched off just for the test (<code>sudo ufw disable</code>, then <code>sudo ufw enable</code> afterwards). Try to reach it from your phone on your normal Wi-Fi, then on the <em>guest</em> network. What happens?</p>
+  </div>
+  <details class="answer">
+    <summary>What you should find</summary>
+    <p>On the normal Wi-Fi, the phone can reach it. On the guest Wi-Fi it usually can't, even though it's the same router and the same room. The guest network gets the internet and nothing else: exactly the guest VLAN from the table, in miniature. That's the idea behind most of part two. The home box already does it, just in one piece of plastic.</p>
+  </details>
+  <div class="check" data-step="7">
+    <div><span class="tag">Check</span><p>You can explain what a VLAN is, and why guests and staff are kept apart even when they share the same cables.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">That's it</p>
+  <h2>What I'd want you to take away</h2>
+  <div class="takeaways">
+    <div class="take">
+      <h3>Same jobs, different scale</h3>
+      <p>Modem, router, switch, Wi-Fi, address desk. A castle or a cottage, the jobs don't change. Only how many boxes they're spread across.</p>
+    </div>
+    <div class="take">
+      <h3>The first hop is always the router</h3>
+      <p><code>default via</code> is the way out. When "the internet is down", the first question is whether you can even reach that.</p>
+    </div>
+    <div class="take">
+      <h3>Separation is security</h3>
+      <p>NAT at home, VLANs in the office. Things that don't need to see each other shouldn't be able to.</p>
+    </div>
+  </div>
+  <p style="margin-top:26px">Found a mistake, or a command that showed something different on your network? <a href="contact.html">Tell me</a>. If a step here was unclear, that's my fault, and I'll fix it.</p>
+</section>
+
+</main>
+
+<section class="read-next">
+  <div class="wrap col">
+    <p class="tag">Read this next</p>
+    <a class="card" href="secure-ubuntu.html">
+      <h3>Securing Ubuntu</h3>
+      <p>Six questions to ask of your own machine, including what's listening on your network and how a firewall blocks it.</p>
+      <span class="go">Read &rarr;</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">← Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="contact.html">Get in touch</a>
+    <span class="tag">© 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* ---------- step checks and progress meter ---------- */
+  var KEY='networking-steps';
+  var buttons=[].slice.call(document.querySelectorAll('.check .done'));
+  var saved={};
+  try{ saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){ saved={}; }
+  function update(){
+    var n=buttons.filter(function(b){return b.getAttribute('aria-pressed')==='true';}).length;
+    document.getElementById('fill').style.width=(n/buttons.length*100)+'%';
+    document.getElementById('progress-text').textContent=
+      n===buttons.length ? 'All 7 steps done. You know how networks work.' : n+' of '+buttons.length+' steps done';
+  }
+  buttons.forEach(function(b){
+    var s=b.parentNode.getAttribute('data-step');
+    if(saved[s]){ b.setAttribute('aria-pressed','true'); b.textContent='Done ✓'; }
+    b.addEventListener('click',function(){
+      var on=b.getAttribute('aria-pressed')!=='true';
+      b.setAttribute('aria-pressed',on?'true':'false');
+      b.textContent=on?'Done ✓':'Done';
+      saved[s]=on;
+      try{ localStorage.setItem(KEY,JSON.stringify(saved)); }catch(e){}
+      update();
+    });
+  });
+  update();
+
+  /* ---------- packet journey ---------- */
+  var J={
+    home:[
+      ['Your laptop','192.168.0.23','You type bbc.co.uk and press Enter. Before anything can be sent, the laptop needs the website\'s address, so its first question is a DNS lookup. It already knows where to ask: the address desk (DHCP) gave it the router\'s address when it joined the network.'],
+      ['Wi-Fi access point','inside the box','The request goes by radio to the Wi-Fi part of the box. Plug in a cable instead and it would go to the switch part: same box, different door.'],
+      ['Router','inside the box','The router looks at the destination. Is it on this network? No. So out it goes, to the internet. This is the "default via" route you\'ll find in step 2.'],
+      ['NAT and firewall','inside the box','On the way out, the router swaps your private address for the house\'s public one, and makes a note so the reply can find its way back to you. Step 4 shows this happening.'],
+      ['Modem','inside the box','The modem turns the packet into signals on the phone line, fibre or cable, and hands it to your internet provider.'],
+      ['Your provider','the first stop outside','Your provider\'s routers carry it onwards across the internet, router to router. Step 5 lets you see every one of these hops.'],
+      ['The website','bbc.co.uk','The website\'s server sends the page back to your public address. The reply retraces the journey, the router checks its NAT note, and the page arrives on your laptop. All of this usually takes less than a tenth of a second.']
+    ],
+    office:[
+      ['Your laptop','VLAN: Staff','Same request, same first question: the DNS lookup. But in an office, the address desk and the name lookups are proper servers, able to handle thousands of devices.'],
+      ['Ceiling access point','one of dozens','The Wi-Fi is one of many access points, powered through its network cable and managed centrally. It tags your traffic with the Staff VLAN, so it can never mix with the guests\'.'],
+      ['Access switch','in the floor\'s comms cabinet','The access point is cabled back to a switch serving this floor, through a numbered socket on a patch panel. The switch reads the Staff tag and keeps the traffic in its own lane.'],
+      ['Core switch','the middle of the network','Every floor\'s switch joins the core switch. Traffic between floors, and anything heading out, passes through here.'],
+      ['Firewall','its own box','A dedicated firewall checks the traffic against the business\'s rules, keeps a record, does the NAT, and stops the Guests VLAN from ever reaching the Staff one.'],
+      ['Internet lines','often two, from different providers','If one line fails, traffic moves to the other. The modem is now a separate box, sometimes supplied by the provider.'],
+      ['The website','bbc.co.uk','The website neither knows nor cares that it\'s talking to an office. From outside, it\'s just another public address, and the reply comes back the same way.']
+    ]
+  };
+  var mode='home', idx=0, timer=null;
+  var hops=document.getElementById('hops'), say=document.getElementById('say'), count=document.getElementById('count');
+  function draw(){
+    var list=J[mode];
+    hops.innerHTML='';
+    list.forEach(function(h,i){
+      var li=document.createElement('li');
+      li.className='hop'+(i<idx?' done':'')+(i===idx?' here':'');
+      li.tabIndex=0;
+      li.setAttribute('role','button');
+      li.innerHTML='<i></i><span>'+h[0]+'<small>'+h[1]+'</small></span>';
+      li.addEventListener('click',function(){ stop(); idx=i; draw(); });
+      li.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); stop(); idx=i; draw(); } });
+      hops.appendChild(li);
+    });
+    var h=list[idx];
+    say.innerHTML='<h3>'+h[0]+'</h3><div class="where">'+h[1]+'</div><p>'+h[2]+'</p>';
+    count.textContent='Stop '+(idx+1)+' of '+list.length;
+  }
+  function stop(){ if(timer){ clearInterval(timer); timer=null; document.getElementById('play').textContent='Play'; } }
+  document.getElementById('next').addEventListener('click',function(){ stop(); idx=Math.min(idx+1,J[mode].length-1); draw(); });
+  document.getElementById('prev').addEventListener('click',function(){ stop(); idx=Math.max(idx-1,0); draw(); });
+  document.getElementById('play').addEventListener('click',function(){
+    if(timer){ stop(); return; }
+    if(idx>=J[mode].length-1) idx=0;
+    draw();
+    this.textContent='Pause';
+    timer=setInterval(function(){
+      if(idx>=J[mode].length-1){ stop(); return; }
+      idx++; draw();
+    },3500);
+  });
+  [].slice.call(document.querySelectorAll('.journey .modes button')).forEach(function(b,i,all){
+    b.addEventListener('click',function(){
+      stop();
+      all.forEach(function(o){o.setAttribute('aria-pressed','false');});
+      b.setAttribute('aria-pressed','true');
+      mode=b.getAttribute('data-mode'); idx=0; draw();
+    });
+  });
+  draw();
+})();
+</script>
+
+</body>
+</html>

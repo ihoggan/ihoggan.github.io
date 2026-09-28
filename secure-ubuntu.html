@@ -80,7 +80,7 @@ details.answer p{margin-top:8px}
 .ports .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
 .ports .row button{font:600 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
   padding:9px 12px;border-radius:3px;border:1px solid #2B3B44;background:#16232B;color:#A9BFB5;cursor:pointer}
-.ports .row button.go{background:linear-gradient(180deg,#6FD6AA,var(--trace));color:#0B2A1E;border-color:#2F8A63}
+.ports .row button.cta{background:linear-gradient(180deg,#6FD6AA,var(--trace));color:#0B2A1E;border-color:#2F8A63}
 .ports .row .hint{font:11px var(--mono);color:#6E8A80}
 .ports .results{border-top:1px solid rgba(87,199,154,.18);padding:6px 16px 14px}
 .port{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.06)}
@@ -180,7 +180,7 @@ details.answer p{margin-top:8px}
       <label for="ssin">Paste the output of sudo ss -tulpn</label>
       <textarea id="ssin" spellcheck="false" autocomplete="off" placeholder="Netid State  Recv-Q Send-Q Local Address:Port ..."></textarea>
       <div class="row">
-        <button type="button" class="go" id="explainBtn">Explain it</button>
+        <button type="button" class="cta" id="explainBtn">Explain it</button>
         <button type="button" id="sampleBtn">Use an example</button>
         <span class="hint">Nothing is sent anywhere</span>
       </div>
