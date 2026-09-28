@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electronics for complete beginners, part one: first light — Iain Hoggan</title>
+<meta name="description" content="A study guide for people who have never built a circuit. What electricity is, lighting your first LED, using a multimeter, and discovering Ohm's law for yourself. Batteries only, with a circuit you can try in your browser first.">
+<meta property="og:title" content="Electronics for complete beginners: first light">
+<meta property="og:description" content="Light an LED, measure it, and discover Ohm's law yourself before anyone tells you what it is. Batteries only.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+main.wrap{padding-top:52px;padding-bottom:40px}
+.standfirst{font-size:1.12rem;color:var(--ink-2);max-width:34em}
+.standfirst strong{color:var(--ink);font-weight:600}
+main section p{max-width:38em}
+main h2{max-width:18em;margin-bottom:14px}
+main h3{margin:26px 0 10px}
+main ul,main ol{max-width:36em;margin:0 0 16px 1.2em}
+main li{margin-bottom:6px}
+.warn{border-left:3px solid var(--alarm);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.warn .tag{display:block;margin-bottom:4px;color:var(--alarm)}
+.warn p{margin:0}
+.warn p+p{margin-top:8px}
+.takeaways{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:26px}
+.take{background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);border-radius:4px;padding:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.take h3{font-size:1rem;margin:0 0 8px}
+.take p{font-size:.94rem;color:var(--ink-2);margin:0}
+.ui{font-family:var(--mono);font-size:.84em;white-space:nowrap;
+  background:linear-gradient(180deg,#fff,var(--engrave));border:1px solid var(--bezel);
+  border-bottom-width:2px;border-radius:3px;padding:1px 6px;color:var(--ink)}
+.predict{border-left:3px solid var(--lamp);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.predict .tag{display:block;margin-bottom:4px;color:var(--lamp)}
+.predict p{margin:0}
+details.answer{max-width:38em;margin:10px 0 18px}
+details.answer summary{cursor:pointer;font:600 11px/1.4 var(--mono);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-2)}
+details.answer p{margin-top:8px}
+.check{display:flex;gap:14px;align-items:flex-start;max-width:38em;margin:20px 0 6px;
+  border:1px solid var(--bezel);border-radius:4px;padding:14px 16px;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.check .tag{display:block;margin-bottom:4px;color:#2F8A63}
+.check p{margin:0;font-size:.97rem}
+.check ul{margin:6px 0 0 1.1em;font-size:.97rem}
+.check li{margin-bottom:3px}
+.done{flex:none;margin-left:auto;align-self:center;cursor:pointer;
+  font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;
+  padding:9px 12px;border-radius:3px;border:1px solid var(--bezel);border-bottom-width:2px;
+  background:linear-gradient(180deg,#fff,var(--engrave));color:var(--ink-2)}
+.done[aria-pressed="true"]{background:linear-gradient(180deg,#6FD6AA,var(--trace));border-color:#2F8A63;color:#0B2A1E}
+.done:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.progress{margin-top:26px;max-width:30em}
+.progress .bar{height:10px;border-radius:5px;background:var(--screen);border:1px solid #060B0E;
+  box-shadow:inset 0 2px 6px rgba(0,0,0,.6);overflow:hidden}
+.progress .fill{height:100%;width:0;background:linear-gradient(90deg,#2F8A63,var(--trace));
+  box-shadow:0 0 10px rgba(87,199,154,.7);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.progress .read{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:8px}
+
+/* shopping list */
+.kit{max-width:38em;margin:16px 0 20px;border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))}
+.kit div{display:flex;justify-content:space-between;gap:14px;padding:10px 14px;border-bottom:1px solid var(--rule)}
+.kit div:last-child{border-bottom:0;font-weight:600}
+.kit span:last-child{font-family:var(--mono);font-size:.9em;color:var(--ink-2);white-space:nowrap}
+
+/* circuit bench */
+.bench{max-width:46em;margin:22px 0 10px}
+.bench .top{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:0}
+.bench svg{display:block;width:100%;height:auto}
+.bench .controls{padding:14px 16px;border-left:1px solid #060B0E;display:flex;flex-direction:column;gap:12px}
+.bench label{display:block;font:600 10.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#93A79E;margin-bottom:6px}
+.bench select{width:100%;font:13px var(--mono);color:#E6F0EC;background:#0B1216;border:1px solid #2B3B44;border-radius:3px;padding:7px 8px}
+.bench select:focus-visible,.bench button:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.bench button{font:600 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
+  padding:10px 12px;border-radius:3px;border:1px solid #2B3B44;background:#16232B;color:#A9BFB5;cursor:pointer}
+.bench button.on{background:linear-gradient(180deg,#6FD6AA,var(--trace));color:#0B2A1E;border-color:#2F8A63}
+.bench .meas{margin:0;max-width:none;border-top:1px solid rgba(87,199,154,.18)}
+.bench .status{font:12.5px/1.55 var(--mono);color:#A9BFB5;padding:0 18px 16px;min-height:3em}
+.bench .status.bad{color:#E0603F}
+.bench .status.good{color:var(--trace)}
+
+/* discovery table */
+.disc{max-width:38em;border-collapse:collapse;margin:16px 0 8px;width:100%;font:13px var(--mono)}
+.disc th,.disc td{border:1px solid var(--bezel);padding:7px 9px;text-align:right}
+.disc th{background:var(--panel-2);font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.disc td:first-child,.disc th:first-child{text-align:left}
+.disc td.q{color:var(--ink-3)}
+.read-next{border-top:1px solid var(--rule);padding:44px 0 8px}
+.read-next .card{margin-top:14px;max-width:640px}
+@media(max-width:700px){.bench .top{grid-template-columns:1fr}.bench .controls{border-left:0;border-top:1px solid #060B0E}}
+</style>
+</head>
+<body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html" aria-label="Home">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap col">
+    <p class="tag">Study guide · Electronics · Part one · Complete beginners</p>
+    <h1>Electronics: first light</h1>
+    <p class="standfirst">If you've never built a circuit, start here. By the end you'll have lit an LED, measured it with a meter, and <strong>worked out Ohm's law yourself</strong> before anyone tells you what it is. Everything runs on batteries, and there's a circuit on this page you can try before buying anything.</p>
+    <div class="spec">
+      <div><b>4</b><span>stages</span></div>
+      <div><b>~£25</b><span>of parts, optional</span></div>
+      <div><b>Batteries</b><span>only</span></div>
+      <div><b>An evening</b><span>or two</span></div>
+    </div>
+    <div class="progress" aria-live="polite">
+      <div class="bar"><div class="fill" id="fill"></div></div>
+      <div class="read"><span class="tag" id="progress-text">0 of 4 checkpoints passed</span><span class="tag">Tick each checkpoint when you can explain it</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap col">
+
+<section>
+  <p class="tag eyebrow">How this guide works</p>
+  <h2>A study guide, not a recipe</h2>
+  <p>Each stage ends with a <strong>checkpoint</strong>: a few questions you should be able to answer in your own words. If you can, tick it and move on. If you can't, that's the part to go back over. Knowing <em>why</em> an LED needs a resistor is worth more than having followed the steps that fitted one.</p>
+  <div class="warn">
+    <span class="tag">The one safety rule</span>
+    <p><strong>Batteries only. Nothing in this guide ever plugs into the wall.</strong> Mains electricity can kill you, and nothing here needs it.</p>
+    <p>Batteries can hurt you too if you're careless. Never connect a battery's two terminals straight to each other with a wire: that's a short circuit, and the wire and battery get hot fast. And don't experiment with the flat lithium cells from phones or vapes, which can catch fire if shorted.</p>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">What you need</p>
+  <h2>Try before you buy</h2>
+  <p>You can do every stage on this page without owning a single part, using the circuit further down. When you want the real thing, which is far more satisfying, this is all it takes:</p>
+  <div class="kit">
+    <div><span>A breadboard (400 or 830 holes)</span><span>~£3</span></div>
+    <div><span>A bag of jumper wires</span><span>~£3</span></div>
+    <div><span>Assorted 5&nbsp;mm LEDs</span><span>~£3</span></div>
+    <div><span>An assortment of resistors (1/4 watt)</span><span>~£4</span></div>
+    <div><span>A 9&nbsp;V battery and snap-on clip, or a 3 × AA holder with wires</span><span>~£4</span></div>
+    <div><span>A basic digital multimeter</span><span>~£10</span></div>
+    <div><span>Roughly, all in</span><span>~£25</span></div>
+  </div>
+  <p>Prices are rough, from the usual online shops. Don't buy a 500-piece kit: it looks like progress, and most of it sits in a drawer.</p>
+  <p>Two free circuit simulators run in your browser if you want to go further than the one here: <a href="https://www.tinkercad.com/circuits">Tinkercad Circuits</a> (free account) and <a href="https://www.falstad.com/circuit/">Falstad</a> (no account needed).</p>
+</section>
+
+<section id="bench-section">
+  <p class="tag eyebrow">Your circuit</p>
+  <h2>The practice bench</h2>
+  <p>A battery, a switch, a resistor and an LED, joined in one loop. Change the parts, flick the switch, and watch the meters. You'll come back to this in every stage.</p>
+
+  <div class="bench well">
+    <div class="top">
+      <svg id="circuit" viewBox="0 0 420 300" role="img" aria-label="Circuit diagram: battery, switch, resistor and LED in a loop">
+        <defs>
+          <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ff5a3c" stop-opacity=".9"/>
+            <stop offset="100%" stop-color="#ff5a3c" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <!-- wires -->
+        <path id="wire" d="M70 90 V40 H180 M250 40 H350 V120 M350 190 V260 H70 V190" fill="none" stroke="#5E7580" stroke-width="3"/>
+        <!-- current dots -->
+        <path id="loop" d="M70 150 V40 H350 V260 H70 Z" fill="none" stroke="none"/>
+        <g id="dots"></g>
+        <!-- battery -->
+        <g>
+          <line x1="50" y1="100" x2="90" y2="100" stroke="#CFE3DA" stroke-width="4"/>
+          <line x1="58" y1="114" x2="82" y2="114" stroke="#CFE3DA" stroke-width="4"/>
+          <line x1="50" y1="128" x2="90" y2="128" stroke="#CFE3DA" stroke-width="4"/>
+          <line x1="58" y1="142" x2="82" y2="142" stroke="#CFE3DA" stroke-width="4"/>
+          <line x1="70" y1="90" x2="70" y2="100" stroke="#5E7580" stroke-width="3"/>
+          <line x1="70" y1="142" x2="70" y2="190" stroke="#5E7580" stroke-width="3"/>
+          <text x="96" y="104" fill="#E7B863" font-family="IBM Plex Mono,monospace" font-size="14">+</text>
+          <text x="96" y="148" fill="#93A79E" font-family="IBM Plex Mono,monospace" font-size="14">−</text>
+          <text id="battLabel" x="14" y="175" fill="#93A79E" font-family="IBM Plex Mono,monospace" font-size="12">9 V</text>
+        </g>
+        <!-- switch -->
+        <g id="switchG" style="cursor:pointer">
+          <circle cx="180" cy="40" r="4" fill="#CFE3DA"/>
+          <circle cx="250" cy="40" r="4" fill="#CFE3DA"/>
+          <line id="swArm" x1="180" y1="40" x2="246" y2="14" stroke="#CFE3DA" stroke-width="4" stroke-linecap="round"/>
+          <text x="193" y="70" fill="#93A79E" font-family="IBM Plex Mono,monospace" font-size="11">switch</text>
+          <rect x="170" y="5" width="90" height="70" fill="transparent"/>
+        </g>
+        <!-- resistor -->
+        <g>
+          <rect x="336" y="120" width="28" height="70" rx="4" fill="#D9C39A" stroke="#CFE3DA" stroke-width="2"/>
+          <text id="resLabel" x="374" y="160" fill="#93A79E" font-family="IBM Plex Mono,monospace" font-size="12">470 Ω</text>
+        </g>
+        <!-- LED -->
+        <g id="ledG">
+          <circle id="halo" cx="210" cy="260" r="0" fill="url(#glow)"/>
+          <polygon id="ledBody" points="226,244 226,276 190,260" fill="#5a2a22" stroke="#CFE3DA" stroke-width="2"/>
+          <line x1="190" y1="242" x2="190" y2="278" stroke="#CFE3DA" stroke-width="3"/>
+          <g id="ledDead" style="display:none">
+            <line x1="196" y1="246" x2="222" y2="274" stroke="#E0603F" stroke-width="3"/>
+            <line x1="222" y1="246" x2="196" y2="274" stroke="#E0603F" stroke-width="3"/>
+          </g>
+          <text x="186" y="236" fill="#93A79E" font-family="IBM Plex Mono,monospace" font-size="11" id="ledLabel">red LED</text>
+        </g>
+      </svg>
+      <div class="controls">
+        <div><label for="batt">Battery</label>
+          <select id="batt">
+            <option value="3">2 × AA (3 V)</option>
+            <option value="4.5">3 × AA (4.5 V)</option>
+            <option value="9" selected>9 V battery</option>
+          </select></div>
+        <div><label for="res">Resistor</label>
+          <select id="res">
+            <option value="0">None (a plain wire)</option>
+            <option value="47">47 Ω</option>
+            <option value="100">100 Ω</option>
+            <option value="220">220 Ω</option>
+            <option value="330">330 Ω</option>
+            <option value="470" selected>470 Ω</option>
+            <option value="1000">1 kΩ (1,000 Ω)</option>
+            <option value="2200">2.2 kΩ</option>
+            <option value="10000">10 kΩ</option>
+          </select></div>
+        <div><label for="led">LED colour</label>
+          <select id="led">
+            <option value="red" selected>Red</option>
+            <option value="yellow">Yellow</option>
+            <option value="blue">Blue</option>
+            <option value="white">White</option>
+          </select></div>
+        <div><button type="button" id="swBtn" aria-pressed="false">Switch: off</button></div>
+        <div><button type="button" id="replace" style="display:none">Fit a new LED</button></div>
+      </div>
+    </div>
+    <div class="meas">
+      <p class="cap">Meters</p>
+      <dl>
+        <dt>Battery</dt><dd id="mBatt">9.00 V</dd>
+        <dt>Across the resistor</dt><dd id="mRes">0.00 V</dd>
+        <dt>Across the LED</dt><dd id="mLed">0.00 V</dd>
+        <dt>Current round the loop</dt><dd id="mI">0.0 mA</dd>
+      </dl>
+    </div>
+    <p class="status" id="status" aria-live="polite"></p>
+  </div>
+  <p style="font-size:.95rem;color:var(--ink-2)">The model here is simplified. Real LEDs turn on a little more gradually, and real batteries sag as they run down. The numbers are close enough to learn from, and the ideas are exactly right.</p>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Stage 0</p>
+  <h2>What electricity actually is</h2>
+  <p>Wires are full of tiny particles called <strong>electrons</strong>. A battery pushes them. When there's a complete path from one end of the battery, through your parts, and back to the other end, they flow round it. That flow is called <strong>current</strong>, and the path is called a <strong>circuit</strong>, from "circle".</p>
+  <p>A common way to picture it is water in a pipe:</p>
+  <ul>
+    <li><strong>Voltage</strong> is the push, like water pressure. Measured in volts (V).</li>
+    <li><strong>Current</strong> is how much flows past each second, like litres per second. Measured in amps (A), or thousandths of an amp, milliamps (mA).</li>
+    <li><strong>Resistance</strong> is how hard something makes it to flow, like a narrow pipe. Measured in ohms (Ω).</li>
+  </ul>
+  <p>The picture isn't perfect, but it gets you a long way.</p>
+  <div class="predict">
+    <span class="tag">Experiment on the bench</span>
+    <p>Switch the circuit on and watch the dots. Now switch it off. The switch is at the top, nowhere near the LED at the bottom. Why does the LED go out anyway?</p>
+  </div>
+  <details class="answer">
+    <summary>Why</summary>
+    <p>Because it's a loop. Break it anywhere and the flow stops <em>everywhere</em>, all at once. A switch doesn't "block the electricity going to the LED". It opens a gap in the one path the current has. That's why the bulbs in an old string of fairy lights all went out when one failed.</p>
+  </details>
+  <div class="check" data-step="1">
+    <div><span class="tag">Checkpoint</span><p>Can you explain, in your own words:</p>
+      <ul><li>what voltage, current and resistance are,</li><li>why a circuit has to be a complete loop?</li></ul></div>
+    <button class="done" type="button" aria-pressed="false">I can</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Stage 1</p>
+  <h2>First light</h2>
+  <p>An <strong>LED</strong>, a light-emitting diode, is a tiny lamp that only works one way round. One leg is longer: that's the <strong>positive</strong> leg, and it goes towards the battery's <code>+</code>. The rim of the LED also has a flat side, next to the negative leg.</p>
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>On the bench, set the resistor to <span class="ui">None (a plain wire)</span>. Before you flick the switch: what do you think will happen?</p>
+  </div>
+  <details class="answer">
+    <summary>What happens, and why</summary>
+    <p>The LED burns out. With nothing to slow it down, far too much current flows, and the LED is destroyed in a flash. With a real LED, that's a pop, a smell, and a dead part.</p>
+    <p>That's what the <strong>resistor</strong> is for: it limits the current to a level the LED can take, about 20&nbsp;mA for an ordinary one. This is the most common beginner's mistake, which is why it's the first thing to try here, where it's free.</p>
+  </details>
+
+  <h3>With real parts</h3>
+  <p>A breadboard lets you build circuits by pushing parts into holes, with no soldering. Inside, each short row of five holes is joined together, so two legs pushed into the same row are connected. The long lines of holes along the edges, often marked red and blue, are joined along their whole length. They're for the battery's <code>+</code> and <code>−</code>.</p>
+  <ol>
+    <li>Plug the battery clip's red wire into the red edge line and the black wire into the blue one. <strong>Don't connect the battery yet.</strong></li>
+    <li>Put a 470&nbsp;Ω resistor from the red line into a row in the middle.</li>
+    <li>Put the LED's <strong>long</strong> leg in that same row, and its short leg in the next row along.</li>
+    <li>Run a jumper wire from that second row to the blue line.</li>
+    <li>Now connect the battery.</li>
+  </ol>
+  <p>Not lit? Turn the LED round. Every beginner puts one in backwards, and it does no harm: it simply doesn't light.</p>
+  <div class="check" data-step="2">
+    <div><span class="tag">Checkpoint</span><p>Can you explain:</p>
+      <ul><li>why an LED needs a resistor,</li><li>why the LED only works one way round?</li></ul></div>
+    <button class="done" type="button" aria-pressed="false">I can</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Stage 2</p>
+  <h2>The multimeter</h2>
+  <p>A multimeter lets you see what's happening instead of guessing. It has a dial and usually three sockets. The black lead always goes in the socket marked <code>COM</code>. Where the red lead goes depends on what you're measuring.</p>
+  <h3>Voltage: touch the two points</h3>
+  <p>Put the red lead in the socket marked <code>V</code>, and turn the dial to DC volts (the <code>V</code> with a straight line over it, set to 20 if your meter has ranges). Touch the leads either side of whatever you're measuring: across the battery, across the resistor, across the LED.</p>
+  <h3>Resistance: out of the circuit</h3>
+  <p>Turn the dial to <code>Ω</code> and touch the resistor's two legs. Take it out of the circuit first, or the rest of the circuit confuses the reading. This is also how to identify a loose resistor that's lost its label.</p>
+  <h3>Current: become part of the loop</h3>
+  <p>Current is different. You can't measure flow by touching the outside of the pipe. You have to make the water go <em>through</em> the meter. Unplug one wire in the loop, then use the meter's two leads to bridge the gap. Move the red lead to the socket marked <code>mA</code>, and turn the dial to DC milliamps.</p>
+  <div class="warn">
+    <span class="tag">The trap that blows the fuse</span>
+    <p>After measuring current, <strong>move the red lead back to <code>V</code></strong>. In the <code>mA</code> socket the meter is almost a plain wire. Touch it across a battery to "measure the voltage" and you've made a short circuit through the meter. The fuse inside blows, and the meter reads nothing until you replace it. Everyone does this once.</p>
+  </div>
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>On the bench with a 9&nbsp;V battery, a 470&nbsp;Ω resistor and a red LED: add up the voltage across the resistor and the voltage across the LED. What do you think the total will be?</p>
+  </div>
+  <details class="answer">
+    <summary>What you should find</summary>
+    <p>Exactly the battery voltage. The battery's push gets shared out round the loop, and the shares always add up to the whole. Try other resistors: the split changes, but the total never does. Engineers call this Kirchhoff's voltage law, but you've just seen it for yourself.</p>
+  </details>
+  <div class="check" data-step="3">
+    <div><span class="tag">Checkpoint</span><p>Can you explain:</p>
+      <ul><li>why you measure voltage across a part, but current through the loop,</li><li>which socket the red lead goes in for each, and why forgetting that blows a fuse?</li></ul></div>
+    <button class="done" type="button" aria-pressed="false">I can</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Stage 3</p>
+  <h2>Ohm's law, discovered</h2>
+  <p>Here's the one relationship everything else in electronics is built on. Instead of being told it, fill in this table from the bench. Use the <strong>9&nbsp;V battery and a red LED</strong>, and for each resistor write down the voltage across the resistor and the current. Then divide one by the other.</p>
+  <table class="disc">
+    <thead><tr><th>Resistor</th><th>Volts across it</th><th>Current (mA)</th><th>Volts ÷ amps</th></tr></thead>
+    <tbody>
+      <tr><td>470 Ω</td><td class="q">?</td><td class="q">?</td><td class="q">?</td></tr>
+      <tr><td>1 kΩ</td><td class="q">?</td><td class="q">?</td><td class="q">?</td></tr>
+      <tr><td>2.2 kΩ</td><td class="q">?</td><td class="q">?</td><td class="q">?</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:.95rem;color:var(--ink-2)">To turn milliamps into amps, divide by 1,000. So 15&nbsp;mA is 0.015&nbsp;A.</p>
+  <div class="predict">
+    <span class="tag">Look at the last column</span>
+    <p>What do you notice about the numbers in the last column, compared with the first?</p>
+  </div>
+  <details class="answer">
+    <summary>What you've found</summary>
+    <p>Volts divided by amps gives you back the resistor's value, every time. That's <strong>Ohm's law</strong>: <code>voltage = current × resistance</code>, or <code>V = I × R</code>. (Current gets the letter I, from the French <em>intensité du courant</em>, the term used when the idea was first worked out.)</p>
+    <p>It's useful because it works backwards. To choose a resistor for a red LED on 9&nbsp;V: the LED takes about 2&nbsp;V, so the resistor must take the other 7&nbsp;V. You want about 15&nbsp;mA, which is 0.015&nbsp;A. So <code>R = 7 ÷ 0.015 ≈ 470&nbsp;Ω</code>, which is why this page started with 470&nbsp;Ω.</p>
+  </details>
+  <div class="predict">
+    <span class="tag">One more experiment</span>
+    <p>Set the battery to <span class="ui">2 × AA (3 V)</span> and the LED to <span class="ui">White</span>, with 100&nbsp;Ω. It barely lights, or doesn't light at all. Red on the same battery works fine. Using what you now know, why?</p>
+  </div>
+  <details class="answer">
+    <summary>Why</summary>
+    <p>Different colours need different pushes before they light at all: about 2&nbsp;V for red, about 3&nbsp;V for white and blue. A white LED on a 3&nbsp;V battery leaves almost nothing over for the resistor, so almost no current flows.</p>
+  </details>
+  <div class="check" data-step="4">
+    <div><span class="tag">Checkpoint</span><p>Can you explain:</p>
+      <ul><li>what Ohm's law says, in words,</li><li>how to work out the resistor for an LED on a given battery?</li></ul></div>
+    <button class="done" type="button" aria-pressed="false">I can</button>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Where next</p>
+  <h2>Part two, and handing the switch to a computer</h2>
+  <p>Part two of this guide will cover the other parts in the bag: reading a resistor's coloured stripes, capacitors that store charge, and the transistor, a switch with no moving parts that everything digital is built from.</p>
+  <p>Or take this exact circuit and let a Raspberry Pi flick the switch instead of your finger. That's the next guide on this site, and everything you've learned here carries straight over.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">That's part one</p>
+  <h2>What I'd want you to take away</h2>
+  <div class="takeaways">
+    <div class="take">
+      <h3>It's always a loop</h3>
+      <p>Current needs a complete path. Break it anywhere and everything stops. When a circuit doesn't work, look for the gap.</p>
+    </div>
+    <div class="take">
+      <h3>Measure, don't guess</h3>
+      <p>Voltage across a part, current through the loop. A meter turns an argument about what's happening into a reading.</p>
+    </div>
+    <div class="take">
+      <h3>V = I × R</h3>
+      <p>You found it yourself from three readings. It picks your resistors, and it explains most of what you'll see from here.</p>
+    </div>
+  </div>
+  <p style="margin-top:26px">Stuck on a checkpoint, or found something wrong? <a href="contact.html">Tell me</a>. If a stage didn't make sense, that's my fault, and I'll fix it.</p>
+</section>
+
+</main>
+
+<section class="read-next">
+  <div class="wrap col">
+    <p class="tag">Also on this site</p>
+    <a class="card" href="neural_playground.html">
+      <h3>S.M.A.R.T. Neural Network Playground</h3>
+      <p>Same approach, different subject: change one number, predict what happens, then watch a single neuron learn, or blow up.</p>
+      <span class="go">Try it &rarr;</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">← Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="contact.html">Get in touch</a>
+    <span class="tag">© 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* ---------- checkpoints and progress meter ---------- */
+  var KEY='electronics-1-steps';
+  var buttons=[].slice.call(document.querySelectorAll('.check .done'));
+  var saved={};
+  try{ saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){ saved={}; }
+  function update(){
+    var n=buttons.filter(function(b){return b.getAttribute('aria-pressed')==='true';}).length;
+    document.getElementById('fill').style.width=(n/buttons.length*100)+'%';
+    document.getElementById('progress-text').textContent=
+      n===buttons.length ? 'All 4 checkpoints passed. Part one done.' : n+' of '+buttons.length+' checkpoints passed';
+  }
+  buttons.forEach(function(b){
+    var s=b.parentNode.getAttribute('data-step');
+    if(saved[s]){ b.setAttribute('aria-pressed','true'); b.textContent='Yes ✓'; }
+    b.addEventListener('click',function(){
+      var on=b.getAttribute('aria-pressed')!=='true';
+      b.setAttribute('aria-pressed',on?'true':'false');
+      b.textContent=on?'Yes ✓':'I can';
+      saved[s]=on;
+      try{ localStorage.setItem(KEY,JSON.stringify(saved)); }catch(e){}
+      update();
+    });
+  });
+  update();
+
+  /* ---------- circuit bench ---------- */
+  var LEDS={
+    red:   {vf:2.0, colour:'#ff5a3c', off:'#5a2a22', name:'red LED'},
+    yellow:{vf:2.1, colour:'#ffd23c', off:'#5a4a1e', name:'yellow LED'},
+    blue:  {vf:3.0, colour:'#4aa8ff', off:'#1e3450', name:'blue LED'},
+    white: {vf:3.0, colour:'#f4f7ff', off:'#4a4f58', name:'white LED'}
+  };
+  var RATED=0.020, MAX=0.050;
+  var on=false, dead=false, anim=null, phase=0;
+  var $=function(id){return document.getElementById(id);};
+  var NS='http://www.w3.org/2000/svg';
+  var loop=$('loop'), loopLen=loop.getTotalLength(), dotsG=$('dots'), dots=[];
+  for(var i=0;i<14;i++){ var c=document.createElementNS(NS,'circle'); c.setAttribute('r','3'); c.setAttribute('fill','#E7B863'); dotsG.appendChild(c); dots.push(c); }
+
+  function fmtR(r){ return r===0?'wire':(r>=1000?(r/1000)+' kΩ':r+' Ω'); }
+
+  function calc(){
+    var V=parseFloat($('batt').value), R=parseFloat($('res').value), L=LEDS[$('led').value];
+    if(!on||dead) return {V:V,R:R,L:L,I:0,vr:0,vl:0};
+    if(R===0) return {V:V,R:R,L:L,I:Infinity,vr:0,vl:V};
+    var I=V>L.vf ? (V-L.vf)/R : 0;
+    var vl=I>0 ? L.vf : V;           /* below turn-on, the LED takes the whole push */
+    return {V:V,R:R,L:L,I:I,vr:I*R,vl:vl};
+  }
+
+  function render(){
+    var s=calc(), st=$('status');
+    if(on && !dead && s.I>MAX){ dead=true; s=calc(); st.className='status bad';
+      st.textContent=(s.R===0 ? 'Pop. With no resistor the current was huge, and the LED burned out instantly.'
+        : 'Pop. About '+Math.round(((s.V-s.L.vf)/s.R)*1000)+' mA is far more than an LED can take, and it burned out.')+
+        ' Fit a new LED and choose a bigger resistor.';
+    }
+    $('battLabel').textContent=s.V+' V';
+    $('resLabel').textContent=fmtR(s.R);
+    $('ledLabel').textContent=s.L.name;
+    $('mBatt').textContent=s.V.toFixed(2)+' V';
+    $('mRes').textContent=s.vr.toFixed(2)+' V';
+    $('mLed').textContent=(dead?0:s.vl).toFixed(2)+' V';
+    var mA=s.I*1000;
+    $('mI').textContent=(isFinite(mA)?mA.toFixed(1):'—')+' mA';
+    $('mI').className = s.I>RATED ? 'bad' : '';
+    $('ledDead').style.display=dead?'':'none';
+    $('replace').style.display=dead?'':'none';
+    var b=dead?0:Math.min(1,Math.sqrt(s.I/RATED));
+    $('ledBody').setAttribute('fill', b>0.02 ? s.L.colour : (dead?'#2a2a2a':s.L.off));
+    $('ledBody').setAttribute('fill-opacity', b>0.02 ? (0.45+0.55*b).toFixed(2) : '1');
+    $('halo').setAttribute('r', (b*48).toFixed(1));
+    $('glow').querySelectorAll('stop')[0].setAttribute('stop-color', s.L.colour);
+    $('glow').querySelectorAll('stop')[1].setAttribute('stop-color', s.L.colour);
+    $('swArm').setAttribute('y2', on?'40':'14');
+    $('swBtn').textContent='Switch: '+(on?'on':'off');
+    $('swBtn').setAttribute('aria-pressed',on?'true':'false');
+    $('swBtn').classList.toggle('on',on);
+    if(!dead){
+      st.className='status';
+      if(!on) st.textContent='Switch is off: the loop is broken, so nothing flows.';
+      else if(s.I===0){ st.textContent='No light. A '+s.L.name+' needs a little more than '+s.L.vf+' V before any real current flows, and '+s.V+' V leaves nothing over for the resistor.'; }
+      else if(s.I>RATED){ st.className='status bad'; st.textContent='Lit, but '+mA.toFixed(1)+' mA is over the LED\'s rating of about 20 mA. It will run hot and die early. Try a bigger resistor.'; }
+      else if(s.I<0.002){ st.textContent='Lit, just. Only '+mA.toFixed(1)+' mA: the resistor is holding most of the current back.'; }
+      else { st.className='status good'; st.textContent='Lit, at '+mA.toFixed(1)+' mA. Comfortably within what the LED can take.'; }
+    }
+    var flowing=on && !dead && s.I>0;
+    if(flowing && !anim){ anim=requestAnimationFrame(step); }
+    dotsG.style.display=flowing?'':'none';
+    step.speed = flowing ? Math.min(3, 0.35+ s.I*120) : 0;
+  }
+  function step(){
+    phase=(phase+(step.speed||0))%loopLen;
+    dots.forEach(function(d,i){
+      var p=loop.getPointAtLength((phase+i*loopLen/dots.length)%loopLen);
+      d.setAttribute('cx',p.x); d.setAttribute('cy',p.y);
+    });
+    anim = step.speed ? requestAnimationFrame(step) : null;
+  }
+  ['batt','res','led'].forEach(function(id){ $(id).addEventListener('change',render); });
+  function toggle(){ on=!on; render(); }
+  $('swBtn').addEventListener('click',toggle);
+  $('switchG').addEventListener('click',toggle);
+  $('replace').addEventListener('click',function(){ dead=false; on=false; render(); });
+  render();
+})();
+</script>
+
+</body>
+</html>
