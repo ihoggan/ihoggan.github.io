@@ -10,8 +10,11 @@ I'm Iain Hoggan, a network technician on the Wirral. I build things on hardware 
 - [Saved from the scrap pile](https://ihoggan.github.io/reclaim.html): a 2015 desktop PC headed for scrap, now running Ubuntu, a local AI model and characters that remember me. Includes the measurement that showed the characters' memories were entirely invented, and the fix. Code: [localcast](https://github.com/IHoggan/localcast), [nix6-tools](https://github.com/IHoggan/nix6-tools).
 - [HUSTLER](https://ihoggan.github.io/Hustler.html): a UK blackball pool physics sandbox built over seventy revisions, and what the bugs taught me about testing.
 
-**Tutorial**
-- [Would you like a website like this?](https://ihoggan.github.io/website.html): from a new GitHub account to your own working site on GitHub Pages, step by step, with a page builder.
+**Tutorials: learn by doing** (every step asks you to predict, try it, and check)
+- *Linux:* [Meet the terminal](https://ihoggan.github.io/terminal.html) → [Securing Ubuntu](https://ihoggan.github.io/secure-ubuntu.html) → [How networks work](https://ihoggan.github.io/networking.html)
+- *Hardware:* [Electronics: first light](https://ihoggan.github.io/electronics-1.html) → [Hand the switch to a computer](https://ihoggan.github.io/pi-gpio.html) (Raspberry Pi GPIO)
+- *Radio:* [See what's in the air](https://ihoggan.github.io/sdr.html) (software-defined radio, with the UK rules)
+- *Build your own:* [Would you like a website like this?](https://ihoggan.github.io/website.html): from a new GitHub account to your own working site on GitHub Pages, with a page builder.
 
 **Things you can run in your browser**
 - [S.M.A.R.T.](https://ihoggan.github.io/neural_playground.html): watch a single neuron learn, then push the learning rate until it breaks.
