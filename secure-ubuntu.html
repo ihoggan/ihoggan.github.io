@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Securing Ubuntu: lock down a new machine by working out what needs locking — Iain Hoggan</title>
+<meta name="description" content="Six questions that secure a fresh Ubuntu install: who can use it, what's listening, who can reach it, how you'd get in remotely, whether it updates itself, and whether you could get your files back. Each answered with commands you run and check yourself.">
+<meta property="og:title" content="Securing Ubuntu">
+<meta property="og:description" content="Don't paste a hardening script. Ask six questions of your own machine, and watch a firewall actually block something.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+main.wrap{padding-top:52px;padding-bottom:40px}
+.standfirst{font-size:1.12rem;color:var(--ink-2);max-width:34em}
+.standfirst strong{color:var(--ink);font-weight:600}
+main section p{max-width:38em}
+main h2{max-width:18em;margin-bottom:14px}
+main h3{margin:26px 0 10px}
+main ul,main ol{max-width:36em;margin:0 0 16px 1.2em}
+main li{margin-bottom:6px}
+pre{
+  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen));
+  border:1px solid #060B0E;border-radius:3px;box-shadow:inset 0 3px 12px rgba(0,0,0,.55);
+  color:#CFE3DA;font-family:var(--mono);font-size:13px;line-height:1.55;
+  padding:14px 16px;margin:18px 0 22px;max-width:40em;overflow-x:auto;white-space:pre;
+}
+pre .dim{color:#7F968D}
+pre .pr{color:var(--trace)}
+pre .hl{color:#E7B863}
+.warn{border-left:3px solid var(--alarm);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.warn .tag{display:block;margin-bottom:4px;color:var(--alarm)}
+.warn p{margin:0}
+.warn p+p{margin-top:8px}
+.takeaways{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:26px}
+.take{background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);border-radius:4px;padding:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.take h3{font-size:1rem;margin:0 0 8px}
+.take p{font-size:.94rem;color:var(--ink-2);margin:0}
+.ui{font-family:var(--mono);font-size:.84em;white-space:nowrap;
+  background:linear-gradient(180deg,#fff,var(--engrave));border:1px solid var(--bezel);
+  border-bottom-width:2px;border-radius:3px;padding:1px 6px;color:var(--ink)}
+.predict{border-left:3px solid var(--lamp);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.predict .tag{display:block;margin-bottom:4px;color:var(--lamp)}
+.predict p{margin:0}
+details.answer{max-width:38em;margin:10px 0 18px}
+details.answer summary{cursor:pointer;font:600 11px/1.4 var(--mono);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-2)}
+details.answer p{margin-top:8px}
+.check{display:flex;gap:14px;align-items:flex-start;max-width:38em;margin:20px 0 6px;
+  border:1px solid var(--bezel);border-radius:4px;padding:14px 16px;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.check .tag{display:block;margin-bottom:4px;color:#2F8A63}
+.check p{margin:0;font-size:.97rem}
+.done{flex:none;margin-left:auto;align-self:center;cursor:pointer;
+  font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;
+  padding:9px 12px;border-radius:3px;border:1px solid var(--bezel);border-bottom-width:2px;
+  background:linear-gradient(180deg,#fff,var(--engrave));color:var(--ink-2)}
+.done[aria-pressed="true"]{background:linear-gradient(180deg,#6FD6AA,var(--trace));border-color:#2F8A63;color:#0B2A1E}
+.done:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.progress{margin-top:26px;max-width:30em}
+.progress .bar{height:10px;border-radius:5px;background:var(--screen);border:1px solid #060B0E;
+  box-shadow:inset 0 2px 6px rgba(0,0,0,.6);overflow:hidden}
+.progress .fill{height:100%;width:0;background:linear-gradient(90deg,#2F8A63,var(--trace));
+  box-shadow:0 0 10px rgba(87,199,154,.7);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.progress .read{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:8px}
+
+/* ports explainer */
+.ports{max-width:44em;margin:22px 0 10px}
+.ports .pane{padding:14px 16px}
+.ports label{display:block;font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#93A79E;margin-bottom:8px}
+.ports textarea{width:100%;min-height:150px;resize:vertical;background:#0B1216;color:#CFE3DA;
+  border:1px solid #2B3B44;border-radius:3px;padding:10px;font:12.5px/1.5 var(--mono);white-space:pre;overflow-x:auto}
+.ports textarea:focus{outline:2px solid var(--lamp);outline-offset:1px}
+.ports .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.ports .row button{font:600 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
+  padding:9px 12px;border-radius:3px;border:1px solid #2B3B44;background:#16232B;color:#A9BFB5;cursor:pointer}
+.ports .row button.go{background:linear-gradient(180deg,#6FD6AA,var(--trace));color:#0B2A1E;border-color:#2F8A63}
+.ports .row .hint{font:11px var(--mono);color:#6E8A80}
+.ports .results{border-top:1px solid rgba(87,199,154,.18);padding:6px 16px 14px}
+.port{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.port:last-child{border-bottom:0}
+.port .badge{font:600 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
+  padding:6px 8px;border-radius:3px;align-self:start;white-space:nowrap}
+.port .badge.local{background:rgba(87,199,154,.14);color:var(--trace);border:1px solid rgba(87,199,154,.35)}
+.port .badge.net{background:rgba(224,152,43,.14);color:#E7B863;border:1px solid rgba(224,152,43,.4)}
+.port .what{font:13px/1.5 var(--mono);color:#CFE3DA}
+.port .what b{color:#E6F0EC}
+.port .what .addr{color:#7F968D}
+.port .why{grid-column:2;font:12.5px/1.55 var(--mono);color:#93A79E}
+.summary{font:12.5px/1.55 var(--mono);color:#A9BFB5;padding:10px 0 4px}
+.read-next{border-top:1px solid var(--rule);padding:44px 0 8px}
+.read-next .card{margin-top:14px;max-width:640px}
+@media(max-width:600px){.port{grid-template-columns:1fr}.port .why{grid-column:1}}
+</style>
+</head>
+<body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html" aria-label="Home">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap col">
+    <p class="tag">Tutorial · Ubuntu · Beginners who've met the terminal</p>
+    <h1>Securing Ubuntu</h1>
+    <p class="standfirst">Most security guides hand you a script to paste. You end up with a locked-down machine and no idea what was locked, or why. This one asks <strong>six questions of your own computer</strong>, and you answer each by looking. Along the way you'll watch a firewall block your own phone, which is the moment it stops being abstract.</p>
+    <div class="spec">
+      <div><b>6</b><span>questions</span></div>
+      <div><b>1</b><span>small install, optional</span></div>
+      <div><b>£0</b><span>to run</span></div>
+      <div><b>~1 hr</b><span>first time</span></div>
+    </div>
+    <div class="progress" aria-live="polite">
+      <div class="bar"><div class="fill" id="fill"></div></div>
+      <div class="read"><span class="tag" id="progress-text">0 of 6 questions answered</span><span class="tag">Tick each check as you pass it</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap col">
+
+<section>
+  <p class="tag eyebrow">Before you start</p>
+  <h2>What you need, and the order it goes in</h2>
+  <p>A computer with Ubuntu freshly installed. Mine is <code>nix6</code>, a 2015 desktop <a href="reclaim.html">rescued from the scrap pile</a>. I've locked down my Raspberry Pis the same way, and this is the order that works for me.</p>
+  <p>You'll need to be comfortable opening the terminal and reading the prompt. If you're not yet, <a href="terminal.html">Meet the terminal</a> takes twenty minutes and everything here builds on it.</p>
+  <p>Some commands start with <code>sudo</code>. It means "do this as the administrator", and it will ask for <em>your</em> password, which stays invisible as you type. That's normal.</p>
+  <div class="warn">
+    <span class="tag">Two rules</span>
+    <p><strong>Sit at the machine itself</strong>, not controlling it from another computer. Step 4 changes how you log in remotely, and if you get it wrong from a distance you can lock yourself out.</p>
+    <p><strong>Look before you change.</strong> Every question starts with a command that only looks. Change something only once you know what you're changing.</p>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Question 1</p>
+  <h2>Who can use this machine?</h2>
+  <p>Every account is a way in, and accounts with admin rights are the ways in that matter most. On Ubuntu, admin rights come from being in a group called <code>sudo</code>.</p>
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>You set up one account when you installed Ubuntu. How many people do you think have admin rights?</p>
+  </div>
+<pre><span class="pr">$</span> getent group sudo   <span class="dim"># who is in the admin group?</span>
+<span class="pr">$</span> ls /home            <span class="dim"># whose home folders exist?</span></pre>
+  <p>On a machine with one user called <code>iain</code>, the first prints <code>sudo:x:27:iain</code>: the group's name, a placeholder, its number, then its members. The second shows one folder, <code>iain</code>.</p>
+  <details class="answer">
+    <summary>What if you find someone you don't recognise?</summary>
+    <p>On a machine you installed yourself, that would be very unusual, so stop and find out before carrying on. On a second-hand machine that <em>wasn't</em> freshly installed, old accounts are common, and a fresh install is the cleanest fix. If someone else genuinely shares the computer, give them an ordinary account without admin rights: <span class="ui">Settings</span> → <span class="ui">System</span> → <span class="ui">Users</span>, and leave "Administrator" switched off.</p>
+  </details>
+  <div class="check" data-step="1">
+    <div><span class="tag">Check</span><p>You know every account on the machine, and only the people who should have admin rights are in the <code>sudo</code> group.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Question 2</p>
+  <h2>What's listening?</h2>
+  <p>Programs that wait for connections are said to <strong>listen</strong> on a <strong>port</strong>, a numbered door. One command lists every open door:</p>
+<pre><span class="pr">$</span> sudo ss -tulpn</pre>
+  <p>The letters ask for <b>t</b>CP and <b>u</b>DP connections, only <b>l</b>istening ones, the <b>p</b>rogram behind each, and <b>n</b>umbers rather than names. The output is dense, so paste it into the box below and it'll be explained line by line. Nothing you paste leaves your browser.</p>
+
+  <div class="ports well">
+    <div class="pane">
+      <label for="ssin">Paste the output of sudo ss -tulpn</label>
+      <textarea id="ssin" spellcheck="false" autocomplete="off" placeholder="Netid State  Recv-Q Send-Q Local Address:Port ..."></textarea>
+      <div class="row">
+        <button type="button" class="go" id="explainBtn">Explain it</button>
+        <button type="button" id="sampleBtn">Use an example</button>
+        <span class="hint">Nothing is sent anywhere</span>
+      </div>
+    </div>
+    <div class="results" id="results" aria-live="polite"></div>
+  </div>
+
+  <div class="predict">
+    <span class="tag">The one thing to look at</span>
+    <p>Look at the address in front of each port number. Some start <code>127.</code> or <code>[::1]</code>. Others are <code>0.0.0.0</code>, <code>*</code> or <code>[::]</code>. What do you think the difference is?</p>
+  </div>
+  <details class="answer">
+    <summary>The difference</summary>
+    <p><code>127.0.0.1</code> (and <code>[::1]</code>, its newer twin) means <strong>this computer only</strong>. Nothing else on your network can knock on that door. <code>0.0.0.0</code>, <code>*</code> and <code>[::]</code> mean <strong>any network this computer is on</strong>. Those are the doors that matter, and the ones the next question is about.</p>
+    <p>Ollama, the local AI model I run on nix6, listens on <code>127.0.0.1:11434</code> by default. That's exactly right for it: reachable from the machine itself, and from nowhere else. The example in the box above includes it.</p>
+  </details>
+  <div class="check" data-step="2">
+    <div><span class="tag">Check</span><p>You can say which of your open ports only this computer can reach, and which the network can.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Question 3</p>
+  <h2>Who can reach those doors?</h2>
+  <p>A <strong>firewall</strong> decides which knocks get answered. Ubuntu comes with one called UFW, the "uncomplicated firewall". It's installed, but switched off.</p>
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>Before you check: is your firewall on?</p>
+  </div>
+<pre><span class="pr">$</span> sudo ufw status</pre>
+  <p>On a fresh install it says <code>Status: inactive</code>. Before switching it on, let's make something for it to block, so you can watch it work.</p>
+
+  <h3>Experiment: open a door, then close it</h3>
+  <p>Python can serve a folder as a tiny website. It listens on every network, so your phone can reach it. Make an empty folder first, so there's nothing private in it to see:</p>
+<pre><span class="pr">$</span> mkdir ~/firewall-test && cd ~/firewall-test
+<span class="pr">$</span> echo "Hello from my computer" > hello.txt
+<span class="pr">$</span> hostname -I           <span class="dim"># your address on the network, e.g. 192.168.0.23</span>
+<span class="pr">$</span> python3 -m http.server 8000</pre>
+  <p>Leave that running. On your phone, connected to the <strong>same Wi-Fi</strong>, open the browser and go to your computer's address with <code>:8000</code> on the end, for example <code>http://192.168.0.23:8000</code>. You'll see <code>hello.txt</code>.</p>
+  <p>Now open a <strong>second terminal window</strong> (<span class="ui">Ctrl</span> + <span class="ui">Alt</span> + <span class="ui">T</span> again) and switch the firewall on:</p>
+<pre><span class="pr">$</span> sudo ufw enable
+<span class="pr">$</span> sudo ufw status verbose</pre>
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>Refresh the page on your phone. What happens? And will the page still open on the computer itself, at <code>http://localhost:8000</code>?</p>
+  </div>
+  <details class="answer">
+    <summary>What happens</summary>
+    <p>The phone gives up: the page spins, then fails. The computer itself still opens it fine. The firewall only guards the doors <em>from outside</em>. <code>status verbose</code> shows why: <code>Default: deny (incoming), allow (outgoing)</code>. Nothing gets in unless you allow it, and everything you start from inside still works.</p>
+  </details>
+  <p>Stop the little web server with <span class="ui">Ctrl</span> + <span class="ui">C</span> in the first window. You can delete the test folder with <code>rm -r ~/firewall-test</code> once you're back in your home folder.</p>
+  <div class="check" data-step="3">
+    <div><span class="tag">Check</span><p>Your phone could reach the test page with the firewall off, and couldn't with it on. <code>sudo ufw status</code> now says <code>active</code>, and it stays on after a restart.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Question 4</p>
+  <h2>How would you get in from another computer?</h2>
+  <p><strong>Only if you want to.</strong> SSH lets you type into this computer's terminal from another one. Ubuntu Desktop doesn't include it, so if you won't use it, the most secure choice is to leave it off and move on to question 5.</p>
+  <p>I use it on my Raspberry Pis, which have no screen or keyboard: SSH from my laptop is the only way I talk to them. Here's the safe order:</p>
+<pre><span class="dim"># on the machine you're securing</span>
+<span class="pr">$</span> sudo apt install openssh-server
+<span class="pr">$</span> sudo ufw allow ssh      <span class="dim"># open exactly one door, port 22</span></pre>
+
+  <h3>Use a key instead of a password</h3>
+  <p>A password can be guessed. A <strong>key</strong> is a pair of files: a private half that never leaves your laptop, and a public half you give to the computers you want to log in to. On the <em>other</em> computer, the one you'll connect <em>from</em>:</p>
+<pre><span class="dim"># on your laptop, not the machine you're securing</span>
+<span class="pr">$</span> ssh-keygen -t ed25519            <span class="dim"># press Enter to accept the file name, then choose a passphrase</span>
+<span class="pr">$</span> ssh-copy-id iain@192.168.0.23    <span class="dim"># your username and the address from hostname -I</span>
+<span class="pr">$</span> ssh iain@192.168.0.23</pre>
+  <div class="predict">
+    <span class="tag">Watch the prompt</span>
+    <p>After that last command, look at your prompt. What changed, and why does it matter?</p>
+  </div>
+  <details class="answer">
+    <summary>What changed</summary>
+    <p>On my laptop it goes from <code>iain@nix5:~$</code> to <code>iain@nix4b:~$</code>, one of my Pis. Same window, same laptop, but every command now runs on the other computer. This is why <a href="terminal.html">reading the prompt</a> becomes a habit: two terminal windows can look identical and be on different machines. Type <code>exit</code> to come back.</p>
+  </details>
+
+  <h3>Then switch passwords off</h3>
+  <p>Once the key works, stop SSH accepting passwords at all. Settings go in a small file of your own, rather than editing Ubuntu's main settings file:</p>
+<pre><span class="pr">$</span> sudo nano /etc/ssh/sshd_config.d/10-local.conf</pre>
+  <p>Type these two lines, then save with <span class="ui">Ctrl</span> + <span class="ui">O</span>, <span class="ui">Enter</span>, and leave with <span class="ui">Ctrl</span> + <span class="ui">X</span>:</p>
+<pre>PasswordAuthentication no
+PermitRootLogin no</pre>
+  <p>Now <em>check what SSH will actually use</em>, rather than trusting what you typed. This asks SSH to print its final settings:</p>
+<pre><span class="pr">$</span> sudo sshd -T | grep -i -e passwordauthentication -e permitrootlogin
+<span class="dim">passwordauthentication no
+permitrootlogin no</span>
+<span class="pr">$</span> sudo systemctl restart ssh</pre>
+  <div class="warn">
+    <span class="tag">Keep a way back in</span>
+    <p>Before you close anything, open a <strong>new</strong> window on your laptop and log in again with <code>ssh</code>. If it works, you're done. If it doesn't, you still have the machine in front of you to fix it. This is why the first rule was to sit at it.</p>
+  </div>
+  <p>A small thing that surprised me: SFTP, the secure way to copy files between computers, runs <em>inside</em> SSH, on the same door. When I closed the old FTP port on one of my Raspberry Pis, I lost nothing. SSH already did the job, encrypted.</p>
+  <div class="check" data-step="4">
+    <div><span class="tag">Check</span><p>Either SSH isn't installed, because you don't need it, or you can log in with your key, and <code>sshd -T</code> shows <code>passwordauthentication no</code>.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Question 5</p>
+  <h2>Does it update itself when you're not looking?</h2>
+  <p>Most attacks use holes that were fixed months ago on machines that never got the fix. Ubuntu can install security fixes on its own. The question is whether yours is.</p>
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>Do you think automatic security updates are on by default? Check:</p>
+  </div>
+<pre><span class="pr">$</span> cat /etc/apt/apt.conf.d/20auto-upgrades</pre>
+  <details class="answer">
+    <summary>What it means</summary>
+    <p>You'll see two lines ending in <code>"1"</code>. The first means "check for updates every day", and the one mentioning <code>Unattended-Upgrade</code> means "install the security ones automatically". <code>"0"</code> would mean off. On a normal Ubuntu install, both are on.</p>
+  </details>
+  <p>Don't take the settings file's word for it. Find the evidence that it has actually run. It keeps a diary:</p>
+<pre><span class="pr">$</span> less /var/log/unattended-upgrades/unattended-upgrades.log</pre>
+  <p>Press <span class="ui">Q</span> to get out, just like a manual page. On a machine installed today the file may not exist yet. Check again in a day or two.</p>
+  <p>Automatic updates cover security fixes. Everything else is up to you, and it's worth doing weekly:</p>
+<pre><span class="pr">$</span> sudo apt update && sudo apt upgrade</pre>
+  <div class="check" data-step="5">
+    <div><span class="tag">Check</span><p>The settings file shows <code>"1"</code> twice, and within a few days the log shows it running.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Question 6</p>
+  <h2>If it all went wrong, could you get your files back?</h2>
+  <p>Security isn't only keeping people out. A dead drive, a mistaken <code>rm</code>, or a bad update loses files just as surely. Ubuntu's <strong>Backups</strong> app copies your home folder to an external drive or a network folder on a schedule. If it isn't installed:</p>
+<pre><span class="pr">$</span> sudo apt install deja-dup</pre>
+  <p>Open <span class="ui">Backups</span>, choose where to save, and run the first backup. Then do the part almost everyone skips:</p>
+  <div class="predict">
+    <span class="tag">Experiment</span>
+    <p>Make a file called <code>test-restore.txt</code> with a line of text in it, run a backup, then delete the file. Get it back using <span class="ui">Restore</span>.</p>
+  </div>
+  <p>A backup you've never restored from is only a hope. The first time you restore should be a practice, not an emergency.</p>
+  <div class="check" data-step="6">
+    <div><span class="tag">Check</span><p>You deleted a file and got it back from your backup.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Going further</p>
+  <h2>Check from the outside</h2>
+  <p>Everything so far checked the machine from the inside. To see it as a stranger would, knock on every door from another computer. <code>nmap</code> does exactly that. From your laptop:</p>
+<pre><span class="pr">$</span> sudo apt install nmap
+<span class="pr">$</span> nmap 192.168.0.23</pre>
+  <p>The first time I did this on one of my Raspberry Pis, after locking it down, it reported <code>999 filtered ports</code> and one open: <code>22/tcp open ssh</code>. The firewall didn't even answer for the other 999. That one line is the whole of this page, measured.</p>
+  <div class="warn">
+    <span class="tag">Only your own machines</span>
+    <p>Scan computers you own. Scanning other people's without permission can be against the law, and on a work network it's the quickest way to meet the IT department.</p>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Your turn</p>
+  <h2>What would you skip?</h2>
+  <p>You have a Raspberry Pi that only ever sits on your home network, controlled from your laptop. Which of the six questions still matter, and which could you reasonably skip?</p>
+  <details class="answer">
+    <summary>My answer</summary>
+    <p>I'd skip none, but the weights change. SSH (4) becomes the most important, because it's the only way in and it's switched on. Keys and the firewall (3) matter even at home, because every other device on your Wi-Fi, including the smart plug, shares that network. Updates (5) still matter. Backups (6) matter more than you'd think, because SD cards wear out. The one I'd spend least time on is 1, because a Pi usually only ever has me on it.</p>
+  </details>
+</section>
+
+<section>
+  <p class="tag eyebrow">That's it</p>
+  <h2>What I'd want you to take away</h2>
+  <div class="takeaways">
+    <div class="take">
+      <h3>Look first, then change</h3>
+      <p>Every question started with a command that only looked. You can't secure a door you haven't noticed.</p>
+    </div>
+    <div class="take">
+      <h3>Check what's actually running</h3>
+      <p><code>sshd -T</code>, the update log, a real restore. Settings files say what you asked for. Checks say what you got.</p>
+    </div>
+    <div class="take">
+      <h3>Fewer doors is safer</h3>
+      <p>The strongest setting for something you don't use is not installing it at all.</p>
+    </div>
+  </div>
+  <p style="margin-top:26px">Found a mistake, or a step that didn't match what your machine showed? <a href="contact.html">Tell me</a>. Security guides go out of date, and I'd rather fix this one than leave it wrong.</p>
+</section>
+
+</main>
+
+<section class="read-next">
+  <div class="wrap col">
+    <p class="tag">Start here if the terminal is new</p>
+    <a class="card" href="terminal.html">
+      <h3>Meet the terminal</h3>
+      <p>Open it, read what the prompt is telling you, and move around your files. Everything on this page builds on it.</p>
+      <span class="go">Read &rarr;</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">← Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="contact.html">Get in touch</a>
+    <span class="tag">© 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* ---------- step checks and progress meter ---------- */
+  var KEY='secure-ubuntu-steps';
+  var buttons=[].slice.call(document.querySelectorAll('.check .done'));
+  var saved={};
+  try{ saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){ saved={}; }
+  function update(){
+    var n=buttons.filter(function(b){return b.getAttribute('aria-pressed')==='true';}).length;
+    document.getElementById('fill').style.width=(n/buttons.length*100)+'%';
+    document.getElementById('progress-text').textContent=
+      n===buttons.length ? 'All 6 answered. Your machine is locked down.' : n+' of '+buttons.length+' questions answered';
+  }
+  buttons.forEach(function(b){
+    var s=b.parentNode.getAttribute('data-step');
+    if(saved[s]){ b.setAttribute('aria-pressed','true'); b.textContent='Done ✓'; }
+    b.addEventListener('click',function(){
+      var on=b.getAttribute('aria-pressed')!=='true';
+      b.setAttribute('aria-pressed',on?'true':'false');
+      b.textContent=on?'Done ✓':'Done';
+      saved[s]=on;
+      try{ localStorage.setItem(KEY,JSON.stringify(saved)); }catch(e){}
+      update();
+    });
+  });
+  update();
+
+  /* ---------- what's listening explainer ---------- */
+  var SAMPLE=[
+    'Netid State  Recv-Q Send-Q      Local Address:Port  Peer Address:Port Process',
+    'udp   UNCONN 0      0              127.0.0.54:53         0.0.0.0:*     users:(("systemd-resolve",pid=612,fd=16))',
+    'udp   UNCONN 0      0           127.0.0.53%lo:53         0.0.0.0:*     users:(("systemd-resolve",pid=612,fd=14))',
+    'udp   UNCONN 0      0                 0.0.0.0:5353       0.0.0.0:*     users:(("avahi-daemon",pid=701,fd=12))',
+    'udp   UNCONN 0      0                 0.0.0.0:41874      0.0.0.0:*     users:(("avahi-daemon",pid=701,fd=14))',
+    'udp   UNCONN 0      0                    [::]:5353          [::]:*     users:(("avahi-daemon",pid=701,fd=13))',
+    'tcp   LISTEN 0      4096           127.0.0.54:53         0.0.0.0:*     users:(("systemd-resolve",pid=612,fd=17))',
+    'tcp   LISTEN 0      4096        127.0.0.53%lo:53         0.0.0.0:*     users:(("systemd-resolve",pid=612,fd=15))',
+    'tcp   LISTEN 0      4096            127.0.0.1:631        0.0.0.0:*     users:(("cupsd",pid=1033,fd=7))',
+    'tcp   LISTEN 0      4096            127.0.0.1:11434      0.0.0.0:*     users:(("ollama",pid=1180,fd=3))',
+    'tcp   LISTEN 0      4096                [::1]:631           [::]:*     users:(("cupsd",pid=1033,fd=6))'
+  ].join('\n');
+
+  var KNOWN={
+    '22':['SSH','Remote login. Only open this if you use it, and see question 4.'],
+    '53':['DNS','Turns names like bbc.co.uk into addresses. On Ubuntu this is systemd-resolved, a helper for this computer only.'],
+    '67':['DHCP server','Hands out network addresses. Normally your router does this, not a desktop.'],
+    '68':['DHCP client','Asking the router for an address. Normal.'],
+    '80':['Web server','A website being served. Did you mean to run one?'],
+    '111':['rpcbind','Used by network file sharing (NFS). Rarely needed on a desktop.'],
+    '123':['Time (NTP)','Keeping the clock right.'],
+    '139':['Windows file sharing (Samba)','Sharing folders with Windows machines.'],
+    '443':['Secure web server','A website being served over HTTPS.'],
+    '445':['Windows file sharing (Samba)','Sharing folders with Windows machines.'],
+    '631':['Printing (CUPS)','The print system. Normally listening for this computer only.'],
+    '1883':['MQTT','A messaging system used by smart-home devices and sensors.'],
+    '3306':['MySQL database','A database. Should almost never be open to the network.'],
+    '3389':['Remote desktop (RDP)','Someone could view and control your screen. Only if you set it up on purpose.'],
+    '5353':['mDNS (Avahi)','Finds printers and other devices on your network, and lets them find you by name, like nix6.local. Normal on a desktop.'],
+    '5432':['PostgreSQL database','A database. Should almost never be open to the network.'],
+    '5900':['VNC remote desktop','Someone could view and control your screen. Only if you set it up on purpose.'],
+    '6379':['Redis','A fast data store. Should never be open to the network.'],
+    '8000':['Development web server','Often Python\'s http.server, like the experiment in question 3.'],
+    '8080':['Alternative web server','Often a development server or a home-lab tool.'],
+    '11434':['Ollama','A local AI model server. By default it listens for this computer only.']
+  };
+  var PROCS={'systemd-resolve':'53','cupsd':'631','avahi-daemon':'5353','sshd':'22','ollama':'11434','python3':'8000'};
+
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function isLocal(a){ return /^127\./.test(a) || a==='[::1]' || a==='::1' || /^\[::ffff:127\./.test(a); }
+  function isAny(a){ return a==='0.0.0.0' || a==='*' || a==='[::]' || a==='::'; }
+
+  function explain(){
+    var text=document.getElementById('ssin').value;
+    var out=document.getElementById('results');
+    var lines=text.split('\n').map(function(l){return l.trim();}).filter(function(l){return /^(tcp|udp)\s/i.test(l);});
+    if(!lines.length){
+      out.innerHTML='<p class="summary">No lines starting with tcp or udp found. Paste the whole output of <b>sudo ss -tulpn</b>, or press "Use an example" to see one.</p>';
+      return;
+    }
+    var seen={}, rows=[], nLocal=0, nNet=0, noProc=0;
+    lines.forEach(function(l){
+      var f=l.split(/\s+/);
+      var proto=f[0].toLowerCase();
+      var local=f[4]||'';
+      var idx=local.lastIndexOf(':');
+      var addr=local.slice(0,idx), port=local.slice(idx+1);
+      var bare=addr.replace(/%.*$/,'');
+      var pm=l.match(/users:\(\("([^"]+)"/);
+      var proc=pm?pm[1]:'';
+      if(!proc) noProc++;
+      var key=proto+'|'+port+'|'+(isLocal(bare)?'L':'N');
+      if(seen[key]) return; seen[key]=1;
+      var local_=isLocal(bare);
+      if(local_) nLocal++; else nNet++;
+      var k=KNOWN[port] || (proc && PROCS[proc] && KNOWN[PROCS[proc]]);
+      var name=k?k[0]:(proc?proc:'Unknown program');
+      var why=k?k[1]:(proc
+        ? 'Not one I recognise. Search for "'+proc+'" plus "port '+port+'" to find out what it is.'
+        : 'Unknown. Run the command with sudo to see which program this is.');
+      if(proto==='udp' && !local_ && /^[0-9]+$/.test(port) && +port>=32768 && proc==='avahi-daemon'){
+        why='A temporary port the device finder (Avahi) uses for its replies. Normal.';
+        name='mDNS (Avahi), reply port';
+      }
+      var who = local_ ? 'This computer only' : (isAny(bare) ? 'Your network' : 'Network: '+bare);
+      rows.push('<div class="port"><span class="badge '+(local_?'local':'net')+'">'+esc(who)+'</span>'+
+        '<div class="what"><b>'+esc(name)+'</b> · '+proto.toUpperCase()+' port '+esc(port)+
+        (proc?' · '+esc(proc):'')+' <span class="addr">('+esc(addr)+')</span></div>'+
+        '<div class="why">'+esc(why)+'</div></div>');
+    });
+    var summary='<p class="summary">'+nLocal+' reachable from this computer only, '+nNet+' reachable from your network. '+
+      (nNet ? 'The network ones are what question 3\'s firewall is for.' : 'Nothing is open to the network at all.')+
+      (noProc ? ' Some lines have no program name: run the command with <b>sudo</b> to see them.' : '')+'</p>';
+    out.innerHTML=summary+rows.join('');
+  }
+  document.getElementById('explainBtn').addEventListener('click',explain);
+  document.getElementById('sampleBtn').addEventListener('click',function(){
+    document.getElementById('ssin').value=SAMPLE; explain();
+  });
+})();
+</script>
+
+</body>
+</html>
