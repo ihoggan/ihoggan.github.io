@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Software-defined radio for beginners: see what's in the air — Iain Hoggan</title>
+<meta name="description" content="A £25 USB dongle turns an Ubuntu computer into a radio receiver that can see a huge slice of the spectrum. Set it up, fix the driver clash, tune in FM radio, and learn what UK law lets you listen to. With a band explorer for UK frequencies.">
+<meta property="og:title" content="Software-defined radio: see what's in the air">
+<meta property="og:description" content="A cheap USB dongle, Ubuntu, and the radio waves already passing through your room. Plus what you're allowed to listen to in the UK.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+main.wrap{padding-top:52px;padding-bottom:40px}
+.standfirst{font-size:1.12rem;color:var(--ink-2);max-width:34em}
+.standfirst strong{color:var(--ink);font-weight:600}
+main section p{max-width:38em}
+main h2{max-width:18em;margin-bottom:14px}
+main h3{margin:26px 0 10px}
+main ul,main ol{max-width:36em;margin:0 0 16px 1.2em}
+main li{margin-bottom:6px}
+pre{
+  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen));
+  border:1px solid #060B0E;border-radius:3px;box-shadow:inset 0 3px 12px rgba(0,0,0,.55);
+  color:#CFE3DA;font-family:var(--mono);font-size:13px;line-height:1.55;
+  padding:14px 16px;margin:18px 0 22px;max-width:40em;overflow-x:auto;white-space:pre;
+}
+pre .dim{color:#7F968D}
+pre .pr{color:var(--trace)}
+pre .bad{color:#E0603F}
+.warn{border-left:3px solid var(--alarm);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.warn .tag{display:block;margin-bottom:4px;color:var(--alarm)}
+.warn p{margin:0}
+.warn p+p{margin-top:8px}
+.takeaways{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:26px}
+.take{background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);border-radius:4px;padding:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.take h3{font-size:1rem;margin:0 0 8px}
+.take p{font-size:.94rem;color:var(--ink-2);margin:0}
+.ui{font-family:var(--mono);font-size:.84em;white-space:nowrap;
+  background:linear-gradient(180deg,#fff,var(--engrave));border:1px solid var(--bezel);
+  border-bottom-width:2px;border-radius:3px;padding:1px 6px;color:var(--ink)}
+.predict{border-left:3px solid var(--lamp);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.predict .tag{display:block;margin-bottom:4px;color:var(--lamp)}
+.predict p{margin:0}
+details.answer{max-width:38em;margin:10px 0 18px}
+details.answer summary{cursor:pointer;font:600 11px/1.4 var(--mono);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-2)}
+details.answer p{margin-top:8px}
+details.answer pre{margin:10px 0}
+.check{display:flex;gap:14px;align-items:flex-start;max-width:38em;margin:20px 0 6px;
+  border:1px solid var(--bezel);border-radius:4px;padding:14px 16px;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.check .tag{display:block;margin-bottom:4px;color:#2F8A63}
+.check p{margin:0;font-size:.97rem}
+.done{flex:none;margin-left:auto;align-self:center;cursor:pointer;
+  font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;
+  padding:9px 12px;border-radius:3px;border:1px solid var(--bezel);border-bottom-width:2px;
+  background:linear-gradient(180deg,#fff,var(--engrave));color:var(--ink-2)}
+.done[aria-pressed="true"]{background:linear-gradient(180deg,#6FD6AA,var(--trace));border-color:#2F8A63;color:#0B2A1E}
+.done:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.progress{margin-top:26px;max-width:30em}
+.progress .bar{height:10px;border-radius:5px;background:var(--screen);border:1px solid #060B0E;
+  box-shadow:inset 0 2px 6px rgba(0,0,0,.6);overflow:hidden}
+.progress .fill{height:100%;width:0;background:linear-gradient(90deg,#2F8A63,var(--trace));
+  box-shadow:0 0 10px rgba(87,199,154,.7);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.progress .read{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:8px}
+
+/* band explorer */
+.bands{max-width:46em;margin:22px 0 10px}
+.bands .dial{padding:18px 18px 10px}
+.bands .freq{font:600 clamp(1.8rem,6vw,2.6rem)/1 var(--mono);color:var(--trace);text-shadow:0 0 12px rgba(87,199,154,.45);
+  font-variant-numeric:tabular-nums}
+.bands .freq small{font-size:.45em;color:#6E8A80;margin-left:6px}
+.bands .strip{position:relative;height:34px;margin:16px 0 4px;border:1px solid #2B3B44;border-radius:3px;background:#0B1216;overflow:hidden}
+.bands .strip i{position:absolute;top:0;bottom:0;opacity:.85}
+.bands .strip .needle{position:absolute;top:-2px;bottom:-2px;width:2px;background:#fff;box-shadow:0 0 6px #fff}
+.bands input[type=range]{width:100%;margin:6px 0 0;accent-color:var(--trace)}
+.bands .scale{display:flex;justify-content:space-between;font:10.5px var(--mono);color:#6E8A80}
+.bands .card2{border-top:1px solid rgba(87,199,154,.18);padding:14px 18px 16px;min-height:9.5em}
+.bands .card2 h3{font-family:var(--display);color:#E6F0EC;font-size:1.2rem;margin:0 0 6px;text-transform:uppercase}
+.bands .card2 p{font:13px/1.6 var(--mono);color:#A9BFB5;margin:0;max-width:none}
+.chip{display:inline-block;font:600 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:6px 8px;border-radius:3px;margin-bottom:10px}
+.chip.ok{background:rgba(87,199,154,.14);color:var(--trace);border:1px solid rgba(87,199,154,.35)}
+.chip.no{background:rgba(224,96,63,.12);color:#E0603F;border:1px solid rgba(224,96,63,.4)}
+.chip.look{background:rgba(127,195,232,.12);color:#7FC3E8;border:1px solid rgba(127,195,232,.4)}
+.chip.grey{background:rgba(231,184,99,.12);color:#E7B863;border:1px solid rgba(231,184,99,.4)}
+.bands .jumps{display:flex;flex-wrap:wrap;gap:6px;padding:0 18px 16px}
+.bands .jumps button{font:600 10.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;
+  padding:8px 10px;border-radius:3px;border:1px solid #2B3B44;background:#16232B;color:#A9BFB5;cursor:pointer}
+.bands .jumps button:focus-visible,.bands input:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.read-next{border-top:1px solid var(--rule);padding:44px 0 8px}
+.read-next .card{margin-top:14px;max-width:640px}
+</style>
+</head>
+<body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html" aria-label="Home">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap col">
+    <p class="tag">Tutorial · Radio · Ubuntu · Beginners</p>
+    <h1>See what's in the air</h1>
+    <p class="standfirst">Right now, hundreds of radio signals are passing through the room you're in. A USB dongle costing about the same as a takeaway, plus free software on Ubuntu, lets you <strong>see them</strong>: a live picture of the radio spectrum, from FM stations to amateur radio. This guide sets it up, and tells you honestly what UK law lets you listen to.</p>
+    <div class="spec">
+      <div><b>~£25</b><span>for the dongle</span></div>
+      <div><b>6</b><span>short steps</span></div>
+      <div><b>2</b><span>packages to install</span></div>
+      <div><b>~1 hr</b><span>first time</span></div>
+    </div>
+    <div class="progress" aria-live="polite">
+      <div class="bar"><div class="fill" id="fill"></div></div>
+      <div class="read"><span class="tag" id="progress-text">0 of 6 steps done</span><span class="tag">Tick each check as you pass it</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap col">
+
+<section>
+  <p class="tag eyebrow">Before you start</p>
+  <h2>What you need, and the law</h2>
+  <ul>
+    <li>An <strong>RTL-SDR dongle</strong>: a USB stick with a small aerial, sold for roughly £20 to £35. Look for "RTL-SDR" and the chip name <strong>RTL2832U</strong>.</li>
+    <li>A computer running Ubuntu, and a terminal. <a href="terminal.html">Meet the terminal</a> covers everything you'll need. I run mine on nix5, my Ubuntu laptop.</li>
+    <li>A window. Radio signals come through walls, but an aerial near a window hears far more.</li>
+  </ul>
+  <div class="warn">
+    <span class="tag">What you may listen to in the UK</span>
+    <p>You don't need a licence to own or use a receiver. But Ofcom's guidance is that receivers are for <strong>"general reception"</strong>, which means licensed broadcast stations and hobby radio such as amateur radio. Deliberately listening to messages that weren't meant for you is an offence under section 48 of the Wireless Telegraphy Act 2006, and so is passing on anything you overhear.</p>
+    <p>So this guide sticks to FM broadcast, amateur radio, and <em>looking</em> at the spectrum. The band explorer in step 5 marks what's yours to listen to. When in doubt, Ofcom's own advice is to get legal advice, and mine is simply to leave it alone. See <a href="https://www.ofcom.org.uk/spectrum/radio-equipment/radio-spectrum-and-the-law">Ofcom: rules on using radio equipment</a>.</p>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 1</p>
+  <h2>What a software-defined radio is</h2>
+  <p>An ordinary radio is built for one job. The circuits that tune to a station and turn the signal into sound are fixed in hardware. In a <strong>software-defined radio</strong>, or SDR, the hardware does as little as possible: it grabs a slice of the spectrum and hands it to your computer as numbers. Everything else, the tuning, the filtering, the turning into sound, is done by a program.</p>
+  <p>The dongle's story is a happy accident. The RTL2832U chip was made for cheap USB digital TV sticks. Around 2012, people discovered it could be put into a mode that sends the raw radio data to the computer, and a very cheap radio scanner was born.</p>
+  <div class="predict">
+    <span class="tag">Think about it</span>
+    <p>If software does the decoding, what would it take to receive a completely different kind of signal with the same dongle?</p>
+  </div>
+  <details class="answer">
+    <summary>The answer</summary>
+    <p>Only different software. The same stick can show FM radio in one program and a map of the spectrum in another. That's the whole point, and why a £25 dongle has kept hobbyists busy for over a decade.</p>
+  </details>
+  <div class="check" data-step="1">
+    <div><span class="tag">Check</span><p>You can explain in a sentence what the dongle does and what the software does.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 2</p>
+  <h2>Plug it in, and ask the computer what it sees</h2>
+  <p>Screw the aerial on, plug the dongle into a USB port, then list everything on the USB bus:</p>
+<pre><span class="pr">$</span> lsusb</pre>
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>The dongle was made for TV. How do you think it will describe itself?</p>
+  </div>
+  <details class="answer">
+    <summary>What you should see</summary>
+    <p>A line like <code>Realtek Semiconductor Corp. RTL2838 DVB-T</code>. DVB-T is digital TV. It still thinks it's a TV stick, and that matters in the next step.</p>
+  </details>
+  <div class="check" data-step="2">
+    <div><span class="tag">Check</span><p><code>lsusb</code> lists a Realtek RTL2838 device. If nothing new appears, try another USB port and run it again.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 3</p>
+  <h2>Install the tools, and fix the one thing that goes wrong</h2>
+  <p>Two packages: <code>rtl-sdr</code> gives you command-line tools for the dongle, and <code>gqrx-sdr</code> is a radio program with a picture of the spectrum.</p>
+<pre><span class="pr">$</span> sudo apt install rtl-sdr gqrx-sdr
+<span class="pr">$</span> rtl_test</pre>
+  <p><code>rtl_test</code> checks the dongle and keeps running until you stop it with <span class="ui">Ctrl</span> + <span class="ui">C</span>. Read the first few lines before stopping it. There are two outcomes.</p>
+  <h3>It works</h3>
+  <p>You'll see <code>Found 1 device(s)</code>, then a line naming the <strong>tuner</strong>, such as <code>Found Rafael Micro R820T tuner</code> or <code>Found Elonics E4000 tuner</code>. The tuner decides which frequencies you can reach: the common R820T covers about 24 MHz to 1.7 GHz. Mine has the older E4000, which covers roughly 52 MHz to 2.2 GHz, with a gap in the middle.</p>
+  <h3>It complains</h3>
+<pre><span class="bad">Kernel driver is active, or device is claimed by second instance of librtlsdr.
+In the first case, please either detach or blacklist the kernel module
+(dvb_usb_rtl28xxu), or enable automatic detaching at compile time.</span>
+<span class="bad">usb_claim_interface error -6</span></pre>
+  <div class="predict">
+    <span class="tag">Read the error</span>
+    <p>Don't search for a fix yet. Read the message. Remember what <code>lsusb</code> called the dongle. What do you think has happened?</p>
+  </div>
+  <details class="answer">
+    <summary>What happened, and the fix</summary>
+    <p>Ubuntu saw a TV stick and loaded its TV driver, <code>dvb_usb_rtl28xxu</code>. That driver grabbed the dongle first, so the radio tools can't have it. The message even names the driver. The fix is to tell Ubuntu never to load it (a "blacklist"), unload it now, then unplug and replug the dongle:</p>
+<pre><span class="pr">$</span> echo 'blacklist dvb_usb_rtl28xxu' | sudo tee /etc/modprobe.d/blacklist-rtl.conf
+<span class="pr">$</span> sudo modprobe -r dvb_usb_rtl28xxu
+<span class="pr">$</span> rtl_test</pre>
+    <p>Error messages are usually trying to help. This one tells you the cause <em>and</em> the name of the thing to fix. The habit of reading them first will save you hours on every project.</p>
+  </details>
+  <div class="check" data-step="3">
+    <div><span class="tag">Check</span><p><code>rtl_test</code> finds your device and names its tuner, and <span class="ui">Ctrl</span> + <span class="ui">C</span> stops it.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 4</p>
+  <h2>Tune in an FM station</h2>
+  <p>Start <strong>Gqrx</strong> from <span class="ui">Show Apps</span>, or type <code>gqrx</code> in the terminal. The first time, it asks which device to use: choose the one mentioning <strong>Realtek</strong> or <strong>RTL2838</strong>, and click <span class="ui">OK</span>.</p>
+  <ol>
+    <li>Click the power button at the top left to start receiving.</li>
+    <li>In the <span class="ui">Receiver Options</span> panel, set <strong>Mode</strong> to <span class="ui">WFM (stereo)</span>. That's "wide FM", which is what broadcast stations use.</li>
+    <li>Set the frequency to somewhere between <code>88</code> and <code>108</code> MHz. BBC Radio 2 is between 88 and 91 MHz across most of the UK.</li>
+    <li>In <span class="ui">Input Controls</span>, raise the <strong>gain</strong> until stations stand out clearly from the background.</li>
+  </ol>
+  <p>The top half of the window is the <strong>spectrum</strong>: signal strength across a range of frequencies. The scrolling picture beneath it is the <strong>waterfall</strong>, the same thing over time. Each FM station is a bright vertical stripe about 200 kHz wide.</p>
+  <div class="predict">
+    <span class="tag">Experiment</span>
+    <p>Click on a bright stripe to tune to it. Now try: turn the gain right up, and then right down. At which setting do stations sound best, and why isn't it the maximum?</p>
+  </div>
+  <details class="answer">
+    <summary>What was going on</summary>
+    <p>Too little gain and weak stations vanish into the background hiss. Too much and strong stations <strong>overload</strong> the dongle: ghost copies of stations appear where there are none, and everything gets noisier. The best setting is the lowest gain that makes the stations you want stand clear. It's rarely the top of the scale.</p>
+  </details>
+  <div class="check" data-step="4">
+    <div><span class="tag">Check</span><p>You're listening to an FM station, and you've found a gain setting where stations are clear without ghosts.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 5</p>
+  <h2>What else is in the air</h2>
+  <p>FM radio is a tiny slice of what's out there. Slide through the spectrum below to see what lives where in the UK, and whether it's yours to listen to.</p>
+
+  <div class="bands well">
+    <div class="dial">
+      <div class="freq" id="freqOut">100.0<small>MHz</small></div>
+      <div class="strip" id="strip" aria-hidden="true"><span class="needle" id="needle"></span></div>
+      <input type="range" id="freq" min="0" max="4000" value="2000" step="1" aria-label="Frequency">
+      <div class="scale"><span>24 MHz</span><span>100</span><span>400</span><span>1.7 GHz</span></div>
+    </div>
+    <div class="card2" id="bandCard" aria-live="polite"></div>
+    <div class="jumps" id="jumps"></div>
+  </div>
+
+  <p>Amateur radio is the best next stop. Licensed amateurs chat to each other on purpose, in public, and it's hobby radio: exactly what receivers are for. Try the 2-metre band around <code>145</code> MHz, set the mode to <span class="ui">Narrow FM</span>, and wait. Many areas have a <strong>repeater</strong>, a relay station on a hill, where local amateurs talk in the evenings.</p>
+  <div class="check" data-step="5">
+    <div><span class="tag">Check</span><p>You've found at least one signal outside the FM band, and you can say which bands are yours to listen to and which aren't.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 6</p>
+  <h2>Look without listening: map the spectrum</h2>
+  <p>You don't have to listen to anything to learn a lot. The dongle's own tools can sweep a range of frequencies and record how busy each one is, over hours. This scans the FM band every 10 seconds for an hour and saves the results:</p>
+<pre><span class="pr">$</span> rtl_power -f 88M:108M:125k -i 10 -e 1h fm-scan.csv</pre>
+  <p>The numbers say: from 88 to 108 MHz, in 125 kHz slices, averaging over 10 seconds (<code>-i</code>), for one hour (<code>-e</code>). The result is a spreadsheet file: one row per sweep, one column per slice. Open it in LibreOffice Calc, or plot it with Python.</p>
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>If you ran a scan over the 2-metre amateur band from teatime to midnight, when would you expect it to be busiest? Run it and find out:</p>
+  </div>
+<pre><span class="pr">$</span> rtl_power -f 144M:146M:12.5k -i 60 -e 6h two-metres.csv</pre>
+  <p>This is the kind of question I like: a guess, a measurement, and usually a surprise. It's also how I'm planning to watch for thunderstorms, since lightning makes a burst of radio noise that shows up as a flash across the whole waterfall.</p>
+  <div class="check" data-step="6">
+    <div><span class="tag">Check</span><p>You've recorded a scan with <code>rtl_power</code> and opened the file to find when a band was busiest.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">That's it</p>
+  <h2>What I'd want you to take away</h2>
+  <div class="takeaways">
+    <div class="take">
+      <h3>The software is the radio</h3>
+      <p>The dongle only listens. Everything else is programs, so a new use is usually just new software.</p>
+    </div>
+    <div class="take">
+      <h3>Read the error first</h3>
+      <p>The driver clash told you its own cause and fix. Most errors will, if you read them before searching.</p>
+    </div>
+    <div class="take">
+      <h3>Know what's yours</h3>
+      <p>Broadcast and hobby radio are for everyone. Other people's messages aren't. Looking at the spectrum is where the learning is anyway.</p>
+    </div>
+  </div>
+  <p style="margin-top:26px">Found a mistake, or a step that didn't match your dongle? <a href="contact.html">Tell me</a>. If a step here was unclear, that's my fault, and I'll fix it.</p>
+</section>
+
+</main>
+
+<section class="read-next">
+  <div class="wrap col">
+    <p class="tag">If the terminal is new</p>
+    <a class="card" href="terminal.html">
+      <h3>Meet the terminal</h3>
+      <p>Open it, read the prompt, and learn why Ctrl + C stops things. Every command here builds on it.</p>
+      <span class="go">Read &rarr;</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">← Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="contact.html">Get in touch</a>
+    <span class="tag">© 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* ---------- step checks and progress meter ---------- */
+  var KEY='sdr-steps';
+  var buttons=[].slice.call(document.querySelectorAll('.check .done'));
+  var saved={};
+  try{ saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){ saved={}; }
+  function update(){
+    var n=buttons.filter(function(b){return b.getAttribute('aria-pressed')==='true';}).length;
+    document.getElementById('fill').style.width=(n/buttons.length*100)+'%';
+    document.getElementById('progress-text').textContent=
+      n===buttons.length ? 'All 6 steps done. You can see the air.' : n+' of '+buttons.length+' steps done';
+  }
+  buttons.forEach(function(b){
+    var s=b.parentNode.getAttribute('data-step');
+    if(saved[s]){ b.setAttribute('aria-pressed','true'); b.textContent='Done ✓'; }
+    b.addEventListener('click',function(){
+      var on=b.getAttribute('aria-pressed')!=='true';
+      b.setAttribute('aria-pressed',on?'true':'false');
+      b.textContent=on?'Done ✓':'Done';
+      saved[s]=on;
+      try{ localStorage.setItem(KEY,JSON.stringify(saved)); }catch(e){}
+      update();
+    });
+  });
+  update();
+
+  /* ---------- band explorer (UK) ---------- */
+  var LO=24, HI=1700;
+  /* [from MHz, to MHz, short name, status, description] status: ok | no | look | grey */
+  var BANDS=[
+    [26.965,27.99,'CB radio','ok','Citizens\' Band: licence-free two-way radio, used by hobbyists and some drivers. Hobby radio, so fine to listen to. Needs an R820T tuner: the E4000 doesn\'t reach this low.'],
+    [28,29.7,'10 m amateur band','ok','Licensed amateurs. When conditions are right, you can hear stations from other countries here.'],
+    [50,52,'6 m amateur band','ok','Licensed amateurs. Quiet most of the time, then suddenly busy when the atmosphere carries signals a long way.'],
+    [70,70.5,'4 m amateur band','ok','A band that only a few countries, including the UK, give to amateurs.'],
+    [87.5,108,'FM broadcast radio','ok','Every national and local FM station. Broadcast for everyone: this is what receivers are for. Use WFM mode.'],
+    [108,137,'Airband','no','Pilots and air traffic control. These messages aren\'t broadcast to the public and aren\'t hobby radio. Not yours to listen to.'],
+    [144,146,'2 m amateur band','ok','The busiest amateur band in the UK, with local repeaters. Narrow FM mode. The best place to start after FM radio.'],
+    [174,240,'DAB digital radio','ok','Digital radio stations, broadcast for everyone. Gqrx can\'t decode DAB: you\'ll see the blocks of signal, and other programs can play them.'],
+    [380,400,'Emergency services','no','Police, fire and ambulance radio. Encrypted, and very clearly not for you. Leave it alone.'],
+    [430,440,'70 cm amateur band','ok','Licensed amateurs, including repeaters. Shares space with low-power gadgets around 433 MHz.'],
+    [433.05,434.79,'433 MHz gadgets','no','Wireless doorbells, weather stations, car key fobs. Low-power devices sending data meant for their owners. Not yours to decode.'],
+    [446,446.2,'PMR446 walkie-talkies','no','Licence-free walkie-talkies. Anyone can use them, but the conversations are private ones between the people using them.'],
+    [470,694,'Freeview digital TV','ok','Digital TV transmitters: the blocks of signal the dongle was originally sold to receive. Broadcast for everyone.'],
+    [790,960,'Mobile phones','no','Mobile phone networks. Private, encrypted, and not for you.'],
+    [1090,1090.5,'Aircraft transponders (ADS-B)','grey','Aircraft broadcasting their position. Hugely popular with hobbyists worldwide, but it isn\'t broadcast radio or hobby radio, so in the UK it sits in a grey area. Ofcom says get legal advice if in doubt. I leave it alone.'],
+    [1240,1325,'23 cm amateur band','ok','Licensed amateurs, at the top of what most dongles can reach.'],
+    [1575,1576,'GPS','look','Satellite navigation. The signal is below the background noise, so there\'s nothing to hear. It\'s a nice demonstration that "can\'t see it" doesn\'t mean "not there".']
+  ];
+  var COL={ok:'#57C79A',no:'#E0603F',look:'#7FC3E8',grey:'#E7B863'};
+  var CHIP={ok:['ok','Yours to listen to'],no:['no','Not for you'],look:['look','Nothing to hear'],grey:['grey','Grey area']};
+  var STEPS=4000;
+  function toF(v){ return LO*Math.pow(HI/LO, v/STEPS); }
+  function toV(f){ return STEPS*Math.log(f/LO)/Math.log(HI/LO); }
+  var strip=document.getElementById('strip'), needle=document.getElementById('needle');
+  BANDS.forEach(function(b){
+    var i=document.createElement('i'), a=toV(b[0]), z=toV(b[1]);
+    i.style.left=(a/STEPS*100)+'%'; i.style.width=Math.max(0.4,(z-a)/STEPS*100)+'%'; i.style.background=COL[b[3]];
+    strip.insertBefore(i, needle);
+  });
+  var slider=document.getElementById('freq'), out=document.getElementById('freqOut'), card=document.getElementById('bandCard');
+  function show(f){
+    out.innerHTML=(f>=1000?(f/1000).toFixed(3):f.toFixed(1))+'<small>'+(f>=1000?'GHz':'MHz')+'</small>';
+    needle.style.left='calc('+(toV(f)/STEPS*100)+'% - 1px)';
+    var tol=f*0.0015;   /* a little snap, so narrow bands can be reached by dragging */
+    var hit=BANDS.filter(function(b){return f>=b[0]-tol&&f<=b[1]+tol;});
+    var b=hit.length ? hit[hit.length-1] : null;   /* the narrower, later entry wins, e.g. 433 MHz inside 70 cm */
+    if(b){
+      var c=CHIP[b[3]];
+      card.innerHTML='<span class="chip '+c[0]+'">'+c[1]+'</span><h3>'+b[2]+'</h3><p>'+b[4]+'</p>';
+    } else {
+      card.innerHTML='<span class="chip look">Other users</span><h3>Other services</h3><p>Between the bands on this map are business radio, links, satellites and much more. Most of it isn\'t for general reception. Keep to the green bands.</p>';
+    }
+  }
+  slider.addEventListener('input',function(){ show(toF(+slider.value)); });
+  var jumps=document.getElementById('jumps');
+  [['FM radio',98],['2 m amateur',145],['DAB',218],['70 cm amateur',438],['Airband',125],['1090 MHz',1090.2]].forEach(function(j){
+    var b=document.createElement('button'); b.type='button'; b.textContent=j[0];
+    b.addEventListener('click',function(){ slider.value=Math.round(toV(j[1])); show(j[1]); });
+    jumps.appendChild(b);
+  });
+  slider.value=Math.round(toV(98)); show(98);
+})();
+</script>
+
+</body>
+</html>
