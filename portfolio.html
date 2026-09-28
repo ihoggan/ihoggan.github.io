@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Projects — Iain Hoggan</title>
-<meta name="description" content="Nine interactive tools for learning hard subjects — neural network training, wireless packet capture, quantum simulation, Raspberry Pi hardware — plus a case study of a pool physics engine.">
+<meta name="description" content="Everything on the site: two case studies, free hands-on tutorials in Linux, networking, electronics, Raspberry Pi and radio, tools you can run in your browser, and an archive of earlier guides.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
@@ -29,6 +29,35 @@
 .group-head p:last-child{color:var(--ink-2);font-size:.98rem}
 .group-head + .entry{border-top:0}
 @media(max-width:760px){.entry{grid-template-columns:1fr;gap:20px}}
+/* ---------- learning paths ---------- */
+.paths{display:grid;gap:14px}
+.path{display:grid;grid-template-columns:minmax(0,15em) minmax(0,1fr);
+  border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 2px rgba(23,32,43,.1)}
+.path-head{padding:18px 20px;border-right:1px solid var(--rule)}
+.path-head h3{font-family:Archivo,"Helvetica Neue",sans-serif;font-variation-settings:"wdth" 110,"wght" 740;
+  text-transform:uppercase;font-size:1.2rem;line-height:1.05;margin:6px 0 6px}
+.path-head p{font-size:.92rem;color:var(--ink-2);line-height:1.45;margin:0}
+.path-steps{display:flex;flex-wrap:wrap;gap:10px;padding:14px;align-items:stretch;align-content:center}
+.pstep{flex:1 1 190px;display:flex;gap:12px;align-items:flex-start;text-decoration:none;color:inherit;
+  padding:12px 14px;border:1px solid var(--bezel);border-radius:3px;
+  background:linear-gradient(180deg,#fff,var(--engrave));
+  box-shadow:0 1px 2px rgba(23,32,43,.08);transition:box-shadow .16s ease,transform .16s ease}
+.pstep:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(23,32,43,.14)}
+.pstep:active{transform:translateY(0)}
+.pstep:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.pstep .n{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;
+  font:600 12px/1 "IBM Plex Mono",monospace;color:var(--engrave);
+  background:linear-gradient(180deg,#20303E,var(--ink))}
+.pstep b{display:block;font-family:Archivo,"Helvetica Neue",sans-serif;font-variation-settings:"wdth" 100,"wght" 700;
+  text-transform:uppercase;font-size:.95rem;line-height:1.1;margin-bottom:4px}
+.pstep span.meta{display:block;font:11px/1.4 "IBM Plex Mono",monospace;letter-spacing:.06em;color:var(--ink-3);text-transform:uppercase}
+.pstep span.what{display:block;font-size:.9rem;line-height:1.45;color:var(--ink-2);margin-top:6px}
+.pstep .start{display:inline-block;margin-top:6px;font:600 10px/1 "IBM Plex Mono",monospace;letter-spacing:.12em;
+  text-transform:uppercase;color:#0B2A1E;background:linear-gradient(180deg,#6FD6AA,var(--trace));border-radius:2px;padding:4px 6px}
+@media(max-width:760px){.path{grid-template-columns:1fr}.path-head{border-right:0;border-bottom:1px solid var(--rule)}}
+.paths{margin:18px 0 34px}
 </style>
 </head>
 <body>
@@ -50,7 +79,7 @@
   <div class="wrap col">
     <p class="tag">Everything, in one place</p>
     <h1>Projects</h1>
-    <p class="lede">Two case studies about building things and measuring them honestly, two tools you can run in your browser, and an archive of earlier beginner guides. <strong>All free, no sign-up.</strong></p>
+    <p class="lede">Two case studies about building things and measuring them honestly, seven hands-on tutorials in four learning paths, two tools you can run in your browser, and an archive of earlier beginner guides. <strong>All free, no sign-up.</strong></p>
   </div>
 </header>
 
@@ -92,6 +121,57 @@
       </dl>
     </div>
   </article>
+  <div class="group-head" id="learn">
+    <p class="tag">Tutorials</p>
+    <h2 class="group-title">Learn by doing</h2>
+    <p>Free, step by step, and in order. Every step asks you to predict, try it, and check.</p>
+  </div>
+  <div class="paths">
+    <div class="path">
+      <div class="path-head">
+        <span class="tag">Path · Linux</span>
+        <h3>From first command to your own network</h3>
+        <p>Open a terminal, lock down a machine, then understand the network it lives on.</p>
+      </div>
+      <div class="path-steps">
+        <a class="pstep" href="terminal.html"><span class="n">1</span><span><b>Meet the terminal</b><span class="meta">~20 min · complete beginners</span><span class="what">Open it, read what the prompt tells you, and move around. With a practice terminal.</span><span class="start">Start here</span></span></a>
+        <a class="pstep" href="secure-ubuntu.html"><span class="n">2</span><span><b>Securing Ubuntu</b><span class="meta">~1 hr · six questions</span><span class="what">Six questions for your own machine. Watch a firewall block your phone.</span></span></a>
+        <a class="pstep" href="networking.html"><span class="n">3</span><span><b>How networks work</b><span class="meta">~1 hr · home, then office</span><span class="what">Take your router apart with five commands, then scale it up to an office.</span></span></a>
+      </div>
+    </div>
+    <div class="path">
+      <div class="path-head">
+        <span class="tag">Path · Hardware</span>
+        <h3>From a battery to a Raspberry Pi</h3>
+        <p>Light an LED, measure it, find Ohm's law yourself, then let a Pi do the switching.</p>
+      </div>
+      <div class="path-steps">
+        <a class="pstep" href="electronics-1.html"><span class="n">1</span><span><b>Electronics: first light</b><span class="meta">Study guide · batteries only</span><span class="what">Light an LED, burn one out for free, and discover Ohm's law yourself.</span></span></a>
+        <a class="pstep" href="pi-gpio.html"><span class="n">2</span><span><b>Hand the switch to a computer</b><span class="meta">Raspberry Pi · Python</span><span class="what">Blink an LED from Python, read a button, and learn the 3.3 volt rule.</span></span></a>
+      </div>
+    </div>
+    <div class="path">
+      <div class="path-head">
+        <span class="tag">Path · Radio</span>
+        <h3>See what's in the air</h3>
+        <p>A cheap USB dongle, Ubuntu, and the signals already passing through your room.</p>
+      </div>
+      <div class="path-steps">
+        <a class="pstep" href="sdr.html"><span class="n">1</span><span><b>Software-defined radio</b><span class="meta">~1 hr · UK rules explained</span><span class="what">Tune in FM, fix the driver clash, and map the spectrum.</span></span></a>
+      </div>
+    </div>
+    <div class="path">
+      <div class="path-head">
+        <span class="tag">Path · Build your own</span>
+        <h3>A website like this one</h3>
+        <p>This site costs nothing to run. Make yours, in your browser, with a check after every step.</p>
+      </div>
+      <div class="path-steps">
+        <a class="pstep" href="website.html"><span class="n">1</span><span><b>Would you like a website like this?</b><span class="meta">~1 hr · £0 · nothing to install</span><span class="what">From a new GitHub account to your own site, with a page builder.</span></span></a>
+      </div>
+    </div>
+  </div>
+
   <div class="group-head">
     <p class="tag">In your browser</p>
     <h2 class="group-title">Things you can run</h2>
