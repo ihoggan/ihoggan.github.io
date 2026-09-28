@@ -669,6 +669,46 @@ strong,b{color:var(--ink)}
 .read-next .card{margin-top:14px;max-width:640px}
 @media(max-width:600px){.container{padding:0 18px}}
 
+/* ==== TradeWar on the light faceplate: readable controls and signal colours ==== */
+.chart-section,.trading-panel,.competitor{background:linear-gradient(180deg,var(--engrave),var(--panel-2))!important;
+  border:1px solid var(--bezel)!important;backdrop-filter:none!important;border-radius:6px!important}
+.human-title,.ai-title{background:none!important;-webkit-text-fill-color:currentColor!important;color:var(--ink)!important;
+  font-family:var(--display);text-transform:uppercase;letter-spacing:.04em}
+.balance-display{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.competitor.winning{border:2px solid #2F7D62!important;box-shadow:0 0 0 3px rgba(47,125,98,.15)!important;transform:none}
+.competitor.losing{border:2px solid rgba(190,58,31,.5)!important;opacity:.85}
+.pair-select,.form-input{background:#fff!important;color:var(--ink)!important;border:1px solid var(--bezel)!important;font-family:var(--mono)}
+.pair-select:disabled{opacity:.6;cursor:not-allowed}
+.btn.btn-buy,.btn.btn-buy:hover{background:linear-gradient(180deg,#34A87A,#2F7D62)!important;color:#fff!important;border:1px solid #215544!important}
+.btn.btn-sell,.btn.btn-sell:hover{background:linear-gradient(180deg,#D4502F,#A3311A)!important;color:#fff!important;border:1px solid #872815!important}
+.current-price{color:var(--ink)!important;font-family:var(--mono);font-variant-numeric:tabular-nums}
+.profit{color:#2F7D62!important}.loss{color:#BE3A1F!important}.neutral{color:var(--ink-2)!important}
+.price-up{background:rgba(47,125,98,.14)!important;color:#2F7D62!important}
+.price-down{background:rgba(190,58,31,.12)!important;color:#BE3A1F!important}
+.chart-container{background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen))!important;
+  border:1px solid #060B0E;box-shadow:inset 0 3px 12px rgba(0,0,0,.55)}
+.wick{position:absolute;width:1px;background:rgba(207,227,218,.55)}
+.panel-title,.ai-panel .panel-title{color:var(--ink)!important;font-family:var(--display);text-transform:uppercase}
+.pos-title{font-size:14px;font-weight:600;margin-bottom:10px;color:var(--ink)}
+.notification{color:#fff!important}
+.notification.success{background:#2F7D62!important}
+.notification.error{background:#BE3A1F!important}
+.notification.ai{background:#20303E!important}
+.disclaimer p{margin:0 auto}
+.how{max-width:44em;margin:10px 0 0;color:var(--ink-2)}
+.battle-btn{font-family:var(--mono)!important;font-size:12px!important;letter-spacing:.13em;text-transform:uppercase;
+  border-radius:3px!important;padding:14px 24px!important;color:var(--ink)!important;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))!important;border:1px solid var(--bezel)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 1px 2px rgba(23,32,43,.16)!important;margin:6px 8px!important}
+.battle-btn:hover{transform:none!important;background:linear-gradient(180deg,#fff,var(--panel-2))!important}
+#startBtn{background:linear-gradient(180deg,#20303E,var(--ink))!important;color:var(--engrave)!important;border-color:#0C1319!important}
+#startBtn:disabled{opacity:.55}
+body{padding:0!important}
+.header h1{animation:none!important;filter:none!important}
+.header p{margin-left:auto!important;margin-right:auto!important}
+.header p.how{font-size:1rem!important;font-weight:400!important;line-height:1.6;margin:12px auto 0}
+.support-row{text-align:center;margin:30px 0 20px}
+
 </style>
 </head>
 <body>
@@ -690,13 +730,14 @@ strong,b{color:var(--ink)}
         <!-- Header -->
         <div class="header">
             <h1>HUMAN vs BOT TRADING BATTLE</h1>
-            <p>Can you beat a rule-following trading bot? Let the battle begin!</p>
+            <p>Can you beat a rule-following trading bot?</p>
+            <p class="how">Press <strong>Start battle</strong>, then buy or sell. Every trade closes itself when the price reaches your stop loss or take profit, unless you close it first. The bot follows fixed rules and never changes its mind. Can you do better than rules?</p>
         </div>
 
         <!-- Battle Status -->
         <div class="battle-status">
             <div class="competitor" id="humanCompetitor">
-                <div class="competitor-title human-title"> HUMAN TRADER</div>
+                <div class="competitor-title human-title">Human trader</div>
                 <div class="balance-display" id="humanBalance">$10,000</div>
                 <div class="pnl-display" id="humanPnl">$0 (0.0%)</div>
             </div>
@@ -704,7 +745,7 @@ strong,b{color:var(--ink)}
             <div class="vs-indicator">VS</div>
             
             <div class="competitor" id="aiCompetitor">
-                <div class="competitor-title ai-title"> TRADING BOT</div>
+                <div class="competitor-title ai-title">Trading bot</div>
                 <div class="balance-display" id="aiBalance">$10,000</div>
                 <div class="pnl-display" id="aiPnl">$0 (0.0%)</div>
             </div>
@@ -722,11 +763,11 @@ strong,b{color:var(--ink)}
             </div>
             <div class="stat-card">
                 <div class="stat-value" id="humanWinRate">0%</div>
-                <div class="stat-label">Human Win Rate</div>
+                <div class="stat-label">Human win rate (closed)</div>
             </div>
             <div class="stat-card">
                 <div class="stat-value" id="aiWinRate">0%</div>
-                <div class="stat-label">Bot Win Rate</div>
+                <div class="stat-label">Bot win rate (closed)</div>
             </div>
             <div class="stat-card">
                 <div class="stat-value" id="battleTime">0:00</div>
@@ -766,13 +807,12 @@ strong,b{color:var(--ink)}
                     </div>
                     
                     <!-- Signal Indicator -->
-                    <div id="chartSignal" class="signal-indicator" style="display: none;"> SIGNAL
-                    </div>
+                    <div id="chartSignal" class="signal-indicator" style="display: none;">SIGNAL</div>
                 </div>
 
                 <!-- Trading Signals -->
                 <div class="signals-panel">
-                    <h3 style="color: #60efff; margin-bottom: 8px; font-size: 14px;">Trading Signals</h3>
+                    <h3 style="margin-bottom: 8px; font-size: 14px;">Trading signals</h3>
                     
                     <div class="current-signal" id="mainSignal">
                         <div>
@@ -786,18 +826,18 @@ strong,b{color:var(--ink)}
 
             <!-- Human Trading Panel -->
             <div class="trading-panel">
-                <div class="panel-title"> Human Trader</div>
+                <div class="panel-title">Human trader</div>
                 
                 <div class="form-group">
-                    <label class="form-label">Position Size ($)</label>
+                    <label class="form-label" for="positionSize">Position size ($100 to $5,000)</label>
                     <input type="number" class="form-input" id="positionSize" value="1000" min="100" max="5000" step="100">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Stop Loss (pips)</label>
+                    <label class="form-label" for="stopLoss">Stop loss (5 to 100 pips)</label>
                     <input type="number" class="form-input" id="stopLoss" value="20" min="5" max="100">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Take Profit (pips)</label>
+                    <label class="form-label" for="takeProfit">Take profit (5 to 100 pips)</label>
                     <input type="number" class="form-input" id="takeProfit" value="30" min="5" max="100">
                 </div>
                 <div class="button-group">
@@ -805,55 +845,51 @@ strong,b{color:var(--ink)}
                     <button class="btn btn-sell" onclick="humanTrade('SELL')">SELL</button>
                 </div>
 
-                <div style="font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #ff6b6b;"> Human Positions (<span id="humanPositionCount">0</span>)</div>
+                <div class="pos-title">Your positions (<span id="humanPositionCount">0</span>)</div>
                 <div class="positions" id="humanPositions">
-                    <div style="text-align: center; opacity: 0.6; padding: 15px; font-size: 11px;"> No open positions
-                    </div>
+                    <div style="text-align: center; opacity: 0.6; padding: 15px; font-size: 11px;">No open positions</div>
                 </div>
             </div>
 
             <!-- AI Trading Panel -->
             <div class="trading-panel ai-panel">
-                <div class="panel-title"> Trading Bot</div>
+                <div class="panel-title">Trading bot</div>
                 
                 <!-- AI Status -->
                 <div class="ai-status" id="aiStatus">
-                    <div style="font-weight: bold; font-size: 12px; margin-bottom: 5px;"> Bot Status</div>
+                    <div style="font-weight: bold; font-size: 12px; margin-bottom: 5px;">Bot status</div>
                     <div style="font-size: 10px;" id="aiStatusText">Waiting for battle to start...</div>
                 </div>
 
                 <div style="font-size: 11px; margin-bottom: 10px; padding: 8px; background: rgba(78, 205, 196, 0.1); border-radius: 6px;">
-                    <div><strong>Bot Strategy:</strong></div>
-                    <div>• Auto-follows signals ≥70% strength</div>
-                    <div>• Perfect discipline & timing</div>
-                    <div>• Adaptive position sizing</div>
-                    <div>• No emotions or hesitation</div>
+                    <div><strong>The bot's rules:</strong></div>
+                    <div>• Trades any signal of 75% strength or more</div>
+                    <div>• Never holds more than two positions</div>
+                    <div>• Same trade every time: $1,000, 20-pip stop, 30-pip target</div>
+                    <div>• Never closes early and never moves a stop</div>
                 </div>
 
-                <div style="font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #4ecdc4;"> Bot Positions (<span id="aiPositionCount">0</span>)</div>
+                <div class="pos-title">Bot positions (<span id="aiPositionCount">0</span>)</div>
                 <div class="positions" id="aiPositions">
-                    <div style="text-align: center; opacity: 0.6; padding: 15px; font-size: 11px;"> No open positions
-                    </div>
+                    <div style="text-align: center; opacity: 0.6; padding: 15px; font-size: 11px;">No open positions</div>
                 </div>
 
-                <div style="font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #4ecdc4;"> Bot Actions</div>
+                <div class="pos-title">Bot actions</div>
                 <div class="positions" id="aiTradeLog" style="max-height: 120px;">
-                    <div style="text-align: center; opacity: 0.6; padding: 15px; font-size: 11px;"> AI activity will appear here
-                    </div>
+                    <div style="text-align: center; opacity: 0.6; padding: 15px; font-size: 11px;">Bot activity will appear here</div>
                 </div>
             </div>
         </div>
 
         <!-- Navigation Buttons -->
-        <div class="navigation-buttons">
-            <a href="index.html" class="nav-btn">HomePage</a>
-            <a href="https://github.com/sponsors/ihoggan" class="nav-btn" target="_blank">Support</a>
+        <div class="support-row">
+            <a href="https://github.com/sponsors/ihoggan" class="btn" target="_blank" rel="noopener">Support these projects</a>
         </div>
 
         <!-- Disclaimer -->
         <div class="disclaimer">
-            <h3 style="margin-bottom: 8px;">Important Disclaimer</h3>
-            <p> This is a <strong>simulation for educational purposes only</strong>. Neither the AI bot nor the signals represent real financial advice. 
+            <h3 style="margin-bottom: 8px;">Important disclaimer</h3>
+            <p> This is a <strong>simulation for educational purposes only</strong>. Neither the bot nor the signals are financial advice. 
                 Real forex trading involves substantial risk. If you think this simulation means you can beat the markets with real money, 
                 you're about to learn an expensive lesson. <strong>Don't quit your day job!</strong>
 </p>
@@ -861,598 +897,442 @@ strong,b{color:var(--ink)}
     </div>
 
     <script>
-        // Simple game state
+        // ---------- currency pairs ----------
+        // pip = the smallest usual price step; prices stay inside lo..hi so the game never drifts off.
+        const PAIRS = {
+            EURUSD: { base: 1.10450, pip: 0.0001, dp: 5, lo: 1.08,  hi: 1.13  },
+            GBPUSD: { base: 1.27200, pip: 0.0001, dp: 5, lo: 1.24,  hi: 1.30  },
+            USDJPY: { base: 150.200, pip: 0.01,   dp: 3, lo: 147.0, hi: 153.0 }
+        };
+        let pair = PAIRS.EURUSD;
+        const SPREAD_PIPS = 1.5;
+        const round = v => parseFloat(v.toFixed(pair.dp));
+
+        // ---------- game state ----------
         let game = {
             started: false,
             startTime: null,
-            currentPrice: 1.10450,
-            previousPrice: 1.10450,
+            isRunning: false,
+            currentPrice: pair.base,
+            previousPrice: pair.base,
             prices: [],
             signals: [],
-            human: {
-                balance: 10000,
-                startBalance: 10000,
-                positions: [],
-                trades: 0,
-                wins: 0
-            },
-            ai: {
-                balance: 10000,
-                startBalance: 10000,
-                positions: [],
-                trades: 0,
-                wins: 0,
-                thinking: false
-            }
+            human: { balance: 10000, startBalance: 10000, positions: [], trades: 0, closed: 0, wins: 0 },
+            ai:    { balance: 10000, startBalance: 10000, positions: [], trades: 0, closed: 0, wins: 0, thinking: false }
         };
 
-        // Generate simple price data
+        // ---------- formatting ----------
+        function money(v) {
+            return (v < 0 ? '-' : '') + '$' + Math.abs(v).toLocaleString('en-GB', { maximumFractionDigits: 0 });
+        }
+        function signedMoney(v, dp) {
+            return (v >= 0 ? '+' : '-') + '$' + Math.abs(v).toLocaleString('en-GB', { minimumFractionDigits: dp, maximumFractionDigits: dp });
+        }
+
+        // Profit or loss of a position if it closed at the current price (a buy closes at the bid, a sell at the ask)
+        function pnlAt(pos) {
+            const spread = SPREAD_PIPS * pos.pip;
+            const exit = pos.direction === 'BUY' ? game.currentPrice - spread : game.currentPrice + spread;
+            const diff = pos.direction === 'BUY' ? exit - pos.entryPrice : pos.entryPrice - exit;
+            return (diff / pos.pip) * (pos.size / 1000);
+        }
+
+        // ---------- prices ----------
         function generatePrices() {
             game.prices = [];
-            let price = 1.10450;
-            
+            let price = pair.base;
             for (let i = 0; i < 50; i++) {
-                const change = (Math.random() - 0.5) * 0.002;
                 const open = price;
-                price += change;
-                price = Math.max(1.08, Math.min(1.13, price));
+                price += (Math.random() - 0.5) * 20 * pair.pip;
+                price = Math.max(pair.lo, Math.min(pair.hi, price));
                 const close = price;
-                
-                const high = Math.max(open, close) + Math.random() * 0.0005;
-                const low = Math.min(open, close) - Math.random() * 0.0005;
-                
-                game.prices.push({
-                    open: parseFloat(open.toFixed(5)),
-                    high: parseFloat(high.toFixed(5)),
-                    low: parseFloat(low.toFixed(5)),
-                    close: parseFloat(close.toFixed(5)),
-                    isGreen: close >= open
-                });
+                const high = Math.max(open, close) + Math.random() * 5 * pair.pip;
+                const low = Math.min(open, close) - Math.random() * 5 * pair.pip;
+                game.prices.push({ open: round(open), high: round(high), low: round(low), close: round(close), isGreen: close >= open });
             }
-            
             game.currentPrice = price;
             game.previousPrice = price;
         }
 
-        // Generate simple signals
+        // ---------- signals ----------
+        // Two rules, both real: price clearly above or below its recent average (75%),
+        // and three candles in a row moving the same way (85%).
         function generateSignals() {
             game.signals = [];
-            
             if (game.prices.length < 10) return;
-            
-            const recentPrices = game.prices.slice(-10).map(p => p.close);
-            const avgPrice = recentPrices.reduce((sum, p) => sum + p, 0) / recentPrices.length;
-            
-            // Simple trend signals
-            if (game.currentPrice > avgPrice * 1.002) {
-                game.signals.push({
-                    signal: 'BUY',
-                    strength: 75,
-                    description: 'Price above average - uptrend'
-                });
-            } else if (game.currentPrice < avgPrice * 0.998) {
-                game.signals.push({
-                    signal: 'SELL',
-                    strength: 75,
-                    description: 'Price below average - downtrend'
-                });
+
+            const recent = game.prices.slice(-10).map(p => p.close);
+            const avg = recent.reduce((s, p) => s + p, 0) / recent.length;
+            if (game.currentPrice > avg * 1.002) {
+                game.signals.push({ signal: 'BUY', strength: 75, description: 'Price above its recent average: uptrend' });
+            } else if (game.currentPrice < avg * 0.998) {
+                game.signals.push({ signal: 'SELL', strength: 75, description: 'Price below its recent average: downtrend' });
             }
-            
-            // Random strong signals occasionally
-            if (Math.random() < 0.1) {
-                const direction = Math.random() > 0.5 ? 'BUY' : 'SELL';
-                game.signals.push({
-                    signal: direction,
-                    strength: 85,
-                    description: 'Strong momentum detected'
-                });
+
+            const last3 = game.prices.slice(-3);
+            if (last3.length === 3 && last3.every(c => c.isGreen) && last3[2].close > last3[0].open) {
+                game.signals.push({ signal: 'BUY', strength: 85, description: 'Three rising candles in a row' });
+            } else if (last3.length === 3 && last3.every(c => !c.isGreen) && last3[2].close < last3[0].open) {
+                game.signals.push({ signal: 'SELL', strength: 85, description: 'Three falling candles in a row' });
             }
-            
+
             game.signals.sort((a, b) => b.strength - a.strength);
             updateSignalsDisplay();
         }
 
-        // Update chart
+        // ---------- chart ----------
         function updateChart() {
             const chart = document.getElementById('chart');
             chart.innerHTML = '';
-            
             if (game.prices.length === 0) return;
-            
-            const allPrices = game.prices.flatMap(candle => [candle.high, candle.low]);
-            const maxPrice = Math.max(...allPrices);
-            const minPrice = Math.min(...allPrices);
-            const priceRange = maxPrice - minPrice;
-            
-            if (priceRange === 0) return;
-            
-            const chartWidth = chart.clientWidth || 600;
-            const candleWidth = Math.max(4, (chartWidth - 40) / game.prices.length);
-            
-            game.prices.forEach((candle, i) => {
-                const candleDiv = document.createElement('div');
-                candleDiv.className = `candle ${candle.isGreen ? 'green' : 'red'}`;
-                
-                const bodyHeight = Math.max(Math.abs(candle.close - candle.open) / priceRange * 300, 2);
-                const bottomPosition = (Math.min(candle.open, candle.close) - minPrice) / priceRange * 300;
-                
-                candleDiv.style.height = bodyHeight + 'px';
-                candleDiv.style.bottom = bottomPosition + 'px';
-                candleDiv.style.position = 'absolute';
-                candleDiv.style.left = (i * (candleWidth + 1) + 10) + 'px';
-                candleDiv.style.width = candleWidth + 'px';
-                
-                chart.appendChild(candleDiv);
+
+            const all = game.prices.flatMap(c => [c.high, c.low]);
+            const maxPrice = Math.max(...all), minPrice = Math.min(...all);
+            const range = maxPrice - minPrice;
+            if (range === 0) return;
+
+            const W = chart.clientWidth || 600;
+            const H = Math.max(120, (chart.clientHeight || 300) - 20);
+            const n = game.prices.length;
+            const slot = (W - 20) / n;                 // every candle fits, however narrow the screen
+            const bodyW = Math.max(1, slot - 1);
+            const y = v => (v - minPrice) / range * H;
+
+            game.prices.forEach((c, i) => {
+                const left = 10 + i * slot;
+                const wick = document.createElement('div');
+                wick.className = 'wick';
+                wick.style.left = (left + bodyW / 2) + 'px';
+                wick.style.bottom = y(c.low) + 'px';
+                wick.style.height = Math.max(1, y(c.high) - y(c.low)) + 'px';
+                chart.appendChild(wick);
+
+                const body = document.createElement('div');
+                body.className = `candle ${c.isGreen ? 'green' : 'red'}`;
+                body.style.position = 'absolute';
+                body.style.margin = '0';
+                body.style.left = left + 'px';
+                body.style.width = bodyW + 'px';
+                body.style.bottom = y(Math.min(c.open, c.close)) + 'px';
+                body.style.height = Math.max(2, Math.abs(c.close - c.open) / range * H) + 'px';
+                chart.appendChild(body);
             });
-            
             updatePriceDisplay();
         }
 
-        // Update price display
         function updatePriceDisplay() {
-            document.getElementById('currentPrice').textContent = game.currentPrice.toFixed(5);
-            
+            document.getElementById('currentPrice').textContent = game.currentPrice.toFixed(pair.dp);
             const change = game.currentPrice - game.previousPrice;
-            const changeElement = document.getElementById('priceChange');
-            changeElement.textContent = `${change >= 0 ? '+' : ''}${change.toFixed(5)}`;
-            changeElement.className = `price-change ${change >= 0 ? 'price-up' : 'price-down'}`;
+            const el = document.getElementById('priceChange');
+            el.textContent = `${change >= 0 ? '+' : ''}${change.toFixed(pair.dp)}`;
+            el.className = `price-change ${change >= 0 ? 'price-up' : 'price-down'}`;
         }
 
-        // Update signals display
         function updateSignalsDisplay() {
             const signalType = document.getElementById('signalType');
             const signalDesc = document.getElementById('signalDesc');
             const signalStrength = document.getElementById('signalStrength');
             const mainSignal = document.getElementById('mainSignal');
             const chartSignal = document.getElementById('chartSignal');
-            
+
             if (game.signals.length === 0) {
                 signalType.textContent = 'NEUTRAL';
-                signalDesc.textContent = 'No clear signals detected';
+                signalType.className = 'signal-type';
+                signalDesc.textContent = 'No clear signal';
                 signalStrength.textContent = '--';
-                mainSignal.style.background = 'rgba(96, 239, 255, 0.1)';
+                mainSignal.style.background = 'rgba(23, 32, 43, 0.04)';
                 chartSignal.style.display = 'none';
                 return;
             }
-            
-            const topSignal = game.signals[0];
-            signalType.textContent = topSignal.signal;
-            signalDesc.textContent = topSignal.description;
-            signalStrength.textContent = `${topSignal.strength}%`;
-            
-            if (topSignal.signal === 'BUY') {
-                signalType.className = 'signal-type profit';
-                mainSignal.style.background = 'rgba(0, 255, 135, 0.1)';
-            } else {
-                signalType.className = 'signal-type loss';
-                mainSignal.style.background = 'rgba(255, 107, 107, 0.1)';
-            }
-            
-            // Show chart signal for strong signals
-            if (topSignal.strength >= 75) {
+
+            const top = game.signals[0];
+            signalType.textContent = top.signal;
+            signalDesc.textContent = top.description;
+            signalStrength.textContent = `${top.strength}%`;
+            signalType.className = 'signal-type ' + (top.signal === 'BUY' ? 'profit' : 'loss');
+            mainSignal.style.background = top.signal === 'BUY' ? 'rgba(47, 125, 98, 0.1)' : 'rgba(190, 58, 31, 0.08)';
+
+            if (top.strength >= 75) {
                 chartSignal.style.display = 'block';
-                chartSignal.textContent = `${topSignal.signal === 'BUY' ? '' : ''} ${topSignal.signal} ${topSignal.strength}%`;
-                chartSignal.className = `signal-indicator ${topSignal.signal === 'BUY' ? 'signal-buy' : 'signal-sell'}`;
-                
-                // AI considers trading
-                if (game.started && topSignal.strength >= 75) {
-                    aiConsiderTrade(topSignal);
-                }
+                chartSignal.textContent = `${top.signal} ${top.strength}%`;
+                chartSignal.className = `signal-indicator ${top.signal === 'BUY' ? 'signal-buy' : 'signal-sell'}`;
+                if (game.started) aiConsiderTrade(top);
             } else {
                 chartSignal.style.display = 'none';
             }
         }
 
-        // AI trading logic
+        // ---------- the bot ----------
         function aiConsiderTrade(signal) {
             if (game.ai.thinking || !game.started) return;
-            
-            // AI won't overtrade
-            if (game.ai.positions.length >= 2) return;
-            
+            if (game.ai.positions.length >= 2) return;          // never more than two positions
+
             game.ai.thinking = true;
-            updateAIStatus(' Analyzing signal...');
-            
+            updateAIStatus('Checking the signal against its rules...');
+
             setTimeout(() => {
-                const size = 1000;
-                const stopLoss = 20;
-                const takeProfit = 30;
-                
-                const success = executeTrade('ai', signal.signal, size, stopLoss, takeProfit);
-                
-                if (success) {
-                    updateAIStatus(` ${signal.signal} trade executed`);
-                    addToAILog(`${signal.signal} ${size} - ${signal.strength}%`);
-                    showNotification(`Bot executed ${signal.signal} trade`, 'ai');
+                if (!game.started) { game.ai.thinking = false; return; }   // battle was reset while it thought
+                const size = 1000, stopLoss = 20, takeProfit = 30;
+                const ok = executeTrade('ai', signal.signal, size, stopLoss, takeProfit);
+                if (ok) {
+                    updateAIStatus(`${signal.signal} trade opened`);
+                    addToAILog(`${signal.signal} $1,000 on a ${signal.strength}% signal`);
+                    showNotification(`Bot opened a ${signal.signal} trade`, 'ai');
                 } else {
-                    updateAIStatus(' Trade failed');
+                    updateAIStatus('Trade refused: not enough balance');
                 }
-                
                 game.ai.thinking = false;
             }, 1000 + Math.random() * 2000);
         }
 
-        // Execute trade for human or AI
+        // ---------- trading ----------
         function executeTrade(trader, direction, size, stopLossPips, takeProfitPips) {
-            const traderData = game[trader];
-            
-            if (size > traderData.balance) return false;
-            
-            const spread = 0.00015;
-            const entryPrice = direction === 'BUY' ? 
-                game.currentPrice + spread : 
-                game.currentPrice - spread;
-            
-            const position = {
+            const t = game[trader];
+            if (size > t.balance) return false;
+
+            const spread = SPREAD_PIPS * pair.pip;
+            const entry = direction === 'BUY' ? game.currentPrice + spread : game.currentPrice - spread;
+            const pos = {
                 id: Date.now() + Math.random(),
-                direction: direction,
-                size: size,
-                entryPrice: entryPrice,
-                stopLoss: direction === 'BUY' ? 
-                    entryPrice - (stopLossPips * 0.0001) : 
-                    entryPrice + (stopLossPips * 0.0001),
-                takeProfit: direction === 'BUY' ? 
-                    entryPrice + (takeProfitPips * 0.0001) : 
-                    entryPrice - (takeProfitPips * 0.0001),
+                direction, size,
+                pip: pair.pip, dp: pair.dp,
+                entryPrice: entry,
+                stopLoss:   direction === 'BUY' ? entry - stopLossPips * pair.pip   : entry + stopLossPips * pair.pip,
+                takeProfit: direction === 'BUY' ? entry + takeProfitPips * pair.pip : entry - takeProfitPips * pair.pip,
                 pnl: 0,
                 openTime: new Date()
             };
-            
-            traderData.positions.push(position);
-            traderData.trades++;
-            
+            pos.pnl = pnlAt(pos);
+            t.positions.push(pos);
+            t.trades++;
             updatePositions(trader);
             updateBattleDisplay();
-            
             return true;
         }
 
-        // Human trade function
         function humanTrade(direction) {
-            if (!game.started) {
-                showNotification('Start the battle first!', 'error');
-                return;
-            }
-            
+            if (!game.started) { showNotification('Press Start battle first', 'error'); return; }
+
             const size = parseFloat(document.getElementById('positionSize').value);
             const stopLoss = parseFloat(document.getElementById('stopLoss').value);
             const takeProfit = parseFloat(document.getElementById('takeProfit').value);
-            
-            const success = executeTrade('human', direction, size, stopLoss, takeProfit);
-            if (success) {
-                showNotification(`${direction} position opened!`, 'success');
+
+            if (!isFinite(size) || size < 100 || size > 5000) { showNotification('Position size must be between $100 and $5,000', 'error'); return; }
+            if (!isFinite(stopLoss) || stopLoss < 5 || stopLoss > 100) { showNotification('Stop loss must be between 5 and 100 pips', 'error'); return; }
+            if (!isFinite(takeProfit) || takeProfit < 5 || takeProfit > 100) { showNotification('Take profit must be between 5 and 100 pips', 'error'); return; }
+
+            if (executeTrade('human', direction, size, stopLoss, takeProfit)) {
+                showNotification(`${direction} position opened`, 'success');
             } else {
-                showNotification('Trade failed!', 'error');
+                showNotification('Not enough balance for that position', 'error');
             }
         }
 
-        // Update positions for trader
         function updatePositions(trader) {
             const container = document.getElementById(`${trader}Positions`);
-            const countElement = document.getElementById(`${trader}PositionCount`);
-            const traderData = game[trader];
-            
-            countElement.textContent = traderData.positions.length;
-            
-            if (traderData.positions.length === 0) {
-                container.innerHTML = `
-                    <div style="text-align: center; opacity: 0.6; padding: 15px; font-size: 11px;">
-                        No open positions
-                    </div>
-                `;
+            const t = game[trader];
+            document.getElementById(`${trader}PositionCount`).textContent = t.positions.length;
+
+            if (t.positions.length === 0) {
+                container.innerHTML = '<div style="text-align: center; opacity: 0.6; padding: 15px; font-size: 11px;">No open positions</div>';
                 return;
             }
-            
+
             container.innerHTML = '';
-            traderData.positions.forEach((pos, index) => {
-                // Calculate P&L
-                let currentPrice = game.currentPrice;
-                if (pos.direction === 'BUY') {
-                    currentPrice -= 0.00015;
-                } else {
-                    currentPrice += 0.00015;
-                }
-                
-                let priceDiff;
-                if (pos.direction === 'BUY') {
-                    priceDiff = currentPrice - pos.entryPrice;
-                } else {
-                    priceDiff = pos.entryPrice - currentPrice;
-                }
-                pos.pnl = (priceDiff / 0.0001) * (pos.size / 1000);
-                
-                const duration = Math.floor((new Date() - pos.openTime) / 1000);
-                const durationStr = duration < 60 ? `${duration}s` : `${Math.floor(duration/60)}m`;
-                
-                const posDiv = document.createElement('div');
-                posDiv.className = 'position';
-                posDiv.innerHTML = `
+            t.positions.forEach(pos => {
+                pos.pnl = pnlAt(pos);
+                const secs = Math.floor((new Date() - pos.openTime) / 1000);
+                const age = secs < 60 ? `${secs}s` : `${Math.floor(secs / 60)}m`;
+                const div = document.createElement('div');
+                div.className = 'position';
+                div.innerHTML = `
                     <div class="position-header">
-                        <span style="font-size: 11px;">
-                            ${pos.direction} ${pos.size} (${durationStr})
-                        </span>
-                        <span class="${pos.pnl >= 0 ? 'profit' : 'loss'}" style="font-size: 12px; font-weight: bold;">
-                            ${pos.pnl >= 0 ? '+' : ''}${pos.pnl.toFixed(2)}
-                        </span>
+                        <span style="font-size: 11px;">${pos.direction} ${money(pos.size)} (${age})</span>
+                        <span class="${pos.pnl >= 0 ? 'profit' : 'loss'}" style="font-size: 12px; font-weight: bold;">${signedMoney(pos.pnl, 2)}</span>
                     </div>
                     <div style="font-size: 10px; opacity: 0.8;">
-                        Entry: ${pos.entryPrice.toFixed(5)} | SL: ${pos.stopLoss.toFixed(5)} | TP: ${pos.takeProfit.toFixed(5)}
+                        Entry: ${pos.entryPrice.toFixed(pos.dp)} | SL: ${pos.stopLoss.toFixed(pos.dp)} | TP: ${pos.takeProfit.toFixed(pos.dp)}
                     </div>
-                    ${trader === 'human' ? `<button class="close-btn" onclick="closePosition('${trader}', ${index})">✕ Close</button>` : ''}
+                    ${trader === 'human' ? `<button class="close-btn" onclick="closeById('human', ${pos.id})">✕ Close</button>` : ''}
                 `;
-                container.appendChild(posDiv);
+                container.appendChild(div);
             });
         }
 
-        // Check all positions for SL/TP
+        // Close any position whose stop loss or take profit the price has reached.
+        // Walk backwards, so closing one doesn't make the loop skip the next.
         function checkPositions() {
             ['human', 'ai'].forEach(trader => {
-                const traderData = game[trader];
-                traderData.positions.forEach((pos, index) => {
-                    let shouldClose = false;
+                const t = game[trader];
+                for (let i = t.positions.length - 1; i >= 0; i--) {
+                    const pos = t.positions[i];
+                    const spread = SPREAD_PIPS * pos.pip;
+                    const exit = pos.direction === 'BUY' ? game.currentPrice - spread : game.currentPrice + spread;
                     let reason = '';
-                    
-                    let closePrice = game.currentPrice;
                     if (pos.direction === 'BUY') {
-                        closePrice -= 0.00015;
-                        if (closePrice <= pos.stopLoss) {
-                            shouldClose = true;
-                            reason = 'Stop Loss Hit';
-                        } else if (closePrice >= pos.takeProfit) {
-                            shouldClose = true;
-                            reason = 'Take Profit Hit';
-                        }
+                        if (exit <= pos.stopLoss) reason = 'Stop loss hit';
+                        else if (exit >= pos.takeProfit) reason = 'Take profit hit';
                     } else {
-                        closePrice += 0.00015;
-                        if (closePrice >= pos.stopLoss) {
-                            shouldClose = true;
-                            reason = 'Stop Loss Hit';
-                        } else if (closePrice <= pos.takeProfit) {
-                            shouldClose = true;
-                            reason = 'Take Profit Hit';
-                        }
+                        if (exit >= pos.stopLoss) reason = 'Stop loss hit';
+                        else if (exit <= pos.takeProfit) reason = 'Take profit hit';
                     }
-                    
-                    if (shouldClose) {
-                        closePosition(trader, index, reason);
-                    }
-                });
+                    if (reason) closePosition(trader, i, reason);
+                }
             });
         }
 
-        // Close position
-        function closePosition(trader, index, reason = 'Manual Close') {
-            const traderData = game[trader];
-            const pos = traderData.positions[index];
-            
-            traderData.balance += pos.pnl;
-            
-            if (pos.pnl > 0) {
-                traderData.wins++;
-            }
-            
-            traderData.positions.splice(index, 1);
-            
-            const traderEmoji = trader === 'human' ? '' : '';
-            const message = `${traderEmoji} ${reason}: ${pos.pnl >= 0 ? '+' : ''}${pos.pnl.toFixed(2)}`;
-            
-            showNotification(message, trader === 'ai' ? 'ai' : (pos.pnl >= 0 ? 'success' : 'error'));
-            
+        function closeById(trader, id) {
+            const i = game[trader].positions.findIndex(p => p.id === id);
+            if (i >= 0) closePosition(trader, i, 'Closed by hand');
+        }
+
+        function closePosition(trader, index, reason) {
+            const t = game[trader];
+            const pos = t.positions[index];
+            if (!pos) return;
+            pos.pnl = pnlAt(pos);                  // settle at the price now, not the last redraw
+            t.balance += pos.pnl;
+            t.closed++;
+            if (pos.pnl > 0) t.wins++;
+            t.positions.splice(index, 1);
+
+            const who = trader === 'human' ? 'You' : 'Bot';
+            showNotification(`${who}: ${reason}, ${signedMoney(pos.pnl, 2)}`, trader === 'ai' ? 'ai' : (pos.pnl >= 0 ? 'success' : 'error'));
             if (trader === 'ai') {
-                addToAILog(`CLOSED: ${pos.pnl >= 0 ? '+' : ''}${pos.pnl.toFixed(2)} (${reason})`);
-                updateAIStatus(`${reason} - ${pos.pnl >= 0 ? 'Profit' : 'Loss'}: ${pos.pnl.toFixed(2)}`);
+                addToAILog(`Closed ${signedMoney(pos.pnl, 2)} (${reason.toLowerCase()})`);
+                updateAIStatus(`${reason}: ${signedMoney(pos.pnl, 2)}`);
             }
-            
             updatePositions(trader);
             updateBattleDisplay();
         }
 
-        // Update AI status
-        function updateAIStatus(statusText) {
-            document.getElementById('aiStatusText').textContent = statusText;
-            const statusDiv = document.getElementById('aiStatus');
-            if (game.ai.thinking) {
-                statusDiv.classList.add('ai-thinking');
-            } else {
-                statusDiv.classList.remove('ai-thinking');
-            }
+        function updateAIStatus(text) {
+            document.getElementById('aiStatusText').textContent = text;
+            document.getElementById('aiStatus').classList.toggle('ai-thinking', game.ai.thinking);
         }
 
-        // Add to AI log
-        function addToAILog(logEntry) {
-            const logDiv = document.getElementById('aiTradeLog');
-            const entryDiv = document.createElement('div');
-            entryDiv.style.fontSize = '10px';
-            entryDiv.style.padding = '4px 8px';
-            entryDiv.style.background = 'rgba(78, 205, 196, 0.1)';
-            entryDiv.style.borderRadius = '4px';
-            entryDiv.style.marginBottom = '4px';
-            
-            const timeStr = new Date().toLocaleTimeString('en-US', {
-                hour12: false, 
-                hour: '2-digit', 
-                minute: '2-digit'
-            });
-            entryDiv.textContent = `${timeStr}: ${logEntry}`;
-            
-            if (logDiv.children.length === 1 && logDiv.children[0].textContent.includes('activity will appear')) {
-                logDiv.innerHTML = '';
-            }
-            
-            logDiv.insertBefore(entryDiv, logDiv.firstChild);
-            
-            // Keep only last 5 entries
-            while (logDiv.children.length > 5) {
-                logDiv.removeChild(logDiv.lastChild);
-            }
+        function addToAILog(entry) {
+            const log = document.getElementById('aiTradeLog');
+            const div = document.createElement('div');
+            div.style.fontSize = '10px';
+            div.style.padding = '4px 8px';
+            div.style.background = 'rgba(23, 32, 43, 0.05)';
+            div.style.borderRadius = '4px';
+            div.style.marginBottom = '4px';
+            const time = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+            div.textContent = `${time}: ${entry}`;
+            if (log.children.length === 1 && log.children[0].textContent.includes('activity will appear')) log.innerHTML = '';
+            log.insertBefore(div, log.firstChild);
+            while (log.children.length > 5) log.removeChild(log.lastChild);
         }
 
-        // Update battle display
         function updateBattleDisplay() {
-            // Update balances
-            document.getElementById('humanBalance').textContent = `${game.human.balance.toFixed(0)}`;
-            document.getElementById('aiBalance').textContent = `${game.ai.balance.toFixed(0)}`;
-            
-            // Update P&L
-            const humanPnl = game.human.balance - game.human.startBalance;
-            const aiPnl = game.ai.balance - game.ai.startBalance;
-            
-            const humanPnlPercent = (humanPnl / game.human.startBalance * 100);
-            const aiPnlPercent = (aiPnl / game.ai.startBalance * 100);
-            
-            document.getElementById('humanPnl').textContent = `${humanPnl >= 0 ? '+' : ''}${humanPnl.toFixed(0)} (${humanPnlPercent >= 0 ? '+' : ''}${humanPnlPercent.toFixed(1)}%)`;
-            document.getElementById('aiPnl').textContent = `${aiPnl >= 0 ? '+' : ''}${aiPnl.toFixed(0)} (${aiPnlPercent >= 0 ? '+' : ''}${aiPnlPercent.toFixed(1)}%)`;
-            
-            // Update competitor styling
-            const humanComp = document.getElementById('humanCompetitor');
-            const aiComp = document.getElementById('aiCompetitor');
-            
-            humanComp.className = 'competitor';
-            aiComp.className = 'competitor';
-            
-            if (humanPnl > aiPnl) {
-                humanComp.classList.add('winning');
-                aiComp.classList.add('losing');
-            } else if (aiPnl > humanPnl) {
-                aiComp.classList.add('winning');
-                humanComp.classList.add('losing');
-            }
-            
-            // Update stats
-            document.getElementById('humanTrades').textContent = game.human.trades;
-            document.getElementById('aiTrades').textContent = game.ai.trades;
-            
-            const humanWinRate = game.human.trades > 0 ? (game.human.wins / game.human.trades * 100) : 0;
-            const aiWinRate = game.ai.trades > 0 ? (game.ai.wins / game.ai.trades * 100) : 0;
-            
-            document.getElementById('humanWinRate').textContent = `${humanWinRate.toFixed(0)}%`;
-            document.getElementById('aiWinRate').textContent = `${aiWinRate.toFixed(0)}%`;
-            
-            // Update battle time
+            const h = game.human, a = game.ai;
+            document.getElementById('humanBalance').textContent = money(h.balance);
+            document.getElementById('aiBalance').textContent = money(a.balance);
+
+            const hP = h.balance - h.startBalance, aP = a.balance - a.startBalance;
+            const pct = (v, s) => `${v >= 0 ? '+' : ''}${(v / s * 100).toFixed(1)}%`;
+            document.getElementById('humanPnl').textContent = `${signedMoney(hP, 0)} (${pct(hP, h.startBalance)})`;
+            document.getElementById('aiPnl').textContent = `${signedMoney(aP, 0)} (${pct(aP, a.startBalance)})`;
+
+            const hc = document.getElementById('humanCompetitor'), ac = document.getElementById('aiCompetitor');
+            hc.className = 'competitor'; ac.className = 'competitor';
+            if (hP > aP) { hc.classList.add('winning'); ac.classList.add('losing'); }
+            else if (aP > hP) { ac.classList.add('winning'); hc.classList.add('losing'); }
+
+            document.getElementById('humanTrades').textContent = h.trades;
+            document.getElementById('aiTrades').textContent = a.trades;
+            // win rate out of trades that have finished; open trades haven't won or lost yet
+            document.getElementById('humanWinRate').textContent = h.closed ? `${(h.wins / h.closed * 100).toFixed(0)}%` : '–';
+            document.getElementById('aiWinRate').textContent = a.closed ? `${(a.wins / a.closed * 100).toFixed(0)}%` : '–';
+
             if (game.started && game.startTime) {
-                const elapsed = Math.floor((Date.now() - game.startTime) / 1000);
-                const minutes = Math.floor(elapsed / 60);
-                const seconds = elapsed % 60;
-                document.getElementById('battleTime').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                const s = Math.floor((Date.now() - game.startTime) / 1000);
+                document.getElementById('battleTime').textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
             }
+            document.getElementById('marketActivity').textContent =
+                game.signals.length && game.signals[0].strength >= 85 ? 'HIGH' : game.signals.length ? 'MEDIUM' : 'LOW';
         }
 
-        // Start battle
+        // ---------- battle controls ----------
         function startBattle() {
-            if (game.started) {
-                showNotification('Battle already in progress!', 'error');
-                return;
-            }
-            
+            if (game.started) { showNotification('The battle is already running', 'error'); return; }
             game.started = true;
             game.startTime = Date.now();
-            
-            document.getElementById('startBtn').textContent = ' BATTLE IN PROGRESS';
-            document.getElementById('startBtn').disabled = true;
-            
-            updateAIStatus('Battle started - bot ready!');
-            
-            showNotification(' BATTLE STARTED! May the best trader win!', 'success');
-            setTimeout(() => {
-                showNotification('The bot is now trading on strong signals!', 'ai');
-            }, 2000);
-            
+            const btn = document.getElementById('startBtn');
+            btn.textContent = 'BATTLE IN PROGRESS';
+            btn.disabled = true;
+            document.getElementById('pairSelect').disabled = true;
+            updateAIStatus('Battle started: the bot is watching for signals');
+            showNotification('Battle started. Good luck!', 'success');
+            setTimeout(() => showNotification('The bot trades every signal of 75% or more', 'ai'), 2000);
             startSimulation();
         }
 
-        // Reset battle
         function resetBattle() {
-            if (confirm('Reset the battle? This will clear all positions and reset balances.')) {
-                // Reset game state
-                game.started = false;
-                game.startTime = null;
-                
-                // Reset traders
-                ['human', 'ai'].forEach(trader => {
-                    game[trader].balance = 10000;
-                    game[trader].startBalance = 10000;
-                    game[trader].positions = [];
-                    game[trader].trades = 0;
-                    game[trader].wins = 0;
-                });
-                
-                game.ai.thinking = false;
-                
-                // Reset UI
-                document.getElementById('startBtn').textContent = ' START BATTLE';
-                document.getElementById('startBtn').disabled = false;
-                
-                updateAIStatus('Waiting for battle to start...');
-                document.getElementById('aiTradeLog').innerHTML = `
-                    <div style="text-align: center; opacity: 0.6; padding: 15px; font-size: 11px;">
-                        AI activity will appear here
-                    </div>
-                `;
-                
-                updatePositions('human');
-                updatePositions('ai');
-                updateBattleDisplay();
-                
-                showNotification('Battle reset! Ready for a new challenge!', 'success');
-            }
+            if (!confirm('Reset the battle? This clears all positions and resets both balances.')) return;
+            game.started = false;
+            game.startTime = null;
+            ['human', 'ai'].forEach(tr => Object.assign(game[tr], { balance: 10000, startBalance: 10000, positions: [], trades: 0, closed: 0, wins: 0 }));
+            game.ai.thinking = false;
+
+            const btn = document.getElementById('startBtn');
+            btn.textContent = 'START BATTLE';
+            btn.disabled = false;
+            document.getElementById('pairSelect').disabled = false;
+            document.getElementById('battleTime').textContent = '0:00';
+            updateAIStatus('Waiting for the battle to start...');
+            document.getElementById('aiTradeLog').innerHTML =
+                '<div style="text-align: center; opacity: 0.6; padding: 15px; font-size: 11px;">Bot activity will appear here</div>';
+            updatePositions('human');
+            updatePositions('ai');
+            updateBattleDisplay();
+            showNotification('Battle reset. Ready when you are.', 'success');
         }
 
-        // Show notification
+        function changePair() {
+            if (game.started) return;              // the menu is locked during a battle
+            pair = PAIRS[document.getElementById('pairSelect').value];
+            generatePrices();
+            updateChart();
+            generateSignals();
+            updateBattleDisplay();
+        }
+
         function showNotification(message, type) {
-            // Remove existing notifications of the same type
             document.querySelectorAll(`.notification.${type}`).forEach(n => n.remove());
-            
-            const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
-            notification.textContent = message;
-            document.body.appendChild(notification);
-            
-            setTimeout(() => notification.classList.add('show'), 100);
+            const n = document.createElement('div');
+            n.className = `notification ${type}`;
+            n.textContent = message;
+            document.body.appendChild(n);
+            setTimeout(() => n.classList.add('show'), 100);
             setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.classList.remove('show');
-                    setTimeout(() => notification.remove(), 300);
-                }
+                if (n.parentNode) { n.classList.remove('show'); setTimeout(() => n.remove(), 300); }
             }, 4000);
         }
 
-        // Start simulation
+        // ---------- the market clock ----------
         function startSimulation() {
             if (game.isRunning) return;
             game.isRunning = true;
-            
             setInterval(() => {
-                // Update price
-                const change = (Math.random() - 0.5) * 0.0005;
                 game.previousPrice = game.currentPrice;
-                game.currentPrice += change;
-                game.currentPrice = Math.max(1.08, Math.min(1.13, game.currentPrice));
-                
-                // Add new candlestick occasionally
+                game.currentPrice += (Math.random() - 0.5) * 5 * pair.pip;
+                game.currentPrice = Math.max(pair.lo, Math.min(pair.hi, game.currentPrice));
+
                 if (Math.random() < 0.3) {
-                    const lastCandle = game.prices[game.prices.length - 1];
-                    const open = lastCandle ? lastCandle.close : game.currentPrice;
+                    const last = game.prices[game.prices.length - 1];
+                    const open = last ? last.close : game.currentPrice;
                     const close = game.currentPrice;
-                    
-                    const volatility = 0.0003;
-                    const high = Math.max(open, close) + Math.random() * volatility;
-                    const low = Math.min(open, close) - Math.random() * volatility;
-                    
-                    const newCandle = {
-                        open: parseFloat(open.toFixed(5)),
-                        high: parseFloat(high.toFixed(5)),
-                        low: parseFloat(low.toFixed(5)),
-                        close: parseFloat(close.toFixed(5)),
-                        isGreen: close >= open
-                    };
-                    
-                    game.prices.push(newCandle);
+                    const high = Math.max(open, close) + Math.random() * 3 * pair.pip;
+                    const low = Math.min(open, close) - Math.random() * 3 * pair.pip;
+                    game.prices.push({ open: round(open), high: round(high), low: round(low), close: round(close), isGreen: close >= open });
                     if (game.prices.length > 50) game.prices.shift();
-                    
                     updateChart();
                     generateSignals();
                 }
-                
+
                 updatePriceDisplay();
                 checkPositions();
                 updatePositions('human');
@@ -1461,28 +1341,18 @@ strong,b{color:var(--ink)}
             }, 2000);
         }
 
-        // Initialize
         function init() {
-            console.log('Initializing Human vs AI Trading Battle...');
             generatePrices();
             updateChart();
+            generateSignals();
             updateBattleDisplay();
-            
-            setTimeout(() => {
-                showNotification('Welcome to Human vs Bot Trading Battle!', 'success');
-            }, 1000);
-            
-            setTimeout(() => {
-                showNotification(' Click START BATTLE to begin!', 'success');
-            }, 3000);
-            
-            console.log('Battle arena ready!');
+            document.getElementById('pairSelect').addEventListener('change', changePair);
+            let resizeTimer;
+            window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(updateChart, 150); });
+            setTimeout(() => showNotification('Press START BATTLE to begin', 'success'), 1500);
         }
 
-        // Start when page loads
-        window.addEventListener('load', () => {
-            setTimeout(init, 500);
-        });
+        window.addEventListener('load', () => setTimeout(init, 300));
     </script>
 
 <section class="read-next">
