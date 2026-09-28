@@ -184,17 +184,51 @@ Nothing new worth remembering.</span></pre>
 
 <section>
   <p class="tag eyebrow">Part 7</p>
+  <h2>Giving Dave something to read</h2>
+  <p>Dave is an electrician, so people will ask him electrician questions, and a small model answering those from memory is confidently wrong. So I gave him a library: the government's free guidance on which electrical jobs have to be reported to building control (<a href="https://www.gov.uk/government/publications/electrical-safety-approved-document-p">Approved Document P</a>), plus my own notes. When you ask a question, localcast searches the library and hands Dave the most relevant passages to answer from.</p>
+  <p>With the library, Dave went from <strong>9 to 34 out of 39</strong> answerable questions right.</p>
+  <p>One answer still worried me. Asked "Is replacing a consumer unit notifiable?", Dave got it backwards two times out of three. (It is.)</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 8</p>
+  <h2>The obvious fix made it worse</h2>
+  <p>I tested the search on its own with 27 questions. Six were worded the way you'd actually ask Dave, not the way the document is written, and the search missed two of those.</p>
+  <p>The textbook fix is "stemming": cutting words down to their root so different forms match. <strong>It made things worse: 21 right dropped to 19.</strong> It had merged "notifiable" with "non-notifiable", which in this subject is the whole question. Without the measurement, I'd have shipped it.</p>
+  <p>Searching by meaning instead of by keyword didn't help either. It missed the same two questions. That told me the search wasn't the problem. <strong>The document was.</strong> It's written in legal wording: it never mentions sockets or rooms, and one section says replacing a consumer unit <em>is</em> notifiable while another says replacements generally <em>aren't</em>. That's very likely how Dave got it backwards.</p>
+  <p>So I wrote 12 short notes in plain English, covering common jobs, each pointing to the right part of the document, with a warning about that "replacements" trap. I locked the notes before I saw a fresh set of test questions, so I couldn't tune them to pass.</p>
+  <div class="meas well">
+    <div class="cap">Search test · right passage found · before &rarr; with notes</div>
+    <dl>
+      <dt>All 27 questions</dt><dd>21 &rarr; 23</dd>
+      <dt>Everyday-worded (of 6)</dt><dd>4 &rarr; 6</dd>
+      <dt>Fresh questions (of 2)</dt><dd>0 &rarr; 2</dd>
+      <dt>Consumer unit, Dave's reply (of 3)</dt><dd>1 &rarr; 3</dd>
+    </dl>
+    <div class="note">The search figures are counted by a script. Dave's replies were read by eye, not graded blind: a quick look, not a proper measurement. Full method and raw data in the localcast repo.</div>
+  </div>
+  <div class="lesson">
+    <span class="tag">Lesson</span>
+    <p>The obvious fix was wrong, and only the measurement said so. And when a search keeps missing, check whether the problem is the search or the thing being searched.</p>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 9</p>
   <h2>What it can't do</h2>
   <ul>
     <li><strong>Characters invent their own lives.</strong> That's usually what you want from a character, and it's why the diary only accepts your words.</li>
     <li><strong>They play along with a false premise.</strong> Ask Dave how the Wrexham job went and he'll describe a job that never happened.</li>
     <li><strong>The diary misses things.</strong> It caught about half the real facts in testing. For anything important, I tell him directly with <code>/remember</code>.</li>
     <li><strong>It can't tell real life from role-play.</strong> If I tell Dave I'm his boss, that's something I said.</li>
+    <li><strong>He can contradict his own sources.</strong> Twice in six test answers, Dave was handed the right passage and said the opposite. That's the limit of a small model, not the search.</li>
+    <li><strong>He can't find faults.</strong> Most everyday questions I tried were about faults: a tripping kettle, a melting socket. The guidance covers rules and paperwork, not fault-finding.</li>
+    <li><strong>Dave is not an electrician.</strong> He's a character on a 2015 PC. For real electrical work, use a registered electrician.</li>
   </ul>
 </section>
 
 <section id="diy">
-  <p class="tag eyebrow">Part 8</p>
+  <p class="tag eyebrow">Part 10</p>
   <h2>Do it yourself</h2>
   <p>If you have an old PC that Windows 11 won't take, this is the short version. The detailed guides are linked at each step.</p>
 
