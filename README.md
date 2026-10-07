@@ -11,6 +11,7 @@ I'm Iain Hoggan, a network technician on the Wirral. I build things on hardware 
 - [HUSTLER](https://ihoggan.github.io/Hustler.html): a UK blackball pool physics sandbox built over seventy revisions, and what the bugs taught me about testing.
 
 **Tutorials: learn by doing** (every step asks you to predict, try it, and check)
+- *AI:* [S.M.A.R.T.](https://ihoggan.github.io/neural_playground.html) → [Guess the next word](https://ihoggan.github.io/next-word.html): what an AI chatbot actually does, built from nothing but counting. The long way round, in Python, is [tiny-transformer](https://github.com/IHoggan/tiny-transformer).
 - *Linux:* [Meet the terminal](https://ihoggan.github.io/terminal.html) → [Securing Ubuntu](https://ihoggan.github.io/secure-ubuntu.html) → [How networks work](https://ihoggan.github.io/networking.html)
 - *Hardware:* [Electronics: first light](https://ihoggan.github.io/electronics-1.html) → [Hand the switch to a computer](https://ihoggan.github.io/pi-gpio.html) (Raspberry Pi GPIO)
 - *Radio:* [See what's in the air](https://ihoggan.github.io/sdr.html) (software-defined radio, with the UK rules)
