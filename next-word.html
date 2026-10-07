@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guess the next word: what an AI chatbot actually does — Iain Hoggan</title>
+<meta name="description" content="Every AI chatbot does one thing, over and over: it guesses the next word. Build the simplest machine that can do it, out of nothing but counting, watch it write, and find the exact place where it breaks. Runs in your browser, nothing to install.">
+<meta property="og:title" content="Guess the next word: what an AI chatbot actually does">
+<meta property="og:description" content="Build a word-guessing machine out of nothing but counting, watch it write, then find where it breaks. Live in your browser.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+main.wrap{padding-top:52px;padding-bottom:40px}
+.standfirst{font-size:1.12rem;color:var(--ink-2);max-width:34em}
+.standfirst strong{color:var(--ink);font-weight:600}
+main section p{max-width:38em}
+main h2{max-width:18em;margin-bottom:14px}
+main h3{margin:26px 0 10px}
+main ul,main ol{max-width:36em;margin:0 0 16px 1.2em}
+main li{margin-bottom:6px}
+.takeaways{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:26px}
+.take{background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);border-radius:4px;padding:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.take h3{font-size:1rem;margin:0 0 8px}
+.take p{font-size:.94rem;color:var(--ink-2);margin:0}
+.ui{font-family:var(--mono);font-size:.84em;white-space:nowrap;
+  background:linear-gradient(180deg,#fff,var(--engrave));border:1px solid var(--bezel);
+  border-bottom-width:2px;border-radius:3px;padding:1px 6px;color:var(--ink)}
+.predict{border-left:3px solid var(--lamp);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.predict .tag{display:block;margin-bottom:4px;color:#9A6410}
+.predict p{margin:0}
+details.answer{max-width:38em;margin:10px 0 18px}
+details.answer summary{cursor:pointer;font:600 11px/1.4 var(--mono);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-2);padding:6px 0}
+details.answer p{margin-top:8px}
+.check{display:flex;gap:14px;align-items:flex-start;max-width:38em;margin:20px 0 6px;
+  border:1px solid var(--bezel);border-radius:4px;padding:14px 16px;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.check .tag{display:block;margin-bottom:4px;color:#2F8A63}
+.check p{margin:0;font-size:.97rem}
+.done{flex:none;margin-left:auto;align-self:center;cursor:pointer;
+  font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;
+  padding:11px 12px;border-radius:3px;border:1px solid var(--bezel);border-bottom-width:2px;
+  background:linear-gradient(180deg,#fff,var(--engrave));color:var(--ink-2)}
+.done[aria-pressed="true"]{background:linear-gradient(180deg,#6FD6AA,var(--trace));border-color:#2F8A63;color:#0B2A1E}
+.done:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.progress{margin-top:26px;max-width:30em}
+.progress .bar{height:10px;border-radius:5px;background:var(--screen);border:1px solid #060B0E;
+  box-shadow:inset 0 2px 6px rgba(0,0,0,.6);overflow:hidden}
+.progress .fill{height:100%;width:0;background:linear-gradient(90deg,#2F8A63,var(--trace));
+  box-shadow:0 0 10px rgba(87,199,154,.7);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.progress .read{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:8px}
+.read-next{border-top:1px solid var(--rule);padding:44px 0 8px}
+.read-next .card{margin-top:14px;max-width:640px}
+
+/* ---------- the tiny world, editable ---------- */
+.world{max-width:46em;margin:18px 0 8px}
+.world textarea{display:block;width:100%;height:13.5em;resize:vertical;
+  background:transparent;border:0;color:#CFE3DA;font:13px/1.6 var(--mono);padding:14px 16px}
+.world textarea:focus-visible{outline:2px solid var(--lamp);outline-offset:-2px}
+.world .bar2,.lab .bar2{display:flex;gap:8px;flex-wrap:wrap;align-items:center;
+  padding:10px 14px;border-top:1px solid #060B0E}
+.note2{font:11px/1.5 var(--mono);color:#8FA69C;letter-spacing:.04em}
+
+/* ---------- lab panels (dark readouts) ---------- */
+.lab{max-width:46em;margin:22px 0 10px}
+.lab .head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;
+  padding:11px 14px;border-bottom:1px solid #060B0E}
+.lab .head .cap{font:600 10.5px/1.3 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:#8FA69C}
+.lab .pad{padding:14px 16px}
+.lab button,.world button{font:600 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
+  padding:11px 12px;border-radius:3px;border:1px solid #2B3B44;background:#16232B;color:#C3D5CC;cursor:pointer}
+.lab button:hover,.world button:hover{background:#1D2E38}
+.lab button.cta{background:linear-gradient(180deg,#6FD6AA,var(--trace));color:#0B2A1E;border-color:#2F8A63}
+.lab button[aria-pressed="true"]{background:rgba(87,199,154,.14);color:#DFF3EA;border-color:var(--trace);
+  box-shadow:inset 0 -2px 0 var(--trace)}
+.lab button:focus-visible,.world button:focus-visible,.lab input:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.lab button:disabled{opacity:.45;cursor:default}
+.seg{display:inline-flex;flex-wrap:wrap}
+.seg button{border-radius:0;margin-left:-1px}
+.seg button:first-child{border-radius:3px 0 0 3px;margin-left:0}
+.seg button:last-child{border-radius:0 3px 3px 0}
+.lab .lbl{font:600 10.5px/1.3 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#8FA69C;margin-right:4px}
+.row2{display:flex;gap:10px 14px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.chips button{padding:8px 10px;text-transform:none;letter-spacing:.02em;font-weight:500;font-size:12.5px}
+.say2{font:13px/1.6 var(--mono);color:#A9BFB5;margin:0 0 12px;max-width:none}
+.say2 b{color:#E6F0EC;font-weight:600}
+.bars{display:grid;gap:5px;margin:0}
+.brow{display:grid;grid-template-columns:7.5em minmax(0,1fr) 6.2em;gap:10px;align-items:center;
+  font:12.5px/1.2 var(--mono);color:#CFE3DA}
+.brow .w{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.brow .t{height:14px;border-radius:0 4px 4px 0;background:var(--trace);min-width:2px}
+.brow .v{color:#A9BFB5;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.brow.pick .w{color:#fff;font-weight:600}
+.brow.pick .w::before{content:"\25B8  "}
+.brow.pick .t{background:#E7B863}
+.more{font:11.5px/1.5 var(--mono);color:#8FA69C;margin-top:8px}
+.out{font:14px/1.7 var(--mono);color:#E6F0EC;min-height:5.1em;margin:0 0 12px;max-width:none;
+  border:1px solid #22323B;border-radius:3px;padding:10px 12px;background:rgba(0,0,0,.18);
+  overflow-wrap:anywhere}
+.out .forced{color:#8FA69C}
+.out .cur{border-bottom:2px solid var(--trace)}
+.lab input[type=text]{flex:1 1 12em;min-width:0;background:#0B1216;border:1px solid #2B3B44;border-radius:3px;
+  color:#E6F0EC;font:13px/1.2 var(--mono);padding:10px 10px}
+.stat{display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5em,1fr));gap:1px;background:#060B0E;
+  border-top:1px solid #060B0E}
+.stat div{background:var(--screen);padding:10px 14px}
+.stat b{display:block;font:600 1.15rem/1.2 var(--mono);color:#E6F0EC;font-variant-numeric:tabular-nums}
+.stat span{font:10px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#8FA69C}
+.alarm2{color:#F08B6D}
+.met .brow{grid-template-columns:9.5em minmax(0,1fr) 3.6em}
+.own{display:none;padding:0 16px 14px}
+.own.on{display:block}
+.own textarea{display:block;width:100%;height:8em;background:#0B1216;border:1px solid #2B3B44;border-radius:3px;
+  color:#CFE3DA;font:12.5px/1.5 var(--mono);padding:10px}
+.sums{max-width:38em;margin:14px 0 18px;border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))}
+.sums div{display:grid;grid-template-columns:9em 1fr;gap:12px;padding:9px 14px;border-bottom:1px solid var(--rule);font-size:.96rem}
+.sums div:last-child{border-bottom:0}
+.sums b{font-family:var(--mono);font-size:.86em}
+@media(max-width:600px){
+  .brow{grid-template-columns:5.6em minmax(0,1fr) 5.4em;gap:8px;font-size:12px}
+  .met .brow{grid-template-columns:7.6em minmax(0,1fr) 3.2em}
+  .sums div{grid-template-columns:1fr;gap:2px}
+  .lab .pad{padding:12px 12px}
+}
+</style>
+</head>
+<body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html" aria-label="Home">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap col">
+    <p class="tag">Tutorial · AI · In your browser · Beginners</p>
+    <h1>Guess the next word</h1>
+    <p class="standfirst">Every AI chatbot does one thing, over and over: <strong>it guesses the next word</strong>. On this page you'll build the simplest machine that can do that, out of nothing but counting. You'll watch it write, and then you'll find the exact place where it breaks. Fixing that break is what the real thing is for.</p>
+    <div class="spec">
+      <div><b>5</b><span>short steps</span></div>
+      <div><b>0</b><span>installs</span></div>
+      <div><b>0</b><span>maths</span></div>
+      <div><b>~30 min</b><span>first time</span></div>
+    </div>
+    <div class="progress" aria-live="polite">
+      <div class="bar"><div class="fill" id="fill"></div></div>
+      <div class="read"><span class="tag" id="progress-text">0 of 5 steps done</span><span class="tag">Tick each check as you pass it</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap col">
+
+<section>
+  <p class="tag eyebrow">Before you start</p>
+  <h2>What you need</h2>
+  <p>A web browser. That's all. Everything on this page runs on your own device: the panels are real working machines, not animations, and nothing you type is sent anywhere.</p>
+  <p>I wrote this after building a language model from nothing in Python, one small piece at a time, on a 2015 desktop PC. This page is the first thing I wish someone had shown me before I started.</p>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 1</p>
+  <h2>The whole job is one guess</h2>
+  <p>Finish this sentence: <em>the cat sat on the …</em></p>
+  <p>You had an answer before you reached the end. You didn't look anything up. You have read enough English to know what tends to come next. A language model does exactly that, and <strong>only</strong> that: given some words, it guesses the next one. To write a paragraph it guesses a word, adds it on, and guesses again.</p>
+  <p>So what does a machine need in order to guess? Something to have read. Here is a very small world for ours: thirty sentences about a cat, a dog, a mouse and a bird. This is everything our machine will ever know.</p>
+
+  <div class="world well">
+    <textarea id="world" spellcheck="false" aria-label="The tiny world: the text the machine learns from. You can edit it."></textarea>
+    <div class="bar2">
+      <button type="button" id="world-reset">Put my text back</button>
+      <span class="note2" id="world-note"></span>
+    </div>
+  </div>
+  <p>You can change that text whenever you like, and every panel on this page will follow. Leave it alone for now.</p>
+
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>Read down the sentences. Without counting: which word comes after <strong>the</strong> most often? And what comes after <strong>sat</strong>?</p>
+  </div>
+  <p>Hold on to your two answers. The next step checks them.</p>
+
+  <div class="check" data-step="1">
+    <div><span class="tag">Check</span><p>You've read the tiny world, and written down (or at least decided on) your two guesses.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 2</p>
+  <h2>Count what follows</h2>
+  <p>Here is the simplest way a machine could guess. Go through the text once. Every time you meet a word, make a tally mark for the word that came straight after it. When you've finished you have a table: for each word, what followed it and how often.</p>
+  <p>The machine below has done that. Tap a word to see its row of the table.</p>
+
+  <div class="lab well" id="counter">
+    <div class="head"><span class="cap">The counting table</span><span class="note2" id="counter-size"></span></div>
+    <div class="pad">
+      <div class="chips" id="counter-chips" role="group" aria-label="Choose a word"></div>
+      <p class="say2" id="counter-say" aria-live="polite"></p>
+      <div class="bars" id="counter-bars"></div>
+      <div class="more" id="counter-more"></div>
+    </div>
+  </div>
+
+  <p>Were your guesses right? Notice that the table doesn't give one answer. It gives a list of answers, each with a share. Those shares are the machine's <strong>probabilities</strong>: how likely it thinks each next word is.</p>
+  <p>One piece of jargon, because you'll meet it everywhere. The machine doesn't deal in words exactly. It deals in <strong>tokens</strong>: the pieces the text is cut into. Here a token is a word or a full stop. Tap the full stop in the panel and you'll see it has a row of its own.</p>
+
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>Which word is the machine <em>most sure</em> about what follows, and which is it <em>least sure</em> about? Decide, then tap through the words and look at how the bars are spread.</p>
+  </div>
+  <details class="answer">
+    <summary>What I see</summary>
+    <p>With my text, plenty of words leave no doubt at all. <strong>on</strong>, <strong>under</strong>, <strong>chased</strong> and <strong>ate</strong> are followed by <strong>the</strong> every single time. So is the full stop, because every sentence here starts with <strong>the</strong>.</p>
+    <p>The word it's least sure about is <strong>the</strong> itself. Thirteen different things can follow it, and even the favourite has less than a quarter of the tally. That's worth remembering. A language model is never choosing "the right word". It is always weighing a list.</p>
+  </details>
+
+  <div class="check" data-step="2">
+    <div><span class="tag">Check</span><p>You can say what most often follows <strong>the</strong>, and you've found a word whose next word is never in doubt.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 3</p>
+  <h2>Let it write</h2>
+  <p>A table of guesses is already enough to write with. Start with a word. Look up its row. Pick a next word. Now look up <em>that</em> word's row, and go round again.</p>
+  <p>There's one decision to make each time: <em>which</em> word to pick from the row. The obvious choice is the favourite, the one with the longest bar.</p>
+
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>The panel below is set to <span class="ui">Always the favourite</span>. Before you press anything: what do you think it will write if you keep pressing <span class="ui">Next word</span> twenty times?</p>
+  </div>
+
+  <div class="lab well" id="writer">
+    <div class="head"><span class="cap">The writer · looks back one word</span></div>
+    <div class="pad">
+      <div class="row2">
+        <span class="seg" role="group" aria-label="How to choose the next word">
+          <button type="button" data-mode="greedy" aria-pressed="true">Always the favourite</button>
+          <button type="button" data-mode="dice" aria-pressed="false">Roll the dice</button>
+        </span>
+      </div>
+      <p class="out" id="writer-out" aria-live="polite"></p>
+      <div class="row2">
+        <button type="button" class="cta" id="writer-next">Next word</button>
+        <button type="button" id="writer-many">Write 15 more</button>
+        <button type="button" id="writer-reset">Start again</button>
+      </div>
+      <p class="say2" id="writer-say"></p>
+      <div class="bars" id="writer-bars"></div>
+      <div class="more" id="writer-more"></div>
+    </div>
+  </div>
+
+  <details class="answer">
+    <summary>What happens, and why</summary>
+    <p>It goes round in a circle: <em>the cat sat on the cat sat on the cat sat on…</em> for ever. After <strong>the</strong> the favourite is <strong>cat</strong>, after <strong>cat</strong> it's <strong>sat</strong>, after <strong>sat</strong> it's <strong>on</strong>, after <strong>on</strong> it's <strong>the</strong>, and now we're back where we began. Always taking the favourite means always taking the same road.</p>
+    <p>Now switch to <span class="ui">Roll the dice</span> and press <span class="ui">Start again</span>, then <span class="ui">Write 15 more</span> a few times. The dice is loaded: a word with a bar twice as long comes up twice as often. But the short bars get their turn.</p>
+  </details>
+
+  <p>Read what the dice writes. Hardly any of it is in my text word for word: I had it write three thousand sentences, and only about one in twenty-five was a copy. The rest are sentences that <strong>nobody wrote</strong>: <em>the bird sat on the cheese</em>, <em>the dog ate the wall</em>, or just <em>the mat.</em> The machine has made new sentences out of old tallies. Some are sensible and some are nonsense, and the machine has no idea which is which.</p>
+  <p>That is how every chatbot writes: one loaded roll of the dice per token. The setting usually called <strong>temperature</strong> is how heavily the dice is loaded towards the favourite. It's also why the same question can get you two different answers.</p>
+
+  <div class="check" data-step="3">
+    <div><span class="tag">Check</span><p>You've seen the favourite-only writer get stuck in a loop, and the dice write at least one sentence that isn't in the text.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 4</p>
+  <h2>Give it more to go on</h2>
+  <p>The writer in step 3 only ever looked at <strong>one</strong> word: the last one. That's why it could write <em>the dog ate the wall</em>. By the time it reached the second "the", it had forgotten there was a dog, and that anything was being eaten.</p>
+  <p>The obvious fix is to let it look back further. Count what follows each <em>pair</em> of words, or each run of three. The panel below lets you choose. It can also read a bigger text: the opening of Shakespeare's <em>Coriolanus</em>, about 5,400 words. That's the start of the same file I trained my own model on.</p>
+
+  <div class="lab well" id="deep">
+    <div class="head"><span class="cap">The writer · you choose how far it looks back</span></div>
+    <div class="pad">
+      <div class="row2">
+        <span class="lbl" id="deep-text-lbl">Text</span>
+        <span class="seg" role="group" aria-labelledby="deep-text-lbl">
+          <button type="button" data-text="world" aria-pressed="true">Tiny world</button>
+          <button type="button" data-text="shake" aria-pressed="false">Shakespeare</button>
+          <button type="button" data-text="own" aria-pressed="false">Your own</button>
+        </span>
+      </div>
+      <div class="row2">
+        <span class="lbl" id="deep-k-lbl">Looks back</span>
+        <span class="seg" role="group" aria-labelledby="deep-k-lbl">
+          <button type="button" data-k="1" aria-pressed="true">1 word</button>
+          <button type="button" data-k="2" aria-pressed="false">2 words</button>
+          <button type="button" data-k="3" aria-pressed="false">3 words</button>
+        </span>
+      </div>
+      <div class="row2">
+        <label class="lbl" for="deep-start">Start with</label>
+        <input type="text" id="deep-start" value="the dog sat" autocomplete="off" autocapitalize="off" spellcheck="false">
+        <button type="button" id="deep-reset">Start again</button>
+      </div>
+      <p class="out" id="deep-out" aria-live="polite"></p>
+      <div class="row2">
+        <button type="button" class="cta" id="deep-next">Next word</button>
+        <button type="button" id="deep-many">Write 15 more</button>
+      </div>
+      <p class="say2" id="deep-say"></p>
+      <div class="bars" id="deep-bars"></div>
+      <div class="more" id="deep-more"></div>
+    </div>
+    <div class="own" id="deep-own">
+      <textarea id="own-text" spellcheck="false" aria-label="Paste your own text here" placeholder="Paste any text here: a page of a book, song words, your own emails. The more the better. It stays in your browser."></textarea>
+    </div>
+    <div class="stat" aria-live="polite">
+      <div><b id="deep-n">0</b><span>words written</span></div>
+      <div><b id="deep-forced">0</b><span>with no choice at all</span></div>
+      <div><b id="deep-seen">–</b><span>this situation met before</span></div>
+    </div>
+  </div>
+
+  <p>This writer always rolls the dice. Words shown in grey are ones where it had <strong>no choice</strong>: only one word had ever followed that situation, so the dice had one face.</p>
+
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>Stay on the tiny world. You'll set it to look back <strong>3 words</strong> and write a few sentences. Will its writing get better, or worse? And in what way?</p>
+  </div>
+  <details class="answer">
+    <summary>What I see</summary>
+    <p>It gets more <em>sensible</em>, and far less <em>its own</em>. I had it write three thousand sentences at each setting and checked them against my thirty. Looking back one word, 4% were straight copies of a sentence of mine. Two words, 46%. Three words, 81%, and the few new ones were small swaps like <em>the bird sat on the rug</em>. No more dogs eating walls. But almost nothing that wasn't already there.</p>
+    <p>Try the same on Shakespeare. Looking back one word you get a heap of real words in no order, and about one word in six is grey. Two words gives phrases that almost sound like something. Three words, and about nine words in ten are grey: it is quoting the play back at you.</p>
+  </details>
+
+  <h3>Now break it</h3>
+  <p>Go back to the tiny world and look back <strong>2 words</strong>. In the <span class="ui">Start with</span> box type <strong>the dog climbed</strong> and press <span class="ui">Next word</span>.</p>
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>The text never says a dog climbed anything. But it does say <em>the cat climbed the tree</em> and <em>the cat climbed the wall</em>. What do you think the machine will do?</p>
+  </div>
+  <details class="answer">
+    <summary>What it does</summary>
+    <p>It stops dead. It has never met "dog climbed", so that row of its table is empty, and an empty row is no help at all. Switch it to look back 1 word and it carries on happily, because it has met "climbed".</p>
+    <p>You or I would have said <em>the tree</em> without thinking. We know a dog is the same sort of thing as a cat, so what cats climb is a fair guess for a dog. The counting machine can't make that step. To it, "cat" and "dog" are two unrelated marks on a page. Everything it knows about one is useless for the other.</p>
+  </details>
+
+  <div class="check" data-step="4">
+    <div><span class="tag">Check</span><p>You've made it recite by looking back 3 words, and you've stopped it dead with a start it had never met.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 5</p>
+  <h2>The wall, measured</h2>
+  <p>So there's a trade. Look back a little and the machine forgets what it was talking about. Look back a lot and it can only repeat, and it's helpless the moment anything is new. Is that a quirk of thirty sentences about a cat? It's easy to measure on the real text.</p>
+  <p>The test is the one I used on every model I built. Hide the last tenth of the text. Build the table from the rest. Then walk through the hidden part and ask, at every word: <strong>has the machine ever met this situation before?</strong></p>
+
+  <div class="lab well met" id="met">
+    <div class="head">
+      <span class="cap" id="met-cap">Situations in the hidden tenth that it had met before</span>
+      <span class="seg" role="group" aria-label="Which text to test">
+        <button type="button" data-text="shake" aria-pressed="true">Shakespeare</button>
+        <button type="button" data-text="world" aria-pressed="false">Tiny world</button>
+        <button type="button" data-text="own" aria-pressed="false">Your own</button>
+      </span>
+    </div>
+    <div class="pad">
+      <div class="bars" id="met-bars"></div>
+      <p class="say2" id="met-say" style="margin:12px 0 0" aria-live="polite"></p>
+    </div>
+  </div>
+
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>Look at how fast the bars fall. What would fix it? One answer is "read more text". How much more do you think it would take?</p>
+  </div>
+  <details class="answer">
+    <summary>My answer</summary>
+    <p>More than exists. Every extra word of looking back multiplies the number of possible situations by the size of the vocabulary. English in everyday use has tens of thousands of words. Take a modest 10,000:</p>
+    <div class="sums">
+      <div><b>Look back 1</b><span>10,000 situations to have met</span></div>
+      <div><b>Look back 2</b><span>100 million</span></div>
+      <div><b>Look back 3</b><span>a million million</span></div>
+      <div><b>Look back 10</b><span>a 1 followed by 40 noughts</span></div>
+    </div>
+    <p>Most of those would never turn up, but the ones that do run far beyond anything that could be collected. And a chatbot has to keep hold of what you said hundreds or thousands of words ago, not ten. Counting can't get there. No amount of text makes a table that big fill up.</p>
+  </details>
+
+  <p>So the machine we actually need is one that can make a sensible guess in a situation it has <strong>never met</strong>. It has to notice that "dog" behaves like "cat", so that what it learned about one carries over to the other. And it has to look a long way back without needing a table row for every possible history.</p>
+  <p>That machine is called a <strong>transformer</strong>, and it's what sits inside the AI chatbots you've heard of. The first thing it does differently is the answer to the cat-and-dog problem: it stops treating words as marks, and turns each one into a short list of numbers that it <em>learns</em>, so that similar words end up with similar numbers. That's the next step on this path, and I'm writing it now.</p>
+  <p>The counting table doesn't go away, though. It's the best yardstick there is. When I trained my first model on Shakespeare, I set a counting table beside it, one that looks back three letters. <strong>My model lost.</strong> It took a better way of cutting up the text, and then a bigger model, before the transformer pulled clear. If a clever machine can't beat counting, it hasn't learned much, and it's worth knowing that before anyone tells you how clever it is.</p>
+
+  <div class="check" data-step="5">
+    <div><span class="tag">Check</span><p>You can explain why looking back further doesn't rescue the counting machine, and what a better machine would have to be able to do.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">That's it</p>
+  <h2>What I'd want you to take away</h2>
+  <div class="takeaways">
+    <div class="take">
+      <h3>It only ever guesses the next token</h3>
+      <p>An essay, an answer, a poem: each is one guess, added on, then another. There is no plan being followed underneath.</p>
+    </div>
+    <div class="take">
+      <h3>It rolls a loaded dice</h3>
+      <p>The model gives every possible next token a share, and one is drawn. That's why answers vary, and why "always the favourite" writes in circles.</p>
+    </div>
+    <div class="take">
+      <h3>Counting can't cope with new</h3>
+      <p>A table knows only what it has met. The whole point of a real language model is to guess well where it has met nothing.</p>
+    </div>
+  </div>
+  <p style="margin-top:26px">Try one more thing before you go: paste a few pages of your own writing into <span class="ui">Your own</span> in step 4, and see what a machine that has read only you sounds like.</p>
+  <p>Found a mistake, or a panel that did something odd? <a href="contact.html">Tell me</a>. If a step here was unclear, that's my fault, and I'll fix it.</p>
+</section>
+
+</main>
+
+<section class="read-next">
+  <div class="wrap col">
+    <p class="tag">On the same path</p>
+    <a class="card" href="neural_playground.html">
+      <h3>S.M.A.R.T.: watch one neuron learn</h3>
+      <p>The next page turns words into numbers that are learned. This is what "learned" means: a single neuron finding a hidden pattern, and the one setting that makes it fall apart.</p>
+      <span class="go">Open &rarr;</span>
+    </a>
+    <a class="card" href="https://github.com/IHoggan/tiny-transformer">
+      <h3>The long way round, in Python</h3>
+      <p>The language model I built from nothing, one idea per file, with what worked and what didn't. For when you want to see inside the real thing.</p>
+      <span class="go">GitHub &rarr;</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">← Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="contact.html">Get in touch</a>
+    <span class="tag">© 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ---------- step checks and progress meter ---------- */
+  var KEY='next-word-steps';
+  var buttons=[].slice.call(document.querySelectorAll('.check .done'));
+  var saved={};
+  try{ saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){ saved={}; }
+  function progress(){
+    var n=buttons.filter(function(b){return b.getAttribute('aria-pressed')==='true';}).length;
+    document.getElementById('fill').style.width=(n/buttons.length*100)+'%';
+    document.getElementById('progress-text').textContent=
+      n===buttons.length ? 'All 5 steps done. You know what a language model does.' : n+' of '+buttons.length+' steps done';
+  }
+  buttons.forEach(function(b){
+    var s=b.parentNode.getAttribute('data-step');
+    if(saved[s]){ b.setAttribute('aria-pressed','true'); b.textContent='Done ✓'; }
+    b.addEventListener('click',function(){
+      var on=b.getAttribute('aria-pressed')!=='true';
+      b.setAttribute('aria-pressed',on?'true':'false');
+      b.textContent=on?'Done ✓':'Done';
+      saved[s]=on;
+      try{ localStorage.setItem(KEY,JSON.stringify(saved)); }catch(e){}
+      progress();
+    });
+  });
+  progress();
+
+  /* ---------- the texts ---------- */
+  var WORLD=[
+    'the cat sat on the mat.','the dog sat on the rug.','the cat chased the mouse.',
+    'the dog chased the cat.','the dog chased the ball.','the cat climbed the tree.',
+    'the mouse ran under the mat.','the cat sat on the wall.','the dog slept on the rug.',
+    'the cat slept on the mat.','the bird sat on the wall.','the cat watched the bird.',
+    'the dog watched the cat.','the bird flew over the wall.','the mouse ate the cheese.',
+    'the cat ate the fish.','the dog ate the bone.','the dog ran after the ball.',
+    'the cat ran after the mouse.','the mouse hid under the rug.','the dog sat on the mat.',
+    'the cat sat on the rug.','the bird sat on the tree.','the cat climbed the wall.',
+    'the dog found the bone.','the cat found the mouse.','the mouse found the cheese.',
+    'the dog slept by the door.','the cat sat by the door.','the bird flew over the tree.'
+  ].join('\n');
+  var SHAKE="First Citizen:\nBefore we proceed any further, hear me speak.\n\nAll:\nSpeak, speak.\n\nFirst Citizen:\nYou are all resolved rather to die than to famish?\n\nAll:\nResolved. resolved.\n\nFirst Citizen:\nFirst, you know Caius Marcius is chief enemy to the people.\n\nAll:\nWe know't, we know't.\n\nFirst Citizen:\nLet us kill him, and we'll have corn at our own price.\nIs't a verdict?\n\nAll:\nNo more talking on't; let it be done: away, away!\n\nSecond Citizen:\nOne word, good citizens.\n\nFirst Citizen:\nWe are accounted poor citizens, the patricians good.\nWhat authority surfeits on would relieve us: if they\nwould yield us but the superfluity, while it were\nwholesome, we might guess they relieved us humanely;\nbut they think we are too dear: the leanness that\nafflicts us, the object of our misery, is as an\ninventory to particularise their abundance; our\nsufferance is a gain to them Let us revenge this with\nour pikes, ere we become rakes: for the gods know I\nspeak this in hunger for bread, not in thirst for revenge.\n\nSecond Citizen:\nWould you proceed especially against Caius Marcius?\n\nAll:\nAgainst him first: he's a very dog to the commonalty.\n\nSecond Citizen:\nConsider you what services he has done for his country?\n\nFirst Citizen:\nVery well; and could be content to give him good\nreport fort, but that he pays himself with being proud.\n\nSecond Citizen:\nNay, but speak not maliciously.\n\nFirst Citizen:\nI say unto you, what he hath done famously, he did\nit to that end: though soft-conscienced men can be\ncontent to say it was for his country he did it to\nplease his mother and to be partly proud; which he\nis, even till the altitude of his virtue.\n\nSecond Citizen:\nWhat he cannot help in his nature, you account a\nvice in him. You must in no way say he is covetous.\n\nFirst Citizen:\nIf I must not, I need not be barren of accusations;\nhe hath faults, with surplus, to tire in repetition.\nWhat shouts are these? The other side o' the city\nis risen: why stay we prating here? to the Capitol!\n\nAll:\nCome, come.\n\nFirst Citizen:\nSoft! who comes here?\n\nSecond Citizen:\nWorthy Menenius Agrippa; one that hath always loved\nthe people.\n\nFirst Citizen:\nHe's one honest enough: would all the rest were so!\n\nMENENIUS:\nWhat work's, my countrymen, in hand? where go you\nWith bats and clubs? The matter? speak, I pray you.\n\nFirst Citizen:\nOur business is not unknown to the senate; they have\nhad inkling this fortnight what we intend to do,\nwhich now we'll show 'em in deeds. They say poor\nsuitors have strong breaths: they shall know we\nhave strong arms too.\n\nMENENIUS:\nWhy, masters, my good friends, mine honest neighbours,\nWill you undo yourselves?\n\nFirst Citizen:\nWe cannot, sir, we are undone already.\n\nMENENIUS:\nI tell you, friends, most charitable care\nHave the patricians of you. For your wants,\nYour suffering in this dearth, you may as well\nStrike at the heaven with your staves as lift them\nAgainst the Roman state, whose course will on\nThe way it takes, cracking ten thousand curbs\nOf more strong link asunder than can ever\nAppear in your impediment. For the dearth,\nThe gods, not the patricians, make it, and\nYour knees to them, not arms, must help. Alack,\nYou are transported by calamity\nThither where more attends you, and you slander\nThe helms o' the state, who care for you like fathers,\nWhen you curse them as enemies.\n\nFirst Citizen:\nCare for us! True, indeed! They ne'er cared for us\nyet: suffer us to famish, and their store-houses\ncrammed with grain; make edicts for usury, to\nsupport usurers; repeal daily any wholesome act\nestablished against the rich, and provide more\npiercing statutes daily, to chain up and restrain\nthe poor. If the wars eat us not up, they will; and\nthere's all the love they bear us.\n\nMENENIUS:\nEither you must\nConfess yourselves wondrous malicious,\nOr be accused of folly. I shall tell you\nA pretty tale: it may be you have heard it;\nBut, since it serves my purpose, I will venture\nTo stale 't a little more.\n\nFirst Citizen:\nWell, I'll hear it, sir: yet you must not think to\nfob off our disgrace with a tale: but, an 't please\nyou, deliver.\n\nMENENIUS:\nThere was a time when all the body's members\nRebell'd against the belly, thus accused it:\nThat only like a gulf it did remain\nI' the midst o' the body, idle and unactive,\nStill cupboarding the viand, never bearing\nLike labour with the rest, where the other instruments\nDid see and hear, devise, instruct, walk, feel,\nAnd, mutually participate, did minister\nUnto the appetite and affection common\nOf the whole body. The belly answer'd--\n\nFirst Citizen:\nWell, sir, what answer made the belly?\n\nMENENIUS:\nSir, I shall tell you. With a kind of smile,\nWhich ne'er came from the lungs, but even thus--\nFor, look you, I may make the belly smile\nAs well as speak--it tauntingly replied\nTo the discontented members, the mutinous parts\nThat envied his receipt; even so most fitly\nAs you malign our senators for that\nThey are not such as you.\n\nFirst Citizen:\nYour belly's answer? What!\nThe kingly-crowned head, the vigilant eye,\nThe counsellor heart, the arm our soldier,\nOur steed the leg, the tongue our trumpeter.\nWith other muniments and petty helps\nIn this our fabric, if that they--\n\nMENENIUS:\nWhat then?\n'Fore me, this fellow speaks! What then? what then?\n\nFirst Citizen:\nShould by the cormorant belly be restrain'd,\nWho is the sink o' the body,--\n\nMENENIUS:\nWell, what then?\n\nFirst Citizen:\nThe former agents, if they did complain,\nWhat could the belly answer?\n\nMENENIUS:\nI will tell you\nIf you'll bestow a small--of what you have little--\nPatience awhile, you'll hear the belly's answer.\n\nFirst Citizen:\nYe're long about it.\n\nMENENIUS:\nNote me this, good friend;\nYour most grave belly was deliberate,\nNot rash like his accusers, and thus answer'd:\n'True is it, my incorporate friends,' quoth he,\n'That I receive the general food at first,\nWhich you do live upon; and fit it is,\nBecause I am the store-house and the shop\nOf the whole body: but, if you do remember,\nI send it through the rivers of your blood,\nEven to the court, the heart, to the seat o' the brain;\nAnd, through the cranks and offices of man,\nThe strongest nerves and small inferior veins\nFrom me receive that natural competency\nWhereby they live: and though that all at once,\nYou, my good friends,'--this says the belly, mark me,--\n\nFirst Citizen:\nAy, sir; well, well.\n\nMENENIUS:\n'Though all at once cannot\nSee what I do deliver out to each,\nYet I can make my audit up, that all\nFrom me do back receive the flour of all,\nAnd leave me but the bran.' What say you to't?\n\nFirst Citizen:\nIt was an answer: how apply you this?\n\nMENENIUS:\nThe senators of Rome are this good belly,\nAnd you the mutinous members; for examine\nTheir counsels and their cares, digest things rightly\nTouching the weal o' the common, you shall find\nNo public benefit which you receive\nBut it proceeds or comes from them to you\nAnd no way from yourselves. What do you think,\nYou, the great toe of this assembly?\n\nFirst Citizen:\nI the great toe! why the great toe?\n\nMENENIUS:\nFor that, being one o' the lowest, basest, poorest,\nOf this most wise rebellion, thou go'st foremost:\nThou rascal, that art worst in blood to run,\nLead'st first to win some vantage.\nBut make you ready your stiff bats and clubs:\nRome and her rats are at the point of battle;\nThe one side must have bale.\nHail, noble Marcius!\n\nMARCIUS:\nThanks. What's the matter, you dissentious rogues,\nThat, rubbing the poor itch of your opinion,\nMake yourselves scabs?\n\nFirst Citizen:\nWe have ever your good word.\n\nMARCIUS:\nHe that will give good words to thee will flatter\nBeneath abhorring. What would you have, you curs,\nThat like nor peace nor war? the one affrights you,\nThe other makes you proud. He that trusts to you,\nWhere he should find you lions, finds you hares;\nWhere foxes, geese: you are no surer, no,\nThan is the coal of fire upon the ice,\nOr hailstone in the sun. Your virtue is\nTo make him worthy whose offence subdues him\nAnd curse that justice did it.\nWho deserves greatness\nDeserves your hate; and your affections are\nA sick man's appetite, who desires most that\nWhich would increase his evil. He that depends\nUpon your favours swims with fins of lead\nAnd hews down oaks with rushes. Hang ye! Trust Ye?\nWith every minute you do change a mind,\nAnd call him noble that was now your hate,\nHim vile that was your garland. What's the matter,\nThat in these several places of the city\nYou cry against the noble senate, who,\nUnder the gods, keep you in awe, which else\nWould feed on one another? What's their seeking?\n\nMENENIUS:\nFor corn at their own rates; whereof, they say,\nThe city is well stored.\n\nMARCIUS:\nHang 'em! They say!\nThey'll sit by the fire, and presume to know\nWhat's done i' the Capitol; who's like to rise,\nWho thrives and who declines; side factions\nand give out\nConjectural marriages; making parties strong\nAnd feebling such as stand not in their liking\nBelow their cobbled shoes. They say there's\ngrain enough!\nWould the nobility lay aside their ruth,\nAnd let me use my sword, I'll make a quarry\nWith thousands of these quarter'd slaves, as high\nAs I could pick my lance.\n\nMENENIUS:\nNay, these are almost thoroughly persuaded;\nFor though abundantly they lack discretion,\nYet are they passing cowardly. But, I beseech you,\nWhat says the other troop?\n\nMARCIUS:\nThey are dissolved: hang 'em!\nThey said they were an-hungry; sigh'd forth proverbs,\nThat hunger broke stone walls, that dogs must eat,\nThat meat was made for mouths, that the gods sent not\nCorn for the rich men only: with these shreds\nThey vented their complainings; which being answer'd,\nAnd a petition granted them, a strange one--\nTo break the heart of generosity,\nAnd make bold power look pale--they threw their caps\nAs they would hang them on the horns o' the moon,\nShouting their emulation.\n\nMENENIUS:\nWhat is granted them?\n\nMARCIUS:\nFive tribunes to defend their vulgar wisdoms,\nOf their own choice: one's Junius Brutus,\nSicinius Velutus, and I know not--'Sdeath!\nThe rabble should have first unroof'd the city,\nEre so prevail'd with me: it will in time\nWin upon power and throw forth greater themes\nFor insurrection's arguing.\n\nMENENIUS:\nThis is strange.\n\nMARCIUS:\nGo, get you home, you fragments!\n\nMessenger:\nWhere's Caius Marcius?\n\nMARCIUS:\nHere: what's the matter?\n\nMessenger:\nThe news is, sir, the Volsces are in arms.\n\nMARCIUS:\nI am glad on 't: then we shall ha' means to vent\nOur musty superfluity. See, our best elders.\n\nFirst Senator:\nMarcius, 'tis true that you have lately told us;\nThe Volsces are in arms.\n\nMARCIUS:\nThey have a leader,\nTullus Aufidius, that will put you to 't.\nI sin in envying his nobility,\nAnd were I any thing but what I am,\nI would wish me only he.\n\nCOMINIUS:\nYou have fought together.\n\nMARCIUS:\nWere half to half the world by the ears and he.\nUpon my party, I'ld revolt to make\nOnly my wars with him: he is a lion\nThat I am proud to hunt.\n\nFirst Senator:\nThen, worthy Marcius,\nAttend upon Cominius to these wars.\n\nCOMINIUS:\nIt is your former promise.\n\nMARCIUS:\nSir, it is;\nAnd I am constant. Titus Lartius, thou\nShalt see me once more strike at Tullus' face.\nWhat, art thou stiff? stand'st out?\n\nTITUS:\nNo, Caius Marcius;\nI'll lean upon one crutch and fight with t'other,\nEre stay behind this business.\n\nMENENIUS:\nO, true-bred!\n\nFirst Senator:\nYour company to the Capitol; where, I know,\nOur greatest friends attend us.\n\nTITUS:\n\nCOMINIUS:\nNoble Marcius!\n\nFirst Senator:\n\nMARCIUS:\nNay, let them follow:\nThe Volsces have much corn; take these rats thither\nTo gnaw their garners. Worshipful mutiners,\nYour valour puts well forth: pray, follow.\n\nSICINIUS:\nWas ever man so proud as is this Marcius?\n\nBRUTUS:\nHe has no equal.\n\nSICINIUS:\nWhen we were chosen tribunes for the people,--\n\nBRUTUS:\nMark'd you his lip and eyes?\n\nSICINIUS:\nNay. but his taunts.\n\nBRUTUS:\nBeing moved, he will not spare to gird the gods.\n\nSICINIUS:\nBe-mock the modest moon.\n\nBRUTUS:\nThe present wars devour him: he is grown\nToo proud to be so valiant.\n\nSICINIUS:\nSuch a nature,\nTickled with good success, disdains the shadow\nWhich he treads on at noon: but I do wonder\nHis insolence can brook to be commanded\nUnder Cominius.\n\nBRUTUS:\nFame, at the which he aims,\nIn whom already he's well graced, can not\nBetter be held nor more attain'd than by\nA place below the first: for what miscarries\nShall be the general's fault, though he perform\nTo the utmost of a man, and giddy censure\nWill then cry out of Marcius 'O if he\nHad borne the business!'\n\nSICINIUS:\nBesides, if things go well,\nOpinion that so sticks on Marcius shall\nOf his demerits rob Cominius.\n\nBRUTUS:\nCome:\nHalf all Cominius' honours are to Marcius.\nThough Marcius earned them not, and all his faults\nTo Marcius shall be honours, though indeed\nIn aught he merit not.\n\nSICINIUS:\nLet's hence, and hear\nHow the dispatch is made, and in what fashion,\nMore than his singularity, he goes\nUpon this present action.\n\nBRUTUS:\nLets along.\n\nFirst Senator:\nSo, your opinion is, Aufidius,\nThat they of Rome are entered in our counsels\nAnd know how we proceed.\n\nAUFIDIUS:\nIs it not yours?\nWhat ever have been thought on in this state,\nThat could be brought to bodily act ere Rome\nHad circumvention? 'Tis not four days gone\nSince I heard thence; these are the words: I think\nI have the letter here; yes, here it is.\n'They have press'd a power, but it is not known\nWhether for east or west: the dearth is great;\nThe people mutinous; and it is rumour'd,\nCominius, Marcius your old enemy,\nWho is of Rome worse hated than of you,\nAnd Titus Lartius, a most valiant Roman,\nThese three lead on this preparation\nWhither 'tis bent: most likely 'tis for you:\nConsider of it.'\n\nFirst Senator:\nOur army's in the field\nWe never yet made doubt but Rome was ready\nTo answer us.\n\nAUFIDIUS:\nNor did you think it folly\nTo keep your great pretences veil'd till when\nThey needs must show themselves; which\nin the hatching,\nIt seem'd, appear'd to Rome. By the discovery.\nWe shall be shorten'd in our aim, which was\nTo take in many towns ere almost Rome\nShould know we were afoot.\n\nSecond Senator:\nNoble Aufidius,\nTake your commission; hie you to your bands:\nLet us alone to guard Corioli:\nIf they set down before 's, for the remove\nBring your army; but, I think, you'll find\nThey've not prepared for us.\n\nAUFIDIUS:\nO, doubt not that;\nI speak from certainties. Nay, more,\nSome parcels of their power are forth already,\nAnd only hitherward. I leave your honours.\nIf we and Caius Marcius chance to meet,\n'Tis sworn between us we shall ever strike\nTill one can do no more.\n\nAll:\nThe gods assist you!\n\nAUFIDIUS:\nAnd keep your honours safe!\n\nFirst Senator:\nFarewell.\n\nSecond Senator:\nFarewell.\n\nAll:\nFarewell.\n\nVOLUMNIA:\nI pray you, daughter, sing; or express yourself in a\nmore comfortable sort: if my son were my husband, I\nshould freelier rejoice in that absence wherein he\nwon honour than in the embracements of his bed where\nhe would show most love. When yet he was but\ntender-bodied and the only son of my womb, when\nyouth with comeliness plucked all gaze his way, when\nfor a day of kings' entreaties a mother should not\nsell him an hour from her beholding, I, considering\nhow honour would become such a person. that it was\nno better than picture-like to hang by the wall, if\nrenown made it not stir, was pleased to let him seek\ndanger where he was like to find fame. To a cruel\nwar I sent him; from whence he returned, his brows\nbound with oak. I tell thee, daughter, I sprang not\nmore in joy at first hearing he was a man-child\nthan now in first seeing he had proved himself a\nman.\n\nVIRGILIA:\nBut had he died in the business, madam; how then?\n\nVOLUMNIA:\nThen his good report should have been my son; I\ntherein would have found issue. Hear me profess\nsincerely: had I a dozen sons, each in my love\nalike and none less dear than thine and my good\nMarcius, I had rather had eleven die nobly for their\ncountry than one voluptuously surfeit out of action.\n\nGentlewoman:\nMadam, the Lady Valeria is come to visit you.\n\nVIRGILIA:\nBeseech you, give me leave to retire myself.\n\nVOLUMNIA:\nIndeed, you shall not.\nMethinks I hear hither your husband's drum,\nSee him pluck Aufidius down by the hair,\nAs children from a bear, the Volsces shunning him:\nMethinks I see him stamp thus, and call thus:\n'Come on, you cowards! you were got in fear,\nThough you were born in Rome:' his bloody brow\nWith his mail'd hand then wiping, forth he goes,\nLike to a harvest-man that's task'd to mow\nOr all or lose his hire.\n\nVIRGILIA:\nHis bloody brow! O Jupiter, no blood!\n\nVOLUMNIA:\nAway, you fool! it more becomes a man\nThan gilt his trophy: the breasts of Hecuba,\nWhen she did suckle Hector, look'd not lovelier\nThan Hector's forehead when it spit forth blood\nAt Grecian sword, contemning. Tell Valeria,\nWe are fit to bid her welcome.\n\nVIRGILIA:\nHeavens bless my lord from fell Aufidius!\n\nVOLUMNIA:\nHe'll beat Aufidius 'head below his knee\nAnd tread upon his neck.\n\nVALERIA:\nMy ladies both, good day to you.\n\nVOLUMNIA:\nSweet madam.\n\nVIRGILIA:\nI am glad to see your ladyship.\n\nVALERIA:\nHow do you both? you are manifest house-keepers.\nWhat are you sewing here? A fine spot, in good\nfaith. How does your little son?\n\nVIRGILIA:\nI thank your ladyship; well, good madam.\n\nVOLUMNIA:\nHe had rather see the swords, and hear a drum, than\nlook upon his school-master.\n\nVALERIA:\nO' my word, the father's son: I'll swear,'tis a\nvery pretty boy. O' my troth, I looked upon him o'\nWednesday half an hour together: has such a\nconfirmed countenance. I saw him run after a gilded\nbutterfly: and when he caught it, he let it go\nagain; and after it again; and over and over he\ncomes, and again; catched it again; or whether his\nfall enraged him, or how 'twas, he did so set his\nteeth and tear it; O, I warrant it, how he mammocked\nit!\n\nVOLUMNIA:\nOne on 's father's moods.\n\nVALERIA:\nIndeed, la, 'tis a noble child.\n\nVIRGILIA:\nA crack, madam.\n\nVALERIA:\nCome, lay aside your stitchery; I must have you play\nthe idle husewife with me this afternoon.\n\nVIRGILIA:\nNo, good madam; I will not out of doors.\n\nVALERIA:\nNot out of doors!\n\nVOLUMNIA:\nShe shall, she shall.\n\nVIRGILIA:\nIndeed, no, by your patience; I'll not over the\nthreshold till my lord return from the wars.\n\nVALERIA:\nFie, you confine yourself most unreasonably: come,\nyou must go visit the good lady that lies in.\n\nVIRGILIA:\nI will wish her speedy strength, and visit her with\nmy prayers; but I cannot go thither.\n\nVOLUMNIA:\nWhy, I pray you?\n\nVIRGILIA:\n'Tis not to save labour, nor that I want love.\n\nVALERIA:\nYou would be another Penelope: yet, they say, all\nthe yarn she spun in Ulysses' absence did but fill\nIthaca full of moths. Come; I would your cambric\nwere sensible as your finger, that you might leave\npricking it for pity. Come, you shall go with us.\n\nVIRGILIA:\nNo, good madam, pardon me; indeed, I will not forth.\n\nVALERIA:\nIn truth, la, go with me; and I'll tell you\nexcellent news of your husband.\n\nVIRGILIA:\nO, good madam, there can be none yet.\n\nVALERIA:\nVerily, I do not jest with you; there came news from\nhim last night.\n\nVIRGILIA:\nIndeed, madam?\n\nVALERIA:\nIn earnest, it's true; I heard a senator speak it.\nThus it is: the Volsces have an army forth; against\nwhom Cominius the general is gone, with one part of\nour Roman power: your lord and Titus Lartius are set\ndown before their city Corioli; they nothing doubt\nprevailing and to make it brief wars. This is true,\non mine honour; and so, I pray, go with us.\n\nVIRGILIA:\nGive me excuse, good madam; I will obey you in every\nthing hereafter.\n\nVOLUMNIA:\nLet her alone, lady: as she is now, she will but\ndisease our better mirth.\n\nVALERIA:\nIn troth, I think she would. Fare you well, then.\nCome, good sweet lady. Prithee, Virgilia, turn thy\nsolemness out o' door. and go along with us.\n\nVIRGILIA:\nNo, at a word, madam; indeed, I must not. I wish\nyou much mirth.\n\nVALERIA:\nWell, then, farewell.\n\nMARCIUS:\nYonder comes news. A wager they have met.\n\nLARTIUS:\nMy horse to yours, no.\n\nMARCIUS:\n'Tis done.\n\nLARTIUS:\nAgreed.\n\nMARCIUS:\nSay, has our general met the enemy?\n\nMessenger:\nThey lie in view; but have not spoke as yet.\n\nLARTIUS:\nSo, the good horse is mine.\n\nMARCIUS:\nI'll buy him of you.\n\nLARTIUS:\nNo, I'll nor sell nor give him: lend you him I will\nFor half a hundred years. Summon the town.\n\nMARCIUS:\nHow far off lie these armies?\n\nMessenger:\nWithin this mile and half.\n\nMARCIUS:\nThen shall we hear their 'larum, and they ours.\nNow, Mars, I prithee, make us quick in work,\nThat we with smoking swords may march from hence,\nTo help our fielded friends! Come, blow thy blast.\nTutus Aufidius, is he within your walls?\n\nFirst Senator:\nNo, nor a man that fears you less than he,\nThat's lesser than a little.\nHark! our drums\nAre bringing forth our youth. We'll break our walls,\nRather than they shall pound us up: our gates,\nWhich yet seem shut, we, have but pinn'd with rushes;\nThey'll open of themselves.\nHark you. far off!\nThere is Aufidius; list, what work he makes\nAmongst your cloven army.\n\nMARCIUS:\nO, they are at it!\n\nLARTIUS:\nTheir noise be our instruction. Ladders, ho!\n\nMARCIUS:\nThey fear us not, but issue forth their city.\nNow put your shields before your hearts, and fight\nWith hearts more proof than shields. Advance,\nbrave Titus:\nThey do disdain us much beyond our thoughts,\nWhich makes me sweat with wrath. Come on, my fellows:\nHe that retires I'll take him for a Volsce,\nAnd he shall feel mine edge.\n\nMARCIUS:\nAll the contagion of the south light on you,\nYou shames of Rome! you herd of--Boils and plagues\nPlaster you o'er, that you may be abhorr'd\nFurther than seen and one infect another\nAgainst the wind a mile! You souls of geese,\nThat bear the shapes of men, how have you run\nFrom slaves that apes would beat! Pluto and hell!\nAll hurt behind; backs red, and faces pale\nWith flight and agued fear! Mend and charge home,\nOr, by the fires of heaven, I'll leave the foe\nAnd make my wars on you: look to't: come on;\nIf you'll stand fast, we'll beat them to their wives,\nAs they us to our trenches followed.\nSo, now the gates are ope: now prove good seconds:\n'Tis for the followers fortune widens them,\nNot for the fliers: mark me, and do the like.\n\nFirst Soldier:\nFool-hardiness; not I.\n\nSecond Soldier:\nNor I.\n\nFirst Soldier:\nSee, they have shut him in.\n\nAll:\nTo the pot, I warrant him.\n\nLARTIUS:\nWhat is become of Marcius?\n\nAll:\nSlain, sir, doubtless.\n\nFirst Soldier:\nFollowing the fliers at the very heels,\nWith them he enters; who, upon the sudden,\nClapp'd to their gates: he is himself alone,\nTo answer all the city.\n\nLARTIUS:\nO noble fellow!\nWho sensibly outdares his senseless sword,\nAnd, when it bows, stands up. Thou art left, Marcius:\nA carbuncle entire, as big as thou art,\nWere not so rich a jewel. Thou wast a soldier\nEven to Cato's wish, not fierce and terrible\nOnly in strokes; but, with thy grim looks and\nThe thunder-like percussion of thy sounds,\nThou madst thine enemies shake, as if the world\nWere feverous and did tremble.\n\nFirst Soldier:\nLook, sir.\n\nLARTIUS:\nO,'tis Marcius!\nLet's fetch him off, or make remain alike.\n\nFirst Roman:\nThis will I carry to Rome.\n\nSecond Roman:\nAnd I this.\n\nThird Roman:\nA murrain on't! I took this for silver.\n\nMARCIUS:\nSee here these movers that do prize their hours\nAt a crack'd drachm! Cushions, leaden spoons,\nIrons of a doit, doublets that hangmen would\nBury with those that wore them, these base slaves,\nEre yet the fight be done, pack up: down with them!\nAnd hark, what noise the general makes! To him!\nThere is the man of my soul's hate, Aufidius,\nPiercing our Romans: then, valiant Titus, take\nConvenient numbers to make good the city;\nWhilst I, with those that have the spirit, will haste\nTo help Cominius.\n\nLARTIUS:\nWorthy sir, thou bleed'st;\nThy exercise hath been too violent for\nA second course of fight.\n\nMARCIUS:\nSir, praise me not;\nMy work hath yet not warm'd me: fare you well:\nThe blood I drop is rather physical\nThan dangerous to me: to Aufidius thus\nI will appear, and fight.\n\nLARTIUS:\nNow the fair goddess, Fortune,\nFall deep in love with thee; and her great charms\nMisguide thy opposers' swords! Bold gentleman,\nProsperity be thy page!\n\nMARCIUS:\nThy friend no less\nThan those she placeth highest! So, farewell.\n\nLARTIUS:\nThou worthiest Marcius!\nGo, sound thy trumpet in the market-place;\nCall thither all the officers o' the town,\nWhere they shall know our mind: away!\n\nCOMINIUS:\nBreathe you, my friends: well fought;\nwe are come off\nLike Romans, neither foolish in our stands,\nNor cowardly in retire: believe me, sirs,\nWe shall be charged again. Whiles we have struck,\nBy interims and conveying gusts we have heard\nThe charges of our friends. Ye Roman gods!\nLead their successes as we wish our own,\nThat both our powers, with smiling\nfronts encountering,\nMay give you thankful sacrifice.\nThy news?\n\nMessenger:\nThe citizens of Corioli have issued,\nAnd given to Lartius and to Marcius battle:\nI saw our party to their trenches driven,\nAnd then I came away.\n\nCOMINIUS:\nThough thou speak'st truth,\nMethinks thou speak'st not well.\nHow long is't since?\n\nMessenger:\nAbove an hour, my lord.\n\nCOMINIUS:\n'Tis not a mile; briefly we heard their drums:\nHow couldst thou in a mile confound an hour,\nAnd bring thy news so late?\n\nMessenger:\nSpies of the Volsces\nHeld me in chase, that I was forced to wheel\nThree or four miles about, else had I, sir,\nHalf an hour since brought my report.\n\nCOMINIUS:\nWho's yonder,\nThat does appear as he were flay'd? O gods\nHe has the stamp of Marcius; and I have\nBefore-time seen him thus.\n\nMARCIUS:\n\nCOMINIUS:\nThe shepherd knows not thunder from a tabour\nMore than I know the sound of Marcius' tongue\nFrom every meaner man.\n\nMARCIUS:\nCome I too late?\n\nCOMINIUS:\nAy, if you come not in the blood of others,\nBut mantled in your own.\n\nMARCIUS:\nO, let me clip ye\nIn arms as sound as when I woo'd, in heart\nAs merry as when our nuptial day was done,\nAnd tapers burn'd to bedward!\n\nCOMINIUS:\nFlower of warriors,\nHow is it with Titus Lartius?\n\nMARCIUS:\nAs with a man busied about decrees:\nCondemning some to death, and some to exile;\nRansoming him, or pitying, threatening the other;\nHolding Corioli in the name of Rome,\nEven like a fawning greyhound in the leash,\nTo let him slip at will.\n\nCOMINIUS:\nWhere is that slave\nWhich told me they had beat you to your trenches?\nWhere is he? call him hither.\n\nMARCIUS:\nLet him alone;\nHe did inform the truth: but for our gentlemen,\nThe common file--a plague! tribunes for them!--\nThe mouse ne'er shunn'd the cat as they did budge\nFrom rascals worse than they.\n\nCOMINIUS:\nBut how prevail'd you?\n\nMARCIUS:\nWill the time serve to tell? I do not think.\nWhere is the enemy? are you lords o' the field?\nIf not, why cease you till you are so?\n\nCOMINIUS:\nMarcius,\nWe have at disadvantage fought and did\nRetire to win our purpose.\n\nMARCIUS:\nHow lies their battle? know you on which side\nThey have placed their men of trust?\n\nCOMINIUS:\nAs I guess, Marcius,\nTheir bands i' the vaward are the Antiates,\nOf their best trust; o'er them Aufidius,\nTheir very heart of hope.\n\nMARCIUS:\nI do beseech you,\nBy all the battles wherein we have fought,\nBy the blood we have shed together, by the vows\nWe have made to endure friends, that you directly\nSet me against Aufidius and his Antiates;\nAnd that you not delay the present, but,\nFilling the air with swords advanced and darts,\nWe prove this very hour.\n\nCOMINIUS:\nThough I could wish\nYou were conducted to a gentle bath\nAnd balms applied to, you, yet dare I never\nDeny your asking: take your choice of those\nThat best can aid your action.\n\nMARCIUS:\nThose are they\nThat most are willing. If any such be here--\nAs it were sin to doubt--that love this painting\nWherein you see me smear'd; if any fear\nLesser his person than an ill report;\nIf any think brave death outweighs bad life\nAnd that his country's dearer than himself;\nLet him alone, or so many so minded,\nWave thus, to express his disposition,\nAnd follow Marcius.\nO, me alone! make you a sword of me?\nIf these shows be not outward, which of you\nBut is four Volsces? none of you but is\nAble to bear against the great Aufidius\nA shield as hard as his. A certain number,\nThough thanks to all, must I select\nfrom all: the rest\nShall bear the business in some other fight,\nAs cause will be obey'd. Please you to march;\nAnd four shall quickly draw out my command,\nWhich men are best inclined.\n\nCOMINIUS:\nMarch on, my fellows:\nMake good this ostentation, and you shall\nDivide in all with us.\n\nLARTIUS:\nSo, let the ports be guarded: keep your duties,\nAs I have set them down. If I do send, dispatch\nThose centuries to our aid: the rest will serve\nFor a short holding: if we lose the field,\nWe cannot keep the town.\n\nLieutenant:\nFear not our care, sir.\n\nLARTIUS:\nHence, and shut your gates upon's.\nOur guider, come; to the Roman camp conduct us.\n\nMARCIUS:\nI'll fight with none but thee; for I do hate thee\nWorse than a promise-breaker.\n\nAUFIDIUS:\nWe hate alike:\nNot Afric owns a serpent I abhor\nMore than thy fame and envy. Fix thy foot.\n\nMARCIUS:\nLet the first budger die the other's slave,\nAnd the gods doom him after!\n\nAUFIDIUS:\nIf I fly, Marcius,\nHolloa me like a hare.\n\nMARCIUS:\nWithin these three hours, Tullus,\nAlone I fought in your Corioli walls,\nAnd made what work I pleased: 'tis not my blood\nWherein thou seest me mask'd; for thy revenge\nWrench up thy power to the highest.\n\nAUFIDIUS:\nWert thou the Hector\nThat was the whip of your bragg'd progeny,\nThou shouldst not scape me here.\nOfficious, and not valiant, you have shamed me\nIn your condemned seconds.\n\nCOMINIUS:\nIf I should tell thee o'er this thy day's work,\nThou'ldst not believe thy deeds: but I'll report it\nWhere senators shall mingle tears with smiles,\nWhere great patricians shall attend and shrug,\nI' the end admire, where ladies shall be frighted,\nAnd, gladly quaked, hear more; where the\ndull tribunes,\nThat, with the fusty plebeians, hate thine honours,\nShall say against their hearts 'We thank the gods\nOur Rome hath such a soldier.'\nYet camest thou to a morsel of this feast,\nHaving fully dined before.";
+
+  /* A token is a word (letters and apostrophes) or one punctuation mark. */
+  function tokenise(text){ return text.toLowerCase().match(/[a-z']+|[.,;:?!]/g)||[]; }
+  var MARK=/^[.,;:?!]$/;
+
+  /* The counting table. table.get("the cat") = {next:{sat:5,...}, total:n} */
+  function build(tokens,k){
+    var table=new Map();
+    for(var i=k;i<tokens.length;i++){
+      var key=tokens.slice(i-k,i).join(' ');
+      var row=table.get(key);
+      if(!row){ row={next:new Map(),total:0}; table.set(key,row); }
+      row.next.set(tokens[i],(row.next.get(tokens[i])||0)+1);
+      row.total++;
+    }
+    return table;
+  }
+  function sorted(row){
+    var list=[]; row.next.forEach(function(c,w){ list.push([w,c]); });
+    list.sort(function(a,b){ return b[1]-a[1] || (a[0]<b[0]?-1:1); });
+    return list;
+  }
+  function roll(list,total){
+    var r=Math.random()*total, acc=0;
+    for(var i=0;i<list.length;i++){ acc+=list[i][1]; if(r<acc) return list[i][0]; }
+    return list[list.length-1][0];
+  }
+  function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function show(tok){ return tok==='.'?'. (full stop)':tok; }
+  function plural(n,one,many){ return n+' '+(n===1?one:many); }
+
+  /* tokens -> readable text: no space before a mark */
+  function join(parts){
+    var html='';
+    parts.forEach(function(p,i){
+      var t=esc(p.t);
+      if(p.cls) t='<span class="'+p.cls+'">'+t+'</span>';
+      html+=(i>0 && !MARK.test(p.t)?' ':'')+t;
+    });
+    return html;
+  }
+
+  /* draw one row of the table as bars: at most `limit` rows, the rest summarised */
+  function drawBars(el,moreEl,list,total,picked,limit){
+    el.innerHTML='';
+    var top=list[0]?list[0][1]:1, shown=list.slice(0,limit);
+    if(picked && !shown.some(function(x){return x[0]===picked;})){
+      var extra=list.filter(function(x){return x[0]===picked;})[0];
+      if(extra) shown=shown.slice(0,limit-1).concat([extra]);
+    }
+    shown.forEach(function(x){
+      var d=document.createElement('div');
+      d.className='brow'+(x[0]===picked?' pick':'');
+      d.innerHTML='<span class="w">'+esc(show(x[0]))+'</span>'+
+        '<span><span class="t" style="display:block;width:'+(x[1]/top*100).toFixed(1)+'%"></span></span>'+
+        '<span class="v">'+x[1]+' · '+Math.round(x[1]/total*100)+'%</span>';
+      el.appendChild(d);
+    });
+    var rest=list.length-shown.length;
+    moreEl.textContent=rest>0 ? 'and '+plural(rest,'other word','other words')+' with smaller tallies' : '';
+  }
+
+  /* ---------- state shared by the panels ---------- */
+  var worldBox=document.getElementById('world');
+  var ownBox=document.getElementById('own-text');
+  var texts={world:[],shake:tokenise(SHAKE),own:[]};
+  var tables={};                                   /* tables['world:2'] etc, built when asked for */
+  function table(name,k){
+    var id=name+':'+k;
+    if(!tables[id]) tables[id]=build(texts[name],k);
+    return tables[id];
+  }
+  function forget(name){ Object.keys(tables).forEach(function(id){ if(id.indexOf(name+':')===0) delete tables[id]; }); }
+
+  /* ---------- step 2: the counting table ---------- */
+  var counterWord='the';
+  function drawCounter(){
+    var t=table('world',1), toks=texts.world;
+    var freq=new Map();
+    toks.forEach(function(w){ freq.set(w,(freq.get(w)||0)+1); });
+    var words=[]; freq.forEach(function(c,w){ if(t.get(w)) words.push([w,c]); });
+    words.sort(function(a,b){ return b[1]-a[1] || (a[0]<b[0]?-1:1); });
+    document.getElementById('counter-size').textContent=
+      plural(toks.length,'token','tokens')+' read · '+plural(freq.size,'different one','different ones');
+    if(!t.get(counterWord)) counterWord=words.length?words[0][0]:'';
+    var chips=document.getElementById('counter-chips');
+    chips.innerHTML='';
+    words.slice(0,28).forEach(function(x){
+      var b=document.createElement('button');
+      b.type='button'; b.textContent=x[0]==='.'?'. full stop':x[0];
+      b.setAttribute('aria-pressed',x[0]===counterWord?'true':'false');
+      b.addEventListener('click',function(){ counterWord=x[0]; drawCounter(); });
+      chips.appendChild(b);
+    });
+    var say=document.getElementById('counter-say'), bars=document.getElementById('counter-bars'),
+        more=document.getElementById('counter-more');
+    var row=t.get(counterWord);
+    if(!row){ say.textContent='There is no text to count yet. Type some into the box in step 1.'; bars.innerHTML=''; more.textContent=''; return; }
+    var list=sorted(row);
+    say.innerHTML='<b>'+esc(show(counterWord))+'</b> was followed by something '+plural(row.total,'time','times')+
+      ', by '+plural(list.length,'different token','different tokens')+'. Tally · share:';
+    drawBars(bars,more,list,row.total,null,10);
+  }
+
+  /* ---------- a writer (used by step 3 and step 4) ---------- */
+  function Writer(ids,opts){
+    var out=document.getElementById(ids.out), say=document.getElementById(ids.say),
+        bars=document.getElementById(ids.bars), more=document.getElementById(ids.more);
+    var parts=[], lastPick=null, lastList=null, lastTotal=0, stuck='';
+    var self=this;
+    this.reset=function(start){
+      parts=tokenise(start).map(function(t){ return {t:t,cls:'given'}; });
+      lastPick=null; lastList=null; stuck=''; self.draw();
+    };
+    this.step=function(){
+      var k=opts.k(), name=opts.text(), t=table(name,k);
+      stuck='';
+      if(texts[name].length<=k){ stuck='There is no text to learn from yet.'; return false; }
+      if(parts.length<k){
+        stuck='It needs '+plural(k,'word','words')+' to start from. Type more into "Start with".'; return false;
+      }
+      var key=parts.slice(parts.length-k).map(function(p){return p.t;}).join(' ');
+      var row=t.get(key);
+      if(!row){
+        var all=texts[name];
+        stuck = all.slice(all.length-k).join(' ')===key && parts[parts.length-1].cls!=='given'
+          ? 'It has reached the very last words of the text, and nothing came after them. Press Start again.'
+          : 'It has never met "'+key+'". That row of its table is empty, so it has nothing to go on.';
+        lastList=null; return false;
+      }
+      var list=sorted(row);
+      var pick=opts.mode()==='greedy' ? list[0][0] : roll(list,row.total);
+      parts.push({t:pick,cls:list.length===1?'forced':''});
+      lastPick=pick; lastList=list; lastTotal=row.total; self.lastKey=key;
+      return true;
+    };
+    this.many=function(n){ for(var i=0;i<n;i++){ if(!self.step()) break; } self.draw(); };
+    this.draw=function(){
+      var view=parts.slice(-90).map(function(p,i,a){
+        return {t:p.t,cls:(p.cls==='forced'?'forced':'')+(i===a.length-1&&lastPick?' cur':'')};
+      });
+      out.innerHTML=(parts.length>90?'… ':'')+join(view)||'&nbsp;';
+      if(stuck){
+        say.innerHTML='<span class="alarm2">'+esc(stuck)+'</span>'; bars.innerHTML=''; more.textContent='';
+      }else if(lastList){
+        say.innerHTML='After <b>'+esc(self.lastKey)+'</b> it chose <b>'+esc(show(lastPick))+'</b> from this row:';
+        drawBars(bars,more,lastList,lastTotal,lastPick,8);
+      }else{
+        say.textContent='Press Next word.'; bars.innerHTML=''; more.textContent='';
+      }
+      if(opts.after) opts.after({
+        written:parts.filter(function(p){return p.cls!=='given';}).length,
+        forced:parts.filter(function(p){return p.cls==='forced';}).length,
+        seen:(!stuck&&lastList)?lastTotal:null, stuck:!!stuck
+      });
+    };
+  }
+
+  /* ---------- step 3 ---------- */
+  var mode3='greedy';
+  var w3=new Writer({out:'writer-out',say:'writer-say',bars:'writer-bars',more:'writer-more'},
+    {k:function(){return 1;},text:function(){return 'world';},mode:function(){return mode3;}});
+  document.getElementById('writer-next').addEventListener('click',function(){ w3.many(1); });
+  document.getElementById('writer-many').addEventListener('click',function(){ w3.many(15); });
+  document.getElementById('writer-reset').addEventListener('click',function(){ w3.reset('the'); });
+  [].slice.call(document.querySelectorAll('#writer [data-mode]')).forEach(function(b,i,all){
+    b.addEventListener('click',function(){
+      all.forEach(function(o){o.setAttribute('aria-pressed','false');});
+      b.setAttribute('aria-pressed','true'); mode3=b.getAttribute('data-mode');
+    });
+  });
+
+  /* ---------- step 4 ---------- */
+  var text4='world', k4=1;
+  var startBox=document.getElementById('deep-start');
+  var STARTS={world:'the dog sat',shake:'you are all',own:''};
+  var w4=new Writer({out:'deep-out',say:'deep-say',bars:'deep-bars',more:'deep-more'},
+    {k:function(){return k4;},text:function(){return text4;},mode:function(){return 'dice';},
+     after:function(s){
+       document.getElementById('deep-n').textContent=s.written;
+       document.getElementById('deep-forced').textContent=s.forced;
+       document.getElementById('deep-seen').textContent=s.stuck?'never':(s.seen===null?'–':(s.seen===1?'once':s.seen+' times'));
+     }});
+  function press(sel,attr,value){
+    [].slice.call(document.querySelectorAll(sel)).forEach(function(o){
+      o.setAttribute('aria-pressed',o.getAttribute(attr)===String(value)?'true':'false');
+    });
+  }
+  function ownStart(){
+    var t=texts.own; return t.length>3 ? t.slice(0,3).join(' ') : '';
+  }
+  document.getElementById('deep-next').addEventListener('click',function(){ w4.many(1); });
+  document.getElementById('deep-many').addEventListener('click',function(){ w4.many(15); });
+  document.getElementById('deep-reset').addEventListener('click',function(){ w4.reset(startBox.value); });
+  startBox.addEventListener('keydown',function(e){ if(e.key==='Enter'){ w4.reset(startBox.value); } });
+  startBox.addEventListener('change',function(){ w4.reset(startBox.value); });
+  [].slice.call(document.querySelectorAll('#deep [data-k]')).forEach(function(b){
+    b.addEventListener('click',function(){ k4=+b.getAttribute('data-k'); press('#deep [data-k]','data-k',k4); w4.reset(startBox.value); });
+  });
+  [].slice.call(document.querySelectorAll('#deep [data-text]')).forEach(function(b){
+    b.addEventListener('click',function(){
+      text4=b.getAttribute('data-text'); press('#deep [data-text]','data-text',text4);
+      document.getElementById('deep-own').className='own'+(text4==='own'?' on':'');
+      startBox.value=text4==='own'?ownStart():STARTS[text4];
+      w4.reset(startBox.value);
+      if(text4==='own') ownBox.focus();
+    });
+  });
+
+  /* ---------- step 5: how much of the hidden tenth had it met? ---------- */
+  var text5='shake';
+  function drawMet(){
+    var toks=texts[text5], bars=document.getElementById('met-bars'), say=document.getElementById('met-say');
+    bars.innerHTML='';
+    if(toks.length<100){
+      say.textContent=text5==='own' ? 'Paste at least a hundred words into "Your own" in step 4 first.'
+        : 'This text is too short to hide a tenth of. Put more into the box in step 1.';
+      return;
+    }
+    var cut=Math.floor(toks.length*0.9), train=toks.slice(0,cut), hidden=toks.slice(cut);
+    var shares=[];
+    [1,2,3,4].forEach(function(k){
+      var seen=new Set(), met=0, n=0;
+      for(var i=k;i<=train.length-1;i++) seen.add(train.slice(i-k,i).join(' '));
+      for(var j=k;j<hidden.length;j++){ n++; if(seen.has(hidden.slice(j-k,j).join(' '))) met++; }
+      var share=n?met/n:0; shares.push(share);
+      var d=document.createElement('div'); d.className='brow';
+      d.innerHTML='<span class="w">looks back '+k+'</span>'+
+        '<span><span class="t" style="display:block;width:'+(share*100).toFixed(1)+'%"></span></span>'+
+        '<span class="v">'+Math.round(share*100)+'%</span>';
+      bars.appendChild(d);
+    });
+    say.innerHTML='Built from '+train.length.toLocaleString('en-GB')+' tokens, tested on the '+
+      hidden.length.toLocaleString('en-GB')+' it never saw. Looking back one word, it had met the situation <b>'+
+      Math.round(shares[0]*100)+'%</b> of the time. Looking back three, <b>'+Math.round(shares[2]*100)+
+      '%</b>. For everything else it has an empty row.';
+  }
+  [].slice.call(document.querySelectorAll('#met [data-text]')).forEach(function(b){
+    b.addEventListener('click',function(){ text5=b.getAttribute('data-text'); press('#met [data-text]','data-text',text5); drawMet(); });
+  });
+
+  /* ---------- the editable texts ---------- */
+  function readWorld(){
+    texts.world=tokenise(worldBox.value); forget('world');
+    var changed=worldBox.value!==WORLD;
+    document.getElementById('world-note').textContent=changed?'You have changed the text. The panels now use yours.':'';
+    drawCounter(); w3.reset('the');
+    if(text4==='world') w4.reset(startBox.value);
+    if(text5==='world') drawMet();
+  }
+  var worldTimer=null;
+  worldBox.addEventListener('input',function(){ clearTimeout(worldTimer); worldTimer=setTimeout(readWorld,250); });
+  document.getElementById('world-reset').addEventListener('click',function(){ worldBox.value=WORLD; readWorld(); });
+  var ownTimer=null;
+  ownBox.addEventListener('input',function(){
+    clearTimeout(ownTimer);
+    ownTimer=setTimeout(function(){
+      texts.own=tokenise(ownBox.value); forget('own');
+      if(text4==='own'){ startBox.value=ownStart(); w4.reset(startBox.value); }
+      if(text5==='own') drawMet();
+    },300);
+  });
+
+  worldBox.value=WORLD;
+  readWorld();
+  w4.reset(startBox.value);
+  drawMet();
+})();
+</script>
+
+</body>
+</html>
