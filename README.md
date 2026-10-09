@@ -13,7 +13,7 @@ I'm Iain Hoggan, a network technician on the Wirral. I build things on hardware 
 **Tutorials: learn by doing** (every step asks you to predict, try it, and check)
 - *AI:* [S.M.A.R.T.](https://ihoggan.github.io/neural_playground.html) → [Guess the next word](https://ihoggan.github.io/next-word.html): what an AI chatbot actually does, built from nothing but counting.
 - *Linux:* [Meet the terminal](https://ihoggan.github.io/terminal.html) → [Securing Ubuntu](https://ihoggan.github.io/secure-ubuntu.html) → [How networks work](https://ihoggan.github.io/networking.html)
-- *Hardware:* [Electronics: first light](https://ihoggan.github.io/electronics-1.html) → [Hand the switch to a computer](https://ihoggan.github.io/pi-gpio.html) (Raspberry Pi GPIO)
+- *Hardware:* [Electronics: first light](https://ihoggan.github.io/electronics-1.html) → [Hand the switch to a computer](https://ihoggan.github.io/pi-gpio.html) (Raspberry Pi GPIO) → [A Wi-Fi clock on a stick](https://ihoggan.github.io/esp32-clock.html) (ESP32, MicroPython)
 - *Radio:* [See what's in the air](https://ihoggan.github.io/sdr.html) (software-defined radio, with the UK rules)
 - *Build your own:* [Would you like a website like this?](https://ihoggan.github.io/website.html): from a new GitHub account to your own working site on GitHub Pages, with a page builder.
 

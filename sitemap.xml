@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://ihoggan.github.io/</loc>
-    <lastmod>2026-10-07</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
@@ -42,7 +42,12 @@
   </url>
   <url>
     <loc>https://ihoggan.github.io/pi-gpio.html</loc>
-    <lastmod>2026-09-28</lastmod>
+    <lastmod>2026-10-09</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ihoggan.github.io/esp32-clock.html</loc>
+    <lastmod>2026-10-09</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
@@ -57,7 +62,7 @@
   </url>
   <url>
     <loc>https://ihoggan.github.io/portfolio.html</loc>
-    <lastmod>2026-09-28</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
