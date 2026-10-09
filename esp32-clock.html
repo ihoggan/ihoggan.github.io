@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Wi-Fi clock on a stick: MicroPython on the ESP32-S3-GEEK — Iain Hoggan</title>
+<meta name="description" content="Put Python on a USB-stick microcontroller, light its built-in screen, and build a clock that sets itself over Wi-Fi and shows the weather outside. Nothing to solder. With a seven-segment digit you can build in your browser.">
+<link rel="canonical" href="https://ihoggan.github.io/esp32-clock.html">
+<meta property="og:site_name" content="Iain Hoggan">
+<meta property="og:locale" content="en_GB">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ihoggan.github.io/esp32-clock.html">
+<meta property="og:title" content="A Wi-Fi clock on a stick">
+<meta property="og:description" content="Python on a computer the size of a USB stick. Light its screen, then build a clock that sets itself and shows the weather outside.">
+<meta property="og:image" content="https://ihoggan.github.io/images/og-esp32-clock.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A Wi-Fi clock on a stick: MicroPython on the ESP32-S3-GEEK.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"A Wi-Fi clock on a stick","description":"Python on a computer the size of a USB stick. Light its screen, then build a clock that sets itself and shows the weather outside.","image":"https://ihoggan.github.io/images/og-esp32-clock.png","datePublished":"2026-10-09","dateModified":"2026-10-09","inLanguage":"en-GB","author":{"@type":"Person","name":"Iain Hoggan","url":"https://ihoggan.github.io/about.html"},"mainEntityOfPage":"https://ihoggan.github.io/esp32-clock.html"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+main.wrap{padding-top:52px;padding-bottom:40px}
+.standfirst{font-size:1.12rem;color:var(--ink-2);max-width:34em}
+.standfirst strong{color:var(--ink);font-weight:600}
+main section p{max-width:38em}
+main h2{max-width:18em;margin-bottom:14px}
+main h3{margin:26px 0 10px}
+main ul,main ol{max-width:36em;margin:0 0 16px 1.2em}
+main li{margin-bottom:6px}
+pre{
+  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen));
+  border:1px solid #060B0E;border-radius:3px;box-shadow:inset 0 3px 12px rgba(0,0,0,.55);
+  color:#CFE3DA;font-family:var(--mono);font-size:13px;line-height:1.55;
+  padding:14px 16px;margin:18px 0 22px;max-width:40em;overflow-x:auto;white-space:pre;
+}
+pre .dim{color:#7F968D}
+pre .pr{color:var(--trace)}
+pre .kw{color:#7FC3E8}
+pre .bad{color:#E0603F}
+.warn{border-left:3px solid var(--alarm);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.warn .tag{display:block;margin-bottom:4px;color:var(--alarm)}
+.warn p{margin:0}
+.warn p+p{margin-top:8px}
+.takeaways{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:26px}
+.take{background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);border-radius:4px;padding:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.take h3{font-size:1rem;margin:0 0 8px}
+.take p{font-size:.94rem;color:var(--ink-2);margin:0}
+.ui{font-family:var(--mono);font-size:.84em;white-space:nowrap;
+  background:linear-gradient(180deg,#fff,var(--engrave));border:1px solid var(--bezel);
+  border-bottom-width:2px;border-radius:3px;padding:1px 6px;color:var(--ink)}
+.predict{border-left:3px solid var(--lamp);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.predict .tag{display:block;margin-bottom:4px;color:var(--lamp)}
+.predict p{margin:0}
+.predict p+p{margin-top:8px}
+a.url{font-family:var(--mono);font-size:.84em;overflow-wrap:anywhere}
+details.answer{max-width:38em;margin:10px 0 18px}
+details.answer summary{cursor:pointer;font:600 11px/1.4 var(--mono);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-2)}
+details.answer p{margin-top:8px}
+details.answer pre{margin:10px 0}
+.check{display:flex;gap:14px;align-items:flex-start;max-width:38em;margin:20px 0 6px;
+  border:1px solid var(--bezel);border-radius:4px;padding:14px 16px;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.check .tag{display:block;margin-bottom:4px;color:#2F8A63}
+.check p{margin:0;font-size:.97rem}
+.done{flex:none;margin-left:auto;align-self:center;cursor:pointer;
+  font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;
+  padding:9px 12px;border-radius:3px;border:1px solid var(--bezel);border-bottom-width:2px;
+  background:linear-gradient(180deg,#fff,var(--engrave));color:var(--ink-2)}
+.done[aria-pressed="true"]{background:linear-gradient(180deg,#6FD6AA,var(--trace));border-color:#2F8A63;color:#0B2A1E}
+.done:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.progress{margin-top:26px;max-width:30em}
+.progress .bar{height:10px;border-radius:5px;background:var(--screen);border:1px solid #060B0E;
+  box-shadow:inset 0 2px 6px rgba(0,0,0,.6);overflow:hidden}
+.progress .fill{height:100%;width:0;background:linear-gradient(90deg,#2F8A63,var(--trace));
+  box-shadow:0 0 10px rgba(87,199,154,.7);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.progress .read{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:8px}
+.wiring{max-width:38em;margin:14px 0 18px;border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))}
+.wiring div{display:grid;grid-template-columns:9em 1fr;gap:12px;padding:9px 14px;border-bottom:1px solid var(--rule);font-size:.97rem}
+.wiring div:last-child{border-bottom:0}
+.wiring b{font-family:var(--mono);font-size:.86em}
+.read-next{border-top:1px solid var(--rule);padding:44px 0 8px}
+.read-next .card{margin-top:14px;max-width:640px}
+
+/* photos */
+figure.shot{max-width:38em;margin:22px 0}
+figure.shot img{display:block;width:100%;height:auto;border:1px solid var(--bezel);border-radius:4px;
+  box-shadow:0 1px 2px rgba(23,32,43,.14)}
+figure.shot figcaption{margin-top:8px;font:12px/1.55 var(--mono);color:var(--ink-2)}
+
+/* seven-segment builder */
+.segs{max-width:40em;margin:22px 0 10px}
+.segs .body{display:grid;grid-template-columns:auto minmax(0,1fr)}
+.segs .stage{padding:22px 26px;border-right:1px solid #060B0E;display:grid;place-items:center}
+.digit{position:relative;width:132px;height:180px}
+.seg{position:absolute;padding:0;border:1px solid #4A3410;border-radius:3px;background:#2C1C00;cursor:pointer;
+  font:600 11px/1 var(--mono);color:#C99A45}
+.seg[aria-pressed="true"]{background:#FFB000;border-color:#FFB000;color:#3A2600;box-shadow:0 0 12px rgba(255,176,0,.55)}
+.seg:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.seg.h{left:24px;width:84px;height:24px}
+.seg.v{width:24px;height:54px}
+.seg.a{top:0}.seg.g{top:78px}.seg.d{top:156px}
+.seg.f{left:0;top:24px}.seg.b{left:108px;top:24px}
+.seg.e{left:0;top:102px}.seg.c{left:108px;top:102px}
+.segs .info{padding:16px 18px;font:13px/1.6 var(--mono);color:#A9BFB5;min-width:0}
+.segs .info h3{font-family:var(--display);color:#E6F0EC;font-size:1.3rem;margin:0 0 4px;text-transform:uppercase}
+.segs .info .sub{color:#7F968D;margin-bottom:10px;min-height:1.6em}
+.segs .keys{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;padding-top:12px;border-top:1px solid rgba(87,199,154,.18)}
+.segs .keys button{font:600 12px/1 var(--mono);padding:8px 0;width:34px;border-radius:3px;
+  border:1px solid #2B3B44;background:#16232B;color:#A9BFB5;cursor:pointer}
+.segs .keys button.wide{width:auto;padding:8px 12px;letter-spacing:.1em;text-transform:uppercase;font-size:11px}
+.segs .keys button:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+
+/* clock preview */
+.face{max-width:480px;margin:22px 0 8px;padding:14px}
+.face canvas{display:block;width:100%;height:auto;aspect-ratio:240/135;image-rendering:pixelated;background:#000;border-radius:2px}
+.face-note{max-width:38em;font:12px/1.55 var(--mono);color:var(--ink-2);margin-bottom:18px}
+
+@media(max-width:600px){
+  .wiring div{grid-template-columns:1fr;gap:2px}
+  .segs .body{grid-template-columns:1fr}
+  .segs .stage{border-right:0;border-bottom:1px solid #060B0E}
+}
+</style>
+</head>
+<body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html" aria-label="Home">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap col">
+    <p class="tag">Tutorial · ESP32 · MicroPython · After Raspberry Pi GPIO</p>
+    <h1>A Wi-Fi clock on a stick</h1>
+    <p class="standfirst">In <a href="pi-gpio.html">the Pi guide</a> a whole computer switched one LED. This time the computer is the size of a USB stick, has no operating system, and comes with its own colour screen. You'll put Python on it, light the screen, and build <strong>a clock that sets itself and shows the weather outside</strong>, with nothing to solder.</p>
+    <div class="spec">
+      <div><b>7</b><span>short steps</span></div>
+      <div><b>0</b><span>wires to solder</span></div>
+      <div><b>240 × 135</b><span>pixels to fill</span></div>
+      <div><b>~1 hr</b><span>first time</span></div>
+    </div>
+    <div class="progress" aria-live="polite">
+      <div class="bar"><div class="fill" id="fill"></div></div>
+      <div class="read"><span class="tag" id="progress-text">0 of 7 steps done</span><span class="tag">Tick each check as you pass it</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap col">
+
+<section>
+  <p class="tag eyebrow">Before you start</p>
+  <h2>What you need</h2>
+  <ul>
+    <li>A <strong>Waveshare ESP32-S3-GEEK</strong>. It looks like a USB memory stick, but inside is an ESP32-S3 microcontroller with Wi-Fi and a 1.14 inch colour screen. Other ESP32 boards with the same kind of screen will work with different pin numbers.</li>
+    <li>A computer running Linux with a spare USB port. I used my Ubuntu desktop, and every command here is for Linux. <a href="terminal.html">Meet the terminal</a> covers the basics if the terminal is new to you.</li>
+    <li>A <strong>2.4GHz</strong> Wi-Fi network and its password. The ESP32 can't see 5GHz networks. Most home routers offer both.</li>
+    <li>For the last step only: any USB power source, such as a phone charger or a power bank.</li>
+  </ul>
+  <p>A <strong>microcontroller</strong> is a computer with almost everything taken away. It has no desktop, no files to browse and no operating system. It runs one program, starting the moment it gets power. That makes it cheap, small, and very good at doing one job for years.</p>
+  <p>All the code for this guide is in <a href="https://github.com/ihoggan/geek">my geek repository</a>, so nothing here needs typing out in full.</p>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 1</p>
+  <h2>Plug it in and ask the computer what it sees</h2>
+  <p>Plug the stick into a USB port. Mine lit up with two words: <strong>Flash Pass</strong>. That's the maker's test program, left on at the factory, and it tells you the board and screen survived the post.</p>
+  <figure class="shot">
+    <img src="images/esp32-flash-pass.jpg" width="1100" height="807" alt="The ESP32-S3-GEEK plugged into the front of a desktop PC, its small screen showing the words Flash Pass in green." loading="lazy">
+    <figcaption>Straight out of the packet. If yours shows this, the hardware works.</figcaption>
+  </figure>
+  <p>Now find out what your computer thinks has been plugged in. Open a terminal and list the USB devices:</p>
+<pre><span class="pr">$</span> lsusb</pre>
+  <div class="predict">
+    <span class="tag">Experiment</span>
+    <p>You'll get a list of several devices. Which one is the stick? Don't guess from the names. Unplug it, run <code>lsusb</code> again, and see which line has gone. Then plug it back in.</p>
+  </div>
+  <details class="answer">
+    <summary>What I got</summary>
+<pre>Bus 001 Device 007: ID 303a:1001 Espressif USB JTAG/serial debug unit</pre>
+    <p>Espressif make the ESP32 chip. The two numbers after <code>ID</code> are the maker and the product, and every USB device has a pair. Unplugging something and looking for the missing line works for any mystery device, not just this one.</p>
+  </details>
+  <p>Linux gives the stick a <strong>serial port</strong>, a simple two-way text connection, and shows it as a file. Find its name:</p>
+<pre><span class="pr">$</span> ls /dev/ttyACM*
+/dev/ttyACM0</pre>
+  <p>Everything you send to the stick from now on goes through <code>/dev/ttyACM0</code>. If yours has a different number on the end, use that wherever this guide says <code>ttyACM0</code>.</p>
+  <div class="check" data-step="1">
+    <div><span class="tag">Check</span><p>You can point to the stick's line in <code>lsusb</code>, and you know the name of its serial port.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 2</p>
+  <h2>Get the tools, and permission to use the port</h2>
+  <p>Two small programs do all the work. <strong>esptool</strong> writes new software onto the chip. <strong>mpremote</strong> talks to Python once it's running there. Make a folder for the project and install both into a virtual environment, so they stay separate from the rest of your system:</p>
+<pre><span class="pr">$</span> mkdir ~/geek &amp;&amp; cd ~/geek
+<span class="pr">$</span> python3 -m venv venv
+<span class="pr">$</span> source venv/bin/activate
+<span class="pr">$</span> pip install --upgrade pip
+<span class="pr">$</span> pip install esptool mpremote</pre>
+  <p>Your prompt now starts with <code>(venv)</code>. If you close the terminal and come back later, run <code>cd ~/geek</code> and the <code>source</code> line again before anything else.</p>
+  <p>The label on the stick says it has 16MB of flash memory. Ask the chip itself:</p>
+<pre><span class="pr">$</span> esptool --port /dev/ttyACM0 flash-id</pre>
+  <div class="predict">
+    <span class="tag">Read the error</span>
+    <p>On a fresh Ubuntu install this fails. Read what it says before scrolling on:</p>
+  </div>
+<pre><span class="bad">A fatal error occurred: Could not open /dev/ttyACM0, the port is busy or doesn't exist.</span>
+([Errno 13] could not open port /dev/ttyACM0: [Errno 13] Permission denied: '/dev/ttyACM0')
+
+Hint: Try to add user into dialout or uucp group.</pre>
+  <div class="predict">
+    <span class="tag">Work it out</span>
+    <p>The port exists, because you listed it in step 1. So the real problem is the second line. These two commands show who is allowed to use the port, and which groups you belong to. Is your name on the list?</p>
+  </div>
+<pre><span class="pr">$</span> ls -l /dev/ttyACM0
+<span class="pr">$</span> groups</pre>
+  <details class="answer">
+    <summary>What they show, and the fix</summary>
+    <p>The first command prints something like this:</p>
+<pre>crw-rw---- 1 root dialout 166, 0 Oct  9 10:46 /dev/ttyACM0</pre>
+    <p>The port belongs to the user <code>root</code> and the group <code>dialout</code>. Both can read and write it, and nobody else can do anything. Your <code>groups</code> list doesn't include <code>dialout</code>, so you're "nobody else". The name comes from dial-up modems, which used the same kind of port.</p>
+    <p>Add yourself to the group, then start a shell that knows about it:</p>
+<pre><span class="pr">$</span> sudo usermod -aG dialout $USER
+<span class="pr">$</span> newgrp dialout
+<span class="pr">$</span> cd ~/geek &amp;&amp; source venv/bin/activate</pre>
+    <p><code>newgrp</code> only fixes the terminal you're in. Log out and back in when it suits you, and every terminal will have it.</p>
+    <p>If <code>python3 -m venv</code> itself failed earlier, install the missing piece with <code>sudo apt install python3-venv</code> and run it again.</p>
+  </details>
+  <p>Run the <code>flash-id</code> command again. This time esptool connects, names the chip as an ESP32-S3, and prints a line starting <code>Detected flash size</code>.</p>
+  <div class="check" data-step="2">
+    <div><span class="tag">Check</span><p><code>flash-id</code> runs without an error, and the flash size it reports matches the label on your stick.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 3</p>
+  <h2>Swap the factory program for Python</h2>
+  <p>The program stored on a microcontroller is called its <strong>firmware</strong>. Right now that's the factory test. You're going to replace it with <strong>MicroPython</strong>, a small version of Python built to run on chips like this one.</p>
+  <p>Download the firmware for a generic ESP32-S3. This is the version I used. The <a href="https://micropython.org/download/ESP32_GENERIC_S3/">MicroPython download page</a> will have a newer one, and its file name goes in place of mine below.</p>
+<pre><span class="pr">$</span> wget https://micropython.org/resources/firmware/ESP32_GENERIC_S3-20260824-v1.29.0.bin</pre>
+  <p>Wipe the chip, then write the new firmware. The wipe took about 40 seconds on mine and the write about 8.</p>
+<pre><span class="pr">$</span> esptool --port /dev/ttyACM0 erase-flash
+<span class="pr">$</span> esptool --port /dev/ttyACM0 --baud 460800 write-flash 0 ESP32_GENERIC_S3-20260824-v1.29.0.bin</pre>
+  <p>The line to look for at the end is <code>Hash of data verified.</code> That's esptool reading back what it wrote and confirming it matches.</p>
+  <div class="predict">
+    <span class="tag">Think about it</span>
+    <p>The <code>0</code> in that command is where in the chip's memory the firmware starts. Guides for the older, original ESP32 tell you to use <code>0x1000</code> instead. Why would two chips from the same family want different numbers, and what happens if you use the wrong one?</p>
+  </div>
+  <details class="answer">
+    <summary>One answer</summary>
+    <p>When a chip powers up, a tiny program built into it looks at one fixed address for something to run. Where it looks was decided when the chip was designed: the original ESP32 looks at <code>0x1000</code>, and the S3 looks at <code>0</code>. Write the firmware anywhere else and the chip finds nothing there and never starts. You haven't broken anything, because you can always erase and write again, but it's a confusing ten minutes.</p>
+    <p>So a command copied from a guide for a different chip can be wrong even when it runs without errors. The download page for your exact chip is the place to check.</p>
+  </details>
+  <p>Unplug the stick and plug it back in. <strong>The screen stays dark.</strong> That's correct: MicroPython is running, but nothing has told it there's a screen. Talk to it:</p>
+<pre><span class="pr">$</span> mpremote
+<span class="pr">&gt;&gt;&gt;</span> print(2 + 2)
+4
+<span class="pr">&gt;&gt;&gt;</span> import sys
+<span class="pr">&gt;&gt;&gt;</span> sys.platform
+'esp32'</pre>
+  <p>That <code>&gt;&gt;&gt;</code> prompt is Python running on the stick, not on your computer. Each line you type travels down the USB cable, runs on the chip, and the answer comes back. Leave with <span class="ui">Ctrl</span> + <span class="ui">X</span>.</p>
+  <details class="answer">
+    <summary>esptool couldn't connect</summary>
+    <p>Unplug the stick, hold down its <strong>BOOT</strong> button, plug it in while still holding, then let go. That forces the chip to wait for new firmware. Run the erase again. After the write has finished, unplug and replug without touching the button.</p>
+  </details>
+  <div class="check" data-step="3">
+    <div><span class="tag">Check</span><p>You typed a sum at the <code>&gt;&gt;&gt;</code> prompt and the stick answered it.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 4</p>
+  <h2>First light on the screen</h2>
+  <p>The screen has its own small controller chip, an <strong>ST7789</strong>. The ESP32 talks to it over six connections. On a breadboard you'd be pushing in six jumper wires. Here they're tracks inside the stick, already joined up, so all you need is to know which pin does what:</p>
+  <div class="wiring">
+    <div><b>GPIO 12</b><span>Clock: ticks once for every bit sent</span></div>
+    <div><b>GPIO 11</b><span>Data: the bits themselves</span></div>
+    <div><b>GPIO 10</b><span>Chip select: "I'm talking to you"</span></div>
+    <div><b>GPIO 8</b><span>Data or command: is this a pixel, or an instruction?</span></div>
+    <div><b>GPIO 9</b><span>Reset</span></div>
+    <div><b>GPIO 7</b><span>Backlight: the lamp behind the screen</span></div>
+  </div>
+  <p>This way of talking, with a clock wire and a data wire, is called <strong>SPI</strong>. You'll meet it on most small screens and memory cards.</p>
+  <p>Knowing every instruction the ST7789 understands is a big job that someone has already done. Download Russ Hughes's driver and one of his fonts, then copy both onto the stick. In <code>mpremote</code>, a colon on its own means "the stick".</p>
+<pre><span class="pr">$</span> wget https://raw.githubusercontent.com/russhughes/st7789py_mpy/master/lib/st7789py.py
+<span class="pr">$</span> wget https://raw.githubusercontent.com/russhughes/st7789py_mpy/master/romfonts/vga2_bold_16x32.py
+<span class="pr">$</span> mpremote cp st7789py.py vga2_bold_16x32.py :
+<span class="pr">$</span> mpremote ls</pre>
+  <p>Now make <code>hello.py</code> with <code>nano hello.py</code>, type this in, and save with <span class="ui">Ctrl</span> + <span class="ui">O</span>, <span class="ui">Enter</span>, then <span class="ui">Ctrl</span> + <span class="ui">X</span>:</p>
+<pre><span class="kw">from</span> machine <span class="kw">import</span> Pin, SPI
+<span class="kw">import</span> st7789py <span class="kw">as</span> st7789
+<span class="kw">import</span> vga2_bold_16x32 <span class="kw">as</span> font
+
+spi = SPI(1, baudrate=40_000_000, sck=Pin(12), mosi=Pin(11), miso=None)
+
+tft = st7789.ST7789(
+    spi, 135, 240,
+    reset=Pin(9, Pin.OUT),
+    cs=Pin(10, Pin.OUT),
+    dc=Pin(8, Pin.OUT),
+    backlight=Pin(7, Pin.OUT),
+    rotation=1,                  <span class="dim"># 1 = on its side, 240 wide and 135 tall</span>
+)
+
+tft.fill(st7789.BLACK)
+tft.rect(0, 0, tft.width, tft.height, st7789.GREEN)
+tft.text(font, <span class="kw">"Hello there"</span>, 32, 30, st7789.YELLOW, st7789.BLACK)
+tft.text(font, <span class="kw">"ESP32-S3-GEEK"</span>, 16, 72, st7789.CYAN, st7789.BLACK)
+print(<span class="kw">"Screen is"</span>, tft.width, <span class="kw">"x"</span>, tft.height)</pre>
+<pre><span class="pr">$</span> mpremote run hello.py
+Screen is 240 x 135</pre>
+  <figure class="shot">
+    <img src="images/esp32-hello.jpg" width="1100" height="733" alt="The stick's screen showing a thin green border, a line of yellow text and a line of cyan text." loading="lazy">
+    <figcaption>Mine said hello to me. The thin green line round the very edge is doing a job.</figcaption>
+  </figure>
+  <div class="predict">
+    <span class="tag">Think about it</span>
+    <p>Why draw a rectangle round the outside edge of the screen at all? What would it tell you if the left side of that rectangle were missing?</p>
+  </div>
+  <details class="answer">
+    <summary>One answer</summary>
+    <p>The ST7789 chip is built to drive screens up to 240 by 320 pixels. This glass is only 135 by 240, so it shows a window in the middle of the chip's memory, and the driver has to know how far in that window starts. If it has the number wrong, your whole picture slides sideways and one edge of the border falls off the glass.</p>
+    <p>A border on all four sides proves the driver and the screen agree. It's the cheapest test there is, and it's worth drawing before anything else on any new screen.</p>
+  </details>
+  <h3>Make it yours</h3>
+  <p>Change the file, run it again, and see what happens. Try each of these before opening the answers:</p>
+  <ol>
+    <li>Turn the picture upside down, as if the stick were plugged into the other side of a laptop.</li>
+    <li>Each letter in this font is 16 pixels wide. Work out the longest line of text the screen can hold, then test one letter more.</li>
+    <li>Make the top line orange. Colours are built with <code>st7789.color565(red, green, blue)</code>, each from 0 to 255.</li>
+  </ol>
+  <details class="answer">
+    <summary>Answers</summary>
+    <p>1. Change <code>rotation=1</code> to <code>rotation=3</code>. Values 0 and 2 stand the picture on end.</p>
+    <p>2. 240 ÷ 16 = <strong>15 letters</strong>, starting from x = 0. The sixteenth doesn't wrap to the next line or raise an error. The driver quietly leaves it out. Remember that when a message is shorter on the screen than in your code.</p>
+    <p>3. Replace <code>st7789.YELLOW</code> with something like <code>st7789.color565(255, 140, 0)</code>: all the red, about half the green, no blue.</p>
+  </details>
+  <details class="answer">
+    <summary>The screen stays dark</summary>
+    <p>Check that <code>mpremote ls</code> lists both <code>st7789py.py</code> and <code>vga2_bold_16x32.py</code>. If the terminal shows <code>ImportError</code>, one of them isn't on the stick or its name is mistyped in your file. If the colours are swapped, with the yellow line showing as light blue, add <code>color_order=st7789.RGB</code> inside the <code>ST7789(...)</code> brackets.</p>
+  </details>
+  <div class="check" data-step="4">
+    <div><span class="tag">Check</span><p>The border shows on all four sides, and you've made at least two of the three changes work yourself.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 5</p>
+  <h2>Seven bars make every digit</h2>
+  <p>The biggest letters that font can draw are 32 pixels tall, and a clock wants digits you can read from across the room. So the clock draws its own, the way a bedside alarm clock does: seven bars, each one either lit or dark. The bars are lettered <code>a</code> to <code>g</code>.</p>
+  <div class="predict">
+    <span class="tag">Predict</span>
+    <p>Before touching the panel: which bars does a <strong>4</strong> need? Write the letters down, then tap the bars to build it. The panel tells you what you've made.</p>
+  </div>
+
+  <div class="segs well">
+    <div class="body">
+      <div class="stage">
+        <div class="digit" id="digit" role="group" aria-label="A seven-segment digit. Each bar is a button.">
+          <button type="button" class="seg h a" data-s="a" aria-pressed="false" aria-label="Bar a, top">a</button>
+          <button type="button" class="seg v f" data-s="f" aria-pressed="false" aria-label="Bar f, upper left">f</button>
+          <button type="button" class="seg v b" data-s="b" aria-pressed="false" aria-label="Bar b, upper right">b</button>
+          <button type="button" class="seg h g" data-s="g" aria-pressed="false" aria-label="Bar g, middle">g</button>
+          <button type="button" class="seg v e" data-s="e" aria-pressed="false" aria-label="Bar e, lower left">e</button>
+          <button type="button" class="seg v c" data-s="c" aria-pressed="false" aria-label="Bar c, lower right">c</button>
+          <button type="button" class="seg h d" data-s="d" aria-pressed="false" aria-label="Bar d, bottom">d</button>
+        </div>
+      </div>
+      <div class="info">
+        <div aria-live="polite">
+          <h3 id="segName">Nothing lit</h3>
+          <div class="sub" id="segList">Tap a bar to light it.</div>
+        </div>
+        <div>Show me a digit:</div>
+        <div class="keys" id="segKeys"></div>
+      </div>
+    </div>
+  </div>
+
+  <p>In the clock's code, that whole idea is one small table. Position 0 holds the bars for a 0, position 1 the bars for a 1, and so on:</p>
+<pre>SEGMENTS = (
+    <span class="kw">"abcdef"</span>,   <span class="dim"># 0</span>
+    <span class="kw">"bc"</span>,       <span class="dim"># 1</span>
+    <span class="kw">"abdeg"</span>,    <span class="dim"># 2</span>
+    <span class="kw">"abcdg"</span>,    <span class="dim"># 3</span>
+    <span class="kw">"bcfg"</span>,     <span class="dim"># 4</span>
+    <span class="kw">"acdfg"</span>,    <span class="dim"># 5</span>
+    <span class="kw">"acdefg"</span>,   <span class="dim"># 6</span>
+    <span class="kw">"abc"</span>,      <span class="dim"># 7</span>
+    <span class="kw">"abcdefg"</span>,  <span class="dim"># 8</span>
+    <span class="kw">"abcdfg"</span>,   <span class="dim"># 9</span>
+)</pre>
+  <p>Each bar is one filled rectangle, drawn with the same <code>fill_rect</code> the driver used for your border.</p>
+  <div class="predict">
+    <span class="tag">Use the panel</span>
+    <p>When the last digit changes from <strong>7</strong> to <strong>8</strong>, how many bars have to change? And from <strong>8</strong> to <strong>9</strong>? The clock only repaints the bars that are different. Why would it bother, when painting the whole digit again is simpler to write?</p>
+  </div>
+  <details class="answer">
+    <summary>One answer</summary>
+    <p>7 to 8 lights four more bars: <code>d</code>, <code>e</code>, <code>f</code> and <code>g</code>. 8 to 9 turns off just one, <code>e</code>.</p>
+    <p>Every pixel has to be sent down that one data wire, and the program doing the sending is Python on a small chip, so drawing is slow enough to see. Repaint all four digits every second and the display flickers. Repaint one bar and nobody notices it happened. Doing less work is usually the first thing to try when something on a small computer looks rough.</p>
+  </details>
+  <div class="check" data-step="5">
+    <div><span class="tag">Check</span><p>You built a 4 from memory, and you can say how many bars change between 7 and 8.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 6</p>
+  <h2>The clock: borrowed time and borrowed weather</h2>
+  <p>The stick has no battery-backed clock and no thermometer. Everything it shows comes from asking someone else over Wi-Fi. Download the clock program and the settings template from my repository:</p>
+<pre><span class="pr">$</span> wget https://raw.githubusercontent.com/ihoggan/geek/main/clock.py
+<span class="pr">$</span> wget https://raw.githubusercontent.com/ihoggan/geek/main/secrets.example.py</pre>
+  <h3>Your settings stay in their own file</h3>
+<pre><span class="pr">$</span> cp secrets.example.py secrets.py
+<span class="pr">$</span> nano secrets.py</pre>
+  <p>Put in your Wi-Fi name and password, keeping the quote marks, and your latitude and longitude. Search for your town's name with the words "latitude longitude" to find them. Two decimal places is plenty: that's within about a kilometre, and the weather doesn't change much across a kilometre.</p>
+  <div class="warn">
+    <span class="tag">Passwords and code don't share a file</span>
+    <p>The Wi-Fi password lives in <code>secrets.py</code> and nowhere else, so you can show anyone <code>clock.py</code>, or publish it, without handing over your network. If you keep this project in git, add <code>secrets.py</code> to <code>.gitignore</code> <strong>before</strong> your first commit. Once a password has been pushed to GitHub, it stays in the history even after you delete the file.</p>
+  </div>
+  <p>Copy your settings to the stick and run the clock:</p>
+<pre><span class="pr">$</span> mpremote cp secrets.py :
+<span class="pr">$</span> mpremote run clock.py
+weather: 15 C, code 3</pre>
+  <p>The screen says <strong>Joining Wi-Fi</strong>, then <strong>Setting clock</strong>, then this. Stop it with <span class="ui">Ctrl</span> + <span class="ui">C</span> when you've had a look.</p>
+
+  <div class="face well">
+    <canvas id="face" width="240" height="135" aria-label="A preview of the clock face: large amber seven-segment digits showing the current time, the date underneath in white, and a line of weather in cyan."></canvas>
+  </div>
+  <p class="face-note">Drawn by your browser from your computer's clock, using the same table of bars and the same sizes as the stick. The weather line is a sample.</p>
+
+  <h3>Where the time comes from</h3>
+  <p>The stick asks an internet time server, using a method called <strong>NTP</strong>, and sets its own clock from the answer. Time servers only speak <strong>UTC</strong>, which is the time in Greenwich in winter, and they know nothing about where you are.</p>
+  <div class="predict">
+    <span class="tag">Predict</span>
+    <p>It's three in the afternoon in Britain, in July. What does a clock set straight from a time server show? Think of two different ways you could fix it, and what could go wrong with each.</p>
+  </div>
+  <details class="answer">
+    <summary>One answer</summary>
+    <p>It shows <strong>14:00</strong>, an hour slow, because Britain is an hour ahead of UTC in summer.</p>
+    <p>You could add an hour in the code. That's right until the clocks go back in October, and wrong for anyone outside Britain. You could teach the stick the rules: last Sunday in March, last Sunday in October. That works until you move, or the rules change, and other countries have different ones.</p>
+    <p>Or you could ask someone who already knows. The weather request in <code>clock.py</code> includes <code>timezone=auto</code>, and the reply comes back with the right number of seconds to add for your location, today. The stick never needs to know what a time zone is. When a rule is complicated and belongs to someone else, let them keep it.</p>
+  </details>
+
+  <h3>Where the weather comes from</h3>
+  <p>The weather comes from <a href="https://open-meteo.com/">Open-Meteo</a>, a free service that needs no account. The stick fetches a web address and reads the reply. Your browser can fetch the same address, so you can see exactly what the stick sees.</p>
+  <div class="predict">
+    <span class="tag">Experiment</span>
+    <p>Open this in a new tab. It's the weather for London. Find the temperature, the <code>weather_code</code>, and the <code>utc_offset_seconds</code> from the last question. Then change the latitude and longitude in the address to yours.</p>
+    <p><a class="url" href="https://api.open-meteo.com/v1/forecast?latitude=51.51&amp;longitude=-0.13&amp;current=temperature_2m,weather_code&amp;timezone=auto" target="_blank" rel="noopener">api.open-meteo.com/v1/forecast?latitude=51.51&amp;longitude=-0.13&amp;current=temperature_2m,weather_code&amp;timezone=auto</a></p>
+  </div>
+  <details class="answer">
+    <summary>What you're looking at</summary>
+    <p>That text is <strong>JSON</strong>, the usual way for programs to pass data to each other. It's a set of names with a value after each. <code>clock.py</code> picks out three of them and ignores the rest.</p>
+    <p>The <code>weather_code</code> is a number from an international list: 0 is a clear sky, 3 is overcast, 61 is light rain, 95 is a thunderstorm. The function <code>describe()</code> in <code>clock.py</code> turns the number into a word that fits on the screen. You worked out in step 4 why "Partly cloudy" had to become "Pt cloudy".</p>
+  </details>
+  <details class="answer">
+    <summary>It doesn't get as far as the clock</summary>
+    <p><strong>Wi-Fi failed</strong> on the screen: check the name and password in <code>secrets.py</code> letter by letter, including capitals, and that the network is a 2.4GHz one. After any change, copy the file to the stick again with <code>mpremote cp secrets.py :</code>.</p>
+    <p><strong>No weather yet</strong> on the bottom line: the clock tries again every minute. The terminal prints the reason for each failure, and that message is the thing to search for.</p>
+  </details>
+  <div class="check" data-step="6">
+    <div><span class="tag">Check</span><p>The stick shows the right time for where you are, and you've seen the same weather numbers in your browser that the stick shows on its screen.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section class="step">
+  <p class="tag eyebrow">Step 7</p>
+  <h2>Make it stay, then cut the cord</h2>
+  <div class="predict">
+    <span class="tag">Predict</span>
+    <p>The clock is running from <code>mpremote run clock.py</code>. Unplug the stick from your computer and plug it into a phone charger. What will the screen show?</p>
+  </div>
+  <details class="answer">
+    <summary>What happens</summary>
+    <p>Nothing. The screen stays dark. <code>run</code> sent the program down the cable into the stick's working memory, and that memory is wiped when the power goes. The driver, the font and your settings survived, because <code>cp</code> stored those on the stick's flash memory, but the clock itself was never saved.</p>
+  </details>
+  <p>When MicroPython starts, it looks for a file called <code>main.py</code> and runs it. So to install your clock, copy it to the stick under that name:</p>
+<pre><span class="pr">$</span> mpremote cp clock.py :main.py</pre>
+  <p>Now it starts by itself on any USB power: a charger, a power bank, the back of a television. To change it later, plug it back into your computer, edit <code>clock.py</code>, and copy it across again. If you ever want the stick quiet, <code>mpremote rm :main.py</code> removes it.</p>
+  <figure class="shot">
+    <img src="images/esp32-battery.jpg" width="1100" height="437" alt="The stick plugged into a small battery board holding one green lithium cell, with the clock running and no cables attached." loading="lazy">
+    <figcaption>Mine on a small battery board, with no cable anywhere. The time reads 88:88 in this photo because my phone's camera brightens the dim unlit bars. By eye it's perfectly clear.</figcaption>
+  </figure>
+  <div class="warn">
+    <span class="tag">If you use bare lithium cells</span>
+    <p>A phone power bank is the safe, easy choice. If you use a holder board that takes loose lithium cells, as I did, match the <strong>+</strong> on the cell to the <strong>+</strong> in the holder every time. Many of these boards have no protection against a cell put in backwards, and it can overheat within seconds. Charge loose cells where you can see them, not overnight.</p>
+  </div>
+  <div class="predict">
+    <span class="tag">Do the arithmetic</span>
+    <p>My cells are a size called 16340: 16&nbsp;mm across and 34&nbsp;mm long. The label says <strong>2800mAh</strong>. The much bigger 18650 cell, 18&nbsp;mm by 65&nbsp;mm, is the kind found in laptop batteries, and the very best of those hold about 3500mAh. Both are the same chemistry. Is the label on mine believable?</p>
+  </div>
+  <details class="answer">
+    <summary>Work it through</summary>
+    <p>A cell's capacity depends on how much material is inside it, so compare volumes. A cylinder's volume is π × radius² × length. The 16340 comes to about 6,800 cubic millimetres and the 18650 to about 16,500. The small cell has roughly <strong>40%</strong> of the room.</p>
+    <p>40% of 3500mAh is about 1400mAh, and that's for a cell as good as the best big one. Honest 16340 cells are usually sold as 600 to 850mAh. So 2800 can't be true: it would mean packing twice as much energy into the same space as the best cells made. It's a common trick on cheap cells, and a volume sum catches it every time.</p>
+  </details>
+  <h3>How long will it run?</h3>
+  <p>Estimate first, then measure. A 700mAh cell at 3.7 volts stores about 2.6 watt-hours. The battery board loses some of that raising the voltage to 5 volts for USB. If the stick uses around half a watt with its backlight and Wi-Fi on, which is my guess and not a measurement, that's four or five hours.</p>
+  <p>Then put a full cell in, note the time, and see when the screen goes dark. If your answer is far from your estimate, one of the numbers you started with was wrong, and finding out which one is the interesting part.</p>
+  <h3>Make it yours</h3>
+  <p>Open <code>clock.py</code> and read it. It's about 300 lines and the settings are near the top. Some things to try, easiest first:</p>
+  <ol>
+    <li>Change the colour of the digits. Look for <code>AMBER</code>.</li>
+    <li>Fetch the weather every 5 minutes instead of every 15.</li>
+    <li>Show a 12-hour clock.</li>
+    <li>Make it last longer on a battery. What is using power when nothing on the screen is changing?</li>
+  </ol>
+  <details class="answer">
+    <summary>Hints, not answers</summary>
+    <p>1. <code>AMBER</code> is built with <code>color565</code>, like your orange in step 4.</p>
+    <p>2. <code>WEATHER_EVERY_S</code> is in seconds. Be reasonable with it: the service is free because people don't hammer it.</p>
+    <p>3. Find where the hour is split into two digits, in <code>main()</code>. The <code>%</code> operator gives a remainder. Midnight and noon are the two cases to test.</p>
+    <p>4. Two things run all the time: the backlight and the Wi-Fi radio. The weather only needs Wi-Fi for a few seconds every quarter of an hour.</p>
+  </details>
+  <div class="check" data-step="7">
+    <div><span class="tag">Check</span><p>The clock starts by itself on a power source that isn't your computer.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">That's it</p>
+  <h2>What I'd want you to take away</h2>
+  <div class="takeaways">
+    <div class="take">
+      <h3>Read the error first</h3>
+      <p>"Permission denied" and a hint about a group was the whole answer. Two commands showed why. Most error messages are more helpful than they look at first glance.</p>
+    </div>
+    <div class="take">
+      <h3>Borrow what's hard</h3>
+      <p>Someone else wrote the screen driver, keeps the time, and knows the time zone rules. Your 300 lines only join them together, and that's what most real programs do.</p>
+    </div>
+    <div class="take">
+      <h3>A label is a claim</h3>
+      <p>You asked the chip for its memory size instead of trusting the sticker, and a sum showed the battery's label couldn't be true. Check the number when you can.</p>
+    </div>
+  </div>
+  <p style="margin-top:26px">The finished code is in <a href="https://github.com/ihoggan/geek">the geek repository</a>. Found a mistake, or a step that didn't work on your stick? <a href="contact.html">Tell me</a>. If a step here was unclear, that's my fault, and I'll fix it.</p>
+</section>
+
+</main>
+
+<section class="read-next">
+  <div class="wrap col">
+    <p class="tag">Read this first if you haven't</p>
+    <a class="card" href="pi-gpio.html">
+      <h3>Hand the switch to a computer</h3>
+      <p>The step before this one: a Raspberry Pi blinks an LED and reads a button, with a map of all 40 pins and the 3.3 volt rule.</p>
+      <span class="go">Read &rarr;</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">← Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="contact.html">Get in touch</a>
+    <span class="tag">© 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* ---------- step checks and progress meter ---------- */
+  var KEY='esp32-clock-steps';
+  var buttons=[].slice.call(document.querySelectorAll('.check .done'));
+  var saved={};
+  try{ saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){ saved={}; }
+  function update(){
+    var n=buttons.filter(function(b){return b.getAttribute('aria-pressed')==='true';}).length;
+    document.getElementById('fill').style.width=(n/buttons.length*100)+'%';
+    document.getElementById('progress-text').textContent=
+      n===buttons.length ? 'All 7 steps done. You have a clock.' : n+' of '+buttons.length+' steps done';
+  }
+  buttons.forEach(function(b){
+    var s=b.parentNode.getAttribute('data-step');
+    if(saved[s]){ b.setAttribute('aria-pressed','true'); b.textContent='Done ✓'; }
+    b.addEventListener('click',function(){
+      var on=b.getAttribute('aria-pressed')!=='true';
+      b.setAttribute('aria-pressed',on?'true':'false');
+      b.textContent=on?'Done ✓':'Done';
+      saved[s]=on;
+      try{ localStorage.setItem(KEY,JSON.stringify(saved)); }catch(e){}
+      update();
+    });
+  });
+  update();
+
+  /* The same table clock.py uses: index = digit, letters = lit bars. */
+  var SEGMENTS=['abcdef','bc','abdeg','abcdg','bcfg','acdfg','acdefg','abc','abcdefg','abcdfg'];
+
+  /* ---------- seven-segment builder ---------- */
+  var segEls=[].slice.call(document.querySelectorAll('#digit .seg'));
+  var nameEl=document.getElementById('segName'), listEl=document.getElementById('segList');
+  var keys=document.getElementById('segKeys');
+  function lit(){
+    return segEls.filter(function(b){return b.getAttribute('aria-pressed')==='true';})
+      .map(function(b){return b.getAttribute('data-s');}).sort().join('');
+  }
+  function describe(){
+    var now=lit(), d=SEGMENTS.indexOf(now);
+    if(!now){ nameEl.textContent='Nothing lit'; listEl.textContent='Tap a bar to light it.'; return; }
+    nameEl.textContent = d>=0 ? 'That’s a '+d : 'Not a digit yet';
+    listEl.textContent = now.length+(now.length===1?' bar lit: ':' bars lit: ')+now.split('').join(' ');
+  }
+  function show(pattern){
+    segEls.forEach(function(b){
+      b.setAttribute('aria-pressed', pattern.indexOf(b.getAttribute('data-s'))>=0 ? 'true':'false');
+    });
+    describe();
+  }
+  segEls.forEach(function(b){
+    b.addEventListener('click',function(){
+      b.setAttribute('aria-pressed', b.getAttribute('aria-pressed')==='true'?'false':'true');
+      describe();
+    });
+  });
+  for(var n=0;n<10;n++){
+    (function(k){
+      var kb=document.createElement('button');
+      kb.type='button'; kb.textContent=k; kb.setAttribute('aria-label','Show the digit '+k);
+      kb.addEventListener('click',function(){ show(SEGMENTS[k]); });
+      keys.appendChild(kb);
+    })(n);
+  }
+  var clear=document.createElement('button');
+  clear.type='button'; clear.className='wide'; clear.textContent='Clear';
+  clear.addEventListener('click',function(){ show(''); });
+  keys.appendChild(clear);
+
+  /* ---------- clock face preview: same geometry as clock.py ---------- */
+  var cv=document.getElementById('face'), ctx=cv.getContext('2d');
+  var AMBER='#FFB000', GHOST='#2C1C00', W=44, H=60, T=8, TY=4, DX=[8,60,136,188], CX=116;
+  var DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function rects(x,y){
+    var v=(H-3*T)/2;
+    return {a:[x+T,y,W-2*T,T], b:[x+W-T,y+T,T,v], c:[x+W-T,y+2*T+v,T,v], d:[x+T,y+H-T,W-2*T,T],
+            e:[x,y+2*T+v,T,v], f:[x,y+T,T,v], g:[x+T,y+T+v,W-2*T,T]};
+  }
+  function digit(pos,d){
+    var r=rects(DX[pos],TY), on=SEGMENTS[d];
+    'abcdefg'.split('').forEach(function(s){
+      ctx.fillStyle = on.indexOf(s)>=0 ? AMBER : GHOST;
+      ctx.fillRect(r[s][0],r[s][1],r[s][2],r[s][3]);
+    });
+  }
+  function line(text,y,colour){
+    ctx.fillStyle=colour; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.font='600 24px "IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace';
+    ctx.fillText(text,120,y+17);
+  }
+  function two(n){ return (n<10?'0':'')+n; }
+  function face(){
+    var t=new Date(), h=t.getHours(), m=t.getMinutes();
+    ctx.fillStyle='#000'; ctx.fillRect(0,0,240,135);
+    digit(0,Math.floor(h/10)); digit(1,h%10); digit(2,Math.floor(m/10)); digit(3,m%10);
+    ctx.fillStyle = (reduced || t.getSeconds()%2===0) ? AMBER : GHOST;
+    ctx.fillRect(CX,TY+16,T,T); ctx.fillRect(CX,TY+36,T,T);
+    line(DAYS[t.getDay()]+' '+two(t.getDate())+' '+MONTHS[t.getMonth()],68,'#FFFFFF');
+    line('15°C Overcast',100,'#00FFFF');
+  }
+  face();
+  setInterval(face,1000);
+  if(document.fonts&&document.fonts.ready){ document.fonts.ready.then(face); }
+})();
+</script>
+
+</body>
+</html>
