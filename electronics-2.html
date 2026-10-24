@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electronics for complete beginners, part two: stripes, storage and switches — Iain Hoggan</title>
+<meta name="description" content="Part two of the beginner's electronics study guide: read a resistor's colour stripes, make an LED fade with a capacitor, and use a transistor as a switch. Batteries only, with circuits you can try in your browser first.">
+<link rel="canonical" href="https://ihoggan.github.io/electronics-2.html">
+<meta property="og:site_name" content="Iain Hoggan">
+<meta property="og:locale" content="en_GB">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ihoggan.github.io/electronics-2.html">
+<meta property="og:title" content="Electronics: stripes, storage and switches">
+<meta property="og:description" content="Read a resistor's stripes, make an LED fade out with a capacitor, and let a tiny current switch a big one with a transistor. Batteries only.">
+<meta property="og:image" content="https://ihoggan.github.io/images/og-electronics-2.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Electronics part two: stripes, storage and switches.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Electronics: stripes, storage and switches","description":"Read a resistor's stripes, make an LED fade out with a capacitor, and let a tiny current switch a big one with a transistor. Batteries only.","image":"https://ihoggan.github.io/images/og-electronics-2.png","datePublished":"2026-10-24","dateModified":"2026-10-24","inLanguage":"en-GB","author":{"@type":"Person","name":"Iain Hoggan","url":"https://ihoggan.github.io/about.html"},"mainEntityOfPage":"https://ihoggan.github.io/electronics-2.html"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+main.wrap{padding-top:52px;padding-bottom:40px}
+.standfirst{font-size:1.12rem;color:var(--ink-2);max-width:34em}
+.standfirst strong{color:var(--ink);font-weight:600}
+main section p{max-width:38em}
+main h2{max-width:18em;margin-bottom:14px}
+main h3{margin:26px 0 10px}
+main ul,main ol{max-width:36em;margin:0 0 16px 1.2em}
+main li{margin-bottom:6px}
+.warn{border-left:3px solid var(--alarm);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.warn .tag{display:block;margin-bottom:4px;color:var(--alarm)}
+.warn p{margin:0}
+.warn p+p{margin-top:8px}
+.takeaways{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:26px}
+.take{background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);border-radius:4px;padding:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.take h3{font-size:1rem;margin:0 0 8px}
+.take p{font-size:.94rem;color:var(--ink-2);margin:0}
+.ui{font-family:var(--mono);font-size:.84em;white-space:nowrap;
+  background:linear-gradient(180deg,#fff,var(--engrave));border:1px solid var(--bezel);
+  border-bottom-width:2px;border-radius:3px;padding:1px 6px;color:var(--ink)}
+.predict{border-left:3px solid var(--lamp);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.predict .tag{display:block;margin-bottom:4px;color:var(--lamp)}
+.predict p{margin:0}
+details.answer{max-width:38em;margin:10px 0 18px}
+details.answer summary{cursor:pointer;font:600 11px/1.4 var(--mono);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-2)}
+details.answer p{margin-top:8px}
+.check{display:flex;gap:14px;align-items:flex-start;max-width:38em;margin:20px 0 6px;
+  border:1px solid var(--bezel);border-radius:4px;padding:14px 16px;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.check .tag{display:block;margin-bottom:4px;color:#2F8A63}
+.check p{margin:0;font-size:.97rem}
+.check ul{margin:6px 0 0 1.1em;font-size:.97rem}
+.check li{margin-bottom:3px}
+.done{flex:none;margin-left:auto;align-self:center;cursor:pointer;
+  font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;
+  padding:9px 12px;border-radius:3px;border:1px solid var(--bezel);border-bottom-width:2px;
+  background:linear-gradient(180deg,#fff,var(--engrave));color:var(--ink-2)}
+.done[aria-pressed="true"]{background:linear-gradient(180deg,#6FD6AA,var(--trace));border-color:#2F8A63;color:#0B2A1E}
+.done:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.progress{margin-top:26px;max-width:30em}
+.progress .bar{height:10px;border-radius:5px;background:var(--screen);border:1px solid #060B0E;
+  box-shadow:inset 0 2px 6px rgba(0,0,0,.6);overflow:hidden}
+.progress .fill{height:100%;width:0;background:linear-gradient(90deg,#2F8A63,var(--trace));
+  box-shadow:0 0 10px rgba(87,199,154,.7);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.progress .read{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:8px}
+
+/* shopping list */
+.kit{max-width:38em;margin:16px 0 20px;border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))}
+.kit div{display:flex;justify-content:space-between;gap:14px;padding:10px 14px;border-bottom:1px solid var(--rule)}
+.kit div:last-child{border-bottom:0;font-weight:600}
+.kit span:last-child{font-family:var(--mono);font-size:.9em;color:var(--ink-2);white-space:nowrap}
+
+/* circuit bench */
+.bench{max-width:46em;margin:22px 0 10px}
+.bench .top{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:0}
+.bench svg{display:block;width:100%;height:auto}
+.bench .controls{padding:14px 16px;border-left:1px solid #060B0E;display:flex;flex-direction:column;gap:12px}
+.bench label{display:block;font:600 10.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#93A79E;margin-bottom:6px}
+.bench select{width:100%;font:13px var(--mono);color:#E6F0EC;background:#0B1216;border:1px solid #2B3B44;border-radius:3px;padding:7px 8px}
+.bench select:focus-visible,.bench button:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.bench button{font:600 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
+  padding:10px 12px;border-radius:3px;border:1px solid #2B3B44;background:#16232B;color:#A9BFB5;cursor:pointer}
+.bench button.on{background:linear-gradient(180deg,#6FD6AA,var(--trace));color:#0B2A1E;border-color:#2F8A63}
+.bench .meas{margin:0;max-width:none;border-top:1px solid rgba(87,199,154,.18)}
+.bench .status{font:12.5px/1.55 var(--mono);color:#A9BFB5;padding:0 18px 16px;min-height:3em}
+.bench .status.bad{color:#E0603F}
+.bench .status.good{color:var(--trace)}
+
+/* discovery table */
+.disc{max-width:38em;border-collapse:collapse;margin:16px 0 8px;width:100%;font:13px var(--mono)}
+.disc th,.disc td{border:1px solid var(--bezel);padding:7px 9px;text-align:right}
+.disc th{background:var(--panel-2);font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.disc td:first-child,.disc th:first-child{text-align:left}
+.disc td.q{color:var(--ink-3)}
+.read-next{border-top:1px solid var(--rule);padding:44px 0 8px}
+.read-next .card{margin-top:14px;max-width:640px}
+@media(max-width:700px){.bench .top{grid-template-columns:1fr}.bench .controls{border-left:0;border-top:1px solid #060B0E}}
+
+/* ---------- part two ---------- */
+.codes{display:flex;flex-wrap:wrap;gap:6px;max-width:44em;margin:14px 0 18px}
+.codes span{background:var(--c);color:var(--t);font:600 11.5px/1 var(--mono);padding:8px 9px;border-radius:3px;border:1px solid rgba(0,0,0,.25)}
+.quiz{padding:12px 16px 4px;border-top:1px solid rgba(87,199,154,.18)}
+.quiz label{display:block;font:600 10.5px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#93A79E;margin-bottom:8px}
+.qrow{display:flex;gap:8px;flex-wrap:wrap}
+.qrow input{flex:1 1 10em;min-width:0;font:14px var(--mono);color:#E6F0EC;background:#0B1216;border:1px solid #2B3B44;border-radius:3px;padding:8px 10px}
+.qrow input:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.bench .plot{display:block;width:100%;height:120px;border-top:1px solid #060B0E}
+.bench select:disabled{opacity:.55}
+</style>
+</head>
+<body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html" aria-label="Home">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap col">
+    <p class="tag">Study guide · Electronics · Part two · After part one</p>
+    <h1>Electronics: stripes, storage and switches</h1>
+    <p class="standfirst">Part one left you with three parts you know well: a battery, a resistor and an LED. This part opens the rest of the bag. You'll <strong>read a resistor's stripes</strong> without a meter, make an LED <strong>fade out slowly</strong> after you've switched it off, and use a <strong>transistor</strong> to let a tiny current control a bigger one. That last one is the part every computer is made of.</p>
+    <div class="spec">
+      <div><b>3</b><span>stages</span></div>
+      <div><b>~£8</b><span>more parts, optional</span></div>
+      <div><b>Batteries</b><span>only</span></div>
+      <div><b>An evening</b><span>or two</span></div>
+    </div>
+    <div class="progress" aria-live="polite">
+      <div class="bar"><div class="fill" id="fill"></div></div>
+      <div class="read"><span class="tag" id="progress-text">0 of 3 checkpoints passed</span><span class="tag">Tick each checkpoint when you can explain it</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap col">
+
+<section>
+  <p class="tag eyebrow">Before you start</p>
+  <h2>Where this picks up</h2>
+  <p>This guide assumes you've done <a href="electronics-1.html">part one</a>: you can light an LED with a resistor, use a multimeter, and you've met Ohm's law, <code>V = I × R</code>. It works the same way. Each stage has a circuit on the page you can try before buying anything, and ends with a <strong>checkpoint</strong>: questions you should be able to answer in your own words.</p>
+  <div class="warn">
+    <span class="tag">Same safety rule, plus one</span>
+    <p><strong>Batteries only. Nothing in this guide ever plugs into the wall.</strong></p>
+    <p>New for this part: the capacitors here have a <strong>right way round</strong>, and a voltage limit printed on the side. Fitted backwards, or used above that limit, they can swell up or pop. Stage 2 shows you how to read both before you plug one in.</p>
+  </div>
+  <h3>What to add to your kit</h3>
+  <p>Everything from part one, plus:</p>
+  <div class="kit">
+    <div><span>An assortment of electrolytic capacitors, rated 25&nbsp;V</span><span>~£4</span></div>
+    <div><span>A few BC547 transistors (NPN)</span><span>~£2</span></div>
+    <div><span>A few small push buttons for the breadboard</span><span>~£2</span></div>
+    <div><span>Roughly, all in</span><span>~£8</span></div>
+  </div>
+  <p>Prices are rough, from the usual online shops. The 25&nbsp;V rating matters: it needs to be comfortably above the 9&nbsp;V battery you'll use.</p>
+</section>
+
+<!-- ============ STAGE 1 ============ -->
+<section class="step">
+  <p class="tag eyebrow">Stage 1</p>
+  <h2>Reading the stripes</h2>
+  <p>Resistors are too small to print a number on, so their value is painted on as coloured stripes. Once you know the code, you can pick the right one from a jumbled bag in seconds, no meter needed.</p>
+  <p>Most resistors have four stripes. Hold it with the <strong>gold or silver stripe on the right</strong>. Then, reading from the left:</p>
+  <ol>
+    <li><strong>First stripe:</strong> the first digit.</li>
+    <li><strong>Second stripe:</strong> the second digit.</li>
+    <li><strong>Third stripe:</strong> how many noughts to add after them.</li>
+    <li><strong>Fourth stripe:</strong> how accurate it is. Gold means within 5%.</li>
+  </ol>
+  <p>Each colour stands for a number, in the order of a rainbow with black and brown at the start and grey and white at the end:</p>
+  <div class="codes" aria-label="The colour code">
+    <span style="--c:#1b1b1b;--t:#fff">0 black</span><span style="--c:#7a4a2a;--t:#fff">1 brown</span><span style="--c:#c8312b;--t:#fff">2 red</span><span style="--c:#e57c22;--t:#111">3 orange</span><span style="--c:#f2cf2f;--t:#111">4 yellow</span><span style="--c:#3c9a46;--t:#fff">5 green</span><span style="--c:#2f62c8;--t:#fff">6 blue</span><span style="--c:#7b48b5;--t:#fff">7 violet</span><span style="--c:#8c8c8c;--t:#111">8 grey</span><span style="--c:#f4f4f4;--t:#111">9 white</span>
+  </div>
+  <p>So <strong>yellow, violet, brown</strong> means 4, 7, then one nought: <strong>470&nbsp;Ω</strong>, the resistor from part one.</p>
+
+  <div class="bench well" id="resbench">
+    <div class="top">
+      <svg id="resSvg" viewBox="0 0 420 150" role="img" aria-label="A resistor with four coloured stripes">
+        <line x1="10" y1="75" x2="410" y2="75" stroke="#A9B4B8" stroke-width="4"/>
+        <rect x="110" y="40" width="200" height="70" rx="30" fill="#D9C39A" stroke="#B49B6E" stroke-width="2"/>
+        <rect id="b1" x="140" y="40" width="16" height="70" fill="#1b1b1b"/>
+        <rect id="b2" x="172" y="40" width="16" height="70" fill="#1b1b1b"/>
+        <rect id="b3" x="204" y="40" width="16" height="70" fill="#1b1b1b"/>
+        <rect id="b4" x="262" y="40" width="16" height="70" fill="#C9A43B"/>
+      </svg>
+      <div class="controls">
+        <div><label for="sb1">1st stripe</label><select id="sb1"></select></div>
+        <div><label for="sb2">2nd stripe</label><select id="sb2"></select></div>
+        <div><label for="sb3">3rd stripe (noughts)</label><select id="sb3"></select></div>
+        <div><button type="button" id="quizBtn">Test me</button></div>
+      </div>
+    </div>
+    <div class="quiz" id="quiz" hidden>
+      <label for="quizIn">What value is this resistor? (e.g. 4700, 4.7k or 4k7)</label>
+      <div class="qrow"><input type="text" id="quizIn" autocomplete="off" spellcheck="false"><button type="button" id="quizCheck">Check</button><button type="button" id="quizShow">Show me</button></div>
+    </div>
+    <p class="status" id="resOut" aria-live="polite"></p>
+  </div>
+
+  <div class="predict">
+    <span class="tag">Try this</span>
+    <p>Set the stripes for the other resistors from part one: 1&nbsp;kΩ (1,000&nbsp;Ω), 2.2&nbsp;kΩ and 10&nbsp;kΩ. Then press <span class="ui">Test me</span> until you can read five in a row without looking at the colour list.</p>
+  </div>
+  <details class="answer">
+    <summary>The answers, and a shortcut</summary>
+    <p>1&nbsp;kΩ is brown, black, red. 2.2&nbsp;kΩ is red, red, red. 10&nbsp;kΩ is brown, black, orange. The shortcut: the third stripe tells you the size at a glance. Brown means hundreds of ohms, red means thousands, orange means tens of thousands.</p>
+    <p>And when the stripes are faded or you can't tell red from orange under your lamp, which happens, fall back on the meter, set to <code>Ω</code>, exactly as in part one.</p>
+  </details>
+  <div class="check" data-step="1">
+    <div><span class="tag">Checkpoint</span><p>Can you:</p>
+      <ul><li>say which way round to hold a resistor to read it,</li><li>read a four-stripe resistor's value from its colours?</li></ul></div>
+    <button class="done" type="button" aria-pressed="false">I can</button>
+  </div>
+</section>
+
+<!-- ============ STAGE 2 ============ -->
+<section class="step">
+  <p class="tag eyebrow">Stage 2</p>
+  <h2>Capacitors: a bucket for charge</h2>
+  <p>A <strong>capacitor</strong> stores a little electricity and gives it back. In the water picture from part one, it's a small bucket: connect it to the battery and it fills up, disconnect the battery and whatever is attached can drain it. How much it holds is measured in farads. A whole farad is huge, so you'll see microfarads, millionths of a farad, written <code>µF</code>.</p>
+  <p>Here's a circuit that shows it off. The capacitor sits beside the LED. While the switch is on, the battery fills the capacitor and lights the LED. Then switch it off.</p>
+
+  <div class="bench well" id="capbench">
+    <div class="top">
+      <svg id="capSvg" viewBox="0 0 420 260" role="img" aria-label="Circuit: battery and switch filling a capacitor, which sits beside an LED and its resistor">
+        <defs>
+          <radialGradient id="glow2" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ff5a3c" stop-opacity=".95"/>
+            <stop offset="100%" stop-color="#ff5a3c" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <path d="M50 80 V30 H130 M190 30 H360 V95 M360 165 V230 H50 V140 M240 30 V105 M240 125 V230" fill="none" stroke="#5E7580" stroke-width="3"/>
+        <g><line x1="32" y1="90" x2="68" y2="90" stroke="#CFE3DA" stroke-width="4"/><line x1="40" y1="104" x2="60" y2="104" stroke="#CFE3DA" stroke-width="4"/><line x1="32" y1="118" x2="68" y2="118" stroke="#CFE3DA" stroke-width="4"/><line x1="40" y1="132" x2="60" y2="132" stroke="#CFE3DA" stroke-width="4"/>
+          <line x1="50" y1="80" x2="50" y2="90" stroke="#5E7580" stroke-width="3"/>
+          <text x="74" y="94" fill="#E7B863" font-family="IBM Plex Mono,monospace" font-size="13">+</text><text x="8" y="168" fill="#93A79E" font-family="IBM Plex Mono,monospace" font-size="12">9 V</text></g>
+        <g id="capSw" style="cursor:pointer"><circle cx="130" cy="30" r="4" fill="#CFE3DA"/><circle cx="190" cy="30" r="4" fill="#CFE3DA"/>
+          <line id="capArm" x1="130" y1="30" x2="186" y2="8" stroke="#CFE3DA" stroke-width="4" stroke-linecap="round"/>
+          <text x="138" y="56" fill="#93A79E" font-family="IBM Plex Mono,monospace" font-size="11">switch</text><rect x="120" y="0" width="80" height="62" fill="transparent"/></g>
+        <g><line x1="222" y1="105" x2="258" y2="105" stroke="#CFE3DA" stroke-width="4"/><path d="M222 127 Q240 117 258 127" fill="none" stroke="#CFE3DA" stroke-width="4"/>
+          <rect id="capFill" x="200" y="140" width="10" height="0" fill="#57C79A"/><rect x="200" y="100" width="10" height="40" fill="none" stroke="#5E7580" stroke-width="1"/>
+          <text x="264" y="100" fill="#E7B863" font-family="IBM Plex Mono,monospace" font-size="12">+</text><text id="capLabel" x="264" y="122" fill="#93A79E" font-family="IBM Plex Mono,monospace" font-size="12">1000 µF</text></g>
+        <g><rect x="346" y="95" width="28" height="70" rx="4" fill="#D9C39A" stroke="#CFE3DA" stroke-width="2"/><text id="r2Label" x="380" y="134" fill="#93A79E" font-family="IBM Plex Mono,monospace" font-size="12">1 kΩ</text></g>
+        <g><circle id="capHalo" cx="300" cy="230" r="0" fill="url(#glow2)"/><polygon id="capLed" points="316,214 316,246 280,230" fill="#5a2a22" stroke="#CFE3DA" stroke-width="2"/><line x1="280" y1="212" x2="280" y2="248" stroke="#CFE3DA" stroke-width="3"/>
+          <text x="276" y="206" fill="#93A79E" font-family="IBM Plex Mono,monospace" font-size="11">red LED</text></g>
+      </svg>
+      <div class="controls">
+        <div><label for="capC">Capacitor</label>
+          <select id="capC"><option value="470">470 µF</option><option value="1000" selected>1000 µF</option><option value="2200">2200 µF</option></select></div>
+        <div><label for="capR">LED's resistor</label>
+          <select id="capR"><option value="470">470 Ω</option><option value="1000" selected>1 kΩ</option><option value="2200">2.2 kΩ</option></select></div>
+        <div><button type="button" id="capBtn" aria-pressed="false">Switch: off</button></div>
+      </div>
+    </div>
+    <canvas id="capPlot" class="plot" aria-label="Graph of the capacitor's voltage over the last ten seconds"></canvas>
+    <div class="meas">
+      <p class="cap">Meters</p>
+      <dl>
+        <dt>Across the capacitor</dt><dd id="mCap">0.00 V</dd>
+        <dt>Current through the LED</dt><dd id="mLedI">0.0 mA</dd>
+        <dt>Glow after switching off</dt><dd id="mGlow">–</dd>
+      </dl>
+    </div>
+    <p class="status" id="capStatus" aria-live="polite">Switch it on, wait for the capacitor to fill, then switch it off.</p>
+  </div>
+  <p style="font-size:.95rem;color:var(--ink-2)">The model is simplified, like part one's. A real LED fades a little more gradually at the very end, and real capacitors are only accurate to within about 20%. Expect your timings to differ by that much.</p>
+
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>In part one, switching off made the LED go out instantly, because the loop was broken. Here, the switch breaks the loop to the battery. What do you expect the LED to do?</p>
+  </div>
+  <details class="answer">
+    <summary>What happens</summary>
+    <p>It keeps glowing, then fades away. The battery is cut off, but the capacitor is full, and it's still connected to the LED. It empties itself through the LED, and as it empties, its push gets weaker, so the light dims. That small bucket is exactly how a gadget keeps its clock running for a moment while you swap the batteries.</p>
+  </details>
+
+  <h3>Discover the rule</h3>
+  <p>With the <strong>1&nbsp;kΩ</strong> resistor, fill in the glow time for each capacitor. Switch on, wait until the capacitor reading stops rising, switch off, and read <strong>Glow after switching off</strong>.</p>
+  <table class="disc">
+    <thead><tr><th>Capacitor</th><th>Resistor</th><th>Glow (seconds)</th></tr></thead>
+    <tbody>
+      <tr><td>470 µF</td><td>1 kΩ</td><td class="q">?</td></tr>
+      <tr><td>1000 µF</td><td>1 kΩ</td><td class="q">?</td></tr>
+      <tr><td>2200 µF</td><td>1 kΩ</td><td class="q">?</td></tr>
+    </tbody>
+  </table>
+  <div class="predict">
+    <span class="tag">Look at the numbers</span>
+    <p>What happens to the glow time when the capacitor roughly doubles? Now keep 1000&nbsp;µF and try the other resistors. What does the resistor do to it?</p>
+  </div>
+  <details class="answer">
+    <summary>What you've found</summary>
+    <p>Double the capacitor, and the glow lasts about twice as long: a bigger bucket takes longer to empty. A bigger resistor makes it last longer too, because it narrows the pipe the bucket drains through, though the LED starts dimmer.</p>
+    <p>Engineers wrap this up as the <strong>time constant</strong>: resistance × capacitance. In ohms and farads, the answer comes out in seconds. 1&nbsp;kΩ × 1000&nbsp;µF is 1,000 × 0.001, which is <strong>1 second</strong>. In that time the capacitor does about two-thirds of its emptying (or filling), and after about five of them it's as good as finished. It's the same rule whether it's timing a blinking light or smoothing out a power supply.</p>
+  </details>
+
+  <h3>With real parts</h3>
+  <p>An electrolytic capacitor is a little can with two legs. Two things to read before you use one:</p>
+  <ul>
+    <li><strong>Which way round.</strong> The <strong>longer leg is positive</strong>. The side of the can has a stripe, usually with minus signs on it: that leg is <strong>negative</strong>. Positive goes towards the battery's <code>+</code>.</li>
+    <li><strong>The voltage.</strong> It's printed on the can, like <code>25V</code>. That's the most it can take. With a 9&nbsp;V battery, anything 16&nbsp;V or above is fine.</li>
+  </ul>
+  <ol>
+    <li>Build part one's LED circuit, but use a 1&nbsp;kΩ resistor.</li>
+    <li>Fit a 1000&nbsp;µF capacitor straight across the two edge lines: its positive leg in the red line, its negative leg in the blue line. That puts it across the LED <em>and</em> its resistor together.</li>
+    <li>Use a push button between the battery's red wire and the red line, as your switch.</li>
+    <li>Hold the button for a couple of seconds, then let go, and count.</li>
+  </ol>
+  <div class="check" data-step="2">
+    <div><span class="tag">Checkpoint</span><p>Can you explain:</p>
+      <ul><li>why the LED keeps glowing after the battery is cut off,</li><li>what makes the glow last longer, and how to spot a capacitor's positive leg?</li></ul></div>
+    <button class="done" type="button" aria-pressed="false">I can</button>
+  </div>
+</section>
+
+<!-- ============ STAGE 3 ============ -->
+<section class="step">
+  <p class="tag eyebrow">Stage 3</p>
+  <h2>The transistor: a switch with no moving parts</h2>
+  <p>A <strong>transistor</strong> has three legs, and one job worth learning first: a <strong>small current into one leg controls a much bigger current through the other two</strong>. The legs are called the <strong>base</strong> (the control), the <strong>collector</strong> and the <strong>emitter</strong> (the path the big current takes).</p>
+  <p>Here, the LED and its resistor sit on the big path. The only thing you can touch is a much smaller loop: a switch and a resistor going into the base.</p>
+
+  <div class="bench well" id="trbench">
+    <div class="top">
+      <svg id="trSvg" viewBox="0 0 420 270" role="img" aria-label="Circuit: battery, LED and resistor through a transistor's collector and emitter; a switch and base resistor into its base">
+        <defs>
+          <radialGradient id="glow3" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ff5a3c" stop-opacity=".95"/>
+            <stop offset="100%" stop-color="#ff5a3c" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <path d="M50 70 V25 H310 V55 M310 125 V145 M310 205 V215 M310 245 V255 H50 V130 M90 25 V60 M90 120 V160 H150 M210 160 H262" fill="none" stroke="#5E7580" stroke-width="3"/>
+        <g><line x1="32" y1="80" x2="68" y2="80" stroke="#CFE3DA" stroke-width="4"/><line x1="40" y1="94" x2="60" y2="94" stroke="#CFE3DA" stroke-width="4"/><line x1="32" y1="108" x2="68" y2="108" stroke="#CFE3DA" stroke-width="4"/><line x1="40" y1="122" x2="60" y2="122" stroke="#CFE3DA" stroke-width="4"/>
+          <line x1="50" y1="70" x2="50" y2="80" stroke="#5E7580" stroke-width="3"/><line x1="50" y1="122" x2="50" y2="130" stroke="#5E7580" stroke-width="3"/>
+          <text x="10" y="160" fill="#93A79E" font-family="IBM Plex Mono,monospace" font-size="12">9 V</text></g>
+        <g><circle id="trHalo" cx="310" cy="90" r="0" fill="url(#glow3)"/><polygon id="trLed" points="294,72 326,72 310,104" fill="#5a2a22" stroke="#CFE3DA" stroke-width="2"/><line x1="292" y1="106" x2="328" y2="106" stroke="#CFE3DA" stroke-width="3"/>
+          <line x1="310" y1="55" x2="310" y2="72" stroke="#5E7580" stroke-width="3"/><line x1="310" y1="106" x2="310" y2="125" stroke="#5E7580" stroke-width="3"/>
+          <text x="334" y="92" fill="#93A79E" font-family="IBM Plex Mono,monospace" font-size="11">LED</text></g>
+        <g><rect x="296" y="125" width="28" height="20" rx="3" fill="#D9C39A" stroke="#CFE3DA" stroke-width="2"/><text x="334" y="140" fill="#93A79E" font-family="IBM Plex Mono,monospace" font-size="11">470 Ω</text></g>
+        <g><circle cx="300" cy="180" r="30" fill="none" stroke="#CFE3DA" stroke-width="2"/><line x1="282" y1="162" x2="282" y2="198" stroke="#CFE3DA" stroke-width="4"/>
+          <line x1="262" y1="180" x2="282" y2="180" stroke="#5E7580" stroke-width="3"/>
+          <line x1="282" y1="170" x2="310" y2="150" stroke="#CFE3DA" stroke-width="3"/><line x1="282" y1="190" x2="310" y2="210" stroke="#CFE3DA" stroke-width="3"/>
+          <polygon points="310,210 298,208 304,200" fill="#CFE3DA"/>
+          <line x1="310" y1="145" x2="310" y2="150" stroke="#5E7580" stroke-width="3"/><line x1="310" y1="210" x2="310" y2="215" stroke="#5E7580" stroke-width="3"/>
+          <text x="338" y="166" fill="#93A79E" font-family="IBM Plex Mono,monospace" font-size="11">collector</text><text x="338" y="206" fill="#93A79E" font-family="IBM Plex Mono,monospace" font-size="11">emitter</text><text x="240" y="200" fill="#93A79E" font-family="IBM Plex Mono,monospace" font-size="11">base</text></g>
+        <path d="M262 160 V180" fill="none" stroke="#5E7580" stroke-width="3"/>
+        <line x1="310" y1="215" x2="310" y2="245" stroke="#5E7580" stroke-width="3"/>
+        <g id="trSw" style="cursor:pointer"><circle cx="90" cy="60" r="4" fill="#CFE3DA"/><circle cx="90" cy="120" r="4" fill="#CFE3DA"/>
+          <line id="trArm" x1="90" y1="60" x2="112" y2="114" stroke="#CFE3DA" stroke-width="4" stroke-linecap="round"/>
+          <text x="104" y="84" fill="#93A79E" font-family="IBM Plex Mono,monospace" font-size="11">switch</text><rect x="70" y="50" width="70" height="80" fill="transparent"/></g>
+        <g><rect x="150" y="150" width="60" height="20" rx="3" fill="#D9C39A" stroke="#CFE3DA" stroke-width="2"/><text id="rbLabel" x="150" y="190" fill="#93A79E" font-family="IBM Plex Mono,monospace" font-size="11">10 kΩ</text></g>
+      </svg>
+      <div class="controls">
+        <div><label for="trRb">Base resistor</label>
+          <select id="trRb"><option value="10000" selected>10 kΩ</option><option value="100000">100 kΩ</option><option value="1000000">1 MΩ (1,000,000 Ω)</option><option value="10000000">10 MΩ</option></select></div>
+        <div><button type="button" id="trBtn" aria-pressed="false">Switch: off</button></div>
+      </div>
+    </div>
+    <div class="meas">
+      <p class="cap">Meters</p>
+      <dl>
+        <dt>Into the base (the small loop)</dt><dd id="mIb">0 µA</dd>
+        <dt>Through the LED (the big loop)</dt><dd id="mIc">0.0 mA</dd>
+        <dt>Big current ÷ small current</dt><dd id="mGain">–</dd>
+      </dl>
+    </div>
+    <p class="status" id="trStatus" aria-live="polite"></p>
+  </div>
+  <p style="font-size:.95rem;color:var(--ink-2)">The model assumes a transistor that multiplies by 200. Real BC547s vary a lot, from roughly 100 to 800, even within one bag. The behaviour is the same; only the exact numbers move.</p>
+
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>Switch it on with the 10&nbsp;kΩ base resistor. Before you look at the meters: which current do you think is bigger, the one into the base, or the one through the LED?</p>
+  </div>
+  <details class="answer">
+    <summary>What the meters say</summary>
+    <p>The LED's current is many times bigger: under a milliamp in the small loop is switching around fifteen milliamps through the LED. You're only moving the small one. The transistor lets the battery do the heavy lifting.</p>
+  </details>
+
+  <h3>Discover the rule</h3>
+  <p>Fill in the table. Switch on for each base resistor and read both currents.</p>
+  <table class="disc">
+    <thead><tr><th>Base resistor</th><th>Into the base</th><th>Through the LED</th><th>LED</th></tr></thead>
+    <tbody>
+      <tr><td>10 kΩ</td><td class="q">?</td><td class="q">?</td><td class="q">?</td></tr>
+      <tr><td>100 kΩ</td><td class="q">?</td><td class="q">?</td><td class="q">?</td></tr>
+      <tr><td>1 MΩ</td><td class="q">?</td><td class="q">?</td><td class="q">?</td></tr>
+      <tr><td>10 MΩ</td><td class="q">?</td><td class="q">?</td><td class="q">?</td></tr>
+    </tbody>
+  </table>
+  <div class="predict">
+    <span class="tag">Look at the numbers</span>
+    <p>With 10&nbsp;kΩ and 100&nbsp;kΩ the LED current is the same, even though the base current is ten times smaller with 100&nbsp;kΩ. Why do you think it stops at that level?</p>
+  </div>
+  <details class="answer">
+    <summary>What you've found</summary>
+    <p>Below a certain point, the LED's current is the base current <strong>multiplied</strong>, about 200 times for this transistor. That's what the 1&nbsp;MΩ and 10&nbsp;MΩ rows show: a tenth of the base current gives a tenth of the LED current.</p>
+    <p>But the multiplied current can't be more than the big loop allows. The 470&nbsp;Ω resistor and the LED limit it to about 15&nbsp;mA, using Ohm's law from part one. Once the base current is big enough to ask for more than that, the transistor is <strong>fully on</strong>, and giving it more changes nothing. That's using a transistor as a <strong>switch</strong>: give the base plenty, and it's either fully on or fully off. That's why 10&nbsp;kΩ is the usual choice: it keeps the transistor firmly on, whatever the gain of the one you happen to pick out of the bag.</p>
+    <p>A computer chip is billions of transistors used exactly like this, each one switching the others on and off.</p>
+  </details>
+
+  <h3>With real parts</h3>
+  <p>A BC547 is a little black half-cylinder with three legs. Hold it with the <strong>flat face towards you</strong> and the legs pointing down. From left to right, the legs are <strong>collector, base, emitter</strong>.</p>
+  <div class="warn">
+    <span class="tag">Check the leg order</span>
+    <p>Other transistors in the same-shaped case, like the 2N2222, have their legs in a different order. If you use anything other than a BC547, look up its pinout before you wire it.</p>
+  </div>
+  <ol>
+    <li>Push the transistor into the breadboard so each leg has its own row.</li>
+    <li>From the red line: a 470&nbsp;Ω resistor, then the LED (long leg first), into the <strong>collector's</strong> row.</li>
+    <li>A jumper wire from the <strong>emitter's</strong> row to the blue line.</li>
+    <li>A 10&nbsp;kΩ resistor from the <strong>base's</strong> row to a push button, and the other side of the button to the red line.</li>
+    <li>Connect the battery, and press the button.</li>
+  </ol>
+  <p>If you're curious, take the button and 10&nbsp;kΩ resistor out, and instead touch one fingertip to the red line and another to the base's row. Your skin is the base resistor now. Depending on how dry your fingers are, the LED may glow faintly, or not at all. 9&nbsp;V through your fingers is perfectly safe.</p>
+  <div class="check" data-step="3">
+    <div><span class="tag">Checkpoint</span><p>Can you explain:</p>
+      <ul><li>what "a small current controls a big one" means, using the meters,</li><li>why a 10&nbsp;kΩ base resistor and a 100&nbsp;kΩ one both light the LED fully?</li></ul></div>
+    <button class="done" type="button" aria-pressed="false">I can</button>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Where next</p>
+  <h2>Hand the switch to a computer</h2>
+  <p>You've now got a switch that a tiny current can work. That matters, because the pins on a Raspberry Pi can only give a tiny current: enough for one LED, not much more. A transistor in between lets a Pi switch something bigger, like a motor or a strip of lights. <a href="pi-gpio.html">Hand the switch to a computer</a> is the next guide on this path.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">That's part two</p>
+  <h2>What I'd want you to take away</h2>
+  <div class="takeaways">
+    <div class="take">
+      <h3>Read the stripes</h3>
+      <p>Gold on the right, two digits, then the noughts. The third stripe tells you the size at a glance.</p>
+    </div>
+    <div class="take">
+      <h3>A capacitor is a bucket</h3>
+      <p>It fills and empties. Resistance × capacitance tells you how long that takes, in seconds.</p>
+    </div>
+    <div class="take">
+      <h3>Small controls big</h3>
+      <p>A transistor lets a tiny current switch a bigger one. Give its base plenty and it's simply on or off.</p>
+    </div>
+  </div>
+  <p style="margin-top:26px">Stuck on a checkpoint, or found something wrong? <a href="contact.html">Tell me</a>. If a stage didn't make sense, that's my fault, and I'll fix it.</p>
+</section>
+
+</main>
+
+<section class="read-next">
+  <div class="wrap col">
+    <p class="tag">On the same path</p>
+    <a class="card" href="electronics-1.html">
+      <h3>Back: Electronics, first light</h3>
+      <p>Light an LED, burn one out for free, and discover Ohm's law yourself.</p>
+      <span class="go">Read &rarr;</span>
+    </a>
+    <a class="card" href="pi-gpio.html">
+      <h3>Next: Hand the switch to a computer</h3>
+      <p>Blink an LED from Python, read a button, and learn the 3.3 volt rule.</p>
+      <span class="go">Read &rarr;</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">← Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="contact.html">Get in touch</a>
+    <span class="tag">© 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* ---------- checkpoints and progress meter ---------- */
+  var KEY='electronics-2-steps';
+  var buttons=[].slice.call(document.querySelectorAll('.check .done'));
+  var saved={};
+  try{ saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){ saved={}; }
+  function update(){
+    var n=buttons.filter(function(b){return b.getAttribute('aria-pressed')==='true';}).length;
+    document.getElementById('fill').style.width=(n/buttons.length*100)+'%';
+    document.getElementById('progress-text').textContent=
+      n===buttons.length ? 'All 3 checkpoints passed. Part two done.' : n+' of '+buttons.length+' checkpoints passed';
+  }
+  buttons.forEach(function(b){
+    var s=b.parentNode.getAttribute('data-step');
+    if(saved[s]){ b.setAttribute('aria-pressed','true'); b.textContent='Yes ✓'; }
+    b.addEventListener('click',function(){
+      var on=b.getAttribute('aria-pressed')!=='true';
+      b.setAttribute('aria-pressed',on?'true':'false');
+      b.textContent=on?'Yes ✓':'I can';
+      saved[s]=on;
+      try{ localStorage.setItem(KEY,JSON.stringify(saved)); }catch(e){}
+      update();
+    });
+  });
+  update();
+
+  function fmtOhms(r){
+    if(r>=1e6) return (r/1e6).toString().replace(/\.0+$/,'')+' MΩ';
+    if(r>=1e3) return (r/1e3).toString().replace(/\.0+$/,'')+' kΩ';
+    return (Math.round(r*100)/100)+' Ω';
+  }
+
+  /* ---------- stage 1: resistor stripes ---------- */
+  var COLS=[['black','#1b1b1b'],['brown','#7a4a2a'],['red','#c8312b'],['orange','#e57c22'],['yellow','#f2cf2f'],
+            ['green','#3c9a46'],['blue','#2f62c8'],['violet','#7b48b5'],['grey','#8c8c8c'],['white','#f4f4f4']];
+  var s1=document.getElementById('sb1'), s2=document.getElementById('sb2'), s3=document.getElementById('sb3');
+  COLS.forEach(function(c,i){
+    if(i>0) s1.add(new Option(c[0]+' ('+i+')',i));
+    s2.add(new Option(c[0]+' ('+i+')',i));
+    if(i<=6) s3.add(new Option(c[0]+' ('+i+' nought'+(i===1?'':'s')+')',i));
+  });
+  s1.value=4; s2.value=7; s3.value=1;
+  var quizzing=false, quizVal=0;
+  var out=document.getElementById('resOut');
+  function resValue(){ return (s1.value*10 + +s2.value)*Math.pow(10,+s3.value); }
+  function paint(){
+    document.getElementById('b1').setAttribute('fill',COLS[s1.value][1]);
+    document.getElementById('b2').setAttribute('fill',COLS[s2.value][1]);
+    document.getElementById('b3').setAttribute('fill',COLS[s3.value][1]);
+    if(!quizzing){
+      var v=resValue();
+      out.className='status good';
+      out.textContent=COLS[s1.value][0]+', '+COLS[s2.value][0]+', '+COLS[s3.value][0]+' = '+s1.value+s2.value+(+s3.value?' + '+s3.value+' nought'+(+s3.value===1?'':'s'):'')+' = '+v.toLocaleString('en-GB')+' Ω'+(v>=1000?' ('+fmtOhms(v)+')':'')+', ±5%';
+    }
+  }
+  [s1,s2,s3].forEach(function(s){ s.addEventListener('change',function(){ if(quizzing) endQuiz(); paint(); }); });
+  var E12=[10,12,15,18,22,27,33,39,47,56,68,82];
+  var quizBox=document.getElementById('quiz'), quizIn=document.getElementById('quizIn');
+  function endQuiz(){ quizzing=false; quizBox.hidden=true; [s1,s2,s3].forEach(function(s){ s.disabled=false; }); }
+  document.getElementById('quizBtn').addEventListener('click',function(){
+    var base=E12[Math.floor(Math.random()*E12.length)], z=1+Math.floor(Math.random()*4);
+    quizVal=base*Math.pow(10,z);
+    s1.value=Math.floor(base/10); s2.value=base%10; s3.value=z;
+    quizzing=true; quizBox.hidden=false; quizIn.value=''; [s1,s2,s3].forEach(function(s){ s.disabled=true; });
+    out.className='status'; out.textContent='Read the stripes, then type the value.';
+    paint(); quizIn.focus();
+  });
+  function parseOhms(t){
+    t=String(t).trim().toLowerCase().replace(/ω|ohms?|\s|,/g,'');
+    var m=t.match(/^(\d*)([.rkm]?)(\d*)$/); if(!m||(!m[1]&&!m[3])) return NaN;
+    var mult={'':1,'.':1,'r':1,'k':1e3,'m':1e6}[m[2]];
+    var num=parseFloat((m[1]||'0')+'.'+(m[3]||'0'));
+    if(m[2]==='') num=parseFloat(m[1]+m[3]);
+    return num*mult;
+  }
+  document.getElementById('quizCheck').addEventListener('click',function(){
+    var v=parseOhms(quizIn.value);
+    if(isNaN(v)){ out.className='status bad'; out.textContent='Type a number, like 4700, 4.7k or 4k7.'; return; }
+    if(Math.abs(v-quizVal)<0.5){ endQuiz(); paint(); out.textContent='Right! '+out.textContent+'. Press Test me for another.'; }
+    else { out.className='status bad'; out.textContent='Not quite: you said '+fmtOhms(v)+'. Check the third stripe: how many noughts?'; }
+  });
+  quizIn.addEventListener('keydown',function(e){ if(e.key==='Enter') document.getElementById('quizCheck').click(); });
+  document.getElementById('quizShow').addEventListener('click',function(){ endQuiz(); paint(); });
+  paint();
+
+  /* ---------- stage 2: capacitor bucket ---------- */
+  var VB=9, R1=10, VF=2.0, DARK=0.0005;
+  var cap={on:false,vc:0,t:0,offAt:null,glow:null,hist:[]};
+  var cSel=document.getElementById('capC'), rSel=document.getElementById('capR'), cBtn=document.getElementById('capBtn');
+  var cStatus=document.getElementById('capStatus');
+  var reduce=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function ledI(vc,r2){ return Math.max(0,(vc-VF)/r2); }
+  function capSwitch(){
+    cap.on=!cap.on;
+    cBtn.setAttribute('aria-pressed',cap.on?'true':'false'); cBtn.textContent='Switch: '+(cap.on?'on':'off'); cBtn.className=cap.on?'on':'';
+    document.getElementById('capArm').setAttribute('x2',cap.on?190:186); document.getElementById('capArm').setAttribute('y2',cap.on?30:8);
+    if(cap.on){ cap.offAt=null; cap.glow=null; cStatus.className='status'; cStatus.textContent='Filling the capacitor. Wait until its voltage stops rising, then switch off.'; }
+    else if(ledI(cap.vc,+rSel.value)>DARK){ cap.offAt=cap.t; cStatus.className='status'; cStatus.textContent='Battery cut off. Watch the LED…'; }
+  }
+  cBtn.addEventListener('click',capSwitch);
+  document.getElementById('capSw').addEventListener('click',capSwitch);
+  function capReset(){
+    document.getElementById('capLabel').textContent=cSel.value+' µF';
+    document.getElementById('r2Label').textContent=fmtOhms(+rSel.value);
+    cap.glow=null; cap.offAt=null; document.getElementById('mGlow').textContent='–';
+  }
+  cSel.addEventListener('change',capReset); rSel.addEventListener('change',capReset);
+  function capStep(dt){
+    var C=cSel.value*1e-6, r2=+rSel.value, sub=40, h=dt/sub;
+    for(var i=0;i<sub;i++){
+      var iled=ledI(cap.vc,r2), ich=cap.on?(VB-cap.vc)/R1:0;
+      cap.vc+=(ich-iled)/C*h; if(cap.vc<0) cap.vc=0; cap.t+=h;
+    }
+    var I=ledI(cap.vc,r2);
+    if(!cap.on && cap.offAt!==null && cap.glow===null && I<DARK){
+      cap.glow=cap.t-cap.offAt;
+      cStatus.className='status good';
+      cStatus.textContent='The glow lasted '+cap.glow.toFixed(1)+' s (counted until the LED current fell below half a milliamp, where a real LED looks dark). The capacitor isn\'t quite empty: below about 2 V the LED stops letting current through, so the last bit stays in the bucket.';
+    }
+    cap.hist.push([cap.t,cap.vc]); while(cap.hist.length && cap.t-cap.hist[0][0]>10) cap.hist.shift();
+  }
+  var plot=document.getElementById('capPlot');
+  function drawCap(){
+    var r2=+rSel.value, I=ledI(cap.vc,r2), b=Math.min(1,I/0.015);
+    document.getElementById('mCap').textContent=cap.vc.toFixed(2)+' V';
+    document.getElementById('mLedI').textContent=(I*1000).toFixed(1)+' mA';
+    document.getElementById('mGlow').textContent=cap.glow!==null?cap.glow.toFixed(1)+' s':(cap.offAt!==null&&!cap.on?'glowing…':'–');
+    document.getElementById('capHalo').setAttribute('r',(b*34).toFixed(1));
+    document.getElementById('capLed').setAttribute('fill',b>0.02?'rgb('+Math.round(90+165*b)+','+Math.round(42+48*b)+','+Math.round(34+26*b)+')':'#5a2a22');
+    var fh=40*Math.min(1,cap.vc/VB); var f=document.getElementById('capFill'); f.setAttribute('y',(140-fh).toFixed(1)); f.setAttribute('height',fh.toFixed(1));
+    var w=plot.clientWidth, h=120, dpr=window.devicePixelRatio||1;
+    if(plot.width!==Math.round(w*dpr)){ plot.width=Math.round(w*dpr); plot.height=Math.round(h*dpr); plot.style.height=h+'px'; }
+    var c=plot.getContext('2d'); c.setTransform(dpr,0,0,dpr,0,0); c.clearRect(0,0,w,h);
+    c.strokeStyle='rgba(87,199,154,.12)'; c.lineWidth=1;
+    for(var v=0;v<=9;v+=3){ var y=h-14-(h-28)*v/9+.5; c.beginPath(); c.moveTo(34,y); c.lineTo(w-8,y); c.stroke();
+      c.fillStyle='#7F968D'; c.font='10px "IBM Plex Mono",monospace'; c.textBaseline='middle'; c.fillText(v+' V',4,y); }
+    c.fillStyle='#7F968D'; c.fillText('last 10 seconds →',w-130,h-5);
+    if(cap.hist.length>1){
+      c.strokeStyle='#57C79A'; c.lineWidth=2; c.beginPath();
+      cap.hist.forEach(function(p,i){ var x=34+(w-42)*(1-(cap.t-p[0])/10), y=h-14-(h-28)*p[1]/9; if(i) c.lineTo(x,y); else c.moveTo(x,y); });
+      c.stroke();
+    }
+  }
+  var last=null;
+  function loop(ts){
+    if(last===null) last=ts;
+    var dt=Math.min(0.1,(ts-last)/1000); last=ts;
+    capStep(dt); drawCap(); drawTr(ts);
+    requestAnimationFrame(loop);
+  }
+
+  /* ---------- stage 3: transistor ---------- */
+  var BETA=200, VBE=0.7, VCESAT=0.2, RC=470;
+  var tr={on:false};
+  var tBtn=document.getElementById('trBtn'), rb=document.getElementById('trRb'), tStatus=document.getElementById('trStatus');
+  function trCalc(){
+    var Ib=tr.on?Math.max(0,(VB-VBE)/+rb.value):0;
+    var IcMax=(VB-VF-VCESAT)/RC;
+    var Ic=Math.min(BETA*Ib,IcMax);
+    return {Ib:Ib,Ic:Ic,sat:BETA*Ib>=IcMax};
+  }
+  function fmtI(a){ return a>=1e-3 ? (a*1000).toFixed(2)+' mA' : (a*1e6).toFixed(a<1e-5?2:1)+' µA'; }
+  function trUpdate(){
+    var r=trCalc();
+    document.getElementById('rbLabel').textContent=fmtOhms(+rb.value);
+    document.getElementById('mIb').textContent=fmtI(r.Ib);
+    document.getElementById('mIc').textContent=(r.Ic*1000).toFixed(1)+' mA';
+    document.getElementById('mGain').textContent=r.Ib>0?('× '+Math.round(r.Ic/r.Ib)):'–';
+    var b=Math.min(1,r.Ic/0.0145);
+    document.getElementById('trHalo').setAttribute('r',(b*34).toFixed(1));
+    document.getElementById('trLed').setAttribute('fill',b>0.02?'rgb('+Math.round(90+165*b)+','+Math.round(42+48*b)+','+Math.round(34+26*b)+')':'#5a2a22');
+    if(!tr.on){ tStatus.className='status'; tStatus.textContent='Switch off: no current into the base, so the transistor blocks the big loop and the LED is dark.'; }
+    else if(r.sat){ tStatus.className='status good'; tStatus.textContent='Fully on. The base asks for '+(BETA*r.Ib*1000).toFixed(1)+' mA, but the LED and its resistor only allow '+(r.Ic*1000).toFixed(1)+' mA, so that\'s what flows.'; }
+    else { tStatus.className='status'; tStatus.textContent='Partly on: the LED current is the base current multiplied by '+BETA+'.'; }
+  }
+  function trSwitch(){
+    tr.on=!tr.on; tBtn.setAttribute('aria-pressed',tr.on?'true':'false'); tBtn.textContent='Switch: '+(tr.on?'on':'off'); tBtn.className=tr.on?'on':'';
+    document.getElementById('trArm').setAttribute('x2',tr.on?90:112); document.getElementById('trArm').setAttribute('y2',tr.on?120:114);
+    trUpdate();
+  }
+  tBtn.addEventListener('click',trSwitch); document.getElementById('trSw').addEventListener('click',trSwitch);
+  rb.addEventListener('change',trUpdate);
+  function drawTr(){}
+  trUpdate();
+
+  capReset(); drawCap();
+  if(reduce){
+    setInterval(function(){ for(var i=0;i<10;i++) capStep(0.02); drawCap(); },200);
+  } else requestAnimationFrame(loop);
+  window.addEventListener('resize',function(){ plot.width=0; drawCap(); });
+})();
+</script>
+
+</body>
+</html>
