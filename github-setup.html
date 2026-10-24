@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From a fresh machine to your first push: GitHub set up properly, keys and all — Iain Hoggan</title>
+<meta name="description" content="Install git, make an SSH key, turn on two-factor login without locking yourself out, set up a Python project with its own venv, check it before you push, then push. Every command shows what you should see in the terminal.">
+<link rel="canonical" href="https://ihoggan.github.io/github-setup.html">
+<meta property="og:site_name" content="Iain Hoggan">
+<meta property="og:locale" content="en_GB">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ihoggan.github.io/github-setup.html">
+<meta property="og:title" content="From a fresh machine to your first push">
+<meta property="og:description" content="GitHub set up properly: SSH keys, two-factor login you can't lose, a Python venv, and checks before every push. With what the terminal should say at each step.">
+<meta property="og:image" content="https://ihoggan.github.io/images/og-github-setup.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="From a fresh machine to your first push: GitHub set up properly, keys and all.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"From a fresh machine to your first push","description":"GitHub set up properly: SSH keys, two-factor login you can't lose, a Python venv, and checks before every push.","image":"https://ihoggan.github.io/images/og-github-setup.png","datePublished":"2026-10-24","dateModified":"2026-10-24","inLanguage":"en-GB","author":{"@type":"Person","name":"Iain Hoggan","url":"https://ihoggan.github.io/about.html"},"mainEntityOfPage":"https://ihoggan.github.io/github-setup.html"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+main.wrap{padding-top:52px;padding-bottom:40px}
+.standfirst{font-size:1.12rem;color:var(--ink-2);max-width:34em}
+.standfirst strong{color:var(--ink);font-weight:600}
+main section p{max-width:38em}
+main h2{max-width:18em;margin-bottom:14px}
+main h3{margin:26px 0 10px}
+main ul,main ol{max-width:36em;margin:0 0 16px 1.2em}
+main li{margin-bottom:6px}
+main p code,main li code{overflow-wrap:anywhere}
+pre{
+  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen));
+  border:1px solid #060B0E;border-radius:3px;box-shadow:inset 0 3px 12px rgba(0,0,0,.55);
+  color:#CFE3DA;font-family:var(--mono);font-size:13px;line-height:1.55;
+  padding:14px 16px;margin:18px 0 22px;max-width:40em;overflow-x:auto;white-space:pre;
+}
+pre .dim{color:#7F968D}
+pre .pr{color:var(--trace)}
+pre .hl{color:#E7B863}
+pre .ok{color:#7FE0B4}
+pre .bad{color:#F08A70}
+.label{display:block;font:600 10.5px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);margin:18px 0 -10px}
+.warn{border-left:3px solid var(--alarm);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.warn .tag{display:block;margin-bottom:4px;color:var(--alarm)}
+.warn p{margin:0}
+.warn p+p{margin-top:8px}
+.story{border-left:3px solid var(--ink-3);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.story .tag{display:block;margin-bottom:4px}
+.story p{margin:0}
+.story p+p{margin-top:8px}
+.takeaways{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:26px}
+.take{background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);border-radius:4px;padding:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.take h3{font-size:1rem;margin:0 0 8px}
+.take p{font-size:.94rem;color:var(--ink-2);margin:0}
+.ui{font-family:var(--mono);font-size:.84em;white-space:nowrap;
+  background:linear-gradient(180deg,#fff,var(--engrave));border:1px solid var(--bezel);
+  border-bottom-width:2px;border-radius:3px;padding:1px 6px;color:var(--ink)}
+.predict{border-left:3px solid var(--lamp);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.predict .tag{display:block;margin-bottom:4px;color:var(--lamp)}
+.predict p{margin:0}
+details.answer{max-width:38em;margin:10px 0 18px}
+details.answer summary{cursor:pointer;font:600 11px/1.4 var(--mono);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-2)}
+details.answer p{margin-top:8px}
+details.answer pre{margin-top:10px}
+.check{display:flex;gap:14px;align-items:flex-start;max-width:38em;margin:20px 0 6px;
+  border:1px solid var(--bezel);border-radius:4px;padding:14px 16px;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.check .tag{display:block;margin-bottom:4px;color:#2F8A63}
+.check p{margin:0;font-size:.97rem}
+.done{flex:none;margin-left:auto;align-self:center;cursor:pointer;
+  font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;
+  padding:9px 12px;border-radius:3px;border:1px solid var(--bezel);border-bottom-width:2px;
+  background:linear-gradient(180deg,#fff,var(--engrave));color:var(--ink-2)}
+.done[aria-pressed="true"]{background:linear-gradient(180deg,#6FD6AA,var(--trace));border-color:#2F8A63;color:#0B2A1E}
+.done:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.progress{margin-top:26px;max-width:30em}
+.progress .bar{height:10px;border-radius:5px;background:var(--screen);border:1px solid #060B0E;
+  box-shadow:inset 0 2px 6px rgba(0,0,0,.6);overflow:hidden}
+.progress .fill{height:100%;width:0;background:linear-gradient(90deg,#2F8A63,var(--trace));
+  box-shadow:0 0 10px rgba(87,199,154,.7);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.progress .read{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:8px}
+/* the three-locks diagram */
+.locks{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:44em;margin:22px 0 10px}
+.lock{background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen));
+  border:1px solid #060B0E;border-radius:4px;padding:14px;color:#CFE3DA;
+  box-shadow:inset 0 3px 12px rgba(0,0,0,.55)}
+.lock b{display:block;font:600 11px/1.3 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--trace);margin-bottom:6px}
+.lock span{display:block;font:12.5px/1.5 var(--mono);color:#A9BFB5}
+.lock .lose{margin-top:8px;color:#E7B863}
+.contents{columns:2;column-gap:28px;max-width:38em;margin:10px 0 0 1.2em}
+.contents li{break-inside:avoid}
+.read-next{border-top:1px solid var(--rule);padding:44px 0 8px}
+.read-next .card{margin-top:14px;max-width:640px}
+@media(max-width:600px){.locks{grid-template-columns:1fr}.contents{columns:1}}
+</style>
+</head>
+<body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html" aria-label="Home">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap col">
+    <p class="tag">Tutorial · Ubuntu · Git and GitHub · Beginners who've met the terminal</p>
+    <h1>From a fresh machine to your first push</h1>
+    <p class="standfirst">Most GitHub guides get you to <code>git push</code> and stop. Then one day the push fails, or the login screen wants a code and you can't remember where it lives. That happened to me, twice in one afternoon. This guide goes from an empty Ubuntu machine to a Python project on GitHub, and it spends as much time on <strong>the keys and codes that get you in</strong> as on the commands. After every command you'll see <strong>what the terminal should say back</strong>, so you know straight away if something's wrong.</p>
+    <div class="spec">
+      <div><b>10</b><span>steps</span></div>
+      <div><b>3</b><span>locks to keep</span></div>
+      <div><b>£0</b><span>to run</span></div>
+      <div><b>~1 hr</b><span>first time</span></div>
+    </div>
+    <div class="progress" aria-live="polite">
+      <div class="bar"><div class="fill" id="fill"></div></div>
+      <div class="read"><span class="tag" id="progress-text">0 of 10 steps done</span><span class="tag">Tick each check as you pass it</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap col">
+
+<section>
+  <p class="tag eyebrow">Before you start</p>
+  <h2>What you need, and how to read this page</h2>
+  <p>You need a computer running Ubuntu and a free GitHub account. If you haven't made the account yet, step 1 of <a href="website.html">Would you like a website like this?</a> walks you through it. You also need to be comfortable opening the terminal and reading the prompt. If you're not yet, <a href="terminal.html">Meet the terminal</a> takes twenty minutes.</p>
+  <p>The terminal boxes come in two kinds. Lines starting with <code>$</code> are what <em>you</em> type, without the <code>$</code>. Everything else is what the computer types back. Lines in <span style="color:var(--lamp);font-family:var(--mono);font-size:.9em">amber</span> are the bit worth looking at, and <span style="color:var(--ink-3);font-family:var(--mono);font-size:.9em"># grey notes</span> are mine.</p>
+  <p>I've swapped my real details for made-up ones. In the examples, the person is <code>yourname</code> on GitHub, the computer is called <code>my-pc</code>, and the project is <code>hello-github</code>. Wherever you see those, put in your own. Your numbers (versions, fingerprints, commit codes) will be different from mine. That's expected; what matters is the shape of the reply.</p>
+
+  <h3>The three locks</h3>
+  <p>Here's the idea that would have saved me an afternoon. Getting your work onto GitHub involves three separate locks, and each one has its own key. Lose track of any one and you're stuck.</p>
+  <div class="locks">
+    <div class="lock"><b>1 · Your password</b><span>Gets you into the GitHub website.</span><span class="lose">Keep it in a password manager.</span></div>
+    <div class="lock"><b>2 · Your 2FA code</b><span>The second check after the password: a six-digit code from an app on your phone.</span><span class="lose">Know which app. Keep the recovery codes.</span></div>
+    <div class="lock"><b>3 · Your SSH key</b><span>How your computer proves it's you when you push. No password involved.</span><span class="lose">One per computer. Check it's still on GitHub.</span></div>
+  </div>
+  <p>Locks 1 and 2 are for <em>you</em>, at the website. Lock 3 is for <em>your computer</em>, in the terminal. They don't know about each other, which is exactly why it's easy to fix one and still be locked out by another.</p>
+
+  <h3>The ten steps</h3>
+  <ol class="contents">
+    <li><a href="#s1">Install git and Python's venv tool</a></li>
+    <li><a href="#s2">Tell git who you are, privately</a></li>
+    <li><a href="#s3">Make an SSH key</a></li>
+    <li><a href="#s4">Give GitHub the key, and test it</a></li>
+    <li><a href="#s5">Turn on 2FA without locking yourself out</a></li>
+    <li><a href="#s6">Make a project with its own venv</a></li>
+    <li><a href="#s7">Choose what never gets shared</a></li>
+    <li><a href="#s8">Make your first commit</a></li>
+    <li><a href="#s9">Make the repository on GitHub</a></li>
+    <li><a href="#s10">Pre-flight checks, then push</a></li>
+  </ol>
+  <p>And if anything goes wrong, <a href="#wrong">When it goes wrong</a> has the errors I've actually hit, with what each one means.</p>
+</section>
+
+<!-- ============ STEP 1 ============ -->
+<section class="step" id="s1">
+  <p class="tag eyebrow">Step 1</p>
+  <h2>Install git and Python's venv tool</h2>
+  <p><strong>Git</strong> keeps the history of your project on your computer. <strong>GitHub</strong> is a website that keeps a copy of that history online. They're different things, and you need git first.</p>
+  <p>A fresh Ubuntu doesn't always have git, and it never has the tool Python needs to make a <em>virtual environment</em> (more on those in step 6). Install both:</p>
+<pre><span class="pr">$</span> sudo apt update
+<span class="pr">$</span> sudo apt install git python3-venv</pre>
+  <p><code>sudo</code> will ask for your password, which stays invisible as you type. That's normal. When it asks <code>Do you want to continue? [Y/n]</code>, press <span class="ui">Enter</span>.</p>
+  <p>Now check they're both there:</p>
+<pre><span class="pr">$</span> git --version
+<span class="hl">git version 2.43.0</span>
+<span class="pr">$</span> python3 --version
+<span class="hl">Python 3.12.3</span></pre>
+  <p>Any version number means it worked. If you see <code>Command 'git' not found</code>, the install didn't finish: scroll up and read the last few lines it printed.</p>
+  <div class="check" data-step="1">
+    <div><span class="tag">Check</span><p><code>git --version</code> and <code>python3 --version</code> both answer with a version number.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<!-- ============ STEP 2 ============ -->
+<section class="step" id="s2">
+  <p class="tag eyebrow">Step 2</p>
+  <h2>Tell git who you are, privately</h2>
+  <p>Every time you save a change in git (a <em>commit</em>), it stamps your name and email on it. On a public repository, anyone can read that stamp, forever. So don't use your real email.</p>
+  <p>GitHub gives every account a private stand-in address that still links commits to you. To find yours:</p>
+  <ol>
+    <li>On github.com, click your picture (top right), then <span class="ui">Settings</span> → <span class="ui">Emails</span>.</li>
+    <li>Tick <strong>Keep my email addresses private</strong>. Underneath, GitHub shows your stand-in address. It looks like <code>12345678+yourname@users.noreply.github.com</code>. Copy it.</li>
+    <li>Also tick <strong>Block command line pushes that expose my email</strong>. That's your safety net: if you ever commit with your real address by mistake, GitHub refuses the push instead of publishing it.</li>
+  </ol>
+  <p>Now tell git, using your own name and the address you just copied:</p>
+<pre><span class="pr">$</span> git config --global user.name "Your Name"
+<span class="pr">$</span> git config --global user.email "12345678+yourname@users.noreply.github.com"
+<span class="pr">$</span> git config --global init.defaultBranch main</pre>
+  <p>The third line names your main branch <code>main</code>, which is what GitHub expects. Skip it and older habits name it <code>master</code>, and step 10 fails with a confusing error. (I did that.)</p>
+  <p>These commands print nothing when they work. To see what git now knows:</p>
+<pre><span class="pr">$</span> git config --global --list
+user.name=Your Name
+<span class="hl">user.email=12345678+yourname@users.noreply.github.com</span>
+init.defaultbranch=main</pre>
+  <div class="check" data-step="2">
+    <div><span class="tag">Check</span><p>The email git shows ends in <code>@users.noreply.github.com</code>, and both boxes are ticked on GitHub's Emails page.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<!-- ============ STEP 3 ============ -->
+<section class="step" id="s3">
+  <p class="tag eyebrow">Step 3 · Lock 3</p>
+  <h2>Make an SSH key</h2>
+  <p>An SSH key is a pair of files. The <strong>private key</strong> stays on your computer and never leaves it. The <strong>public key</strong> is a copy you're happy to hand out: you give it to GitHub, and from then on GitHub can tell it's your computer knocking, without a password.</p>
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>Do you already have a key? Run <code>ls ~/.ssh</code>. If it lists <code>id_ed25519</code> and <code>id_ed25519.pub</code>, you do, and you should <strong>not</strong> make another: running the next command would overwrite it, and anything that used the old one stops working. Skip to step 4.</p>
+  </div>
+  <p>No key yet? Make one. The bit after <code>-C</code> is just a label, so use something that says which computer this is:</p>
+<pre><span class="pr">$</span> ssh-keygen -t ed25519 -C "you@my-pc"
+Generating public/private ed25519 key pair.
+Enter file in which to save the key (/home/you/.ssh/id_ed25519): <span class="dim"># press Enter</span>
+Enter passphrase (empty for no passphrase): <span class="dim"># see below</span>
+Enter same passphrase again:
+Your identification has been saved in /home/you/.ssh/id_ed25519
+<span class="hl">Your public key has been saved in /home/you/.ssh/id_ed25519.pub</span>
+The key fingerprint is:
+SHA256:Y0Gcrp3oJBnnFBQygxEqd57k7EysHNZHuft2QgcwHTA you@my-pc
+The key's randomart image is:
+<span class="dim">[ a small box of symbols: a picture of your key ]</span></pre>
+  <h3>The passphrase question</h3>
+  <p>A passphrase locks the private key itself. Without one, anyone who copies that file can push as you. I'd use one. On the Ubuntu desktop it's less of a chore than it sounds: the first time you use the key, a window asks for the passphrase and offers to unlock it whenever you log in, so you type it once per session. As with every password here, it goes in your password manager.</p>
+  <p>You won't see anything as you type it. That's normal.</p>
+  <div class="check" data-step="3">
+    <div><span class="tag">Check</span><p><code>ls ~/.ssh</code> shows both <code>id_ed25519</code> and <code>id_ed25519.pub</code>.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<!-- ============ STEP 4 ============ -->
+<section class="step" id="s4">
+  <p class="tag eyebrow">Step 4 · Lock 3</p>
+  <h2>Give GitHub the key, and test it</h2>
+  <p>Print the <em>public</em> half. Note the <code>.pub</code> on the end: that's the one you share.</p>
+<pre><span class="pr">$</span> cat ~/.ssh/id_ed25519.pub
+<span class="hl">ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHctPSz4M03SFbYMm4DoKrKkUlZYWVbpU8EwdzB5Pjpm you@my-pc</span></pre>
+  <div class="warn">
+    <span class="tag">The one that matters</span>
+    <p>Only ever copy the file ending <code>.pub</code>. The other one, without <code>.pub</code>, is the private key. It never goes on a website, in a chat, or in a repository. If you ever paste it anywhere, delete the key from GitHub and make a new pair.</p>
+  </div>
+  <ol>
+    <li>Select the whole line, from <code>ssh-ed25519</code> to your label, and copy it. In the Ubuntu terminal that's <span class="ui">Ctrl</span>+<span class="ui">Shift</span>+<span class="ui">C</span>, not Ctrl+C on its own.</li>
+    <li>On github.com: <span class="ui">Settings</span> → <span class="ui">SSH and GPG keys</span> → <span class="ui">New SSH key</span>.</li>
+    <li><strong>Title:</strong> the computer's name, like <code>my-pc</code>. <strong>Key type:</strong> leave it as Authentication Key. Paste into <strong>Key</strong>, then click <span class="ui">Add SSH key</span>. GitHub may ask for your 2FA code here.</li>
+  </ol>
+  <p>Now test it. The first time, your computer has never met GitHub, so it asks whether to trust it:</p>
+<pre><span class="pr">$</span> ssh -T git@github.com
+The authenticity of host 'github.com (140.82.121.4)' can't be established.
+ED25519 key fingerprint is <span class="hl">SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU</span>.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? <span class="dim"># type: yes</span>
+Warning: Permanently added 'github.com' (ED25519) to the list of known hosts.
+<span class="ok">Hi yourname! You've successfully authenticated, but GitHub does not provide shell access.</span></pre>
+  <p>Before typing <code>yes</code>, check that amber fingerprint against the one GitHub publishes on its <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints">SSH key fingerprints</a> page. If they match, you're talking to the real GitHub. Type the whole word <code>yes</code>; just <code>y</code> isn't accepted. The address in brackets may differ for you, and that's fine.</p>
+  <p>The last line is the one you want. "Does not provide shell access" sounds like an error, but it isn't: GitHub is saying "I know who you are, but there's nothing to log in to here."</p>
+  <details class="answer">
+    <summary>It said "Permission denied (publickey)" instead</summary>
+    <p>GitHub doesn't have this computer's key. Either it was never added, or it was pasted wrong, or it's been deleted. Compare the fingerprint of your key with the list on GitHub:</p>
+<pre><span class="pr">$</span> ssh-keygen -lf ~/.ssh/id_ed25519.pub
+256 SHA256:Y0Gcrp3oJBnnFBQygxEqd57k7EysHNZHuft2QgcwHTA you@my-pc (ED25519)</pre>
+    <p>GitHub's <span class="ui">SSH and GPG keys</span> page shows a fingerprint under each key. If yours isn't there, add it again.</p>
+  </details>
+  <div class="check" data-step="4">
+    <div><span class="tag">Check</span><p><code>ssh -T git@github.com</code> ends with <code>Hi yourname! You've successfully authenticated</code>, with your own GitHub name.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<!-- ============ STEP 5 ============ -->
+<section class="step" id="s5">
+  <p class="tag eyebrow">Step 5 · Lock 2</p>
+  <h2>Turn on 2FA without locking yourself out</h2>
+  <p>Two-factor authentication (2FA) means a password alone isn't enough to get into your account. You also need a six-digit code that changes every thirty seconds, from an authenticator app on your phone. GitHub expects most accounts to use it, and it's the single best protection your account has.</p>
+  <p>It's also the lock most likely to lock <em>you</em> out. Here's how mine did.</p>
+  <div class="story">
+    <span class="tag">What happened to me</span>
+    <p>While tidying up my GitHub account, I deleted old SSH keys I didn't recognise. One of them was my main computer's. The next push failed. To add the key back I had to log in to the website, and the website asked for my 2FA code.</p>
+    <p>I'd set up 2FA long before, and I couldn't remember where GitHub's code lived. For a few minutes I thought the account was gone. Then it came back to me which authenticator app I'd used, and the code was sitting there the whole time. Everything in this step is about making sure you never have those few minutes.</p>
+  </div>
+  <h3>Set it up</h3>
+  <ol>
+    <li>Install an authenticator app on your phone if you don't have one. Google Authenticator, Microsoft Authenticator and the authenticator built into many password managers all work.</li>
+    <li>On github.com: <span class="ui">Settings</span> → <span class="ui">Password and authentication</span> → <span class="ui">Enable two-factor authentication</span>.</li>
+    <li>Scan the QR code with the app, then type in the six-digit code it shows.</li>
+  </ol>
+  <h3>Then do the three things that stop a lock-out</h3>
+  <ol>
+    <li><strong>Save the recovery codes.</strong> GitHub shows you a set of one-use codes. Each one gets you in if you lose your phone. Put them in your password manager as a secure note. Not a screenshot in your camera roll, and not only on the phone you might lose.</li>
+    <li><strong>Write down which app holds the code.</strong> Next to the recovery codes, one line: "GitHub 2FA is in <em>this app</em>." It sounds daft. It's the line I didn't have.</li>
+    <li><strong>Add a second way in.</strong> Under <span class="ui">Passkeys</span>, add one on your phone. Then if the authenticator app is ever lost, you still have a way in that doesn't depend on it.</li>
+  </ol>
+  <div class="warn">
+    <span class="tag">Adding a passkey from Linux</span>
+    <p>If you try to add a passkey from a browser on Ubuntu, it may ask you to "insert your security key". That means a physical USB key, because Linux has nowhere built in to keep a passkey. Cancel it, and add the passkey from your phone's browser instead.</p>
+  </div>
+  <p>Finally, make sure the authenticator app itself is backed up. Most can sync to your account with that company. If it isn't backed up, a lost or replaced phone takes every code with it.</p>
+  <div class="check" data-step="5">
+    <div><span class="tag">Check</span><p>2FA is on, the recovery codes are in your password manager, you've written down which app holds the code, and you have a second way in.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<!-- ============ STEP 6 ============ -->
+<section class="step" id="s6">
+  <p class="tag eyebrow">Step 6</p>
+  <h2>Make a project with its own venv</h2>
+  <p>Python projects use add-ons, called <em>packages</em>. A <strong>virtual environment</strong> (venv) is a folder that holds one project's packages, separate from every other project and from Ubuntu's own Python. Each project gets its own, so upgrading something for one project can't break another.</p>
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>What do you think happens if you try to install a package straight into Ubuntu's Python, with no venv? Try it: <code>pip install requests</code>.</p>
+  </div>
+  <details class="answer">
+    <summary>What Ubuntu says</summary>
+<pre><span class="pr">$</span> pip install requests
+<span class="bad">error: externally-managed-environment</span>
+
+× This environment is externally managed
+<span class="dim">... (more lines) ...</span></pre>
+    <p>Ubuntu refuses, on purpose: its own tools depend on its Python, and it won't let you change it under them. A venv is the answer it's pointing you towards. (If <code>pip</code> isn't installed at all, you'll see <code>Command 'pip' not found</code> instead, which also makes the point.)</p>
+  </details>
+  <p>Make a folder for your code, then the project inside it:</p>
+<pre><span class="pr">$</span> mkdir -p ~/code/hello-github
+<span class="pr">$</span> cd ~/code/hello-github
+<span class="pr">$</span> python3 -m venv venv
+<span class="pr">$</span> ls
+<span class="hl">venv</span></pre>
+  <p>That made a folder called <code>venv</code> inside the project. I always call it exactly that and keep it inside the project folder, so once you're in the folder you never have to remember where it is.</p>
+  <details class="answer">
+    <summary>It said "ensurepip is not available"</summary>
+<pre><span class="bad">The virtual environment was not created successfully because ensurepip is not
+available.</span>  On Debian/Ubuntu systems, you need to install the python3-venv
+package using the following command.
+
+    apt install python3.12-venv</pre>
+    <p>The venv tool from step 1 isn't installed. Run <code>sudo apt install python3-venv</code>, then <code>rm -rf venv</code> to clear the half-made folder, and try again.</p>
+  </details>
+  <p>Now <em>switch it on</em>. Watch the prompt:</p>
+<pre><span class="pr">you@my-pc:~/code/hello-github$</span> source venv/bin/activate
+<span class="hl">(venv)</span> <span class="pr">you@my-pc:~/code/hello-github$</span> which python
+/home/you/code/hello-github/<span class="hl">venv</span>/bin/python</pre>
+  <p><code>(venv)</code> at the front of the prompt means it's on. <code>which python</code> proves it: Python now lives inside your project. Now packages install happily, and only into this project:</p>
+<pre><span class="hl">(venv)</span> <span class="pr">$</span> pip install requests
+<span class="dim">... Downloading ...</span>
+<span class="ok">Successfully installed certifi-2026.10.23 charset_normalizer-3.5.2 idna-3.20 requests-2.34.2 urllib3-2.8.0</span></pre>
+  <p>Write down what the project needs, so anyone (including you, on another computer) can rebuild the venv:</p>
+<pre><span class="hl">(venv)</span> <span class="pr">$</span> pip freeze > requirements.txt
+<span class="hl">(venv)</span> <span class="pr">$</span> cat requirements.txt
+certifi==2026.10.23
+charset-normalizer==3.5.2
+idna==3.20
+<span class="hl">requests==2.34.2</span>
+urllib3==2.8.0</pre>
+  <p>And a tiny program to have something worth saving. Open a file with <code>nano hello.py</code>, type this, then save with <span class="ui">Ctrl</span>+<span class="ui">O</span>, <span class="ui">Enter</span>, and leave with <span class="ui">Ctrl</span>+<span class="ui">X</span>:</p>
+<pre>import requests
+
+r = requests.get("https://api.github.com/zen", timeout=10)
+print("GitHub says:", r.text)</pre>
+<pre><span class="hl">(venv)</span> <span class="pr">$</span> python hello.py
+<span class="ok">GitHub says: Keep it logically awesome.</span></pre>
+  <p>GitHub sends back a random saying, so yours will differ. When you're done working, <code>deactivate</code> switches the venv off and <code>(venv)</code> disappears. Next time, <code>cd</code> into the project and <code>source venv/bin/activate</code> again.</p>
+  <div class="check" data-step="6">
+    <div><span class="tag">Check</span><p>Your prompt shows <code>(venv)</code>, <code>python hello.py</code> prints a saying, and <code>requirements.txt</code> lists <code>requests</code>.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<!-- ============ STEP 7 ============ -->
+<section class="step" id="s7">
+  <p class="tag eyebrow">Step 7</p>
+  <h2>Choose what never gets shared</h2>
+  <p>Not everything in the folder should go to GitHub. The <code>venv</code> folder is thousands of files that anyone can rebuild from <code>requirements.txt</code>. And later, you might keep passwords or keys for your program in a file called <code>.env</code>. Those must never leave your computer.</p>
+  <p>A file called <code>.gitignore</code> lists what git should pretend isn't there. Make it <strong>before</strong> your first commit, so nothing slips in:</p>
+<pre><span class="hl">(venv)</span> <span class="pr">$</span> nano .gitignore</pre>
+<pre><span class="dim"># the project's own Python, rebuilt from requirements.txt</span>
+venv/
+<span class="dim"># Python's scratch files</span>
+__pycache__/
+*.pyc
+<span class="dim"># secrets: passwords and keys for your program</span>
+.env</pre>
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>The folder now holds <code>venv</code>, <code>hello.py</code>, <code>requirements.txt</code> and <code>.gitignore</code>. When git looks in step 8, how many of those four will it see?</p>
+  </div>
+  <div class="check" data-step="7">
+    <div><span class="tag">Check</span><p><code>.gitignore</code> exists and lists <code>venv/</code> and <code>.env</code>.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<!-- ============ STEP 8 ============ -->
+<section class="step" id="s8">
+  <p class="tag eyebrow">Step 8</p>
+  <h2>Make your first commit</h2>
+  <p>Turn the folder into a git repository. This makes a hidden <code>.git</code> folder where the history will live:</p>
+<pre><span class="hl">(venv)</span> <span class="pr">$</span> git init
+Initialized empty Git repository in /home/you/code/hello-github/.git/
+<span class="hl">(venv)</span> <span class="pr">$</span> git status
+On branch <span class="hl">main</span>
+
+No commits yet
+
+Untracked files:
+  (use "git add &lt;file&gt;..." to include in what will be committed)
+	.gitignore
+	hello.py
+	requirements.txt
+
+nothing added to commit but untracked files present (use "git add" to track)</pre>
+  <p>There's the answer to step 7's question: <strong>three</strong>. <code>venv</code> isn't listed, because <code>.gitignore</code> told git to ignore it. And the branch says <code>main</code>, thanks to step 2.</p>
+  <p>A commit is a saved snapshot. You choose what goes in it with <code>git add</code>, then save it with a message saying what changed:</p>
+<pre><span class="hl">(venv)</span> <span class="pr">$</span> git add .
+<span class="hl">(venv)</span> <span class="pr">$</span> git status --short
+A  .gitignore
+A  hello.py
+A  requirements.txt
+<span class="hl">(venv)</span> <span class="pr">$</span> git commit -m "First commit: hello script, venv ignored"
+[main (root-commit) <span class="hl">3766dd1</span>] First commit: hello script, venv ignored
+ 3 files changed, 13 insertions(+)
+ create mode 100644 .gitignore
+ create mode 100644 hello.py
+ create mode 100644 requirements.txt</pre>
+  <p>The <code>A</code> means "added, ready to commit". The amber code is this commit's short ID; yours will be different. Always look at <code>git status</code> before committing. It's the moment to spot a file that shouldn't be there.</p>
+  <div class="check" data-step="8">
+    <div><span class="tag">Check</span><p><code>git log --oneline</code> shows one commit, and the files in it don't include <code>venv</code>.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<!-- ============ STEP 9 ============ -->
+<section class="step" id="s9">
+  <p class="tag eyebrow">Step 9</p>
+  <h2>Make the repository on GitHub</h2>
+  <p>Your project has a history now, but only on your computer. Make an empty home for it on GitHub:</p>
+  <ol>
+    <li>On github.com, click <span class="ui">+</span> (top right) → <span class="ui">New repository</span>.</li>
+    <li><strong>Repository name:</strong> <code>hello-github</code>, the same as your folder.</li>
+    <li><strong>Public or Private:</strong> your choice. Public means anyone can read it. If you're not sure, pick Private; you can change it later.</li>
+    <li>Leave <strong>Add a README</strong>, <strong>.gitignore</strong> and <strong>license</strong> all switched <strong>off</strong>. You've already got your own files, and if GitHub makes some too, the two copies start out different and your first push gets rejected.</li>
+    <li>Click <span class="ui">Create repository</span>.</li>
+  </ol>
+  <p>GitHub shows a page of instructions. Make sure <span class="ui">SSH</span> is selected at the top (not HTTPS), and you'll see an address like <code>git@github.com:yourname/hello-github.git</code>. Tell your project about it. <code>origin</code> is the usual nickname for "my copy on GitHub":</p>
+<pre><span class="hl">(venv)</span> <span class="pr">$</span> git remote add origin git@github.com:yourname/hello-github.git
+<span class="hl">(venv)</span> <span class="pr">$</span> git remote -v
+origin	<span class="hl">git@github.com</span>:yourname/hello-github.git (fetch)
+origin	<span class="hl">git@github.com</span>:yourname/hello-github.git (push)</pre>
+  <p>Check it starts <code>git@github.com</code>. If it starts <code>https://</code> instead, pushing will ask for a username and password, and GitHub doesn't accept your password there. Fix it with <code>git remote set-url origin git@github.com:yourname/hello-github.git</code>.</p>
+  <div class="check" data-step="9">
+    <div><span class="tag">Check</span><p>The repository exists on GitHub, empty, and <code>git remote -v</code> shows an address starting <code>git@github.com</code>.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<!-- ============ STEP 10 ============ -->
+<section class="step" id="s10">
+  <p class="tag eyebrow">Step 10</p>
+  <h2>Pre-flight checks, then push</h2>
+  <p>Pilots don't take off and then wonder whether there's fuel. A push is the same: once it's on GitHub, and especially on a public repository, you can't fully take it back. So before every push, I run through four checks. They take a minute.</p>
+
+  <span class="label">1 · Can this computer still get in?</span>
+<pre><span class="hl">(venv)</span> <span class="pr">$</span> ssh -T git@github.com
+<span class="ok">Hi yourname! You've successfully authenticated, but GitHub does not provide shell access.</span></pre>
+  <p>This is the check that would have caught my deleted key before the push failed, instead of after.</p>
+
+  <span class="label">2 · Is everything I meant to save actually committed?</span>
+<pre><span class="hl">(venv)</span> <span class="pr">$</span> git status
+On branch main
+<span class="ok">nothing to commit, working tree clean</span></pre>
+  <p>Anything listed here isn't in a commit, so it won't go up. That's fine if you meant it; it's a surprise if you didn't.</p>
+
+  <span class="label">3 · Does what I'm sending contain anything private?</span>
+<pre><span class="hl">(venv)</span> <span class="pr">$</span> git show --stat
+<span class="dim">... the commit message, then every file in it ...</span>
+<span class="hl">(venv)</span> <span class="pr">$</span> git log --format='%an &lt;%ae&gt;'
+Your Name &lt;<span class="hl">12345678+yourname@users.noreply.github.com</span>&gt;</pre>
+  <p>Read the list of files. Is there a <code>.env</code>, a key, a photo, a file with your address in it? And is every email the noreply one? If something private is there, <em>don't push</em>: removing it in a new commit doesn't help, because the old commit still contains it. Ask for help first, or for a brand-new project, start the repository again without it.</p>
+
+  <span class="label">4 · Has GitHub got anything I haven't?</span>
+<pre><span class="hl">(venv)</span> <span class="pr">$</span> git fetch
+<span class="hl">(venv)</span> <span class="pr">$</span> git status
+On branch main
+Your branch is up to date with 'origin/main'.</pre>
+  <p>On your very first push there's nothing to fetch yet, and <code>git status</code> won't mention <code>origin</code> at all. That's fine. From the second push on, if it says your branch is <em>behind</em>, run <code>git pull</code> first.</p>
+
+  <h3>Take off</h3>
+  <p>The first push needs <code>-u origin main</code>, which links your <code>main</code> to GitHub's. After that, plain <code>git push</code> is enough:</p>
+<pre><span class="hl">(venv)</span> <span class="pr">$</span> git push -u origin main
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (5/5), 512 bytes | 512.00 KiB/s, done.
+Total 5 (delta 0), reused 0 (delta 0), pack-reused 0
+To github.com:yourname/hello-github.git
+ <span class="ok">* [new branch]      main -> main</span>
+branch 'main' set up to track 'origin/main'.</pre>
+  <p><code>[new branch] main -> main</code> means it landed. Reload the repository page on GitHub: you should see <code>.gitignore</code>, <code>hello.py</code> and <code>requirements.txt</code>. And no <code>venv</code>.</p>
+  <div class="check" data-step="10">
+    <div><span class="tag">Check</span><p>Your three files are on GitHub, <code>venv</code> isn't, and the commit shows your name.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+
+  <h3>Every time after this</h3>
+  <p>The whole cycle, once it's set up:</p>
+<pre><span class="pr">$</span> cd ~/code/hello-github
+<span class="pr">$</span> source venv/bin/activate
+<span class="dim"># ... change some files ...</span>
+<span class="pr">$</span> git status
+<span class="pr">$</span> git add .
+<span class="pr">$</span> git commit -m "Say what you changed"
+<span class="dim"># the four pre-flight checks, then:</span>
+<span class="pr">$</span> git push</pre>
+</section>
+
+<!-- ============ TROUBLESHOOTING ============ -->
+<section id="wrong">
+  <p class="tag eyebrow">When it goes wrong</p>
+  <h2>The errors I've actually hit</h2>
+  <p>Git's error messages look frightening, but most say exactly what's wrong once you know how to read them. These are the ones I've met, in roughly the order you'll meet them.</p>
+
+  <details class="answer">
+    <summary>Permission denied (publickey)</summary>
+<pre><span class="bad">git@github.com: Permission denied (publickey).</span>
+fatal: Could not read from remote repository.</pre>
+    <p>GitHub doesn't recognise this computer's key (lock 3). It was never added, was pasted wrong, or has been deleted, which is what happened to me. Go back to step 4: compare fingerprints, and add the key again if it's missing.</p>
+  </details>
+
+  <details class="answer">
+    <summary>The website wants a 2FA code and I can't find it</summary>
+    <p>Breathe. Work through these in order:</p>
+    <ol>
+      <li>Open every authenticator app on your phone and look for GitHub. Mine was there all along; I'd just forgotten which app I'd used.</li>
+      <li>Use a recovery code from your password manager. Each works once.</li>
+      <li>Use a passkey, if you added one.</li>
+      <li>If none of those work, look under "Locked out?" on the code screen for account recovery. GitHub can check it's you using an SSH key it already knows, which is another reason to keep each computer's key on your account.</li>
+    </ol>
+    <p>GitHub support can't switch 2FA off for you. That's the whole point of it. So step 5 isn't optional.</p>
+  </details>
+
+  <details class="answer">
+    <summary>error: src refspec main does not match any</summary>
+<pre><span class="bad">error: src refspec main does not match any</span>
+error: failed to push some refs to 'github.com:yourname/hello-github.git'</pre>
+    <p>Git can't find a branch called <code>main</code> to send. Either there are no commits yet (go back to step 8), or your branch is called <code>master</code> because <code>init.defaultBranch</code> wasn't set before <code>git init</code>. Check with <code>git branch</code>. To rename it: <code>git branch -m master main</code>.</p>
+  </details>
+
+  <details class="answer">
+    <summary>! [rejected] main -> main (fetch first)</summary>
+<pre> <span class="bad">! [rejected]        main -> main (fetch first)</span>
+error: failed to push some refs to 'github.com:yourname/hello-github.git'
+hint: Updates were rejected because the remote contains work that you do not
+hint: have locally.</pre>
+    <p>GitHub has a commit you don't, usually because the README box was ticked in step 9, or you edited a file on the website. Bring it down first, then push: <code>git pull --rebase</code>, then <code>git push</code>.</p>
+  </details>
+
+  <details class="answer">
+    <summary>error: remote origin already exists</summary>
+    <p>You've already told this project where GitHub is. Check what it's set to with <code>git remote -v</code>. If it's wrong, change it with <code>git remote set-url origin git@github.com:yourname/hello-github.git</code>.</p>
+  </details>
+
+  <details class="answer">
+    <summary>GH007: Your push would publish a private email address</summary>
+    <p>That's the safety net from step 2 working. A commit carries your real email. Set the noreply address (step 2), then fix the last commit's stamp with <code>git commit --amend --reset-author --no-edit</code>, and push again. If several commits are affected, ask for help before rewriting them.</p>
+  </details>
+
+  <details class="answer">
+    <summary>A program wants "additional permissions" on GitHub</summary>
+    <p>If you use GitHub's own command-line tool, <code>gh</code>, it sometimes opens a browser page asking for more access. Before you click <span class="ui">Authorize</span>, check three things: the address bar says <code>github.com</code>, the time of the request matches when you just ran the command, and the new permission is the one you need for what you're doing. If any of those don't match, click <span class="ui">Cancel</span>. When you're finished, you can take extra permissions away again with <code>gh auth refresh -r</code> followed by the permission's name.</p>
+  </details>
+</section>
+
+<section>
+  <p class="tag eyebrow">That's it</p>
+  <h2>What I'd want you to take away</h2>
+  <div class="takeaways">
+    <div class="take"><h3>Three locks, three keys</h3><p>Password, 2FA code, SSH key. Know where each one lives before you need it, not while you're locked out.</p></div>
+    <div class="take"><h3>Write down which app</h3><p>One line in your password manager, next to the recovery codes. The cheapest fix in this whole guide.</p></div>
+    <div class="take"><h3>Look before you push</h3><p>Four checks, one minute. A public push is permanent, and the history keeps what you delete.</p></div>
+    <div class="take"><h3>Read the reply</h3><p>Every command answers you. Knowing what it should say is how you spot what's gone wrong.</p></div>
+  </div>
+</section>
+
+</main>
+
+<section class="read-next">
+  <div class="wrap col">
+    <p class="tag">Where to go next</p>
+    <a class="card" href="website.html">
+      <h3>Would you like a website like this?</h3>
+      <p>Now you can push, put a free website on GitHub Pages. Same account, same commands.</p>
+      <span class="go">Read &rarr;</span>
+    </a>
+    <a class="card" href="secure-ubuntu.html">
+      <h3>Securing Ubuntu</h3>
+      <p>Your computer holds the private key now. Six questions to make sure the machine itself is locked down too.</p>
+      <span class="go">Read &rarr;</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">← Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="contact.html">Get in touch</a>
+    <span class="tag">© 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var KEY='github-setup-steps';
+  var buttons=[].slice.call(document.querySelectorAll('.check .done'));
+  var saved={};
+  try{ saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){ saved={}; }
+  function update(){
+    var n=buttons.filter(function(b){return b.getAttribute('aria-pressed')==='true';}).length;
+    document.getElementById('fill').style.width=(n/buttons.length*100)+'%';
+    document.getElementById('progress-text').textContent=
+      n===buttons.length ? 'All 10 done. Your work is on GitHub.' : n+' of '+buttons.length+' steps done';
+  }
+  buttons.forEach(function(b){
+    var s=b.parentNode.getAttribute('data-step');
+    if(saved[s]){ b.setAttribute('aria-pressed','true'); b.textContent='Done ✓'; }
+    b.addEventListener('click',function(){
+      var on=b.getAttribute('aria-pressed')!=='true';
+      b.setAttribute('aria-pressed',on?'true':'false');
+      b.textContent=on?'Done ✓':'Done';
+      saved[s]=on;
+      try{ localStorage.setItem(KEY,JSON.stringify(saved)); }catch(e){}
+      update();
+    });
+  });
+  update();
+})();
+</script>
+
+</body>
+</html>
