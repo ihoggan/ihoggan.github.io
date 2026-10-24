@@ -364,10 +364,10 @@ footer{border-top:1px solid var(--rule);background:linear-gradient(180deg,var(--
     <div>
       <p class="tag">Network technician · UK</p>
       <h1>Old kit.<br><em>New tricks.</em></h1>
-      <p class="lede">I build things on hardware other people throw away, and I measure them, including when the measurement says I'm wrong. <strong>Latest: a 2015 desktop PC that was headed for scrap now runs a local AI, and characters that remember me.</strong></p>
+      <p class="lede">I build things on hardware other people throw away, and I measure them, including when the measurement says I'm wrong. <strong>Free, hands-on guides you can try in your browser, and honest write-ups of what I built and what went wrong.</strong></p>
       <div class="hero-cta">
-        <a class="btn btn-primary" href="reclaim.html">Read: saved from the scrap pile</a>
-        <a class="btn" href="#bench">Everything else</a>
+        <a class="btn btn-primary" href="#learn">Start learning</a>
+        <a class="btn" href="reclaim.html">Read: saved from the scrap pile</a>
       </div>
       <p class="tag" style="margin-top:22px">Or try the panel: drag the learning rate past 1.00 and watch training fall apart.</p>
     </div>
@@ -401,20 +401,32 @@ footer{border-top:1px solid var(--rule);background:linear-gradient(180deg,var(--
 
 <main class="bench wrap" id="bench">
   <div class="bench-head" id="new">
-    <h2>New</h2>
-    <p>Two guides from one afternoon of being locked out of my own account, and what it took to make sure it can't happen again.</p>
+    <h2>Latest</h2>
+    <p>The newest pages on the site, all added in October 2026.</p>
   </div>
   <div class="grid grid-new">
-    <a class="card" href="github-setup.html">
-      <div class="card-tag"><span class="dot" aria-hidden="true"></span><span class="tag">Tutorial · Git and GitHub</span><span class="tag when">Oct 2026</span></div>
-      <h3>From a fresh machine to your first push</h3>
-      <p>Install git, make an SSH key, turn on two-factor login without locking yourself out, set up a Python venv, and check before every push. With what the terminal should say at every step.</p>
+    <a class="card" href="word-map.html">
+      <div class="card-tag"><span class="dot" aria-hidden="true"></span><span class="tag">Tutorial · AI · in your browser</span></div>
+      <h3>Where does &ldquo;dog&rdquo; live?</h3>
+      <p>Watch a machine learn where every word belongs on a map, then teach it a new animal from one sentence and see what it guesses.</p>
+      <span class="go">Open →</span>
+    </a>
+    <a class="card" href="electronics-2.html">
+      <div class="card-tag"><span class="dot" aria-hidden="true"></span><span class="tag">Study guide · Electronics · part two</span></div>
+      <h3>Stripes, storage and switches</h3>
+      <p>Read a resistor's stripes, make an LED fade out with a capacitor, and let a tiny current switch a big one with a transistor.</p>
       <span class="go">Read →</span>
     </a>
     <a class="card" href="account-audit.html">
-      <div class="card-tag"><span class="dot" aria-hidden="true"></span><span class="tag">Guide · Your accounts</span><span class="tag when">Oct 2026</span></div>
+      <div class="card-tag"><span class="dot" aria-hidden="true"></span><span class="tag">Guide · Your accounts</span></div>
       <h3>Who holds the keys to your life?</h3>
-      <p>A security clean-up of your own accounts, in the order that works: your email first, one home for passwords, know where your codes live, then close the rest. No terminal needed.</p>
+      <p>A security clean-up of your own accounts, in the order that works: email first, one home for passwords, then close the rest.</p>
+      <span class="go">Read →</span>
+    </a>
+    <a class="card" href="github-setup.html">
+      <div class="card-tag"><span class="dot" aria-hidden="true"></span><span class="tag">Tutorial · Git and GitHub</span></div>
+      <h3>From a fresh machine to your first push</h3>
+      <p>SSH keys, two-factor login you can't lose, a Python venv and checks before every push, with what the terminal should say at each step.</p>
       <span class="go">Read →</span>
     </a>
   </div>
@@ -475,13 +487,22 @@ footer{border-top:1px solid var(--rule);background:linear-gradient(180deg,var(--
       <div class="path-head">
         <span class="tag">Path · Linux</span>
         <h3>From first command to your own network</h3>
-        <p>Open a terminal, lock down a machine, then understand the network it lives on.</p>
+        <p>Open a terminal and find your way around, then understand the network your machine lives on.</p>
       </div>
       <div class="path-steps">
         <a class="pstep" href="terminal.html"><span class="n">1</span><span><b>Meet the terminal</b><span class="meta">~20 min · complete beginners</span><span class="what">Open it, read what the prompt tells you, and move around. With a practice terminal.</span><span class="start">Start here</span></span></a>
-        <a class="pstep" href="secure-ubuntu.html"><span class="n">2</span><span><b>Securing Ubuntu</b><span class="meta">~1 hr · six questions</span><span class="what">Six questions for your own machine. Watch a firewall block your phone.</span></span></a>
-        <a class="pstep" href="account-audit.html"><span class="n">3</span><span><b>Who holds the keys to your life?</b><span class="meta">a few evenings · no terminal needed</span><span class="what">Audit your own accounts: email first, one home for passwords, close the rest.</span></span></a>
-        <a class="pstep" href="networking.html"><span class="n">4</span><span><b>How networks work</b><span class="meta">~1 hr · home, then office</span><span class="what">Take your router apart with five commands, then scale it up to an office.</span></span></a>
+        <a class="pstep" href="networking.html"><span class="n">2</span><span><b>How networks work</b><span class="meta">~1 hr · home, then office</span><span class="what">Take your router apart with five commands, then scale it up to an office.</span></span></a>
+      </div>
+    </div>
+    <div class="path">
+      <div class="path-head">
+        <span class="tag">Path · Security</span>
+        <h3>Lock your own doors</h3>
+        <p>Start with your accounts, no technical skills needed. Then the computer you use them on.</p>
+      </div>
+      <div class="path-steps">
+        <a class="pstep" href="account-audit.html"><span class="n">1</span><span><b>Who holds the keys to your life?</b><span class="meta">a few evenings · no terminal</span><span class="what">Audit your own accounts: email first, one home for passwords, close the rest.</span><span class="start">Start here</span></span></a>
+        <a class="pstep" href="secure-ubuntu.html"><span class="n">2</span><span><b>Securing Ubuntu</b><span class="meta">~1 hr · after Meet the terminal</span><span class="what">Six questions for your own machine. Watch a firewall block your phone.</span></span></a>
       </div>
     </div>
     <div class="path">
