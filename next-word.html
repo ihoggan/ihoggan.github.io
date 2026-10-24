@@ -411,7 +411,7 @@ details.answer p{margin-top:8px}
   </details>
 
   <p>So the machine we actually need is one that can make a sensible guess in a situation it has <strong>never met</strong>. It has to notice that "dog" behaves like "cat", so that what it learned about one carries over to the other. And it has to look a long way back without needing a table row for every possible history.</p>
-  <p>That machine is called a <strong>transformer</strong>, and it's what sits inside the AI chatbots you've heard of. The first thing it does differently is the answer to the cat-and-dog problem: it stops treating words as marks, and turns each one into a short list of numbers that it <em>learns</em>, so that similar words end up with similar numbers. That's the next step on this path, and I'm writing it now.</p>
+  <p>That machine is called a <strong>transformer</strong>, and it's what sits inside the AI chatbots you've heard of. The first thing it does differently is the answer to the cat-and-dog problem: it stops treating words as marks, and turns each one into a short list of numbers that it <em>learns</em>, so that similar words end up with similar numbers. That's the next step on this path: <a href="word-map.html">Where does &ldquo;dog&rdquo; live?</a></p>
   <p>The counting table doesn't go away, though. It's the best yardstick there is. When I trained my first model on Shakespeare, I set a counting table beside it, one that looks back three letters. <strong>My model lost.</strong> It took a better way of cutting up the text, and then a bigger model, before the transformer pulled clear. If a clever machine can't beat counting, it hasn't learned much, and it's worth knowing that before anyone tells you how clever it is.</p>
 
   <div class="check" data-step="5">
@@ -446,9 +446,14 @@ details.answer p{margin-top:8px}
 <section class="read-next">
   <div class="wrap col">
     <p class="tag">On the same path</p>
+    <a class="card" href="word-map.html">
+      <h3>Next: Where does &ldquo;dog&rdquo; live?</h3>
+      <p>Give every word a place on a map, let the machine learn where each belongs, then teach it a new animal from one sentence.</p>
+      <span class="go">Open &rarr;</span>
+    </a>
     <a class="card" href="neural_playground.html">
       <h3>S.M.A.R.T.: watch one neuron learn</h3>
-      <p>The next page turns words into numbers that are learned. This is what "learned" means: a single neuron finding a hidden pattern, and the one setting that makes it fall apart.</p>
+      <p>What "learned" means: a single neuron finding a hidden pattern, and the one setting that makes it fall apart.</p>
       <span class="go">Open &rarr;</span>
     </a>
   </div>
