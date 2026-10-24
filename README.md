@@ -2,7 +2,7 @@
 
 The source of my site: **https://ihoggan.github.io/**
 
-I'm Iain Hoggan, a network technician on the Wirral. I build things on hardware other people throw away, and I measure them honestly, including when the measurement says I'm wrong.
+I'm Iain Hoggan, a network technician in the UK. I build things on hardware other people throw away, and I measure them honestly, including when the measurement says I'm wrong.
 
 ## What's on it
 
