@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Who holds the keys to your life? A security clean-up of your own accounts — Iain Hoggan</title>
+<meta name="description" content="A step-by-step audit of your own online accounts: lock your email first, move passwords into one place, find forgotten accounts, know where your 2FA codes live, close what you don't use, clear the inbox, and back up safely.">
+<link rel="canonical" href="https://ihoggan.github.io/account-audit.html">
+<meta property="og:site_name" content="Iain Hoggan">
+<meta property="og:locale" content="en_GB">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ihoggan.github.io/account-audit.html">
+<meta property="og:title" content="Who holds the keys to your life?">
+<meta property="og:description" content="A security clean-up of your own accounts, in the order that works: email first, then passwords, 2FA, old accounts and the inbox.">
+<meta property="og:image" content="https://ihoggan.github.io/images/og-account-audit.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Who holds the keys to your life? A security clean-up of your own accounts.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Who holds the keys to your life?","description":"A security clean-up of your own accounts, in the order that works: email first, then passwords, 2FA, old accounts and the inbox.","image":"https://ihoggan.github.io/images/og-account-audit.png","datePublished":"2026-10-24","dateModified":"2026-10-24","inLanguage":"en-GB","author":{"@type":"Person","name":"Iain Hoggan","url":"https://ihoggan.github.io/about.html"},"mainEntityOfPage":"https://ihoggan.github.io/account-audit.html"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+main.wrap{padding-top:52px;padding-bottom:40px}
+.standfirst{font-size:1.12rem;color:var(--ink-2);max-width:34em}
+.standfirst strong{color:var(--ink);font-weight:600}
+main section p{max-width:38em}
+main h2{max-width:18em;margin-bottom:14px}
+main h3{margin:26px 0 10px}
+main ul,main ol{max-width:36em;margin:0 0 16px 1.2em}
+main li{margin-bottom:6px}
+main p code,main li code{overflow-wrap:anywhere}
+pre{
+  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen));
+  border:1px solid #060B0E;border-radius:3px;box-shadow:inset 0 3px 12px rgba(0,0,0,.55);
+  color:#CFE3DA;font-family:var(--mono);font-size:13px;line-height:1.55;
+  padding:14px 16px;margin:18px 0 22px;max-width:40em;overflow-x:auto;white-space:pre;
+}
+pre .dim{color:#7F968D}
+pre .pr{color:var(--trace)}
+pre .hl{color:#E7B863}
+pre .ok{color:#7FE0B4}
+pre .bad{color:#F08A70}
+.label{display:block;font:600 10.5px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);margin:18px 0 -10px}
+.warn{border-left:3px solid var(--alarm);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.warn .tag{display:block;margin-bottom:4px;color:var(--alarm)}
+.warn p{margin:0}
+.warn p+p{margin-top:8px}
+.story{border-left:3px solid var(--ink-3);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.story .tag{display:block;margin-bottom:4px}
+.story p{margin:0}
+.story p+p{margin-top:8px}
+.takeaways{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:26px}
+.take{background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);border-radius:4px;padding:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.take h3{font-size:1rem;margin:0 0 8px}
+.take p{font-size:.94rem;color:var(--ink-2);margin:0}
+.ui{font-family:var(--mono);font-size:.84em;white-space:nowrap;
+  background:linear-gradient(180deg,#fff,var(--engrave));border:1px solid var(--bezel);
+  border-bottom-width:2px;border-radius:3px;padding:1px 6px;color:var(--ink)}
+.predict{border-left:3px solid var(--lamp);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.predict .tag{display:block;margin-bottom:4px;color:var(--lamp)}
+.predict p{margin:0}
+details.answer{max-width:38em;margin:10px 0 18px}
+details.answer summary{cursor:pointer;font:600 11px/1.4 var(--mono);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-2)}
+details.answer p{margin-top:8px}
+details.answer pre{margin-top:10px}
+.check{display:flex;gap:14px;align-items:flex-start;max-width:38em;margin:20px 0 6px;
+  border:1px solid var(--bezel);border-radius:4px;padding:14px 16px;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.check .tag{display:block;margin-bottom:4px;color:#2F8A63}
+.check p{margin:0;font-size:.97rem}
+.done{flex:none;margin-left:auto;align-self:center;cursor:pointer;
+  font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;
+  padding:9px 12px;border-radius:3px;border:1px solid var(--bezel);border-bottom-width:2px;
+  background:linear-gradient(180deg,#fff,var(--engrave));color:var(--ink-2)}
+.done[aria-pressed="true"]{background:linear-gradient(180deg,#6FD6AA,var(--trace));border-color:#2F8A63;color:#0B2A1E}
+.done:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.progress{margin-top:26px;max-width:30em}
+.progress .bar{height:10px;border-radius:5px;background:var(--screen);border:1px solid #060B0E;
+  box-shadow:inset 0 2px 6px rgba(0,0,0,.6);overflow:hidden}
+.progress .fill{height:100%;width:0;background:linear-gradient(90deg,#2F8A63,var(--trace));
+  box-shadow:0 0 10px rgba(87,199,154,.7);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.progress .read{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:8px}
+/* the three-locks diagram */
+.locks{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:44em;margin:22px 0 10px}
+.lock{background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen));
+  border:1px solid #060B0E;border-radius:4px;padding:14px;color:#CFE3DA;
+  box-shadow:inset 0 3px 12px rgba(0,0,0,.55)}
+.lock b{display:block;font:600 11px/1.3 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--trace);margin-bottom:6px}
+.lock span{display:block;font:12.5px/1.5 var(--mono);color:#A9BFB5}
+.lock .lose{margin-top:8px;color:#E7B863}
+.contents{columns:2;column-gap:28px;max-width:38em;margin:10px 0 0 1.2em}
+.contents li{break-inside:avoid}
+.read-next{border-top:1px solid var(--rule);padding:44px 0 8px}
+.read-next .card{margin-top:14px;max-width:640px}
+@media(max-width:600px){.locks{grid-template-columns:1fr}.contents{columns:1}}
+</style></head>
+<body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html" aria-label="Home">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap col">
+    <p class="tag">Guide · Your accounts · No experience needed</p>
+    <h1>Who holds the keys to your life?</h1>
+    <p class="standfirst">Most of us have more online accounts than we could name, and every one is a door with our details behind it. I spent a few weeks this autumn going through all of mine: finding them, locking the ones I keep and closing the rest. This guide is that audit, in the order that works, so you can do it on your own accounts. <strong>You don't need to be technical</strong>, and you don't need to do it in one go.</p>
+    <div class="spec">
+      <div><b>8</b><span>steps</span></div>
+      <div><b>1</b><span>master key</span></div>
+      <div><b>£0</b><span>to do</span></div>
+      <div><b>A few</b><span>evenings</span></div>
+    </div>
+    <div class="progress" aria-live="polite">
+      <div class="bar"><div class="fill" id="fill"></div></div>
+      <div class="read"><span class="tag" id="progress-text">0 of 8 steps done</span><span class="tag">Tick each check as you pass it</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap col">
+
+<section>
+  <p class="tag eyebrow">Before you start</p>
+  <h2>Why the order matters</h2>
+  <p>Think about what happens when you click "Forgot password?" on almost any website. It sends a link to your email. So whoever can get into your email can get into nearly everything else, one reset at a time. <strong>Your email account is the master key</strong>, and that decides the order of this whole guide.</p>
+  <div class="locks">
+    <div class="lock"><b>Your email</b><span>Password resets for almost everything land here.</span><span class="lose">Lock this first.</span></div>
+    <div class="lock"><b>Your password manager</b><span>Where every other password lives, once you've moved them.</span><span class="lose">Lock this second.</span></div>
+    <div class="lock"><b>Everything else</b><span>Shops, games, forums, apps you tried once in 2014.</span><span class="lose">Keep it, lock it, or close it.</span></div>
+  </div>
+  <p>Two words you'll see a lot:</p>
+  <ul>
+    <li><strong>Password manager:</strong> an app that remembers a different, long, random password for every account, so you only have to remember one. There are good free ones, and most work on both your phone and your computer.</li>
+    <li><strong>2FA</strong> (two-factor authentication): after your password, the site asks for a second thing, usually a six-digit code from an <em>authenticator app</em> on your phone. Someone who steals your password still can't get in without your phone.</li>
+  </ul>
+  <div class="warn">
+    <span class="tag">Two rules for the whole audit</span>
+    <p><strong>Your list of accounts lives in your password manager</strong>, nowhere else. Not a spreadsheet, not a note on your phone, not a web page. A list of where you have accounts is a map for anyone trying to break in.</p>
+    <p><strong>One thing at a time.</strong> Change a password, check you can still get in, then move on. Changing five things at once is how people lock themselves out. I nearly did, and I wrote about it in <a href="github-setup.html#s5">the GitHub guide</a>.</p>
+  </div>
+  <h3>The eight steps</h3>
+  <ol class="contents">
+    <li><a href="#s1">Lock your main email</a></li>
+    <li><a href="#s2">Pick one home for passwords</a></li>
+    <li><a href="#s3">Find every account you have</a></li>
+    <li><a href="#s4">Sweep up your old passwords</a></li>
+    <li><a href="#s5">Know where your 2FA codes live</a></li>
+    <li><a href="#s6">Close what you don't use</a></li>
+    <li><a href="#s7">Empty the inbox</a></li>
+    <li><a href="#s8">Look yourself up, and back up</a></li>
+  </ol>
+</section>
+
+<!-- ============ STEP 1 ============ -->
+<section class="step" id="s1">
+  <p class="tag eyebrow">Step 1 · The master key</p>
+  <h2>Lock your main email</h2>
+  <p>If you have more than one email address, start with the one most accounts use. Sign in on a computer, open its account or security settings, and work down this list.</p>
+  <ol>
+    <li><strong>A new password</strong> that you've never used anywhere else. Long beats clever: four or five random words strung together is strong and you can actually type it.</li>
+    <li><strong>Turn on 2FA</strong> with an authenticator app. Text-message codes are better than nothing, but an app is better, because phone numbers can be stolen.</li>
+    <li><strong>Save the backup codes.</strong> Turning on 2FA gives you a set of one-use codes for when you lose your phone. Keep them somewhere you'll be able to reach without that phone. Step 2's password manager is the right place, so write them on paper for now and move them in tomorrow.</li>
+    <li><strong>Check the recovery details.</strong> The backup email address and phone number on the account: are they still yours? An old work address or a number you gave up years ago is a way for someone else to "recover" your account.</li>
+    <li><strong>Look at the devices that are signed in.</strong> Most email services list them, with rough locations. Sign out of anything you don't recognise, or that you've got rid of.</li>
+    <li><strong>Check which apps can use your account.</strong> Every time you clicked "Sign in with…" on another site, that site got a little access. Remove the ones you don't use any more.</li>
+    <li><strong>Check for forwarding rules.</strong> This is the one people miss. If someone did get in once, a favourite trick is to set up a rule that quietly copies your mail to them. Look in the settings for forwarding and filters, and delete anything you didn't set up yourself.</li>
+  </ol>
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>Before you look: how many apps and sites do you think have "Sign in with" access to your email account? Write a number down, then count.</p>
+  </div>
+  <details class="answer">
+    <summary>What I found</summary>
+    <p>More than I'd guessed, including a few I'd used once and forgotten. None was doing anything wrong, but each was another door I didn't need, so they went.</p>
+  </details>
+  <div class="check" data-step="1">
+    <div><span class="tag">Check</span><p>Your main email has a new password, 2FA is on, the backup codes are saved off the phone, the recovery details are current, and there's no forwarding you didn't set up.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<!-- ============ STEP 2 ============ -->
+<section class="step" id="s2">
+  <p class="tag eyebrow">Step 2</p>
+  <h2>Pick one home for passwords</h2>
+  <p>Most people's passwords are scattered: some saved in the browser, some in the phone, some in an old password app, a few in a notes file, and the rest reused from memory. The aim of this step is <strong>one place</strong>, so that later you can change things without hunting.</p>
+  <p>Choose a password manager and install it on your phone and your computer. Then lock it down properly, because it's about to hold everything:</p>
+  <ul>
+    <li><strong>The master password</strong> is the one password you'll ever need to remember. Make it long (that random-words idea again), use it nowhere else, and practise typing it a few times.</li>
+    <li><strong>Turn on 2FA</strong> for the password manager account itself.</li>
+    <li><strong>Write down its recovery code</strong>, if it gives you one, on paper, and keep that paper somewhere safe at home. This is the one thing that must <em>not</em> live inside the password manager, because if you're locked out of the manager, you can't read it.</li>
+  </ul>
+  <p>Now move in what step 1 gave you: your email's new password and its backup codes, as a secure note.</p>
+  <div class="check" data-step="2">
+    <div><span class="tag">Check</span><p>The password manager works on your phone and computer, it has its own 2FA, its recovery code is on paper at home, and your email's details are inside it.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<!-- ============ STEP 3 ============ -->
+<section class="step" id="s3">
+  <p class="tag eyebrow">Step 3</p>
+  <h2>Find every account you have</h2>
+  <p>You can't lock a door you've forgotten exists. The surprise of my audit wasn't anything clever: it was how many accounts I'd forgotten I had. Look in these places:</p>
+  <ul>
+    <li><strong>Saved passwords</strong> in your browser and on your phone. Each entry is an account.</li>
+    <li><strong>Your inbox.</strong> Search for the words sites use when you sign up: <em>welcome</em>, <em>verify your email</em>, <em>confirm your account</em>, <em>your password has been changed</em>. Sort the results oldest first.</li>
+    <li><strong>"Sign in with…" lists</strong> from step 1. Those are accounts too, even though they never had a password.</li>
+    <li><strong>Your authenticator app.</strong> Every entry is an account worth protecting, or one you've forgotten.</li>
+    <li><strong>Your bank statements</strong>, for subscriptions still taking money.</li>
+  </ul>
+  <p>As you find each one, add it to the password manager, even if all you have is the name. Next to each, decide one of three things:</p>
+  <ul>
+    <li><strong>Keep and lock:</strong> you use it. Step 4.</li>
+    <li><strong>Close:</strong> you don't use it, and it holds your details. Step 6.</li>
+    <li><strong>Not sure:</strong> leave it a week. If you don't miss it, close it.</li>
+  </ul>
+  <div class="check" data-step="3">
+    <div><span class="tag">Check</span><p>Every account you can find is in the password manager, marked keep, close or not sure.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<!-- ============ STEP 4 ============ -->
+<section class="step" id="s4">
+  <p class="tag eyebrow">Step 4</p>
+  <h2>Sweep up your old passwords</h2>
+  <p>Now go through the "keep" accounts one at a time. For each:</p>
+  <ol>
+    <li>Sign in with the old password.</li>
+    <li>Change it to a new one made by the password manager. Let it make them long and random; you'll never type them.</li>
+    <li><strong>Sign out and back in</strong> with the new password before moving on. This is the step that stops a typo becoming a lock-out.</li>
+    <li>Turn on 2FA if the site offers it, and put the backup codes in the account's entry in the password manager.</li>
+  </ol>
+  <p>Start with anything that holds money or could be used to pretend to be you: banking, shopping sites with a saved card, your phone company, social media. The forum you post on twice a year can wait.</p>
+  <p>When every "keep" account is done, delete the old copies: saved passwords in the browser and on the phone, and the old password app if you had one. Close that old app's account too, once you're sure everything's moved. Old copies of passwords are exactly what you're trying to get rid of.</p>
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>How many of your accounts do you think shared a password with at least one other? Count as you go.</p>
+  </div>
+  <div class="check" data-step="4">
+    <div><span class="tag">Check</span><p>Every account you're keeping has its own password from the manager, you've signed in with it to prove it works, and the old copies are deleted.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<!-- ============ STEP 5 ============ -->
+<section class="step" id="s5">
+  <p class="tag eyebrow">Step 5</p>
+  <h2>Know where your 2FA codes live</h2>
+  <p>2FA is the best protection you have, and also the thing most likely to lock <em>you</em> out. I found that out the hard way, mid-audit: a website wanted a code, and for a few minutes I couldn't remember which app it lived in. The full story is in <a href="github-setup.html#s5">the GitHub guide</a>. The fix is boring and takes ten minutes:</p>
+  <ol>
+    <li><strong>Open your authenticator app and list what's in it.</strong> Write the list in the password manager, in a note called something like "2FA: which app".</li>
+    <li><strong>If you have more than one authenticator app</strong>, note which accounts are in which. Better still, move them all into one.</li>
+    <li><strong>Check the app is backed up.</strong> Many can sync to an account with the company that makes them. If yours doesn't, losing or replacing your phone takes every code with it.</li>
+    <li><strong>Check every important account has backup codes</strong> saved in the password manager.</li>
+    <li><strong>For your most important accounts, add a second way in</strong>, like a passkey on your phone, so one lost app can't shut you out.</li>
+  </ol>
+  <p>The list also does something else: it's a list of accounts. Anything in the authenticator that you didn't find in step 3 goes on the list now.</p>
+  <div class="check" data-step="5">
+    <div><span class="tag">Check</span><p>You know which app holds each code, the app is backed up, and the important accounts have backup codes in the password manager.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<!-- ============ STEP 6 ============ -->
+<section class="step" id="s6">
+  <p class="tag eyebrow">Step 6</p>
+  <h2>Close what you don't use</h2>
+  <p>An account you don't use still has your name, email, maybe your address and an old password. If that company is ever breached, those details leak, and you won't even notice. So for each "close" account, do these <strong>in this order</strong>:</p>
+  <ol>
+    <li><strong>Sign in</strong> and take anything you want to keep: photos, messages, a download of your data if they offer one.</li>
+    <li><strong>Remove any saved card.</strong></li>
+    <li><strong>Close the account</strong>, usually under account settings or privacy. Look for "delete account", not "deactivate"; deactivating often keeps everything.</li>
+    <li><strong>Wait for the confirmation email.</strong></li>
+    <li><strong>Only then</strong> remove the account from your password manager and its code from your authenticator app. Do it the other way round and you may need that code to finish closing the account, and it'll be gone.</li>
+  </ol>
+  <details class="answer">
+    <summary>They want ID before they'll let me leave</summary>
+    <p>Some services ask for a scan of your passport or driving licence, usually to let you take money out. You don't have to hand that over just to leave. In the UK you have a legal right to ask a company to delete your personal data. Email their support from the address on the account, say you want the account closed and your personal data erased, and that the request is made under UK GDPR. The Information Commissioner's Office explains <a href="https://ico.org.uk/for-the-public/your-right-to-get-your-data-deleted">your right to get your data deleted</a>, including when it applies.</p>
+  </details>
+  <details class="answer">
+    <summary>I can't close it, or can't get in any more</summary>
+    <p>If you can sign in but there's no way to close the account, do the next best thing: remove the card and as much personal detail as it lets you, set a long random password, and keep it in the password manager. If you can't get in at all, and the account holds nothing that matters, it's reasonable to leave it alone: many services close accounts that sit unused for long enough. Write down in your password manager that you've made that decision, so future you knows it was on purpose.</p>
+  </details>
+  <div class="check" data-step="6">
+    <div><span class="tag">Check</span><p>Every "close" account is closed or deliberately parked, and only closed ones have been removed from your password manager and authenticator.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<!-- ============ STEP 7 ============ -->
+<section class="step" id="s7">
+  <p class="tag eyebrow">Step 7</p>
+  <h2>Empty the inbox</h2>
+  <p>This one surprised me. Years of old email isn't just clutter. Anyone who gets into your inbox gets everything in it: your address on a hundred delivery notes, receipts showing what you own, scans of documents you once sent somewhere, old password-reset emails, and the names of every service you've ever used. Less in there means less to steal.</p>
+  <p>I had tens of thousands of emails. You don't need to read them. Work in big, safe sweeps, using your email's search:</p>
+  <ol>
+    <li><strong>Find the dangerous ones first.</strong> Search for words like <em>passport</em>, <em>driving licence</em>, <em>password</em>, <em>bank details</em>, <em>account number</em>. Save anything you genuinely need into the password manager or an encrypted backup (step 8), then delete the emails.</li>
+    <li><strong>Search for attachments</strong>, biggest first. Old scans and photos often hide here.</li>
+    <li><strong>Delete by sender.</strong> Newsletters, shops and social media notifications make up most of an old inbox. Search for one sender, select all, delete.</li>
+    <li><strong>Delete by age.</strong> Most email services let you search for messages older than a date. Anything older than a few years that survived the steps above is usually safe to go.</li>
+    <li><strong>Empty the bin</strong>, or let it empty itself. Deleted mail usually sits there for a month.</li>
+  </ol>
+  <p>Then <strong>unsubscribe</strong> as new newsletters arrive, so it doesn't fill up again. I'm treating an empty inbox as a habit now, not a one-off.</p>
+  <div class="check" data-step="7">
+    <div><span class="tag">Check</span><p>Nothing with ID, bank details or passwords is left in your inbox, and the old bulk is gone.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<!-- ============ STEP 8 ============ -->
+<section class="step" id="s8">
+  <p class="tag eyebrow">Step 8</p>
+  <h2>Look yourself up, and back up</h2>
+  <h3>See what a stranger can see</h3>
+  <p>Security people call this OSINT: open-source intelligence, meaning what anyone can find without breaking in. Do a small version on yourself:</p>
+  <ul>
+    <li><strong>Has your email been in a breach?</strong> Put it into <a href="https://haveibeenpwned.com/">Have I Been Pwned</a>, a free, long-running service that checks known data breaches. If it lists a site where you still use that old password, that's the next password to change.</li>
+    <li><strong>Search for yourself.</strong> Your full name in quotes, your email address in quotes, and any username you've used for years. Look at the first couple of pages and the image results.</li>
+    <li><strong>Profile pictures.</strong> A clear photo of your face, plus your name, is easy to match across sites. I've switched every profile picture to a generic image.</li>
+  </ul>
+  <p>Put a reminder in your calendar to do this again in a month, and then every few months.</p>
+
+  <h3>Back up what you'd hate to lose</h3>
+  <p>Closing accounts and clearing inboxes means deleting things, so keep a copy of what matters. Most big services let you download your data. Put the downloads in one folder, then lock the folder with a passphrase so the copy isn't a risk in itself. On Ubuntu, in the terminal (new to it? <a href="terminal.html">Meet the terminal</a>):</p>
+<pre><span class="pr">$</span> cd ~/Downloads
+<span class="pr">$</span> tar -czf my-exports.tar.gz my-exports   <span class="dim"># pack it</span>
+<span class="pr">$</span> gpg -c my-exports.tar.gz       <span class="dim"># lock it</span>
+<span class="pr">$</span> ls -lh my-exports.tar.gz*
+-rw-rw-r-- 1 you you 2.0M Oct 24 17:47 my-exports.tar.gz
+<span class="hl">-rw-rw-r-- 1 you you 2.0M Oct 24 17:47 my-exports.tar.gz.gpg</span></pre>
+  <p>When you run <code>gpg -c</code>, a window asks for a passphrase twice. The <code>.gpg</code> file is the locked copy. Before deleting anything, prove you can open it:</p>
+<pre><span class="pr">$</span> gpg -d my-exports.tar.gz.gpg | tar -tzf -   <span class="dim"># list, don't unpack</span>
+gpg: AES256.CFB encrypted data
+gpg: encrypted with 1 passphrase
+<span class="ok">my-exports/
+my-exports/mail-export.zip
+my-exports/contacts.csv</span></pre>
+  <p>If you see your files listed, the backup works. Now delete the unlocked copies (the folder and the <code>.tar.gz</code>), keep the <code>.gpg</code> file in two places, such as your computer and a USB stick, and put the passphrase in your password manager.</p>
+  <div class="check" data-step="8">
+    <div><span class="tag">Check</span><p>You've checked your email for breaches, searched for yourself, and have an encrypted backup you've proved you can open.</p></div>
+    <button class="done" type="button" aria-pressed="false">Done</button>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">That's it</p>
+  <h2>What I'd want you to take away</h2>
+  <div class="takeaways">
+    <div class="take"><h3>Email first</h3><p>It resets everything else. Lock it before you touch anything.</p></div>
+    <div class="take"><h3>One home for passwords</h3><p>And one piece of paper at home with the way back into it.</p></div>
+    <div class="take"><h3>Know where the codes live</h3><p>A list of which app holds which code. Ten minutes that saves a panic.</p></div>
+    <div class="take"><h3>Fewer doors</h3><p>Every closed account and deleted email is one less thing that can leak.</p></div>
+  </div>
+</section>
+
+</main>
+
+<section class="read-next">
+  <div class="wrap col">
+    <p class="tag">Where to go next</p>
+    <a class="card" href="github-setup.html">
+      <h3>From a fresh machine to your first push</h3>
+      <p>The same thinking applied to GitHub: three locks, and what to do when one of them locks you out.</p>
+      <span class="go">Read &rarr;</span>
+    </a>
+    <a class="card" href="secure-ubuntu.html">
+      <h3>Securing Ubuntu</h3>
+      <p>Your accounts are locked. Now six questions for the computer you use them on.</p>
+      <span class="go">Read &rarr;</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">← Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="contact.html">Get in touch</a>
+    <span class="tag">© 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var KEY='account-audit-steps';
+  var buttons=[].slice.call(document.querySelectorAll('.check .done'));
+  var saved={};
+  try{ saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){ saved={}; }
+  function update(){
+    var n=buttons.filter(function(b){return b.getAttribute('aria-pressed')==='true';}).length;
+    document.getElementById('fill').style.width=(n/buttons.length*100)+'%';
+    document.getElementById('progress-text').textContent=
+      n===buttons.length ? 'All 8 done. Fewer doors, all locked.' : n+' of '+buttons.length+' steps done';
+  }
+  buttons.forEach(function(b){
+    var s=b.parentNode.getAttribute('data-step');
+    if(saved[s]){ b.setAttribute('aria-pressed','true'); b.textContent='Done ✓'; }
+    b.addEventListener('click',function(){
+      var on=b.getAttribute('aria-pressed')!=='true';
+      b.setAttribute('aria-pressed',on?'true':'false');
+      b.textContent=on?'Done ✓':'Done';
+      saved[s]=on;
+      try{ localStorage.setItem(KEY,JSON.stringify(saved)); }catch(e){}
+      update();
+    });
+  });
+  update();
+})();
+</script>
+
+</body>
+</html>
