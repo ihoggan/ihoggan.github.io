@@ -184,8 +184,8 @@ figure.shot figcaption{margin-top:8px;font:12px/1.55 var(--mono);color:var(--ink
   <h2>Plug it in and ask the computer what it sees</h2>
   <p>Plug the stick into a USB port. Mine lit up with two words: <strong>Flash Pass</strong>. That's the maker's test program, left on at the factory, and it tells you the board and screen survived the post.</p>
   <figure class="shot">
-    <img src="images/esp32-flash-pass.jpg" width="1100" height="807" alt="The ESP32-S3-GEEK plugged into the front of a desktop PC, its small screen showing the words Flash Pass in green." loading="lazy">
-    <figcaption>Straight out of the packet. If yours shows this, the hardware works.</figcaption>
+    <img src="images/esp32-plug-in.svg" width="1100" height="700" alt="Isometric technical drawing of the ESP32-S3-GEEK stick, about 60 by 24 millimetres, its USB-A plug heading into a computer's front USB port, the screen showing Flash Pass in green." loading="lazy">
+    <figcaption>Straight out of the packet it shows Flash Pass. If yours does, the hardware works.</figcaption>
   </figure>
   <p>Now find out what your computer thinks has been plugged in. Open a terminal and list the USB devices:</p>
 <pre><span class="pr">$</span> lsusb</pre>
@@ -332,8 +332,8 @@ print(<span class="kw">"Screen is"</span>, tft.width, <span class="kw">"x"</span
 <pre><span class="pr">$</span> mpremote run hello.py
 Screen is 240 x 135</pre>
   <figure class="shot">
-    <img src="images/esp32-hello.jpg" width="1100" height="733" alt="The stick's screen showing a thin green border, a line of yellow text and a line of cyan text." loading="lazy">
-    <figcaption>Mine said hello to me. The thin green line round the very edge is doing a job.</figcaption>
+    <img src="images/esp32-screen-map.svg" width="1100" height="690" alt="Coordinate map of the 240 by 135 pixel screen: a one-pixel green border round the edge, Hello there in yellow starting at x 32, y 30, and ESP32-S3-GEEK in cyan starting at x 16, y 72." loading="lazy">
+    <figcaption>Where hello.py puts each thing, in screen pixels. The thin green line round the very edge is doing a job.</figcaption>
   </figure>
   <div class="predict">
     <span class="tag">Think about it</span>
@@ -505,8 +505,8 @@ weather: 15 C, code 3</pre>
 <pre><span class="pr">$</span> mpremote cp clock.py :main.py</pre>
   <p>Now it starts by itself on any USB power: a charger, a power bank, the back of a television. To change it later, plug it back into your computer, edit <code>clock.py</code>, and copy it across again. If you ever want the stick quiet, <code>mpremote rm :main.py</code> removes it.</p>
   <figure class="shot">
-    <img src="images/esp32-battery.jpg" width="1100" height="437" alt="The stick plugged into a small battery board holding one green lithium cell, with the clock running and no cables attached." loading="lazy">
-    <figcaption>Mine on a small battery board, with no cable anywhere. The time reads 88:88 in this photo because my phone's camera brightens the dim unlit bars. By eye it's perfectly clear.</figcaption>
+    <img src="images/esp32-battery-plan.svg" width="1100" height="560" alt="Plan view of the stick plugged into a battery holder board with one lithium cell, the cell's plus end matched to the holder's plus mark, a power switch, and the clock showing 12:34." loading="lazy">
+    <figcaption>The stick on a small battery holder board, with no cable anywhere. Note where the + marks line up.</figcaption>
   </figure>
   <div class="warn">
     <span class="tag">If you use bare lithium cells</span>
