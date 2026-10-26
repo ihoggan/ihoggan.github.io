@@ -148,6 +148,9 @@ details.answer p{margin-top:8px}
 .cmp .brow{grid-template-columns:5.2em minmax(0,1fr) 3.2em}
 @media(max-width:600px){.cmp{grid-template-columns:1fr}}
 </style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0F181E">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 </head>
 <body>
 
@@ -378,6 +381,7 @@ details.answer p{margin-top:8px}
     <a href="index.html">← Home</a>
     <a href="portfolio.html">All projects</a>
     <a href="contact.html">Get in touch</a>
+    <a href="offline.html">Use offline</a>
     <span class="tag">© 2026 Iain Hoggan</span>
   </div>
 </footer>
@@ -590,5 +594,6 @@ details.answer p{margin-top:8px}
 })();
 </script>
 
+<script src="sw-register.js" defer></script>
 </body>
 </html>

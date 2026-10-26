@@ -125,6 +125,9 @@ details.answer p{margin-top:8px}
 @media(max-width:700px){.journey .body{grid-template-columns:1fr}.journey ol.hops{border-right:0;border-bottom:1px solid #060B0E}}
 @media(max-width:600px){.vlans div{grid-template-columns:1fr;gap:2px}}
 </style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0F181E">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 </head>
 <body>
 
@@ -389,6 +392,7 @@ details.answer p{margin-top:8px}
     <a href="index.html">← Home</a>
     <a href="portfolio.html">All projects</a>
     <a href="contact.html">Get in touch</a>
+    <a href="offline.html">Use offline</a>
     <span class="tag">© 2026 Iain Hoggan</span>
   </div>
 </footer>
@@ -485,5 +489,6 @@ details.answer p{margin-top:8px}
 })();
 </script>
 
+<script src="sw-register.js" defer></script>
 </body>
 </html>

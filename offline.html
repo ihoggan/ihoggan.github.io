@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Use these guides offline — Iain Hoggan</title>
+<meta name="description" content="Keep every guide on your phone, laptop or a USB stick so it still works with no signal, no Wi-Fi and no power to the router.">
+<link rel="canonical" href="https://ihoggan.github.io/offline.html">
+<meta property="og:site_name" content="Iain Hoggan">
+<meta property="og:locale" content="en_GB">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ihoggan.github.io/offline.html">
+<meta property="og:title" content="Use these guides offline">
+<meta property="og:description" content="Keep every guide on your phone, laptop or a USB stick so it still works with no signal.">
+<meta property="og:image" content="https://ihoggan.github.io/images/og-home.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Old kit. New tricks. Iain Hoggan: case studies, tutorials and tools you can run in your browser.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+.status{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;margin-top:22px;padding:14px 18px;border:1px solid var(--rule);border-radius:10px;background:var(--panel-2);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.92rem}
+.status b{font-weight:600}
+.lamp{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;vertical-align:middle;background:var(--ink-3)}
+.lamp.on{background:#2E9A6E}
+.lamp.off{background:#BE3A1F}
+.saved{margin:14px 0 0;padding:0;list-style:none;columns:2 220px;font-size:.95rem}
+.saved li{padding:3px 0;break-inside:avoid}
+.steps{margin:12px 0 0 1.2em;padding:0}
+.steps li{margin:6px 0}
+#save-msg{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.9rem;color:var(--ink-2)}
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0F181E">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+</head>
+<body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap col">
+    <p class="tag">Offline</p>
+    <h1>Use these guides offline</h1>
+    <p class="lede">A guide is no use if it disappears when the signal does. <strong>Every page here can live on your phone, laptop or a USB stick</strong>, and still open with no Wi-Fi, no mobile data and no power to the router.</p>
+    <div class="status" aria-live="polite">
+      <span><span class="lamp" id="net-lamp"></span><b id="net-text">Checking connection…</b></span>
+      <span id="saved-count">Checking saved pages…</span>
+    </div>
+    <p style="margin-top:20px">
+      <button class="btn btn-primary" id="save-all" type="button" hidden>Save every page now</button>
+      <span id="save-msg"></span>
+    </p>
+  </div>
+</header>
+
+<main class="wrap col">
+
+<section>
+  <h2>Three ways to keep it</h2>
+  <div class="grid-2" style="margin-top:22px">
+    <div class="card">
+      <div class="card-tag"><span class="tag">Phone</span></div>
+      <h3>Add it to your home screen</h3>
+      <p>Opening any page once saves the whole site on that device. Adding it to your home screen gives it its own icon, so it opens like an app.</p>
+      <ol class="steps">
+        <li><strong>Android (Chrome):</strong> menu ⋮ → <em>Add to Home screen</em> or <em>Install app</em>.</li>
+        <li><strong>iPhone (Safari):</strong> Share → <em>Add to Home Screen</em>.</li>
+        <li>Open it once from the new icon while you still have signal. After that it works without.</li>
+      </ol>
+    </div>
+    <div class="card">
+      <div class="card-tag"><span class="tag">Laptop or USB</span></div>
+      <h3>Download the whole site</h3>
+      <p>The complete site as one zip file. Nothing to install and no account needed.</p>
+      <ol class="steps">
+        <li><a href="https://github.com/IHoggan/ihoggan.github.io/archive/refs/heads/main.zip">Download the zip</a> (about 10 MB).</li>
+        <li>Unzip it onto your laptop or a USB stick.</li>
+        <li>Open <code>index.html</code> in any browser.</li>
+      </ol>
+      <p>A copy on a stick in your grab bag works on any computer, even one that has never been online.</p>
+    </div>
+    <div class="card">
+      <div class="card-tag"><span class="tag">Paper</span></div>
+      <h3>Print the ones that matter</h3>
+      <p>Paper works when every battery is flat. Open a guide, print it, or choose <em>Save as PDF</em> in the print dialog, and keep it with your kit.</p>
+    </div>
+    <div class="card">
+      <div class="card-tag"><span class="tag">Privacy</span></div>
+      <h3>What gets stored</h3>
+      <p>Only the public pages of this site, kept by your own browser on your own device. No tracking, no account, nothing sent anywhere. To remove it, clear this site's data in your browser settings.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Saved on this device</h2>
+  <p>The pages below will open even with no connection.</p>
+  <ul class="saved" id="saved-list"><li>Checking…</li></ul>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">Home</a>
+    <a href="portfolio.html">Projects</a>
+    <a href="about.html">About</a>
+    <a href="https://github.com/ihoggan">GitHub</a>
+    <span class="tag">© 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var lamp = document.getElementById('net-lamp');
+  var netText = document.getElementById('net-text');
+  var countEl = document.getElementById('saved-count');
+  var listEl = document.getElementById('saved-list');
+  var btn = document.getElementById('save-all');
+  var msg = document.getElementById('save-msg');
+
+  function showNet() {
+    var on = navigator.onLine;
+    lamp.className = 'lamp ' + (on ? 'on' : 'off');
+    netText.textContent = on ? 'You are online' : 'You are offline';
+  }
+  window.addEventListener('online', showNet);
+  window.addEventListener('offline', showNet);
+  showNet();
+
+  function titleFor(path) {
+    if (path === '' || path === 'index.html') return 'Home';
+    return path.replace(/\.html$/, '').replace(/[_-]+/g, ' ')
+               .replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+  }
+
+  function listSaved() {
+    if (!('caches' in window)) {
+      countEl.textContent = 'This browser cannot save pages; use the zip download instead.';
+      listEl.innerHTML = '<li>Not available in this browser.</li>';
+      return;
+    }
+    caches.keys().then(function (names) {
+      var pageCaches = names.filter(function (n) { return /-pages$/.test(n); });
+      return Promise.all(pageCaches.map(function (n) {
+        return caches.open(n).then(function (c) { return c.keys(); });
+      }));
+    }).then(function (groups) {
+      var seen = {};
+      groups.forEach(function (reqs) {
+        reqs.forEach(function (r) {
+          var p = new URL(r.url).pathname.replace(/^\//, '');
+          if (p === '') p = 'index.html';
+          if (/\.html$/.test(p) && p !== 'offline.html') seen[p] = true;
+        });
+      });
+      var pages = Object.keys(seen).sort(function (a, b) {
+        return titleFor(a).localeCompare(titleFor(b));
+      });
+      countEl.textContent = pages.length
+        ? pages.length + ' pages saved on this device'
+        : 'Nothing saved yet';
+      listEl.innerHTML = '';
+      if (!pages.length) {
+        listEl.innerHTML = '<li>Nothing yet. Stay on this page for a moment while online.</li>';
+        return;
+      }
+      pages.forEach(function (p) {
+        var li = document.createElement('li');
+        var a = document.createElement('a');
+        a.href = p; a.textContent = titleFor(p);
+        li.appendChild(a); listEl.appendChild(li);
+      });
+    }).catch(function () {
+      countEl.textContent = 'Could not read saved pages.';
+    });
+  }
+
+  if (location.protocol === 'file:') {
+    countEl.textContent = 'You are reading a downloaded copy: everything here already works offline.';
+    listEl.innerHTML = '<li>The whole site is in the folder you unzipped.</li>';
+    return;
+  }
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(function () {});
+    navigator.serviceWorker.ready.then(function () {
+      btn.hidden = false;
+      listSaved();
+    });
+    navigator.serviceWorker.addEventListener('message', function (e) {
+      if (e.data && e.data.type === 'save-all-done') {
+        msg.textContent = 'Saved ' + e.data.saved + ' files' +
+          (e.data.failed ? ' (' + e.data.failed + ' could not be reached)' : '') + '.';
+        btn.disabled = false;
+        listSaved();
+      }
+    });
+    btn.addEventListener('click', function () {
+      if (!navigator.onLine) { msg.textContent = 'Connect first, then try again.'; return; }
+      btn.disabled = true;
+      msg.textContent = 'Saving…';
+      navigator.serviceWorker.ready.then(function (reg) {
+        reg.active.postMessage({ type: 'save-all' });
+      });
+    });
+  } else {
+    countEl.textContent = 'This browser cannot save pages; use the zip download instead.';
+    listEl.innerHTML = '<li>Not available in this browser.</li>';
+  }
+})();
+</script>
+</body>
+</html>

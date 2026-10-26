@@ -72,6 +72,9 @@
 @media(max-width:760px){.path{grid-template-columns:1fr}.path-head{border-right:0;border-bottom:1px solid var(--rule)}}
 .paths{margin:18px 0 34px}
 </style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0F181E">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 </head>
 <body>
 
@@ -299,9 +302,11 @@
     <a href="about.html">About</a>
     <a href="contact.html">Get in touch</a>
     <a href="https://github.com/ihoggan">GitHub</a>
+    <a href="offline.html">Use offline</a>
     <span class="tag">© 2026 Iain Hoggan</span>
   </div>
 </footer>
 
+<script src="sw-register.js" defer></script>
 </body>
 </html>

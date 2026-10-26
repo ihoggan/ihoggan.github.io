@@ -130,6 +130,9 @@ figure.shot figcaption{margin-top:8px;font:12px/1.55 var(--mono);color:var(--ink
   .segs .stage{border-right:0;border-bottom:1px solid #060B0E}
 }
 </style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0F181E">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 </head>
 <body>
 
@@ -583,6 +586,7 @@ weather: 15 C, code 3</pre>
     <a href="index.html">← Home</a>
     <a href="portfolio.html">All projects</a>
     <a href="contact.html">Get in touch</a>
+    <a href="offline.html">Use offline</a>
     <span class="tag">© 2026 Iain Hoggan</span>
   </div>
 </footer>
@@ -695,5 +699,6 @@ weather: 15 C, code 3</pre>
 })();
 </script>
 
+<script src="sw-register.js" defer></script>
 </body>
 </html>

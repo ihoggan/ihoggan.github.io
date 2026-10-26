@@ -344,6 +344,9 @@ footer{border-top:1px solid var(--rule);background:linear-gradient(180deg,var(--
 .grid-new .when{margin-left:auto}
 @media(max-width:600px){.grid.grid-new{grid-template-columns:1fr}}
 </style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0F181E">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 </head>
 <body>
 
@@ -574,6 +577,7 @@ footer{border-top:1px solid var(--rule);background:linear-gradient(180deg,var(--
     <a href="contact.html">Get in touch</a>
     <a href="https://github.com/ihoggan">GitHub</a>
     <a href="https://github.com/sponsors/ihoggan">Support these projects</a>
+    <a href="offline.html">Use offline</a>
     <span class="tag">© 2026 Iain Hoggan · MIT licensed</span>
   </div>
 </footer>
@@ -695,5 +699,6 @@ footer{border-top:1px solid var(--rule);background:linear-gradient(180deg,var(--
   if(reduced) settle(); else requestAnimationFrame(loop);
 })();
 </script>
+<script src="sw-register.js" defer></script>
 </body>
 </html>

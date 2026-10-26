@@ -101,7 +101,10 @@ details.answer pre{margin-top:10px}
 .read-next{border-top:1px solid var(--rule);padding:44px 0 8px}
 .read-next .card{margin-top:14px;max-width:640px}
 @media(max-width:600px){.locks{grid-template-columns:1fr}.contents{columns:1}}
-</style></head>
+</style><link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0F181E">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+</head>
 <body>
 
 <div class="rail">
@@ -396,6 +399,7 @@ my-exports/contacts.csv</span></pre>
     <a href="index.html">← Home</a>
     <a href="portfolio.html">All projects</a>
     <a href="contact.html">Get in touch</a>
+    <a href="offline.html">Use offline</a>
     <span class="tag">© 2026 Iain Hoggan</span>
   </div>
 </footer>
@@ -428,5 +432,6 @@ my-exports/contacts.csv</span></pre>
 })();
 </script>
 
+<script src="sw-register.js" defer></script>
 </body>
 </html>
