@@ -23,7 +23,7 @@
    ------------------------------------------------------------ */
 
 // VERSION-START
-const VERSION = 'site-0a94954758';
+const VERSION = 'site-706009a698';
 // VERSION-END
 
 const PAGES = `${VERSION}-pages`;
@@ -48,6 +48,7 @@ const PRECACHE = [
   'esp32-clock.html',
   'gallery.html',
   'github-setup.html',
+  'gus.html',
   'index.html',
   'networking.html',
   'neural_playground.html',

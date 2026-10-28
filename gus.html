@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meet Gus: the scrap PC that became a family robot — Iain Hoggan</title>
+<meta name="description" content="A 2015 desktop PC headed for scrap became the family robot: a face that reacts to his own vital signs, a GO / NO-GO check before he gets a personality, and one rule. He watches, never touches, and keeps his brain at home. Plus the morning I found he was slowing down his own brain.">
+<link rel="canonical" href="https://ihoggan.github.io/gus.html">
+<meta property="og:site_name" content="Iain Hoggan">
+<meta property="og:locale" content="en_GB">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ihoggan.github.io/gus.html">
+<meta property="og:title" content="Meet Gus: the scrap PC that became a family robot">
+<meta property="og:description" content="A face that never lies, a pre-flight check for his brain, and the morning I caught him using 65% of a CPU core to draw himself. The fix took him to 6%, and his brain from 6 to 9.6 tokens a second.">
+<meta property="og:image" content="https://ihoggan.github.io/images/og-gus.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Meet Gus: a cartoon robot head in a chequered police cap, with the numbers 2015, 9.6 tokens a second, 65% to 6% CPU, and 0 ports open.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Meet Gus: the scrap PC that became a family robot","description":"A face that never lies, a pre-flight check for his brain, and the morning I caught him using 65% of a CPU core to draw himself.","image":"https://ihoggan.github.io/images/og-gus.png","datePublished":"2026-10-28","dateModified":"2026-10-28","inLanguage":"en-GB","author":{"@type":"Person","name":"Iain Hoggan","url":"https://ihoggan.github.io/about.html"},"mainEntityOfPage":"https://ihoggan.github.io/gus.html"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+main.wrap{padding-top:52px;padding-bottom:40px}
+.standfirst{font-size:1.12rem;color:var(--ink-2);max-width:34em}
+.standfirst strong{color:var(--ink);font-weight:600}
+main section p{max-width:38em}
+main h2{max-width:18em;margin-bottom:14px}
+main h3{margin:22px 0 8px}
+main ul,main ol{max-width:36em;margin:0 0 16px 1.2em}
+main li{margin-bottom:6px}
+pre{
+  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen));
+  border:1px solid #060B0E;border-radius:3px;box-shadow:inset 0 3px 12px rgba(0,0,0,.55);
+  color:#CFE3DA;font-family:var(--mono);font-size:13px;line-height:1.55;
+  padding:14px 16px;margin:18px 0 22px;max-width:40em;overflow-x:auto;white-space:pre;
+}
+pre .me{color:#E8C27A}
+pre .dim{color:#7F968D}
+figure.shot{max-width:44em;margin:22px 0}
+figure.shot img{display:block;width:100%;height:auto;border:1px solid var(--bezel);border-radius:4px;
+  box-shadow:0 1px 2px rgba(23,32,43,.14)}
+figure.shot figcaption{margin-top:8px;font:12px/1.55 var(--mono);color:var(--ink-2);max-width:44em}
+.rules{max-width:38em;margin:14px 0 18px;border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))}
+.rules div{display:grid;grid-template-columns:11em 1fr;gap:12px;padding:10px 14px;border-bottom:1px solid var(--rule);font-size:.97rem}
+.rules div:last-child{border-bottom:0}
+.rules b{font-family:var(--mono);font-size:.84em;letter-spacing:.04em}
+@media(max-width:560px){.rules div{grid-template-columns:1fr;gap:2px}}
+.takeaways{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:26px}
+.take{background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);border-radius:4px;padding:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.take h3{font-size:1rem;margin:0 0 8px}
+.take p{font-size:.94rem;color:var(--ink-2);margin:0}
+.predict{border-left:3px solid var(--lamp);padding:2px 0 2px 18px;margin:18px 0;max-width:38em}
+.predict .tag{display:block;margin-bottom:4px;color:var(--lamp)}
+.predict p{margin:0}
+.links{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0F181E">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+</head>
+<body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html" aria-label="Home">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap col">
+    <p class="tag">Case study · Home robot · Local AI · Python</p>
+    <h1>Meet Gus</h1>
+    <p class="standfirst">The PC I saved from the scrap pile is now the family robot. He has a face that reacts to his own vital signs, a GO / NO-GO check before he gets a personality, and one rule: <strong>he watches, never touches, and keeps his brain at home.</strong> On his first morning I caught him slowing down his own brain. This is how I built him, and how I found out.</p>
+    <div class="spec">
+      <div><b>2015</b><span>the PC</span></div>
+      <div><b>0</b><span>ports open</span></div>
+      <div><b>65%&rarr;6%</b><span>his own CPU</span></div>
+      <div><b>6&rarr;9.6</b><span>tokens / sec</span></div>
+      <div><b>23</b><span>tests</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap col">
+
+<section>
+  <p class="tag eyebrow">Part 1</p>
+  <h2>A robot doesn't need legs</h2>
+  <p>I wanted to build a little robot, with an ESP32 stick for its brain: a microcontroller the size of a USB memory stick. The stick gave up on me before the robot ever moved.</p>
+  <p>Then I looked at the machine I'd already saved from the scrap pile: a 2015 desktop with four cores, 16&nbsp;GB of memory and a local AI model that already runs on it (that story is <a href="reclaim.html">Saved from the scrap pile</a>). It can't walk. But a home robot doesn't need to, if <strong>the house is his body</strong>: sensors for senses, an old tablet and our phones for faces, a camera for eyes, and characters for a voice.</p>
+  <p>So the little robot became a big one. Before giving him a personality, though, I wanted to know how much brain he could actually hold. You can't judge how much a personality will cost until you can see what thinking costs him. So his first piece is a dashboard: his vital signs, live.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 2</p>
+  <h2>Security questions before a single line of code</h2>
+  <p>Every project I build now starts with security questions, not features. A robot that lives in the house and will one day see and hear it deserves more of them than most. These are the answers, and they became the rules he's built on:</p>
+  <div class="rules">
+    <div><b>Who can reach him?</b><span>Nobody. He's a desktop app that opens no network ports. Your login is the lock.</span></div>
+    <div><b>What can he do?</b><span>Read and display. He runs no commands and changes no settings. He reads the numbers Linux already keeps in <code>/proc</code> and <code>/sys</code>.</span></div>
+    <div><b>Where's his brain?</b><span>On the same machine. He only talks to the AI on <code>127.0.0.1</code>, "this computer only", and never through a proxy.</span></div>
+    <div><b>Is the brain exposed?</b><span>He checks every few seconds which addresses it's listening on. If it's ever reachable from the network, his whole board turns NO-GO.</span></div>
+    <div><b>What does he keep?</b><span>A logbook of one line a minute, kept for 30 days, readable only by my user, and never in the code repository.</span></div>
+    <div><b>When does the AI work?</b><span>Only when I press a button. Watching costs the brain nothing.</span></div>
+  </div>
+  <p>The rules aren't just written down. Gus's tests read his own source code and fail if it ever starts running commands, opening ports, deleting files or mentioning any web address other than <code>127.0.0.1</code>. If a future change breaks a rule, the tests say no before I ever run it.</p>
+  <div class="lesson">
+    <span class="tag">Lesson</span>
+    <p>A rule that only lives in your head gets broken by your future self in a hurry. Put it in a test that can say no.</p>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 3</p>
+  <h2>Why Gus</h2>
+  <p>He's named after Gus Bain, the steady old Edinburgh polis from Irvine Welsh's books: seen it all, keeps his head, watches the beat. That suits a robot whose first job is keeping an eye on the house. The letters stand for <strong>G</strong>uardian, <strong>U</strong>tility and <strong>S</strong>toryteller, which is the plan for his future. So he wears a chequered police cap. And a tache.</p>
+  <p>Before settling on a name I checked that nothing on Ubuntu already uses it. My first local AI tool was called <code>chat</code>, and Ubuntu already has a <code>chat</code>. Mine silently lost. Now <code>which gus</code> comes before any name.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 4</p>
+  <h2>The pre-flight board</h2>
+  <p>I already use "pre-flight checks" for my own work: before any command that changes something, run read-only checks first, look at the answers, then decide go or no-go. Gus does the same for his own brain. Eight checks, each green, amber or red:</p>
+  <ul>
+    <li><strong>Is the AI answering?</strong> And which version.</li>
+    <li><strong>Is it on this computer only?</strong> Read from the kernel's own list of listening sockets.</li>
+    <li><strong>Memory headroom.</strong> Green above 4&nbsp;GiB free, red below 2.</li>
+    <li><strong>Swap in use.</strong> A machine that's swapping is a machine that's struggling.</li>
+    <li><strong>CPU temperature.</strong> Amber at 70&nbsp;°C, red at 85.</li>
+    <li><strong>CPU load</strong>, against the number of cores.</li>
+    <li><strong>Disk space.</strong></li>
+    <li><strong>Speed.</strong> Press the probe button and he asks the AI the same fixed question every time and times the answer, so the results can be compared.</li>
+  </ul>
+  <p>Any red makes the board NO-GO. Any amber, or anything not yet measured, makes it CHECK. Only when everything is green does he say GO.</p>
+  <figure class="shot">
+    <img src="images/gus-dashboard.png" width="1920" height="742" alt="Gus's dashboard. Top left, a cartoon robot head in a police cap, calm, saying All quiet on the beat. Top right, a large green GO and eight green checks, including Ollama on localhost only and Speed probe 9.6 tokens a second. Below, panels for the CPU at 5% across four cores, memory at 32% used, temperatures of 30 to 33 degrees, and the AI answering on localhost only." loading="lazy">
+    <figcaption>Gus at 14:50 on his second day, redrawn by his own code from the readings on screen at the time. His 24-hour chart is left off: it comes from the private logbook, which stays on his machine.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 5</p>
+  <h2>A face that never lies</h2>
+  <p>The face is the part the family actually looks at, and I made one rule for it: <strong>every expression has to come from a real reading.</strong> He doesn't look busy for effect. If he looks busy, the CPU is busy.</p>
+  <figure class="shot">
+    <img src="images/gus-moods.png" width="1100" height="360" alt="Gus's six faces: calm with a smile, focused with narrowed eyes and three dots, busy with wide eyes, hot with orange eyes and a bead of sweat, sleepy with closed eyes and z's, and worried with a frown." loading="lazy">
+    <figcaption>His six moods, and what makes each one appear. When more than one applies, the most urgent wins: hot, then worried, then busy.</figcaption>
+  </figure>
+  <p>He also blinks every few seconds, and after 11pm he goes on the night shift. On his first night I left him running, and by morning there was a steady line on his chart from one o'clock onwards: temperatures never above the mid-thirties, swap barely touched, and not one wobble.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 6</p>
+  <h2>GO on the first night</h2>
+  <p>At 01:44 on his first night, I pressed the probe button and every light went green. The speed came back at <strong>6.2 tokens a second</strong>, just over the 6.0 line for green.</p>
+  <p>Good enough to pass. But a month earlier the same model on the same machine had measured <strong>8.0</strong>. I noted it and went to bed.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 7</p>
+  <h2>The morning the board went amber</h2>
+  <p>The next morning I pressed the probe again: <strong>5.9</strong>. Just under the line. The board turned amber, which is exactly what it should do. The board was right. The question was why.</p>
+  <p>The clue was on the board itself. Three of the four CPU cores were idling at 3 or 4 percent. The fourth was sitting at <strong>48%</strong>, with nothing else running.</p>
+  <div class="predict">
+    <span class="tag">Before you read on</span>
+    <p>One core busy, the rest idle, on a machine doing "nothing". What would you check first?</p>
+  </div>
+  <p>The one thing that was running was Gus. I asked Linux how much CPU his own process was using:</p>
+<pre><span class="dim">$</span> top -bn1 -p "$(pgrep -f gus_dash.py | head -1)" | tail -1
+  79700 iain   20  0  1240632 150028  86856 <span class="me">R  70.0</span>  1.0  321:23.30 python</pre>
+  <p><strong>70% of a core</strong>, and an <code>R</code>: always running, never resting. The robot built to measure his brain's performance was eating the CPU his brain needed. He was redrawing his entire 1920&nbsp;×&nbsp;1080 window 30 times a second, though most of what he shows changes once a second.</p>
+
+  <h3>The obvious fix wasn't enough</h3>
+  <p>Before changing anything, I measured. The test used a virtual screen of the same size, with the old and new versions side by side for 20 seconds each, twice:</p>
+  <div class="meas well">
+    <div class="cap">Gus's own CPU · 1920 × 1080 · % of one core</div>
+    <dl>
+      <dt>Before: 30 frames a second</dt><dd class="bad">64–68%</dd>
+      <dt>Obvious fix: 10 frames a second</dt><dd>22%</dd>
+      <dt>Real fix: paint only what changed</dt><dd>6%</dd>
+    </dl>
+    <div class="note">The obvious fix helped, but less than expected, so before going further I profiled it to see where the time actually went.</div>
+  </div>
+  <p>The profiler showed something I hadn't guessed. Drawing the picture was cheap, about 5&nbsp;ms. <strong>Pushing it to the screen cost 12 to 15&nbsp;ms every time</strong>, whether it was the whole window or just his face. So drawing less often wasn't the answer. Pushing less often was.</p>
+  <p>The real fix: the numbers only change once a second, so repaint the whole board once a second. In between, only repaint his face, and only when it actually looks different. A calm Gus doesn't move except to blink, so he repaints at the start and end of each blink and nothing else. When he has moving parts (the thinking dots, the sweat, the z's) he animates at 5 frames a second. While the speed probe runs he keeps still, and while his window is minimised he doesn't draw at all.</p>
+
+  <h3>The reading that wasn't</h3>
+  <p>I installed the fix and checked again: 30%. Better, but nowhere near what the test had promised.</p>
+  <p>It took a moment to see it. I'd started the new Gus without closing the old one. <strong>Two of him were running</strong>, and my check took the first match, which was the old one. Measuring the new Gus by his own process number told the real story:</p>
+<pre><span class="dim">$</span> top -bn3 -d5 -p 115070 | grep 115070
+ 115070 iain   20  0  750292 134004  86312 <span class="me">S   9.1</span>  0.9  0:18.12 python
+ 115070 iain   20  0  750292 134008  86312 <span class="me">S  10.2</span>  0.9  0:18.63 python
+ 115070 iain   20  0  750356 134008  86312 <span class="me">S  10.4</span>  0.9  0:19.15 python</pre>
+  <p>About 10%, and an <code>S</code>: asleep between frames, waking only when there's something to show.</p>
+  <div class="lesson">
+    <span class="tag">Lesson</span>
+    <p>Make sure you're measuring the thing you think you're measuring. "The process called gus" matched the wrong Gus. The process number didn't.</p>
+  </div>
+
+  <h3>What it did for his brain</h3>
+  <p>With only one Gus running, and him keeping still during the test, three probes in a row:</p>
+  <div class="meas well">
+    <div class="cap">Speed probe · llama3.2:3b · same question each time</div>
+    <dl>
+      <dt>Gus's own CPU, before</dt><dd class="bad">30–70%</dd>
+      <dt>Gus's own CPU, after</dt><dd>9–10%</dd>
+      <dt>Brain speed, before</dt><dd class="bad">5.9–6.2 tok/s</dd>
+      <dt>Brain speed, after</dt><dd>9.4–9.6 tok/s</dd>
+    </dl>
+    <div class="note">The before and after use the same test on the same machine on the same day. The 8.0 from a month earlier used a different, longer test on older software, so I don't count "faster than ever" as proven. The like-for-like gain is about 55%.</div>
+  </div>
+  <p>So the slowdown was Gus all along, and he's back to GO with room to spare.</p>
+  <div class="lesson">
+    <span class="tag">Lesson</span>
+    <p>The instrument can disturb what it measures. If your monitor is running on the machine it's monitoring, measure the monitor too.</p>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 8</p>
+  <h2>What he can't do (yet)</h2>
+  <ul>
+    <li><strong>He can't talk yet.</strong> The dashboard is only his body. His voice comes next.</li>
+    <li><strong>He can't see or hear yet.</strong> No cameras or sensors are connected.</li>
+    <li><strong>His speed test is one short question.</strong> It's good for comparing before and after on one machine, and not much else. It isn't a benchmark to compare against other computers.</li>
+    <li><strong>His face lags a little.</strong> Big numbers refresh once a second, not instantly. That's the price of not eating the brain.</li>
+    <li><strong>Temperatures need real sensors.</strong> In a virtual machine, or on some laptops, that line stays grey.</li>
+  </ul>
+</section>
+
+<section id="diy">
+  <p class="tag eyebrow">Part 9</p>
+  <h2>Do Gus's checks yourself</h2>
+  <p>Gus's code is private for now, but none of his checks are magic. Every one of them is something you can ask your own Linux machine in a terminal. If you've never opened one, <a href="terminal.html">Meet the terminal</a> starts from nothing. For each check, guess the answer first, then run it.</p>
+
+  <h3>1. Is your AI reachable from your network?</h3>
+  <p>If you run Ollama, it listens on port 11434. Which addresses?</p>
+<pre>ss -tln | grep 11434</pre>
+  <p><code>127.0.0.1:11434</code> means this computer only, which is good. <code>0.0.0.0</code> or <code>*</code> means anyone on your network could talk to it. If you don't run Ollama, try it on any port you know is open: <code>ss -tln</code> on its own lists them all.</p>
+
+  <h3>2. Does your machine know its own temperature?</h3>
+<pre>cat /sys/class/hwmon/*/name</pre>
+  <p>Look for <code>coretemp</code> on Intel or <code>k10temp</code> on AMD. That's where Gus reads his fever.</p>
+
+  <h3>3. Is anything eating one core?</h3>
+<pre>top</pre>
+  <p>Press <kbd>1</kbd> to see each core separately, and <kbd>q</kbd> to quit. One core much busier than the others usually means one program working flat out on one thread. Look at the <code>S</code> column: <code>R</code> is running, <code>S</code> is sleeping. A program that should be idle and shows <code>R</code> all the time is worth a look.</p>
+
+  <h3>4. Is it what you think it is?</h3>
+<pre>pgrep -fa python</pre>
+  <p>This lists every Python program running, with its process number. If there are two of something you meant to run once, now you know why your numbers looked odd.</p>
+
+  <div class="links">
+    <a class="btn btn-primary" href="reclaim.html">How the PC was saved</a>
+    <a class="btn" href="secure-ubuntu.html">Securing Ubuntu</a>
+  </div>
+</section>
+
+<hr class="div">
+
+<section style="padding-top:44px">
+  <p class="tag eyebrow">What came out of it</p>
+  <h2>A body first, then a voice</h2>
+  <p>Gus is a face, a heartbeat and a logbook so far. Next he gets a voice, through the same <a href="reclaim.html">personality matrix</a> that gave Dave his memory, and senses: a camera and sensors on a Raspberry Pi, reporting back to him. In time he'll be the front door to everything else on this machine: the games, the radio and the offline library, with nothing leaving the house. His one rule stays the same throughout. His world is the house, the whole house, and nothing outside it.</p>
+  <div class="takeaways">
+    <div class="take">
+      <h3>Security first, in code</h3>
+      <p>Answer the security questions before the features, then write tests that fail if the answers ever change.</p>
+    </div>
+    <div class="take">
+      <h3>Measure the monitor</h3>
+      <p>Gus was using 70% of a core to show his brain was slow. Fixing him made his brain 55% faster.</p>
+    </div>
+    <div class="take">
+      <h3>A face should never lie</h3>
+      <p>Every expression comes from a real reading, so a glance at Gus tells you how the machine is doing.</p>
+    </div>
+  </div>
+  <p style="margin-top:26px">Built your own home robot, or spotted a mistake? <a href="contact.html">Tell me</a>. Corrections are genuinely welcome.</p>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">← Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="contact.html">Get in touch</a>
+    <a href="offline.html">Use offline</a>
+    <span class="tag">© 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
+<script src="sw-register.js" defer></script>
+</body>
+</html>
