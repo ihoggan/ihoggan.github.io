@@ -23,7 +23,7 @@
    ------------------------------------------------------------ */
 
 // VERSION-START
-const VERSION = 'site-7f31b320a7';
+const VERSION = 'site-13186a0769';
 // VERSION-END
 
 const PAGES = `${VERSION}-pages`;
@@ -59,6 +59,7 @@ const PRECACHE = [
   'next-word.html',
   'offline-site.html',
   'offline.html',
+  'phone-cleanup.html',
   'pi-gpio.html',
   'portfolio.html',
   'power-cut.html',
@@ -66,6 +67,7 @@ const PRECACHE = [
   'real-thing.html',
   'reclaim.html',
   'sdr.html',
+  'secure-browsing.html',
   'secure-ubuntu.html',
   'terminal.html',
   'timers.html',

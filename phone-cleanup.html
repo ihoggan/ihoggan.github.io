@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phone clean-up: a security check-up for your iPhone or Android — Iain Hoggan</title>
+<meta name="description" content="A guided security and privacy clean-up for your phone. Choose iPhone or Android and the steps change to match: updates, the lock screen, theft protection, apps you don't use, permissions, tracking, things that shouldn't be there, and who else has access.">
+<link rel="canonical" href="https://ihoggan.github.io/phone-cleanup.html">
+<meta property="og:site_name" content="Iain Hoggan">
+<meta property="og:locale" content="en_GB">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ihoggan.github.io/phone-cleanup.html">
+<meta property="og:title" content="Phone clean-up: a security check-up for iPhone or Android">
+<meta property="og:description" content="Pick iPhone or Android and the steps change to match. Eight checks, about an hour, and a phone that only does what you've told it to.">
+<meta property="og:image" content="https://ihoggan.github.io/images/og-phone-cleanup.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Phone clean-up. Guide, Security, iPhone or Android. Eight checks, about an hour.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Phone clean-up: a security check-up for iPhone or Android", "description": "Pick iPhone or Android and the steps change to match. Eight checks, about an hour, and a phone that only does what you've told it to.", "image": "https://ihoggan.github.io/images/og-phone-cleanup.png", "datePublished": "2026-11-04", "dateModified": "2026-11-04", "inLanguage": "en-GB", "author": {"@type": "Person", "name": "Iain Hoggan", "url": "https://ihoggan.github.io/about.html"}, "mainEntityOfPage": "https://ihoggan.github.io/phone-cleanup.html"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+main.wrap{padding-top:52px;padding-bottom:40px}
+.standfirst{font-size:1.12rem;color:var(--ink-2);max-width:34em}
+.standfirst strong{color:var(--ink);font-weight:600}
+main section p{max-width:38em}
+main h2{max-width:18em;margin-bottom:14px}
+main h3{margin:22px 0 8px}
+main ul,main ol{max-width:36em;margin:0 0 16px 1.2em}
+main li{margin-bottom:6px}
+pre{
+  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen));
+  border:1px solid #060B0E;border-radius:3px;box-shadow:inset 0 3px 12px rgba(0,0,0,.55);
+  color:#CFE3DA;font-family:var(--mono);font-size:13px;line-height:1.55;
+  padding:14px 16px;margin:18px 0 22px;max-width:40em;overflow-x:auto;white-space:pre;
+}
+pre .me{color:#E8C27A}
+pre .dim{color:#7F968D}
+pre .bad{color:#E0603F}
+pre .ok{color:var(--trace)}
+figure.shot{max-width:44em;margin:22px 0}
+figure.shot img{display:block;width:100%;height:auto;background:#fff;border:1px solid var(--bezel);border-radius:4px;
+  box-shadow:0 1px 2px rgba(23,32,43,.14)}
+figure.shot figcaption{margin-top:8px;font:12px/1.55 var(--mono);color:var(--ink-2);max-width:44em}
+.rules{max-width:38em;margin:14px 0 18px;border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))}
+.rules div{display:grid;grid-template-columns:11em 1fr;gap:12px;padding:10px 14px;border-bottom:1px solid var(--rule);font-size:.97rem}
+.rules div:last-child{border-bottom:0}
+.rules b{font-family:var(--mono);font-size:.84em;letter-spacing:.04em}
+@media(max-width:560px){.rules div{grid-template-columns:1fr;gap:2px}}
+.slips{display:grid;gap:12px;max-width:40em;margin:18px 0 22px}
+.slip{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.slip>div{padding:12px 14px;font-size:.95rem;line-height:1.5}
+.slip>div+div{border-left:1px solid var(--rule)}
+.slip .tag{display:block;margin-bottom:4px}
+.slip .dec .tag{color:#2F8A63}
+@media(max-width:560px){.slip{grid-template-columns:1fr}.slip>div+div{border-left:0;border-top:1px solid var(--rule)}}
+.takeaways{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:26px}
+.take{background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);border-radius:4px;padding:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.take h3{font-size:1rem;margin:0 0 8px}
+.take p{font-size:.94rem;color:var(--ink-2);margin:0}
+.predict{border-left:3px solid var(--lamp);padding:2px 0 2px 18px;margin:18px 0;max-width:38em}
+.predict .tag{display:block;margin-bottom:4px;color:var(--lamp)}
+.predict p{margin:0}
+.warn{border-left:3px solid var(--alarm);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.warn .tag{display:block;margin-bottom:4px;color:var(--alarm)}
+.warn p{margin:0}
+.warn p+p{margin-top:8px}
+details.answer{max-width:38em;margin:10px 0 18px}
+details.answer summary{cursor:pointer;font:600 11px/1.4 var(--mono);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-2)}
+details.answer p{margin-top:8px}
+.tablewrap{max-width:44em;overflow-x:auto;margin:16px 0 22px}
+table.disc{border-collapse:collapse;width:100%;font-size:.93rem;background:var(--engrave)}
+.disc th,.disc td{border:1px solid var(--bezel);padding:7px 9px;text-align:left;vertical-align:top}
+.disc th{background:var(--panel-2);font-family:var(--mono);font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.disc td code{white-space:nowrap}
+.disc td.n{text-align:right;font-family:var(--mono);font-size:.88em;white-space:nowrap}
+.calc{max-width:40em;margin:20px 0 22px;padding:16px 18px}
+.calc .cap{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#6E8A80;margin-bottom:12px}
+.calc .ins{display:grid;grid-template-columns:repeat(auto-fit,minmax(10em,1fr));gap:12px}
+.calc label{font:11px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#93A79E;display:grid;gap:5px}
+.calc input{font:500 1rem var(--mono);color:var(--trace);background:#0B1216;border:1px solid #2B3B44;border-radius:3px;padding:7px 9px;width:100%}
+.calc input:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.calc dl{display:grid;grid-template-columns:1fr auto;gap:6px 18px;margin:16px 0 0;padding-top:12px;border-top:1px solid rgba(87,199,154,.18)}
+.calc dt{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#93A79E}
+.calc dd{font-family:var(--mono);font-size:13px;color:var(--trace);text-align:right;font-variant-numeric:tabular-nums;margin:0}
+.calc .note{margin-top:12px;font:11px/1.55 var(--mono);color:#8FA69C}
+.sheet{max-width:40em;margin:16px 0 22px;border:1px dashed var(--bezel);border-radius:4px;padding:14px 16px;
+  background:repeating-linear-gradient(0deg,transparent 0 27px,rgba(23,32,43,.06) 27px 28px),var(--engrave)}
+.sheet p{font:13px/28px var(--mono);margin:0;max-width:none}
+.sheet .blank{display:inline-block;min-width:7em;border-bottom:1px solid var(--ink);margin:0 4px}
+.links{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+.read-next{border-top:1px solid var(--rule);padding:44px 0 8px}
+.read-next .card{margin-top:14px;max-width:640px}
+
+.check{display:flex;gap:14px;align-items:flex-start;max-width:38em;margin:20px 0 6px;
+  border:1px solid var(--bezel);border-radius:4px;padding:14px 16px;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.check .tag{display:block;margin-bottom:4px;color:#2F8A63}
+.check p{margin:0;font-size:.97rem}
+.ui{font-family:var(--mono);font-size:.84em;white-space:nowrap;background:linear-gradient(180deg,#fff,var(--engrave));
+  border:1px solid var(--bezel);border-bottom-width:2px;border-radius:3px;padding:1px 6px;color:var(--ink)}
+.ticks{display:grid;gap:9px}
+.ticks label{font:13.5px/1.5 var(--mono);text-transform:none;letter-spacing:normal;color:#CFE3DA;display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.ticks input{accent-color:var(--trace);margin-top:3px;flex:none;width:16px;height:16px}
+.verdict{margin-top:14px;padding-top:12px;border-top:1px solid rgba(87,199,154,.18);font:600 13px/1.55 var(--mono);color:#93A79E}
+.verdict.yes{color:#E7B863}
+.verdict.no{color:var(--trace)}
+/* Data path: live code cells (pylab.js) */
+.cell{max-width:44em;margin:18px 0 22px;border:1px solid #060B0E;border-radius:3px;overflow:hidden;
+  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen));box-shadow:inset 0 3px 12px rgba(0,0,0,.55)}
+.cell textarea{display:block;width:100%;min-height:3.2em;resize:vertical;border:0;outline:none;background:transparent;
+  color:#CFE3DA;font:13px/1.55 var(--mono);padding:14px 16px;white-space:pre;overflow-x:auto;tab-size:4}
+.cell textarea:focus-visible{box-shadow:inset 0 0 0 2px var(--lamp)}
+.cell-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:8px 12px;border-top:1px solid rgba(87,199,154,.18)}
+.cell-bar button{font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:8px 12px;border-radius:3px;cursor:pointer;
+  border:1px solid #2B3B44;background:#16232B;color:#A9BFB5}
+.cell-bar button.run{background:linear-gradient(180deg,#6FD6AA,var(--trace));border-color:#2F8A63;color:#0B2A1E}
+.cell-bar button:disabled{opacity:.55;cursor:progress}
+.cell-bar button:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.cell-bar .status{font:11px/1.4 var(--mono);color:#8FA69C}
+.cell pre.out{margin:0;max-width:none;border:0;border-top:1px solid rgba(87,199,154,.18);border-radius:0;box-shadow:none;
+  background:#0B1216;color:#E6F0EC;white-space:pre-wrap;word-break:break-word}
+.cell pre.out.bad{color:#F0896E}
+.cell .figs img{display:block;max-width:calc(100% - 24px);height:auto;margin:0 12px 12px;background:#fff;border-radius:2px}
+.pathlist{list-style:none;margin:6px 0 18px!important;padding:0;counter-reset:p;max-width:38em}
+.pathlist li{counter-increment:p;position:relative;padding:8px 0 8px 40px;border-bottom:1px solid var(--rule);margin:0!important}
+.pathlist li::before{content:counter(p);position:absolute;left:0;top:7px;width:26px;height:26px;display:grid;place-items:center;
+  font:600 12px var(--mono);border:1px solid var(--bezel);border-radius:3px;background:var(--engrave)}
+.pathlist li.here::before{background:var(--ink);color:var(--engrave);border-color:var(--ink)}
+.pathlist li.here em{color:var(--lamp);font-style:normal;font:600 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-left:6px}
+.card.soon{opacity:.75}
+.calc select{font:500 1rem var(--mono);color:var(--trace);background:#0B1216;border:1px solid #2B3B44;border-radius:3px;padding:7px 9px;width:100%}
+.calc select:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.verdict p{margin:0 0 8px;max-width:none;font:13px/1.55 var(--mono)}
+.verdict p:last-child{margin-bottom:0}
+.verdict p.ok{color:var(--trace)}
+.verdict p.amber{color:#E7B863}
+.verdict p b{color:#E6F0EC}
+/* phone / browser switchers */
+.osswitch{display:flex;gap:8px;flex-wrap:wrap;margin-top:26px}
+.osswitch button{font:600 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:12px 18px;border-radius:3px;cursor:pointer;
+  border:1px solid var(--bezel);border-bottom-width:2px;background:linear-gradient(180deg,#fff,var(--engrave));color:var(--ink-2)}
+.osswitch button[aria-pressed="true"]{background:linear-gradient(180deg,#20303E,var(--ink));color:var(--engrave);border-color:#0C1319}
+.osswitch button:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.ostip{margin-top:10px;font:12px/1.5 var(--mono);color:var(--ink-3)}
+body[data-show="ios"] [data-os]:not([data-os="ios"]){display:none}
+body[data-show="android"] [data-os]:not([data-os="android"]){display:none}
+body[data-show="chrome"] [data-os]:not([data-os="chrome"]){display:none}
+body[data-show="firefox"] [data-os]:not([data-os="firefox"]){display:none}
+body[data-show="edge"] [data-os]:not([data-os="edge"]){display:none}
+body[data-show="safari"] [data-os]:not([data-os="safari"]){display:none}
+body[data-show="both"] div[data-os]::before,body:not([data-show]) div[data-os]::before{content:attr(data-label);display:block;width:max-content;margin:0 0 6px;font:600 10px/1 var(--mono);letter-spacing:.14em;
+  text-transform:uppercase;padding:5px 7px;border-radius:3px;background:var(--panel-2);border:1px solid var(--bezel);color:var(--ink-2)}
+div[data-os]{border-left:3px solid var(--bezel);padding:2px 0 2px 16px;margin:14px 0;max-width:38em}
+.path{font:500 .86em var(--mono);background:rgba(23,32,43,.07);padding:1px 6px;border-radius:2px;white-space:normal}
+.tick{display:flex;gap:10px;align-items:flex-start;max-width:38em;margin:18px 0 4px;padding:12px 14px;cursor:pointer;
+  border:1px solid var(--bezel);border-radius:4px;background:linear-gradient(180deg,var(--engrave),var(--panel-2));font-size:.97rem}
+.tick input{width:18px;height:18px;margin-top:3px;flex:none;accent-color:#2F8A63}
+.progress{margin-top:22px;max-width:30em}
+.progress .bar{height:10px;border-radius:5px;background:var(--screen);border:1px solid #060B0E;overflow:hidden;margin-bottom:6px}
+.progress .fill{height:100%;width:0;background:linear-gradient(90deg,#2F8A63,var(--trace));transition:width .4s}
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0F181E">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+</head>
+<body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html" aria-label="Home">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap col">
+    <p class="tag">Guide · Security path · iPhone or Android · ~1 hr</p>
+    <h1>Phone clean-up</h1>
+    <p class="standfirst">Your phone knows where you've been, who you talk to, and what you look at. Over the years it collects apps you forgot, permissions you clicked through, and settings you never chose. This guide walks through <strong>eight checks</strong>, the same way I cleaned up my own. Each one is look first, then decide. <strong>Choose your phone below</strong> and the steps change to match.</p>
+    <div class="osswitch" role="group" aria-label="Choose your phone">
+      <button type="button" data-pick="ios" aria-pressed="false">iPhone</button>
+      <button type="button" data-pick="android" aria-pressed="false">Android</button>
+    </div>
+    <p class="ostip" id="ostip">Showing steps for both. Pick one to hide the other.</p>
+  </div>
+</header>
+
+<main class="wrap col">
+
+<section>
+  <p class="tag eyebrow">Before you start</p>
+  <h2>Two habits for the whole hour</h2>
+  <ul>
+    <li><strong>Back up first.</strong> Nothing here should lose data, but a fresh backup turns any mistake into a shrug.
+      <span data-os="ios" data-label="iPhone">On iPhone: <span class="path">Settings › [your name] › iCloud › iCloud Backup › Back Up Now</span>, or back up to a computer.</span>
+      <span data-os="android" data-label="Android">On Android: <span class="path">Settings › Google › Backup</span> (on Samsung, also <span class="path">Settings › Accounts and backup</span>).</span></li>
+    <li><strong>Can't find a setting?</strong> Menus move between versions, and on Android between makers. Every phone has a <strong>search box at the top of Settings</strong>. Type the setting's name in bold below and it'll take you there.</li>
+  </ul>
+  <div class="progress"><div class="bar"><div class="fill" id="pfill"></div></div><span class="tag" id="ptext">0 of 8 checks done</span></div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Check 1</p>
+  <h2>Up to date</h2>
+  <p>Most attacks on phones use holes that have already been fixed. The fix only helps if it's installed.</p>
+  <div data-os="ios" data-label="iPhone"><p><span class="path">Settings › General › Software Update</span>. Install anything waiting, then open <strong>Automatic Updates</strong> and turn on every option there, including the separate security ones.</p></div>
+  <div data-os="android" data-label="Android"><p><span class="path">Settings › System › Software update</span> (on Samsung, <span class="path">Settings › Software update</span>). Also check <span class="path">Settings › Security &amp; privacy › Updates</span> for the <strong>security update</strong> and <strong>Google Play system update</strong>. Note the date of the last security update: if it's more than a year old, your phone may no longer be getting fixes.</p></div>
+  <label class="tick"><input type="checkbox" data-check="1"> Everything is up to date, and automatic updates are on.</label>
+</section>
+
+<section>
+  <p class="tag eyebrow">Check 2</p>
+  <h2>The lock, and what happens if it's stolen</h2>
+  <ul>
+    <li>Use a passcode of at least <strong>six digits</strong>, not four, and not a birthday. Face or fingerprint unlock is fine on top.</li>
+    <li>Turn off things you don't need on the lock screen: replying to messages, the wallet, and control panels can all be used without unlocking.</li>
+  </ul>
+  <div data-os="ios" data-label="iPhone"><p>Check <strong>Stolen Device Protection</strong> in <span class="path">Settings › Face ID &amp; Passcode</span>. When you're away from familiar places, it asks for your face or fingerprint, not just the passcode, before anyone can change your Apple account or see saved passwords. It's on by default from iOS 26.4, but check it's on. And check <strong>Find My</strong> is on: <span class="path">Settings › [your name] › Find My</span>.</p></div>
+  <div data-os="android" data-label="Android"><p>Search Settings for <strong>Theft protection</strong>. Turn on the theft-detection lock and the offline-device lock, which lock the phone if someone snatches it and runs, or takes it offline. And check <strong>Find My Device</strong> is on: search Settings for "Find My Device".</p></div>
+  <label class="tick"><input type="checkbox" data-check="2"> Strong passcode, a quiet lock screen, and theft protection and device finding on.</label>
+</section>
+
+<section>
+  <p class="tag eyebrow">Check 3</p>
+  <h2>Apps you don't use</h2>
+  <p>Every app is something that can be bought, sold, abandoned or turned bad. If you haven't opened it in months, it's still on your phone, still updating, and sometimes still collecting.</p>
+  <div data-os="ios" data-label="iPhone"><p><span class="path">Settings › General › iPhone Storage</span> lists every app with <strong>Last Used</strong>. For anything you don't need, tap it and choose <strong>Delete App</strong>, or <strong>Offload App</strong> to remove the app but keep its data.</p></div>
+  <div data-os="android" data-label="Android"><p><span class="path">Settings › Apps › See all apps</span>. Look for <strong>Unused apps</strong>: Android lists apps you haven't opened for months, and can remove their permissions automatically. For each app you don't need, tap it and choose <strong>Uninstall</strong>.</p></div>
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>Before you look: how many apps do you think are on your phone? Count them, then guess how many you opened this month.</p>
+  </div>
+  <label class="tick"><input type="checkbox" data-check="3"> Every app on the phone is one I use, or chose to keep.</label>
+</section>
+
+<section>
+  <p class="tag eyebrow">Check 4</p>
+  <h2>Who can see what: permissions</h2>
+  <p>Go through location, camera, microphone, photos and contacts. For each app, ask: <em>does this app need this to do its job, for me?</em> A map needs your location while you're using it. A torch app doesn't need it at all.</p>
+  <div data-os="ios" data-label="iPhone"><p><span class="path">Settings › Privacy &amp; Security</span>. Open <strong>Location Services</strong>, then each of Camera, Microphone, Photos and Contacts. Prefer <strong>While Using the App</strong> to <strong>Always</strong>, and turn off <strong>Precise Location</strong> for apps that only need your town. Then open <strong>App Privacy Report</strong> at the bottom: it shows which apps actually used each permission, and when.</p></div>
+  <div data-os="android" data-label="Android"><p>Search Settings for <strong>Permission manager</strong> (often <span class="path">Settings › Security &amp; privacy › Privacy controls</span>). Go through Location, Camera, Microphone, Contacts and Photos. Prefer <strong>Allow only while using the app</strong>. Then search for <strong>Privacy dashboard</strong>: it shows which apps used location, camera and microphone, and when.</p></div>
+  <div class="lesson">
+    <span class="tag">Lesson</span>
+    <p>The dashboard and report show what apps <em>did</em>, not just what they're allowed. An app using the microphone at three in the morning has some explaining to do.</p>
+  </div>
+  <label class="tick"><input type="checkbox" data-check="4"> Every app has only the permissions it needs, and I've read the usage report.</label>
+</section>
+
+<section>
+  <p class="tag eyebrow">Check 5</p>
+  <h2>Tracking and adverts</h2>
+  <div data-os="ios" data-label="iPhone"><p><span class="path">Settings › Privacy &amp; Security › Tracking</span>. Turn off <strong>Allow Apps to Request to Track</strong>, and every app is told no without asking. Then <span class="path">Settings › Privacy &amp; Security › Apple Advertising</span>: turn off <strong>Personalised Ads</strong>.</p></div>
+  <div data-os="android" data-label="Android"><p>Search Settings for <strong>Ads</strong> (often <span class="path">Settings › Security &amp; privacy › Privacy controls › Ads</span>). Choose <strong>Delete advertising ID</strong>. Apps then can't use that ID to link what you do across apps. Then, in your Google account, review <strong>My Ad Center</strong> and turn off personalised ads if you'd rather not have them.</p></div>
+  <label class="tick"><input type="checkbox" data-check="5"> Cross-app tracking is off, and ad personalisation is how I want it.</label>
+</section>
+
+<section>
+  <p class="tag eyebrow">Check 6</p>
+  <h2>Things that shouldn't be there</h2>
+  <p>A few settings give an app or an organisation powerful control over your phone. They're normal on a work phone. On a personal phone, you should recognise every one.</p>
+  <div data-os="ios" data-label="iPhone"><p><span class="path">Settings › General › VPN &amp; Device Management</span>. Any <strong>configuration profile</strong> or management you don't recognise is worth questioning. Profiles can route your traffic, add certificates, or control settings. If it's from a school or a job you've left, ask them, then remove it.</p></div>
+  <div data-os="android" data-label="Android"><p>Search Settings for <strong>Device admin apps</strong>. Each one listed can lock or wipe your phone: you should recognise them all (Find My Device is normal). Then search for <strong>Install unknown apps</strong>: this lists apps allowed to install other apps from outside the Play Store. For most people, that list should be empty or "Not allowed" for everything.</p></div>
+  <div class="warn">
+    <span class="tag">If you find something you can't explain</span>
+    <p>Don't panic, and don't start deleting things at random. Write down exactly what you found, take a screenshot, then remove it or ask someone you trust. If you think someone has deliberately put something on your phone to watch you, read the next check before you change anything, because removing it can alert them.</p>
+  </div>
+  <label class="tick"><input type="checkbox" data-check="6"> I recognise every profile, admin app and install permission.</label>
+</section>
+
+<section>
+  <p class="tag eyebrow">Check 7</p>
+  <h2>Who else has access</h2>
+  <p>Shared photo albums, shared locations, a partner's fingerprint added years ago, a tablet still signed in to your account. Most sharing is something you set up and forgot.</p>
+  <div data-os="ios" data-label="iPhone"><p><span class="path">Settings › Privacy &amp; Security › Safety Check</span>. <strong>Manage Sharing &amp; Access</strong> walks through who you share location, photos and notes with, which devices are signed in to your account, and lets you stop each one. It was designed for people who need to cut off access quickly and safely, and it has a <strong>Quick Exit</strong> button.</p></div>
+  <div data-os="android" data-label="Android"><p>Search Settings for <strong>Location sharing</strong> to see who can see where you are. Then go to <strong>myaccount.google.com</strong>, then <strong>Security</strong>, and check <strong>Your devices</strong>: sign out of any you don't recognise or no longer own. Google's <strong>Security Checkup</strong> on the same page walks through the rest.</p></div>
+  <label class="tick"><input type="checkbox" data-check="7"> I know everyone and everything that can see my location, photos or account.</label>
+</section>
+
+<section>
+  <p class="tag eyebrow">Check 8</p>
+  <h2>The accounts behind the phone</h2>
+  <p>Your phone is only as safe as the account it signs in with. Two things matter most:</p>
+  <ul>
+    <li>A <strong>strong, unique password</strong> on the account your phone signs in with (your Apple Account on an iPhone, your Google account on Android), which you don't use anywhere else.</li>
+    <li><strong>Two-step verification</strong> turned on, with up-to-date recovery details, so you can always get back in, and nobody else can.</li>
+  </ul>
+  <p>Going further, across every account you have, is a bigger job: <a href="account-audit.html">Who holds the keys to your life?</a> walks through it.</p>
+  <label class="tick"><input type="checkbox" data-check="8"> My phone's account has a unique password and two-step verification, with current recovery details.</label>
+</section>
+
+<hr class="div">
+
+<section style="padding-top:44px">
+  <p class="tag eyebrow">What I'd want you to take away</p>
+  <h2>A phone that does what you told it to</h2>
+  <div class="takeaways">
+    <div class="take"><h3>Updated and locked</h3><p>Fixes installed, a real passcode, and theft protection on.</p></div>
+    <div class="take"><h3>Fewer apps, fewer permissions</h3><p>Every app earns its place, and only gets what it needs.</p></div>
+    <div class="take"><h3>Read the reports</h3><p>The privacy report or dashboard shows what apps actually did. Check it once a month.</p></div>
+  </div>
+  <p style="margin-top:26px">Menus change with every update. If a step here no longer matches your phone, <a href="contact.html">tell me</a>, and I'll fix it.</p>
+</section>
+
+</main>
+
+<section class="read-next">
+  <div class="wrap col">
+    <p class="tag">Next on the Security path</p>
+    <a class="card" href="secure-browsing.html">
+      <h3>Browse like you mean it</h3>
+      <p>The security settings that matter in Chrome, Firefox, Edge and Safari, and a panel showing what any website can see about you.</p>
+      <span class="go">Read &rarr;</span>
+    </a>
+  </div>
+</section>
+
+<script>
+(function(){
+  var KEY='phone-cleanup';
+  var btns=document.querySelectorAll('.osswitch button'), tip=document.getElementById('ostip');
+  function store(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v);}catch(e){ return null; } }
+  function pick(os){
+    document.body.setAttribute('data-show',os||'both');
+    btns.forEach(function(b){ b.setAttribute('aria-pressed', b.dataset.pick===os ? 'true':'false'); });
+    tip.textContent = os ? ('Showing steps for '+(os==='ios'?'iPhone':'Android')+'. Tap the other to switch.') : 'Showing steps for both. Pick one to hide the other.';
+    if(os) store(KEY+'-os',os);
+  }
+  btns.forEach(function(b){ b.addEventListener('click',function(){ pick(b.dataset.pick); }); });
+  var saved=store(KEY+'-os');
+  if(saved==='ios'||saved==='android') pick(saved);
+  else if(/iPhone|iPad|iPod/.test(navigator.userAgent)) pick('ios');
+  else if(/Android/.test(navigator.userAgent)) pick('android');
+  else pick(null);
+  var boxes=document.querySelectorAll('input[data-check]'), fill=document.getElementById('pfill'), pt=document.getElementById('ptext');
+  var state={}; try{ state=JSON.parse(store(KEY+'-done')||'{}'); }catch(e){}
+  function upd(){
+    var n=0; boxes.forEach(function(b){ if(b.checked) n++; });
+    fill.style.width=(n/boxes.length*100)+'%'; pt.textContent=n+' of '+boxes.length+' checks done';
+  }
+  boxes.forEach(function(b){
+    b.checked=!!state[b.dataset.check];
+    b.addEventListener('change',function(){ state[b.dataset.check]=b.checked; store(KEY+'-done',JSON.stringify(state)); upd(); });
+  });
+  upd();
+})();
+</script>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">← Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="contact.html">Get in touch</a>
+    <a href="offline.html">Use offline</a>
+    <span class="tag">© 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
+<script src="sw-register.js" defer></script>
+</body>
+</html>
