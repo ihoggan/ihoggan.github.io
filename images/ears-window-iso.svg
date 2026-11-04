@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 920" width="1120" height="920" font-family="DejaVu Sans, Arial, sans-serif">
+<title>Window install isometric</title>
+<rect width="1120" height="920" fill="#ffffff"/>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1f2933"/></marker></defs>
+<text x="560.0" y="34.0" font-size="20" text-anchor="middle" fill="#1f2933" font-weight="bold">Window install: isometric view (mm)</text>
+<text x="560.0" y="56.0" font-size="13" text-anchor="middle" fill="#5b6b7a" font-weight="normal">Viewed from inside the room. Bold dimensions are measured or derived; grey parts are indicative.</text>
+<polygon points="330.0,560.0 624.6,730.1 573.7,759.5 279.1,589.4" fill="#e7e2d6" stroke="#1f2933" stroke-width="1.5" fill-opacity="1"/>
+<polygon points="330.0,560.0 279.1,589.4 279.1,106.4 330.0,77.0" fill="#efece4" stroke="#1f2933" stroke-width="1.5" fill-opacity="1"/>
+<polygon points="330.0,560.0 624.6,730.1 624.6,247.1 330.0,77.0" fill="#dbeafe" stroke="#1f2933" stroke-width="1.5" fill-opacity="0.55"/>
+<polygon points="624.6,730.1 573.7,759.5 573.7,276.5 624.6,247.1" fill="#efece4" stroke="#5b6b7a" stroke-width="1.5" fill-opacity="0.35"/>
+<line x1="293.6" y1="102.2" x2="588.2" y2="272.3" stroke="#9ca3af" stroke-width="12"/>
+<text x="626" y="250.3" font-size="12" text-anchor="start" fill="#5b6b7a" font-weight="normal">blind roller</text>
+<line x1="462.8" y1="241.9" x2="325.2" y2="321.3" stroke="#6b7280" stroke-width="5"/>
+<line x1="462.8" y1="241.9" x2="600.4" y2="480.2" stroke="#6b7280" stroke-width="5"/>
+<circle cx="462.8" cy="241.9" r="6" fill="#1f2933"/>
+<line x1="462.8" y1="241.9" x2="462.8" y2="636.6" stroke="#111" stroke-width="2.5"/>
+<line x1="462.8" y1="636.6" x2="440.9" y2="662.7" stroke="#111" stroke-width="2.5"/>
+<polygon points="437.3,664.0 444.6,668.1 411.8,687.0 404.6,682.9" fill="#cbd5e1" stroke="#1f2933" stroke-width="1.5" fill-opacity="1"/>
+<text x="394.2" y="679.0" font-size="12" text-anchor="end" fill="#1f2933" font-weight="normal">stick + DC block on sill</text>
+<line x1="408.2" y1="683.3" x2="306.4" y2="742.1" stroke="#1d4ed8" stroke-width="3"/>
+<text x="312.4" y="756.1" font-size="12" text-anchor="start" fill="#1d4ed8" font-weight="normal">5000 mm USB → nix6</text>
+<line x1="602.8" y1="258.0" x2="602.8" y2="322.7" stroke="#5b6b7a" stroke-width="1.2" stroke-dasharray="4 3" marker-start="url(#a)" marker-end="url(#a)"/>
+<text x="626" y="301.1" font-size="12" text-anchor="start" fill="#5b6b7a" font-weight="normal">h (measure)</text>
+<line x1="330.0" y1="560.0" x2="330.0" y2="593.6" stroke="#c2410c" stroke-width="1"/>
+<line x1="624.6" y1="730.1" x2="624.6" y2="763.7" stroke="#c2410c" stroke-width="1"/>
+<line x1="330.0" y1="585.2" x2="624.6" y2="755.3" stroke="#c2410c" stroke-width="1.6" marker-start="url(#a)" marker-end="url(#a)"/>
+<text x="560" y="772" font-size="13" text-anchor="start" fill="#c2410c" font-weight="bold">810 mm reveal (measured)</text>
+<line x1="325.2" y1="321.3" x2="325.2" y2="357.0" stroke="#c2410c" stroke-width="1"/>
+<line x1="600.4" y1="480.2" x2="600.4" y2="515.9" stroke="#c2410c" stroke-width="1"/>
+<line x1="325.2" y1="350.7" x2="600.4" y2="509.6" stroke="#c2410c" stroke-width="1.6" marker-start="url(#a)" marker-end="url(#a)"/>
+<text x="462.8" y="422.1" font-size="13" text-anchor="middle" fill="#c2410c" font-weight="bold">756 mm tip-to-tip</text>
+<text x="380.0" y="281.6" font-size="13" text-anchor="end" fill="#c2410c" font-weight="bold">arm ≈ 535 mm</text>
+<text x="462.8" y="281.9" font-size="14" text-anchor="middle" fill="#c2410c" font-weight="bold">90°</text>
+<line x1="614.9" y1="329.7" x2="614.9" y2="488.6" stroke="#c2410c" stroke-width="1.6" marker-start="url(#a)" marker-end="url(#a)"/>
+<text x="622.9" y="409.1" font-size="13" text-anchor="start" fill="#c2410c" font-weight="bold">≈ 378 mm drop</text>
+<text x="314.9" y="312.8" font-size="12" text-anchor="end" fill="#c2410c" font-weight="normal">≈ 27 mm</text>
+<text x="40.0" y="810.0" font-size="13" text-anchor="start" fill="#1f2933" font-weight="normal">• Measured: reveal width 810 mm.</text>
+<text x="40.0" y="830.0" font-size="13" text-anchor="start" fill="#1f2933" font-weight="normal">• Design: V-dipole at 90°, 756 mm tip-to-tip (≈ 27 mm clear each side).</text>
+<text x="40.0" y="850.0" font-size="13" text-anchor="start" fill="#1f2933" font-weight="normal">• Derived: arm = 378 ÷ sin 45° ≈ 535 mm; vertical drop = 535 × cos 45° ≈ 378 mm.</text>
+<text x="40.0" y="870.0" font-size="13" text-anchor="start" fill="#1f2933" font-weight="normal">• Indicative only: window height, reveal depth, roller position, h.</text>
+<text x="40.0" y="890.0" font-size="13" text-anchor="start" fill="#1f2933" font-weight="normal">• Keep the antenna ≥ 1 m from monitors, chargers and LED lights (VHF noise).</text>
+</svg>

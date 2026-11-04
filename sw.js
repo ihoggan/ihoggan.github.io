@@ -23,7 +23,7 @@
    ------------------------------------------------------------ */
 
 // VERSION-START
-const VERSION = 'site-706009a698';
+const VERSION = 'site-7ee98a8826';
 // VERSION-END
 
 const PAGES = `${VERSION}-pages`;
@@ -43,6 +43,7 @@ const PRECACHE = [
   'about.html',
   'account-audit.html',
   'contact.html',
+  'ears-on.html',
   'electronics-1.html',
   'electronics-2.html',
   'esp32-clock.html',
@@ -69,6 +70,9 @@ const PRECACHE = [
   'icons/icon-192.png',
   'icons/icon-512.png',
   'icons/icon-maskable-512.png',
+  'images/ears-feed-point.svg',
+  'images/ears-signal-chain.svg',
+  'images/ears-window-iso.svg',
   'images/esp32-battery-plan.svg',
   'images/esp32-plug-in.svg',
   'images/esp32-screen-map.svg',

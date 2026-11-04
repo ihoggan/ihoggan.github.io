@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 530" width="720" height="530" font-family="DejaVu Sans, Arial, sans-serif">
+<title>Feed point wiring</title>
+<rect width="720" height="530" fill="#ffffff"/>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1f2933"/></marker></defs>
+<text x="360.0" y="32.0" font-size="20" text-anchor="middle" fill="#1f2933" font-weight="bold">Feed point wiring (antenna base)</text>
+<text x="360.0" y="54.0" font-size="13" text-anchor="middle" fill="#5b6b7a" font-weight="normal">Coax soldered direct to the two whip terminals. Schematic, not to scale.</text>
+<path d="M210,210 A150,90 0 0 1 510,210 Z" fill="#2f3337" opacity="0.12" stroke="#1f2933" stroke-width="1.5"/>
+<line x1="300.0" y1="200.0" x2="185.0" y2="98.0" stroke="#5b6b7a" stroke-width="8"/>
+<line x1="420.0" y1="200.0" x2="535.0" y2="98.0" stroke="#5b6b7a" stroke-width="8"/>
+<text x="165.0" y="90.0" font-size="13" text-anchor="middle" fill="#1f2933" font-weight="bold">whip A</text>
+<text x="560.0" y="90.0" font-size="13" text-anchor="middle" fill="#1f2933" font-weight="bold">whip B</text>
+<circle cx="300" cy="200" r="13" fill="#d1d5db" stroke="#1f2933" stroke-width="2"/>
+<text x="300.0" y="205.0" font-size="12" text-anchor="middle" fill="#1f2933" font-weight="bold">A</text>
+<circle cx="420" cy="200" r="13" fill="#d1d5db" stroke="#1f2933" stroke-width="2"/>
+<text x="420.0" y="205.0" font-size="12" text-anchor="middle" fill="#1f2933" font-weight="bold">B</text>
+<rect x="350" y="240" width="20" height="120" fill="#222" rx="3"/>
+<rect x="347" y="232" width="26" height="22" fill="#9ca3af" opacity="0.8" rx="3"/>
+<text x="430.0" y="292.0" font-size="12" text-anchor="start" fill="#5b6b7a" font-weight="normal">heat-shrink over joint</text>
+<line x1="426.0" y1="288.0" x2="376.0" y2="246.0" stroke="#5b6b7a" stroke-width="1"/>
+<path d="M360,232 C350,215 330,215 300,213" fill="none" stroke="#b45309" stroke-width="3"/>
+<text x="250.0" y="250.0" font-size="12" text-anchor="middle" fill="#b45309" font-weight="normal">centre conductor</text>
+<text x="250.0" y="266.0" font-size="12" text-anchor="middle" fill="#b45309" font-weight="normal">→ whip A</text>
+<path d="M366,232 C380,215 390,215 420,213" fill="none" stroke="#8a8a8a" stroke-width="4" stroke-dasharray="3 2"/>
+<text x="478.0" y="250.0" font-size="12" text-anchor="middle" fill="#555" font-weight="normal">braid (shield)</text>
+<text x="478.0" y="266.0" font-size="12" text-anchor="middle" fill="#555" font-weight="normal">→ whip B</text>
+<rect x="342" y="305" width="36" height="40" rx="4" fill="#2b2b2b" stroke="#1f2933" stroke-width="2"/>
+<text x="390.0" y="330.0" font-size="12" text-anchor="start" fill="#1f2933" font-weight="normal">clip-on ferrite, just below base</text>
+<text x="360.0" y="385.0" font-size="12" text-anchor="middle" fill="#5b6b7a" font-weight="normal">to SMA plug → DC block → stick</text>
+<text x="40" y="420" font-size="13" font-family="DejaVu Sans Mono, monospace" fill="#1f2933" xml:space="preserve" font-weight="bold">Meter checks (stick unplugged, at the SMA plug):</text>
+<text x="40" y="440" font-size="13" font-family="DejaVu Sans Mono, monospace" fill="#1f2933" xml:space="preserve" font-weight="normal">  SMA centre pin  ↔ whip A      : BEEP</text>
+<text x="40" y="460" font-size="13" font-family="DejaVu Sans Mono, monospace" fill="#1f2933" xml:space="preserve" font-weight="normal">  SMA shell       ↔ whip B      : BEEP</text>
+<text x="40" y="480" font-size="13" font-family="DejaVu Sans Mono, monospace" fill="#1f2933" xml:space="preserve" font-weight="normal">  SMA centre pin  ↔ SMA shell   : NO beep (beep = short at the splice)</text>
+<text x="40" y="500" font-size="13" font-family="DejaVu Sans Mono, monospace" fill="#1f2933" xml:space="preserve" font-weight="normal">  DC block pin    ↔ pin         : NO beep (that is its job)</text>
+</svg>

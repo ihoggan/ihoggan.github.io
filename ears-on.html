@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Got my ears on: building a window aerial for a USB radio — Iain Hoggan</title>
+<meta name="description" content="An old TV aerial, a £25-class USB radio and a tape measure. How I surveyed before soldering, built a window V-dipole, chased a USB fault and a sleeping PC, and made the whole setup rebuildable with one script. Every command included.">
+<link rel="canonical" href="https://ihoggan.github.io/ears-on.html">
+<meta property="og:site_name" content="Iain Hoggan">
+<meta property="og:locale" content="en_GB">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ihoggan.github.io/ears-on.html">
+<meta property="og:title" content="Got my ears on: survey before you solder">
+<meta property="og:description" content="An old TV aerial becomes a window antenna for a USB radio. The survey, the build, the fault that nearly fooled me, and a script that rebuilds it all.">
+<meta property="og:image" content="https://ihoggan.github.io/images/og-ears-on.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Got my ears on: survey before you solder. Case study, radio, Ubuntu. 756 mm tip to tip, 25 FM stations, one script to rebuild.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Got my ears on: survey before you solder","description":"An old TV aerial becomes a window antenna for a USB radio: the survey, the build, the faults and the rebuild script.","image":"https://ihoggan.github.io/images/og-ears-on.png","datePublished":"2026-11-04","dateModified":"2026-11-04","inLanguage":"en-GB","author":{"@type":"Person","name":"Iain Hoggan","url":"https://ihoggan.github.io/about.html"},"mainEntityOfPage":"https://ihoggan.github.io/ears-on.html"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+main.wrap{padding-top:52px;padding-bottom:40px}
+.standfirst{font-size:1.12rem;color:var(--ink-2);max-width:34em}
+.standfirst strong{color:var(--ink);font-weight:600}
+main section p{max-width:38em}
+main h2{max-width:18em;margin-bottom:14px}
+main h3{margin:22px 0 8px}
+main ul,main ol{max-width:36em;margin:0 0 16px 1.2em}
+main li{margin-bottom:6px}
+pre{
+  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen));
+  border:1px solid #060B0E;border-radius:3px;box-shadow:inset 0 3px 12px rgba(0,0,0,.55);
+  color:#CFE3DA;font-family:var(--mono);font-size:13px;line-height:1.55;
+  padding:14px 16px;margin:18px 0 22px;max-width:40em;overflow-x:auto;white-space:pre;
+}
+pre .me{color:#E8C27A}
+pre .dim{color:#7F968D}
+pre .bad{color:#E0603F}
+pre .ok{color:var(--trace)}
+figure.shot{max-width:44em;margin:22px 0}
+figure.shot img{display:block;width:100%;height:auto;background:#fff;border:1px solid var(--bezel);border-radius:4px;
+  box-shadow:0 1px 2px rgba(23,32,43,.14)}
+figure.shot figcaption{margin-top:8px;font:12px/1.55 var(--mono);color:var(--ink-2);max-width:44em}
+.rules{max-width:38em;margin:14px 0 18px;border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))}
+.rules div{display:grid;grid-template-columns:11em 1fr;gap:12px;padding:10px 14px;border-bottom:1px solid var(--rule);font-size:.97rem}
+.rules div:last-child{border-bottom:0}
+.rules b{font-family:var(--mono);font-size:.84em;letter-spacing:.04em}
+@media(max-width:560px){.rules div{grid-template-columns:1fr;gap:2px}}
+.slips{display:grid;gap:12px;max-width:40em;margin:18px 0 22px}
+.slip{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.slip>div{padding:12px 14px;font-size:.95rem;line-height:1.5}
+.slip>div+div{border-left:1px solid var(--rule)}
+.slip .tag{display:block;margin-bottom:4px}
+.slip .dec .tag{color:#2F8A63}
+@media(max-width:560px){.slip{grid-template-columns:1fr}.slip>div+div{border-left:0;border-top:1px solid var(--rule)}}
+.takeaways{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:26px}
+.take{background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);border-radius:4px;padding:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.take h3{font-size:1rem;margin:0 0 8px}
+.take p{font-size:.94rem;color:var(--ink-2);margin:0}
+.predict{border-left:3px solid var(--lamp);padding:2px 0 2px 18px;margin:18px 0;max-width:38em}
+.predict .tag{display:block;margin-bottom:4px;color:var(--lamp)}
+.predict p{margin:0}
+.warn{border-left:3px solid var(--alarm);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.warn .tag{display:block;margin-bottom:4px;color:var(--alarm)}
+.warn p{margin:0}
+.warn p+p{margin-top:8px}
+details.answer{max-width:38em;margin:10px 0 18px}
+details.answer summary{cursor:pointer;font:600 11px/1.4 var(--mono);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-2)}
+details.answer p{margin-top:8px}
+.tablewrap{max-width:44em;overflow-x:auto;margin:16px 0 22px}
+table.disc{border-collapse:collapse;width:100%;font-size:.93rem;background:var(--engrave)}
+.disc th,.disc td{border:1px solid var(--bezel);padding:7px 9px;text-align:left;vertical-align:top}
+.disc th{background:var(--panel-2);font-family:var(--mono);font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.disc td code{white-space:nowrap}
+.disc td.n{text-align:right;font-family:var(--mono);font-size:.88em;white-space:nowrap}
+.calc{max-width:40em;margin:20px 0 22px;padding:16px 18px}
+.calc .cap{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#6E8A80;margin-bottom:12px}
+.calc .ins{display:grid;grid-template-columns:repeat(auto-fit,minmax(10em,1fr));gap:12px}
+.calc label{font:11px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#93A79E;display:grid;gap:5px}
+.calc input{font:500 1rem var(--mono);color:var(--trace);background:#0B1216;border:1px solid #2B3B44;border-radius:3px;padding:7px 9px;width:100%}
+.calc input:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.calc dl{display:grid;grid-template-columns:1fr auto;gap:6px 18px;margin:16px 0 0;padding-top:12px;border-top:1px solid rgba(87,199,154,.18)}
+.calc dt{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#93A79E}
+.calc dd{font-family:var(--mono);font-size:13px;color:var(--trace);text-align:right;font-variant-numeric:tabular-nums;margin:0}
+.calc .note{margin-top:12px;font:11px/1.55 var(--mono);color:#8FA69C}
+.sheet{max-width:40em;margin:16px 0 22px;border:1px dashed var(--bezel);border-radius:4px;padding:14px 16px;
+  background:repeating-linear-gradient(0deg,transparent 0 27px,rgba(23,32,43,.06) 27px 28px),var(--engrave)}
+.sheet p{font:13px/28px var(--mono);margin:0;max-width:none}
+.sheet .blank{display:inline-block;min-width:7em;border-bottom:1px solid var(--ink);margin:0 4px}
+.links{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+.read-next{border-top:1px solid var(--rule);padding:44px 0 8px}
+.read-next .card{margin-top:14px;max-width:640px}
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0F181E">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+</head>
+<body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html" aria-label="Home">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap col">
+    <p class="tag">Case study · Radio path, part 2 · Ubuntu · Build</p>
+    <h1>Got my ears on</h1>
+    <p class="standfirst"><strong>Survey before you solder.</strong> An old indoor TV aerial, a USB radio stick and a tape measure became a proper window antenna for my always-on PC. One line on a spec sheet stopped me plugging it straight in. The width of my window decided its shape. Then it went quiet twice, for two different reasons. This is the survey, the build, the faults and the script that can rebuild it all, with every command I used.</p>
+    <div class="spec">
+      <div><b>756&nbsp;mm</b><span>tip to tip</span></div>
+      <div><b>25</b><span>FM stations</span></div>
+      <div><b>38&nbsp;dB</b><span>best above noise</span></div>
+      <div><b>5&nbsp;m</b><span>USB run</span></div>
+      <div><b>1</b><span>script to rebuild</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap col">
+
+<section>
+  <p class="tag eyebrow">Part 1</p>
+  <h2>From a stick in a laptop to ears on a window</h2>
+  <p>In <a href="sdr.html">See what's in the air</a> I plugged a USB radio stick into my laptop and tuned in FM with its little stock aerial. It worked, but a laptop sleeps, moves and sits wherever I left it. I wanted a receiver that was always listening, on <strong>nix6</strong>: the 2015 desktop I saved from the scrap pile (its story is <a href="reclaim.html">Saved from the scrap pile</a>; "nix6" is just the name I gave it, and you'll see it in my terminal prompts).</p>
+  <p>I also had an old set of indoor TV "rabbit ears": two telescopic whips on a plastic base. The easy move was to plug one into the other and see what happened. Instead I spent an evening gathering facts first, and almost every fact changed the plan.</p>
+  <h3>What you'll need to follow along</h3>
+  <ul>
+    <li>An RTL-SDR style USB stick (mine is a NooElec NESDR SMArTee XTR)</li>
+    <li>An old aerial with telescopic whips, and a screwdriver to open its base</li>
+    <li>A multimeter with a continuity (beep) setting, a soldering iron and some heat-shrink</li>
+    <li>A tape measure, graph paper and a pencil</li>
+    <li>Ubuntu and a terminal. If the terminal is new, start with <a href="terminal.html">Meet the terminal</a></li>
+  </ul>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 2</p>
+  <h2>Security questions before any commands</h2>
+  <p>Every project I build now starts with security questions, not features. A radio sounds harmless, but this one runs on a machine that's on all day, holds my other projects, and will soon feed the family robot, <a href="gus.html">Gus</a>. These are the answers, and they shaped the build:</p>
+  <div class="rules">
+    <div><b>Who can reach it?</b><span>Nobody. It only receives, and nothing is streamed to the network yet. When it is, it will be home-only, behind the firewall.</span></div>
+    <div><b>Does it need root?</b><span>No. Day-to-day use runs as my normal user, through the <code>plugdev</code> group. <code>sudo</code> is only used once, at setup.</span></div>
+    <div><b>What leaves the house?</b><span>Nothing. The rebuild kit lives in a <strong>private</strong> code repository. Raw scan data never goes in it at all (Part 7 explains why).</span></div>
+    <div><b>What may I listen to?</b><span>Broadcast and hobby radio. The UK rules are in <a href="sdr.html">part 1</a>. Everything else, I only look at as a shape on a chart.</span></div>
+    <div><b>What could break?</b><span>The hardware, if I got the wiring wrong. That's what the survey and the meter checks are for.</span></div>
+  </div>
+  <div class="lesson">
+    <span class="tag">Lesson</span>
+    <p>Answering "where does the data go?" on day one is easy. Answering it after you've pushed a year of scans to a public repo is not.</p>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 3</p>
+  <h2>Survey before you solder</h2>
+  <p>Each step below is one fact I gathered, and the decision it forced. Your facts will be different. The method is the point.</p>
+  <div class="slips">
+    <div class="slip">
+      <div><span class="tag">Data · the spec sheet</span>My stick has an <strong>always-on bias-tee</strong>: it puts a few volts of DC up the aerial socket, to power amplifiers at the far end. It can't be switched off.</div>
+      <div class="dec"><span class="tag">Decision</span>Never connect anything that could short that DC. Fit a <strong>DC block</strong> between the stick and the coax, whatever else happens.</div>
+    </div>
+    <div class="slip">
+      <div><span class="tag">Data · inside the old aerial</span>Opening the base showed a matching transformer and a <strong>wire loop across the two whip terminals</strong>. The meter beeped straight across them.</div>
+      <div class="dec"><span class="tag">Decision</span>A loop across the feed is a dead short to DC. Strip the old electronics out and solder the coax <strong>straight to the whips</strong>.</div>
+    </div>
+    <div class="slip">
+      <div><span class="tag">Data · what I want to hear</span>FM broadcast sits around 88–108&nbsp;MHz. A half-wave dipole is about <strong>143&nbsp;÷&nbsp;MHz</strong> metres long overall, so about 1.43&nbsp;m at 100&nbsp;MHz.</div>
+      <div class="dec"><span class="tag">Decision</span>That's the ideal. The window would decide what actually fits.</div>
+    </div>
+    <div class="slip">
+      <div><span class="tag">Data · the tape measure</span>The window reveal measured <strong>810&nbsp;mm</strong> wide. A straight 1.43&nbsp;m dipole won't go in it.</div>
+      <div class="dec"><span class="tag">Decision</span>Bend it into a <strong>90° V</strong>, 756&nbsp;mm tip to tip, about 27&nbsp;mm clear each side. Arms come out at about 535&nbsp;mm.</div>
+    </div>
+    <div class="slip">
+      <div><span class="tag">Data · the noise</span>Monitors, phone chargers and LED lights all spray VHF noise. My desk is full of them.</div>
+      <div class="dec"><span class="tag">Decision</span>Keep the aerial at least a metre from all of them, on the window, away from the desk.</div>
+    </div>
+    <div class="slip">
+      <div><span class="tag">Data · the cable</span>Thin coax loses signal with every metre, and the PC is about 5&nbsp;m from the window. USB carries numbers, which don't fade the same way.</div>
+      <div class="dec"><span class="tag">Decision</span><strong>Short coax at the aerial</strong> (about 500&nbsp;mm), stick on the sill, and a 5&nbsp;m <em>active</em> USB extender back to the PC.</div>
+    </div>
+  </div>
+  <div class="lesson">
+    <span class="tag">Lesson</span>
+    <p>The window width, not the textbook, decided the shape of the antenna. Measure the space before you choose the design.</p>
+  </div>
+
+  <h3>Your window, your numbers</h3>
+  <p>Try your own. Put in the band you most want to hear, your window's width and how much clearance you want each side. It works out what a 90° V will give you.</p>
+  <div class="calc well" id="calc">
+    <div class="cap">V-dipole planner · 90° V · all lengths in mm</div>
+    <div class="ins">
+      <label>Target band (MHz)<input type="number" id="cMhz" value="100" min="30" max="1000" step="1" inputmode="decimal"></label>
+      <label>Window width (mm)<input type="number" id="cWin" value="810" min="100" max="4000" step="1" inputmode="decimal"></label>
+      <label>Clearance each side (mm)<input type="number" id="cClr" value="27" min="0" max="500" step="1" inputmode="decimal"></label>
+    </div>
+    <dl>
+      <dt>Ideal arm for that band</dt><dd id="oIdeal">–</dd>
+      <dt>Arm that fits your window</dt><dd id="oArm">–</dd>
+      <dt>Tip to tip</dt><dd id="oTip">–</dd>
+      <dt>Drop, feed to tips</dt><dd id="oDrop">–</dd>
+      <dt>What that size suits best</dt><dd id="oRes">–</dd>
+    </dl>
+    <div class="note" id="oNote">For receiving, a shorter aerial still works. It just hears a little less at the bottom of the band.</div>
+  </div>
+  <details class="answer">
+    <summary>The sums behind it</summary>
+    <p>Ideal arm = 143&nbsp;÷&nbsp;MHz ÷&nbsp;2 metres. Tip to tip = width&nbsp;−&nbsp;2&nbsp;×&nbsp;clearance. In a 90° V, each arm = half the tip-to-tip ÷&nbsp;sin&nbsp;45°, and the drop = arm&nbsp;×&nbsp;cos&nbsp;45°. My 810&nbsp;mm window gives arms of about 535&nbsp;mm, which suits about 134&nbsp;MHz best: a bit high for FM, but the 25 stations in Part 6 say it's plenty.</p>
+  </details>
+
+  <h3>Then draw it</h3>
+  <p>Before buying a single part, I drew the window to scale on graph paper, then as an isometric drawing with every dimension in millimetres. Pick one datum (I used the underside of the blind roller) and measure everything from it. Bold dimensions on the drawing are measured or worked out; grey ones are only indicative.</p>
+  <figure class="shot">
+    <img src="images/ears-window-iso.svg" width="1120" height="920" alt="Isometric technical drawing of the window from inside the room. A V-dipole hangs from a feed point below the blind roller, arms about 535 millimetres at 90 degrees, 756 millimetres tip to tip, about 27 millimetres clear of each side of an 810 millimetre reveal, dropping about 378 millimetres from feed to tips. The stick and DC block sit on the sill, with a 5000 millimetre USB run back to the PC." loading="lazy">
+    <figcaption>The window install, isometric, in mm. The 810&nbsp;mm reveal is measured; everything else follows from it.</figcaption>
+  </figure>
+  <p>Fill in your own before you buy anything:</p>
+  <div class="sheet" aria-label="Survey worksheet">
+    <p>Receiver model: <span class="blank"></span> Tuner range: <span class="blank"></span> MHz</p>
+    <p>Bias-tee? always on / switchable / none: <span class="blank"></span></p>
+    <p>Old aerial: meter across the feed beeps? yes / no: <span class="blank"></span></p>
+    <p>Target band: <span class="blank"></span> MHz → ideal arm: <span class="blank"></span> mm</p>
+    <p>Window width: <span class="blank"></span> mm Clearance each side: <span class="blank"></span> mm</p>
+    <p>Distance to nearest monitor / charger / LED light: <span class="blank"></span> mm</p>
+    <p>Cable run, window to PC: <span class="blank"></span> mm → coax or USB for the long part? <span class="blank"></span></p>
+  </div>
+  <p>Leave out where your window faces and where you live. You don't need them for this, and they're exactly the kind of detail to keep off anything you share.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 4</p>
+  <h2>The build</h2>
+  <p>The parts, in the order the signal travels from the aerial to the PC:</p>
+  <figure class="shot">
+    <img src="images/ears-signal-chain.svg" width="1180" height="430" alt="Signal chain diagram. On the windowsill: the V-dipole with a ferrite on the coax, about 500 millimetres of thin 50 ohm coax, an SMA plug, a DC block, then the NESDR SMArTee XTR stick with its always-on bias-tee. A 5000 millimetre active USB 2.0 extender with its own hub chip runs back to a rear USB port on nix6 at the desk." loading="lazy">
+    <figcaption>Short coax at the aerial, long USB to the desk. The DC block sits between the stick and everything else.</figcaption>
+  </figure>
+  <div class="tablewrap">
+  <table class="disc">
+    <thead><tr><th>#</th><th>Part</th><th>Why it's there</th></tr></thead>
+    <tbody>
+      <tr><td class="n">1</td><td>USB radio stick (RTL2832U + E4000 tuner, about 52–2200&nbsp;MHz)</td><td>The receiver. Its always-on bias-tee drove most of the decisions.</td></tr>
+      <tr><td class="n">2</td><td>DC block, SMA male to SMA female, 50&nbsp;Ω</td><td>Passes the radio signal, stops the bias-tee DC.</td></tr>
+      <tr><td class="n">3</td><td>Coax pigtail, about 500&nbsp;mm, thin 50&nbsp;Ω, <strong>SMA male</strong> (not RP-SMA)</td><td>The far end is cut off and soldered into the aerial base.</td></tr>
+      <tr><td class="n">4</td><td>Clip-on ferrite</td><td>Stops the outside of the coax acting as part of the aerial.</td></tr>
+      <tr><td class="n">5</td><td>Old TV rabbit ears, electronics removed</td><td>Two telescopic whips set as a 90° V.</td></tr>
+      <tr><td class="n">6</td><td>Heat-shrink or insulating tape</td><td>No bare braid anywhere near the joint.</td></tr>
+      <tr><td class="n">7</td><td>5&nbsp;m active USB 2.0 extender</td><td>Has its own hub chip at the far end, which matters in Part 6.</td></tr>
+      <tr><td class="n">8</td><td>Cable ties or Velcro</td><td>Strain relief. Also matters in Part 6.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="predict">
+    <span class="tag">Before you read on</span>
+    <p>The stick's bias-tee is always on. The old aerial had a loop of wire across its feed. What would have happened if I'd plugged the old aerial straight in?</p>
+  </div>
+  <details class="answer">
+    <summary>What would have happened</summary>
+    <p>The bias-tee's DC would have gone straight round that loop: a dead short on the stick's own power supply. At best, it would have shut itself down. At worst, the stick would have been damaged. That's why the DC block goes on first, and why the loop came out.</p>
+  </details>
+
+  <h3>The feed point</h3>
+  <p>The coax's centre conductor goes to one whip and its braid to the other, with heat-shrink over the joint and the ferrite just below the base.</p>
+  <figure class="shot">
+    <img src="images/ears-feed-point.svg" width="720" height="530" alt="Feed point wiring diagram. The coax centre conductor goes to whip A and the braid to whip B at the aerial base, with heat-shrink over the joint and a clip-on ferrite just below. Below it, the four meter checks." loading="lazy">
+    <figcaption>Schematic, not to scale. The four meter checks are underneath.</figcaption>
+  </figure>
+
+  <h3>Check before power</h3>
+  <p>With the stick unplugged, I checked every joint with the meter at the coax's SMA plug. Guess each answer before you test it:</p>
+  <div class="tablewrap">
+  <table class="disc">
+    <thead><tr><th>Test</th><th>Expect</th><th>If not</th></tr></thead>
+    <tbody>
+      <tr><td>SMA centre pin ↔ whip A</td><td>Beep</td><td>Centre joint is open. Resolder.</td></tr>
+      <tr><td>SMA shell ↔ whip B</td><td>Beep</td><td>Braid joint is open. Resolder.</td></tr>
+      <tr><td>SMA centre pin ↔ SMA shell</td><td><strong>No</strong> beep</td><td>A short at the splice. Don't plug in.</td></tr>
+      <tr><td>DC block, pin ↔ pin</td><td><strong>No</strong> beep</td><td>That's its job. A beep means a faulty block.</td></tr>
+      <tr><td>DC block, shell ↔ shell</td><td>Beep</td><td>The screen isn't carried through.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="lesson">
+    <span class="tag">Lesson</span>
+    <p>A multimeter costs less than the stick, and five beeps take two minutes. Check before power, every time.</p>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 5</p>
+  <h2>First light</h2>
+  <p>First, the same two fixes as in <a href="sdr.html">part 1</a>: block Ubuntu's TV driver, which grabs the stick before the radio software can, and let my normal user reach the stick without root.</p>
+<pre><span class="dim"># Stop the TV driver claiming the stick</span>
+printf 'blacklist dvb_usb_rtl28xxu\nblacklist rtl2832_sdr\nblacklist rtl2832\n' | sudo tee /etc/modprobe.d/blacklist-rtlsdr.conf
+
+<span class="dim"># The radio tools, and stick access without root</span>
+sudo apt install rtl-sdr gqrx-sdr
+sudo usermod -aG plugdev "$USER"     <span class="dim"># log out and in again after this</span></pre>
+  <p>Then plug in, and ask the computer what it sees:</p>
+<pre><span class="dim">$</span> lsusb | grep -i 0bda:2838
+Bus 001 Device 024: ID 0bda:2838 Realtek Semiconductor Corp. RTL2838 DVB-T
+<span class="dim">$</span> rtl_test -t
+Found 1 device(s):
+  0:  Realtek, RTL2838UHIDIR, SN: 00000001
+Using device 0: Generic RTL2832U OEM
+<span class="ok">Found Elonics E4000 tuner</span></pre>
+  <p>No <code>sudo</code> needed, which proves the group worked. Leaving <code>rtl_test</code> running for a while also counts dropped samples. Through 5&nbsp;m of USB extender I lost about <strong>one sample in a million</strong>, which is normal and won't be heard.</p>
+  <p>Then gqrx, tuned to the FM band:</p>
+  <div class="meas well">
+    <div class="cap">First light · FM band · gain about 30 dB</div>
+    <dl>
+      <dt>Noise floor</dt><dd>about −80 dB</dd>
+      <dt>Strongest station above it</dt><dd>about 38 dB</dd>
+      <dt>Stations at least 10 dB clear</dt><dd>25</dd>
+    </dl>
+    <div class="note">Relative levels from the software, not calibrated measurements. Good for comparing before and after on the same setup, not for comparing with someone else's.</div>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 6</p>
+  <h2>When the ears went deaf</h2>
+  <p>It worked in the morning. By the afternoon the stick had vanished. <code>lsusb</code> showed the extender's hub but not the stick, and the kernel's log said why, four times:</p>
+<pre><span class="dim">$</span> sudo dmesg | tail -n 15        <span class="dim"># trimmed to the USB lines</span>
+usb 1-6: New USB device found, idVendor=1a40, idProduct=0101
+hub 1-6:1.0: 4 ports detected
+<span class="bad">usb 1-6-port4: Cannot enable. Maybe the USB cable is bad?</span>
+<span class="bad">usb 1-6-port4: Cannot enable. Maybe the USB cable is bad?</span>
+usb 1-6-port4: attempt power cycle
+<span class="bad">usb 1-6-port4: unable to enumerate USB device</span></pre>
+  <p>Read that from the top. <code>1-6</code> is the extender's hub chip, on the PC's port 6, and it came up fine. <code>1-6-port4</code> is the socket on that hub where the stick plugs in. So the 5&nbsp;m cable was working. The failure was right at the far end, where the stick meets the extender.</p>
+  <div class="predict">
+    <span class="tag">Before you read on</span>
+    <p>The message blames the cable. How would you prove whether it's the stick, the extender or the joint between them, without buying anything?</p>
+  </div>
+  <p>Split the chain in half and test each half:</p>
+  <ol>
+    <li><strong>Replug at the PC end</strong>, wait ten seconds, and read <code>dmesg</code> again. Same error, so it wasn't a one-off at boot.</li>
+    <li><strong>Plug the stick straight into the PC</strong>, missing out the extender. If it fails there too, the stick is the problem. If it works, the extender end is.</li>
+    <li>In my case it never got that far. When I reseated the stick firmly in the extender, it came straight up on <code>1-6.4</code>, the very port that had been failing.</li>
+  </ol>
+  <p>So nothing was broken. The stick, the DC block and the coax hang off the extender's socket like a lever, and the weight had pulled the plug just far enough out to lose the data contacts. The fix wasn't software: lay the stick flat on the sill and tie the cables back so nothing pulls on the joint.</p>
+  <div class="lesson">
+    <span class="tag">Lesson</span>
+    <p>"Maybe the USB cable is bad" was nearly right. It was the connection, not the cable. Read the device path in the error: it tells you exactly which joint failed.</p>
+  </div>
+
+  <h3>The second silence: the PC fell asleep</h3>
+  <p>Then it went again, with a different cause. Ubuntu put the PC to sleep, and when it woke, the stick didn't come back. Linux also likes to put quiet USB devices into a power-saving nap, and an extender's hub is exactly the sort of thing it naps. For an always-listening box, both had to stop.</p>
+<pre><span class="dim"># 1. Never sleep on mains power, and mask the sleep targets</span>
+gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
+sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+
+<span class="dim"># 2. Keep the extender's hub and the stick awake, on every plug-in</span>
+printf 'ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="1a40", ATTR{idProduct}=="0101", ATTR{power/control}="on"\nACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="0bda", ATTR{idProduct}=="2838", ATTR{power/control}="on"\n' | sudo tee /etc/udev/rules.d/50-sdr-usb-power.rules
+sudo udevadm control --reload-rules</pre>
+  <p><code>1a40:0101</code> is the extender's hub chip and <code>0bda:2838</code> is the stick. Yours may differ, and <code>lsusb</code> shows yours. Then check, replacing <code>1-6</code> and <code>1-6.4</code> with the paths from your own <code>dmesg</code>:</p>
+<pre><span class="dim">$</span> for d in 1-6 1-6.4; do echo "$d: $(cat /sys/bus/usb/devices/$d/power/control)"; done
+1-6: <span class="ok">on</span>
+1-6.4: <span class="ok">on</span></pre>
+  <p><code>on</code> means "never nap". <code>auto</code> means Linux may put it to sleep.</p>
+  <div class="warn">
+    <span class="tag">Think before you copy this</span>
+    <p>Turning off sleep is right for a box that's meant to be on all the time, and wrong for a laptop. Write down how to undo it before you do it. My undo lines are in the rebuild kit in Part 7.</p>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 7</p>
+  <h2>Making it rebuildable</h2>
+  <p>By now nix6 had a blacklist file, a udev rule, masked sleep targets, a group membership and a list of stations, all done by hand. If the drive died tomorrow, I'd never remember it all. So it went into a <strong>private</strong> code repository as a rebuild kit.</p>
+
+  <h3>Bookmarks from a scan</h3>
+  <p>Rather than tuning across the FM band by ear, I swept it with <code>rtl_power</code>, which measures the strength of every slice of the band and saves it to a file:</p>
+<pre>rtl_power -f 87.5M:108.5M:12.5k -g 20 -i 10 -e 2m surveys/fm_survey.csv</pre>
+  <p>That's 87.5 to 108.5&nbsp;MHz in 12.5&nbsp;kHz slices, at fixed gain, averaged every 10 seconds, for 2 minutes. A small Python script of mine, <code>fm_bookmarks.py</code>, reads the file, works out the noise floor, finds every channel at least 10&nbsp;dB above it, and writes them as gqrx bookmarks. It uses only Python's standard library, so there's nothing to install:</p>
+<pre>python3 tools/fm_bookmarks.py surveys/fm_survey.csv              <span class="dim"># report and preview only</span>
+python3 tools/fm_bookmarks.py surveys/fm_survey.csv --install    <span class="dim"># add to gqrx, backing up first</span></pre>
+  <p>Station names come from a small table I edit by hand. Shown here with placeholders, because a list of the stations you can receive says roughly where you live:</p>
+<pre>NAMES = {
+    <span class="me">[MHz]</span>: "<span class="me">[your local station]</span>",
+    <span class="me">[MHz]</span>: "<span class="me">[a national station]</span>",
+}</pre>
+  <p>The result was 25 bookmarks, in a coloured "FM-scan" group in gqrx.</p>
+
+  <h3>One script, with a dry run</h3>
+  <p><code>setup.sh</code> puts everything back on a fresh install: the packages, the blacklist, the USB power rule, no sleep, the <code>plugdev</code> group and the bookmarks. It checks each item first and only changes what's missing, and it has a dry run that changes nothing at all:</p>
+<pre>./setup.sh --dry-run     <span class="dim"># look first: every line says "ok:" or "WOULD:"</span>
+./setup.sh               <span class="dim"># then apply</span></pre>
+<pre><span class="dim">$</span> ./setup.sh --dry-run
+== 1. Packages ==
+ok: rtl-sdr installed
+ok: gqrx-sdr installed
+== 2. TV-driver blacklist ==
+ok: /etc/modprobe.d/blacklist-rtlsdr.conf up to date
+<span class="dim">…</span>
+(dry run - nothing changed)</pre>
+  <p>It refuses to run as root, and it backs up existing gqrx bookmarks before replacing them. The same file also lists the undo commands for every system change.</p>
+
+  <h3>What stays out of the repository</h3>
+  <p>Raw scans never go into git. Part of the reason is size, since an overnight sweep can run to hundreds of megabytes. The bigger reason is privacy: <strong>a scan is a fingerprint of where you live.</strong> Which stations come in strongest, which TV channels, and how loud they are can narrow down your location. So the repository's ignore file starts like this:</p>
+<pre><span class="dim"># Raw survey data stays local (large + location fingerprint)</span>
+surveys/
+*.csv
+!gqrx/bookmarks.csv</pre>
+  <p>Before every push, I run my own pre-push check, which scans the changes for a private list of words that must never go public. Even in a private repository, that's the habit.</p>
+  <div class="lesson">
+    <span class="tag">Lesson</span>
+    <p>If you did it by hand once, you'll get it wrong by hand next time. Write it down as a script that can show you what it would do before it does it.</p>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 8</p>
+  <h2>What the ears can hear</h2>
+  <p>With the aerial up and nix6 never sleeping, I swept three bands with <code>rtl_power</code>, looking at the strength of each band over time rather than listening:</p>
+  <div class="meas well">
+    <div class="cap">Surveys · the window V-dipole · relative levels</div>
+    <dl>
+      <dt>FM stations, 87.5–108.5 MHz</dt><dd>25</dd>
+      <dt>Freeview multiplexes, above the floor</dt><dd>13–16 dB</dd>
+      <dt>Marine safety broadcast, length</dt><dd>about 16 min</dd>
+    </dl>
+    <div class="note">The aerial is sized for VHF, so the TV result is a worst case. A proper UHF aerial would do better. Levels are relative, not calibrated.</div>
+  </div>
+  <p><strong>Freeview.</strong> The stick can't decode digital TV, but it can see it. Each TV multiplex shows up as a flat-topped slab 8&nbsp;MHz wide, standing above the noise. I averaged each UK TV channel and sorted the list; the multiplexes stood clear of the empty channels by 13 to 16&nbsp;dB, on an aerial that isn't even built for UHF. To work out which transmitter yours come from, put your postcode into an official Freeview coverage checker and match its channel list against your strongest channels. I've left mine out on purpose:</p>
+<pre>rtl_power -f 470M:694M:100k -g 30 -i 10 -e 2m surveys/uhf_survey.csv
+
+awk -F', ' '{low=$3; step=$5; for(i=7;i&lt;=NF;i++){f=low+(i-7)*step; if(f&lt;470e6||f&gt;=694e6) continue; ch=int((f-470e6)/8e6)+21; s[ch]+=$i; n[ch]++}} END{for(c in s) printf "ch%-3d %6.1f MHz %7.1f dB\n", c, 306+8*c, s[c]/n[c]}' surveys/uhf_survey.csv | sort -k4,4gr</pre>
+  <p>That prints one line per channel, from 21 to 48, strongest first. The empty channels at the bottom are your noise floor. A group of channels well above it is your local multiplexes.</p>
+  <p><strong>The marine band.</strong> HM Coastguard broadcasts maritime safety information, such as weather and navigation warnings, on a schedule for every vessel at sea. A sweep across the marine VHF band showed one as a solid block of activity lasting about 16 minutes, standing out clearly from a band that's otherwise quiet. I've left out the channel and time, because together with the station they say which stretch of coast I'm on.</p>
+</section>
+
+<section id="commands">
+  <p class="tag eyebrow">Part 9</p>
+  <h2>Every command I used</h2>
+  <p>In the order they came up. The ones marked <code>sudo</code> change the system; everything else only reads.</p>
+  <div class="tablewrap">
+  <table class="disc">
+    <thead><tr><th>Command</th><th>What it does</th><th>When</th></tr></thead>
+    <tbody>
+      <tr><td><code>lsusb</code></td><td>Lists USB devices. Look for <code>0bda:2838</code>.</td><td>First light, faults</td></tr>
+      <tr><td><code>rtl_test -t</code></td><td>Finds the stick and names its tuner, without root.</td><td>First light</td></tr>
+      <tr><td><code>sudo tee /etc/modprobe.d/…</code></td><td>Blocks the TV driver that grabs the stick.</td><td>Setup, once</td></tr>
+      <tr><td><code>sudo usermod -aG plugdev "$USER"</code></td><td>Lets your user use the stick without root.</td><td>Setup, once</td></tr>
+      <tr><td><code>gqrx</code></td><td>The radio itself: tune, listen, bookmark.</td><td>Every day</td></tr>
+      <tr><td><code>sudo dmesg | tail</code></td><td>The kernel's log. Where "Cannot enable" showed up.</td><td>Faults</td></tr>
+      <tr><td><code>cat /sys/bus/usb/devices/…/power/control</code></td><td>Shows if a USB device may nap (<code>auto</code>) or not (<code>on</code>).</td><td>Faults</td></tr>
+      <tr><td><code>sudo tee /etc/udev/rules.d/…</code> and <code>sudo udevadm control --reload-rules</code></td><td>Keeps the hub and stick awake on every plug-in.</td><td>Setup, once</td></tr>
+      <tr><td><code>gsettings set …</code> and <code>sudo systemctl mask …</code></td><td>Stops the PC sleeping.</td><td>Setup, once</td></tr>
+      <tr><td><code>rtl_power -f …</code></td><td>Sweeps a band and logs its strength to a CSV file.</td><td>Surveys</td></tr>
+      <tr><td><code>awk …</code></td><td>Turns a sweep into one line per TV channel.</td><td>Surveys</td></tr>
+      <tr><td><code>python3 tools/fm_bookmarks.py …</code></td><td>Turns an FM sweep into gqrx bookmarks.</td><td>Surveys</td></tr>
+      <tr><td><code>./setup.sh --dry-run</code></td><td>Shows what a rebuild would change, and changes nothing.</td><td>After a reinstall</td></tr>
+      <tr><td><code>pgrep -a -f 'gqrx|rtl_'</code></td><td>Is anything already using the stick? Only one program can at a time.</td><td>Before every sweep</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 10</p>
+  <h2>What it could become</h2>
+  <p>The receiver is the foundation. These are the builds it opens up, roughly in the order I want to try them:</p>
+  <ul>
+    <li><strong>A radio station for the whole house.</strong> Digital (DAB) radio decoded on nix6 and streamed to phones and the old tablet, home-only, behind the firewall. No apps, no accounts and no tracking.</li>
+    <li><strong>Freeview, properly.</strong> The survey says the signal's there. A Raspberry Pi with a TV tuner board and a real UHF aerial in the loft could serve TV round the house, again home-only and password-protected.</li>
+    <li><strong>A map of everything in range.</strong> One long sweep across everything the stick covers, turned into bookmarks the way the FM ones were. It needs plenty of disk, and the raw data stays out of git.</li>
+    <li><strong>A second aerial.</strong> A long-wire aerial made from spare doorbell wire, and perhaps a receiver that reaches the lower bands this stick can't.</li>
+    <li><strong>Ears for Gus.</strong> A radio card on the family robot's dashboard: what's on, how strong it is, and whether the stick is still awake.</li>
+    <li><strong>Storm watching.</strong> Lightning crackles across the VHF band. A sweep logged during a thunderstorm could show it as it passes.</li>
+  </ul>
+  <p>Each one gets the same treatment: security questions first, a survey before buying anything, and a write-up here.</p>
+  <div class="links">
+    <a class="btn btn-primary" href="sdr.html">Part 1: See what's in the air</a>
+    <a class="btn" href="gus.html">Meet Gus</a>
+  </div>
+</section>
+
+<hr class="div">
+
+<section style="padding-top:44px">
+  <p class="tag eyebrow">What came out of it</p>
+  <h2>Measure twice, solder once</h2>
+  <div class="takeaways">
+    <div class="take">
+      <h3>Survey first</h3>
+      <p>One spec-sheet line and one tape measure changed the design before I spent a penny. The window decided the shape.</p>
+    </div>
+    <div class="take">
+      <h3>Read the device path</h3>
+      <p><code>1-6-port4</code> pointed at one joint on a 5&nbsp;m run. The fault was mechanical, and the log said where.</p>
+    </div>
+    <div class="take">
+      <h3>A scan is a fingerprint</h3>
+      <p>Script the setup and keep it private. Keep raw scans out of git altogether, because they say where you live.</p>
+    </div>
+  </div>
+  <p style="margin-top:26px">Built your own window aerial, or spotted a mistake? <a href="contact.html">Tell me</a>. Corrections are genuinely welcome. 10-4.</p>
+</section>
+
+</main>
+
+<section class="read-next">
+  <div class="wrap col">
+    <p class="tag">If you haven't done part 1</p>
+    <a class="card" href="sdr.html">
+      <h3>See what's in the air</h3>
+      <p>Plug in the stick, fix the driver clash, tune in FM and learn which bands are yours to listen to in the UK.</p>
+      <span class="go">Read &rarr;</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">← Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="contact.html">Get in touch</a>
+    <a href="offline.html">Use offline</a>
+    <span class="tag">© 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  var mhz=$('cMhz'),win=$('cWin'),clr=$('cClr');
+  if(!mhz) return;
+  function mm(v){return Math.round(v).toLocaleString('en-GB')+' mm'}
+  function calc(){
+    var f=parseFloat(mhz.value),w=parseFloat(win.value),c=parseFloat(clr.value);
+    var ok=f>0&&w>0&&c>=0&&w>2*c;
+    if(!ok){['oIdeal','oArm','oTip','oDrop','oRes'].forEach(function(k){$(k).textContent='–'});
+      $('oNote').textContent='Check the numbers: the window must be wider than twice the clearance.';return}
+    var S45=Math.SQRT1_2, ideal=143000/f/2, tip=w-2*c, arm=(tip/2)/S45, drop=arm*S45;
+    var res=143000/(2*arm);
+    $('oIdeal').textContent=mm(ideal);
+    $('oArm').textContent=mm(arm);
+    $('oTip').textContent=mm(tip);
+    $('oDrop').textContent=mm(drop);
+    $('oRes').textContent='about '+Math.round(res)+' MHz';
+    $('oNote').textContent = arm>=ideal
+      ? 'Your window fits the full size. Push the whips in to the ideal arm length.'
+      : 'Shorter than ideal by '+mm(ideal-arm)+' per arm. For receiving that’s fine: it just hears a little less at the bottom of the band.';
+  }
+  [mhz,win,clr].forEach(function(el){el.addEventListener('input',calc)});
+  calc();
+})();
+</script>
+<script src="sw-register.js" defer></script>
+</body>
+</html>
