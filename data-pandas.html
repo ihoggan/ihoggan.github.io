@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data path 2: pandas with penguins, a proper table — Iain Hoggan</title>
+<meta name="description" content="Step 2 of a five-part data and machine learning path for beginners. Load all 344 penguins into a pandas table, find and handle the gaps, ask questions with groupby, and discover why the island with the heaviest penguins isn't the whole story. Live Python in your browser.">
+<link rel="canonical" href="https://ihoggan.github.io/data-pandas.html">
+<meta property="og:site_name" content="Iain Hoggan">
+<meta property="og:locale" content="en_GB">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ihoggan.github.io/data-pandas.html">
+<meta property="og:title" content="Data path 2: pandas with penguins">
+<meta property="og:description" content="Load it, clean it, ask it questions. And find out why the island with the heaviest penguins isn't the whole story. Live Python in your browser.">
+<meta property="og:image" content="https://ihoggan.github.io/images/og-data-pandas.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Data path step 2: pandas with penguins. A proper table, 8 columns, live Python in your browser.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Data path 2: pandas with penguins", "description": "Load it, clean it, ask it questions. And find out why the island with the heaviest penguins isn't the whole story. Live Python in your browser.", "image": "https://ihoggan.github.io/images/og-data-pandas.png", "datePublished": "2026-11-04", "dateModified": "2026-11-04", "inLanguage": "en-GB", "author": {"@type": "Person", "name": "Iain Hoggan", "url": "https://ihoggan.github.io/about.html"}, "mainEntityOfPage": "https://ihoggan.github.io/data-pandas.html"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+main.wrap{padding-top:52px;padding-bottom:40px}
+.standfirst{font-size:1.12rem;color:var(--ink-2);max-width:34em}
+.standfirst strong{color:var(--ink);font-weight:600}
+main section p{max-width:38em}
+main h2{max-width:18em;margin-bottom:14px}
+main h3{margin:22px 0 8px}
+main ul,main ol{max-width:36em;margin:0 0 16px 1.2em}
+main li{margin-bottom:6px}
+pre{
+  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen));
+  border:1px solid #060B0E;border-radius:3px;box-shadow:inset 0 3px 12px rgba(0,0,0,.55);
+  color:#CFE3DA;font-family:var(--mono);font-size:13px;line-height:1.55;
+  padding:14px 16px;margin:18px 0 22px;max-width:40em;overflow-x:auto;white-space:pre;
+}
+pre .me{color:#E8C27A}
+pre .dim{color:#7F968D}
+pre .bad{color:#E0603F}
+pre .ok{color:var(--trace)}
+figure.shot{max-width:44em;margin:22px 0}
+figure.shot img{display:block;width:100%;height:auto;background:#fff;border:1px solid var(--bezel);border-radius:4px;
+  box-shadow:0 1px 2px rgba(23,32,43,.14)}
+figure.shot figcaption{margin-top:8px;font:12px/1.55 var(--mono);color:var(--ink-2);max-width:44em}
+.rules{max-width:38em;margin:14px 0 18px;border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))}
+.rules div{display:grid;grid-template-columns:11em 1fr;gap:12px;padding:10px 14px;border-bottom:1px solid var(--rule);font-size:.97rem}
+.rules div:last-child{border-bottom:0}
+.rules b{font-family:var(--mono);font-size:.84em;letter-spacing:.04em}
+@media(max-width:560px){.rules div{grid-template-columns:1fr;gap:2px}}
+.slips{display:grid;gap:12px;max-width:40em;margin:18px 0 22px}
+.slip{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.slip>div{padding:12px 14px;font-size:.95rem;line-height:1.5}
+.slip>div+div{border-left:1px solid var(--rule)}
+.slip .tag{display:block;margin-bottom:4px}
+.slip .dec .tag{color:#2F8A63}
+@media(max-width:560px){.slip{grid-template-columns:1fr}.slip>div+div{border-left:0;border-top:1px solid var(--rule)}}
+.takeaways{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:26px}
+.take{background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);border-radius:4px;padding:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.take h3{font-size:1rem;margin:0 0 8px}
+.take p{font-size:.94rem;color:var(--ink-2);margin:0}
+.predict{border-left:3px solid var(--lamp);padding:2px 0 2px 18px;margin:18px 0;max-width:38em}
+.predict .tag{display:block;margin-bottom:4px;color:var(--lamp)}
+.predict p{margin:0}
+.warn{border-left:3px solid var(--alarm);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.warn .tag{display:block;margin-bottom:4px;color:var(--alarm)}
+.warn p{margin:0}
+.warn p+p{margin-top:8px}
+details.answer{max-width:38em;margin:10px 0 18px}
+details.answer summary{cursor:pointer;font:600 11px/1.4 var(--mono);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-2)}
+details.answer p{margin-top:8px}
+.tablewrap{max-width:44em;overflow-x:auto;margin:16px 0 22px}
+table.disc{border-collapse:collapse;width:100%;font-size:.93rem;background:var(--engrave)}
+.disc th,.disc td{border:1px solid var(--bezel);padding:7px 9px;text-align:left;vertical-align:top}
+.disc th{background:var(--panel-2);font-family:var(--mono);font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.disc td code{white-space:nowrap}
+.disc td.n{text-align:right;font-family:var(--mono);font-size:.88em;white-space:nowrap}
+.calc{max-width:40em;margin:20px 0 22px;padding:16px 18px}
+.calc .cap{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#6E8A80;margin-bottom:12px}
+.calc .ins{display:grid;grid-template-columns:repeat(auto-fit,minmax(10em,1fr));gap:12px}
+.calc label{font:11px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#93A79E;display:grid;gap:5px}
+.calc input{font:500 1rem var(--mono);color:var(--trace);background:#0B1216;border:1px solid #2B3B44;border-radius:3px;padding:7px 9px;width:100%}
+.calc input:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.calc dl{display:grid;grid-template-columns:1fr auto;gap:6px 18px;margin:16px 0 0;padding-top:12px;border-top:1px solid rgba(87,199,154,.18)}
+.calc dt{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#93A79E}
+.calc dd{font-family:var(--mono);font-size:13px;color:var(--trace);text-align:right;font-variant-numeric:tabular-nums;margin:0}
+.calc .note{margin-top:12px;font:11px/1.55 var(--mono);color:#8FA69C}
+.sheet{max-width:40em;margin:16px 0 22px;border:1px dashed var(--bezel);border-radius:4px;padding:14px 16px;
+  background:repeating-linear-gradient(0deg,transparent 0 27px,rgba(23,32,43,.06) 27px 28px),var(--engrave)}
+.sheet p{font:13px/28px var(--mono);margin:0;max-width:none}
+.sheet .blank{display:inline-block;min-width:7em;border-bottom:1px solid var(--ink);margin:0 4px}
+.links{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+.read-next{border-top:1px solid var(--rule);padding:44px 0 8px}
+.read-next .card{margin-top:14px;max-width:640px}
+
+.check{display:flex;gap:14px;align-items:flex-start;max-width:38em;margin:20px 0 6px;
+  border:1px solid var(--bezel);border-radius:4px;padding:14px 16px;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.check .tag{display:block;margin-bottom:4px;color:#2F8A63}
+.check p{margin:0;font-size:.97rem}
+.ui{font-family:var(--mono);font-size:.84em;white-space:nowrap;background:linear-gradient(180deg,#fff,var(--engrave));
+  border:1px solid var(--bezel);border-bottom-width:2px;border-radius:3px;padding:1px 6px;color:var(--ink)}
+.ticks{display:grid;gap:9px}
+.ticks label{font:13.5px/1.5 var(--mono);text-transform:none;letter-spacing:normal;color:#CFE3DA;display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.ticks input{accent-color:var(--trace);margin-top:3px;flex:none;width:16px;height:16px}
+.verdict{margin-top:14px;padding-top:12px;border-top:1px solid rgba(87,199,154,.18);font:600 13px/1.55 var(--mono);color:#93A79E}
+.verdict.yes{color:#E7B863}
+.verdict.no{color:var(--trace)}
+/* Data path: live code cells (pylab.js) */
+.cell{max-width:44em;margin:18px 0 22px;border:1px solid #060B0E;border-radius:3px;overflow:hidden;
+  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen));box-shadow:inset 0 3px 12px rgba(0,0,0,.55)}
+.cell textarea{display:block;width:100%;min-height:3.2em;resize:vertical;border:0;outline:none;background:transparent;
+  color:#CFE3DA;font:13px/1.55 var(--mono);padding:14px 16px;white-space:pre;overflow-x:auto;tab-size:4}
+.cell textarea:focus-visible{box-shadow:inset 0 0 0 2px var(--lamp)}
+.cell-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:8px 12px;border-top:1px solid rgba(87,199,154,.18)}
+.cell-bar button{font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:8px 12px;border-radius:3px;cursor:pointer;
+  border:1px solid #2B3B44;background:#16232B;color:#A9BFB5}
+.cell-bar button.run{background:linear-gradient(180deg,#6FD6AA,var(--trace));border-color:#2F8A63;color:#0B2A1E}
+.cell-bar button:disabled{opacity:.55;cursor:progress}
+.cell-bar button:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.cell-bar .status{font:11px/1.4 var(--mono);color:#8FA69C}
+.cell pre.out{margin:0;max-width:none;border:0;border-top:1px solid rgba(87,199,154,.18);border-radius:0;box-shadow:none;
+  background:#0B1216;color:#E6F0EC;white-space:pre;overflow-x:auto}
+.cell pre.out.bad{color:#F0896E}
+.cell .figs img{display:block;max-width:calc(100% - 24px);height:auto;margin:0 12px 12px;background:#fff;border-radius:2px}
+.pathlist{list-style:none;margin:6px 0 18px!important;padding:0;counter-reset:p;max-width:38em}
+.pathlist li{counter-increment:p;position:relative;padding:8px 0 8px 40px;border-bottom:1px solid var(--rule);margin:0!important}
+.pathlist li::before{content:counter(p);position:absolute;left:0;top:7px;width:26px;height:26px;display:grid;place-items:center;
+  font:600 12px var(--mono);border:1px solid var(--bezel);border-radius:3px;background:var(--engrave)}
+.pathlist li.here::before{background:var(--ink);color:var(--engrave);border-color:var(--ink)}
+.pathlist li.here em{color:var(--lamp);font-style:normal;font:600 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-left:6px}
+.card.soon{opacity:.75}
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0F181E">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+</head>
+<body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html" aria-label="Home">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
+
+<header class="hero">
+  <div class="wrap col">
+    <p class="tag">Data path · Step 2 of 5 · Python · ~45 min</p>
+    <h1>pandas with penguins</h1>
+    <p class="standfirst">In step 1, NumPy gave you rows of numbers, but you had to remember that column 4 was flippers and column 5 was weight. <strong>pandas</strong> gives the data a proper home: a table with named columns, words and numbers side by side, and a way to ask questions like <em>"which island has the heaviest penguins?"</em> in one line. By the end you'll have answered that, and found out why the answer is a trap.</p>
+    <div class="spec">
+      <div><b>344</b><span>penguins</span></div>
+      <div><b>8</b><span>named columns</span></div>
+      <div><b>13</b><span>gaps to find</span></div>
+      <div><b>1</b><span>trap to spot</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap col" data-py-packages="numpy pandas">
+
+<section>
+  <p class="tag eyebrow">The path</p>
+  <h2>Where you are</h2>
+  <ol class="pathlist">
+    <li><b>NumPy:</b> numbers in rows. <a href="data-numpy.html">Done it?</a></li>
+    <li class="here"><b>pandas:</b> a proper table. Load it, clean it, ask it questions. <em>You are here.</em></li>
+    <li><b>matplotlib:</b> draw it. Spot the pattern with your own eyes.</li>
+    <li><b>scikit-learn:</b> your first model. Teach it to name the species.</li>
+    <li><b>Is it any good?</b> Test it honestly, and catch it cheating.</li>
+  </ol>
+  <p>The boxes work just like step 1: press <span class="ui">Run</span> (or <span class="ui">Ctrl</span> + <span class="ui">Enter</span>), change things, and run them in order. The first run fetches Python and pandas, which takes a little longer than NumPy alone.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 1</p>
+  <h2>The whole table, at once</h2>
+  <div class="cell"><textarea>import pandas as pd       # pd is the short name everyone uses
+pd.set_option("display.max_columns", None)   # show every column
+
+penguins = pd.read_csv("penguins.csv")
+penguins.head()           # the first five rows</textarea></div>
+  <p>That's a <strong>DataFrame</strong>: a table, like a spreadsheet. Every column has a name. The numbers down the left (0, 1, 2…) are the <strong>index</strong>, pandas' own row numbers. Notice that <code>species</code>, <code>island</code> and <code>sex</code> are words, sitting happily next to numbers. NumPy couldn't do that.</p>
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>How many rows and columns does the whole table have? You know one of the numbers already.</p>
+  </div>
+  <div class="cell"><textarea>penguins.shape</textarea></div>
+  <p><code>(344, 8)</code>: 344 rows (penguins) and 8 columns. Now ask what <em>kind</em> of thing is in each column:</p>
+  <div class="cell"><textarea>penguins.dtypes</textarea></div>
+  <p><code>float64</code> means numbers with decimals, <code>int64</code> means whole numbers, and the others are text. Why is <code>body_mass_g</code> a decimal, when every weight is a whole number of grams? Hold that thought.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 2</p>
+  <h2>Find the gaps first</h2>
+  <p>Step 1's big lesson: before you trust anything, ask what's missing. pandas does it for every column at once:</p>
+  <div class="cell"><textarea>penguins.isna().sum()</textarea></div>
+  <details class="answer">
+    <summary>Reading the answer</summary>
+    <p>Four measurement columns are each missing <strong>2</strong>: the same two birds, never measured at all. And <code>sex</code> is missing <strong>11</strong>: those birds were measured, but nobody recorded whether they were male or female. That's 13 gaps of two different kinds. And the decimal mystery: a whole-number column can't hold "missing", so pandas switched it to decimals to use <code>NaN</code>, the same "not a number" as step 1.</p>
+  </details>
+  <p>Look at the two unmeasured birds:</p>
+  <div class="cell"><textarea>penguins[penguins["body_mass_g"].isna()]</textarea></div>
+  <p>That line has the same shape as a NumPy mask: <code>penguins["body_mass_g"].isna()</code> gives True or False for each row, and putting it inside <code>penguins[...]</code> keeps only the Trues.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 3</p>
+  <h2>Deciding what to do about them</h2>
+  <p>There's no single right answer, and that's the point. You choose, and you say what you chose.</p>
+  <ul>
+    <li>The <strong>two unmeasured birds</strong> are no use for anything about size. Drop them.</li>
+    <li>The <strong>eleven unsexed birds</strong> still have good measurements. Dropping them throws away real data. Keeping them means any question about sex has to skip them.</li>
+  </ul>
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>If you drop every row with <em>any</em> gap, how many penguins are left? And if you only drop rows with no weight?</p>
+  </div>
+  <div class="cell"><textarea>print("drop any gap:     ", len(penguins.dropna()))
+print("drop only no-weight:", len(penguins.dropna(subset=["body_mass_g"])))</textarea></div>
+  <p>333 against 342. For this path, we'll keep it simple and use the fully complete rows, so every later step works on the same <strong>333</strong> penguins. Make the clean table, and add a column in kilograms while you're at it:</p>
+  <div class="cell"><textarea>clean = penguins.dropna().copy()
+clean["mass_kg"] = clean["body_mass_g"] / 1000     # a new column, maths on a whole column at once
+clean.head(3)</textarea></div>
+  <div class="lesson">
+    <span class="tag">Lesson</span>
+    <p>Cleaning is a decision, not a chore. Write down what you dropped and why. "333 of 344, dropping 11 with no sex recorded and 2 never measured" is part of your result.</p>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 4</p>
+  <h2>Asking questions</h2>
+  <p>One column on its own is a <strong>Series</strong>. The most useful question to ask a column of words is "how many of each?":</p>
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>Three species: Adelie, Chinstrap and Gentoo. Which do you think was counted most?</p>
+  </div>
+  <div class="cell"><textarea>penguins["species"].value_counts()</textarea></div>
+  <p>Now the big one. <code>groupby</code> splits the table into groups, does a sum on each, and puts the answers back together. Average weight by species:</p>
+  <div class="cell"><textarea>clean.groupby("species")["mass_kg"].mean().round(2)</textarea></div>
+  <p>Gentoos are the heavyweights, at about 5.1&nbsp;kg against 3.7&nbsp;kg for the other two. Now try it by island:</p>
+  <div class="cell"><textarea>clean.groupby("island")["mass_kg"].mean().round(2)</textarea></div>
+  <div class="predict">
+    <span class="tag">Think about it</span>
+    <p>Biscoe's penguins average about a kilogram heavier than the other islands'. Does Biscoe make penguins heavy? Better food? Before you answer, run the next box.</p>
+  </div>
+  <div class="cell"><textarea>pd.crosstab(penguins["island"], penguins["species"])</textarea></div>
+  <details class="answer">
+    <summary>The trap</summary>
+    <p>A crosstab counts every combination. Gentoos live <strong>only on Biscoe</strong>, and Chinstraps only on Dream. Biscoe isn't heavy because of the island. It's heavy because that's where the heavy species lives. Compare like with like, Adelies on all three islands, and the difference almost disappears. Try it: <code>clean[clean["species"] == "Adelie"].groupby("island")["mass_kg"].mean()</code>.</p>
+    <p>This is called a <strong>confounder</strong>: a hidden third thing (species) that makes two others (island and weight) look connected. It fools newspapers, scientists and, in step 4, machine-learning models.</p>
+  </details>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 5</p>
+  <h2>Your turn</h2>
+  <div class="predict">
+    <span class="tag">Challenge</span>
+    <p>Are males heavier than females, in <em>every</em> species? You can group by two columns at once: <code>groupby(["species", "sex"])</code>. Write it in the empty box.</p>
+  </div>
+  <div class="cell"><textarea># your answer here
+</textarea></div>
+  <details class="answer">
+    <summary>One way to do it</summary>
+    <pre>clean.groupby(["species", "sex"])["mass_kg"].mean().round(2)</pre>
+    <p>Yes, in all three. Male Gentoos average about 5.5&nbsp;kg against 4.7&nbsp;kg for females, and the gap is a bit smaller in the other two species. Notice we could only ask this because we used <code>clean</code>, where every bird has its sex recorded.</p>
+  </details>
+  <p>Two more tools worth knowing. Sort, to find the extremes:</p>
+  <div class="cell"><textarea>clean.sort_values("mass_kg", ascending=False).head(3)</textarea></div>
+  <p>And <code>describe()</code>, which summarises every number column at once: count, average, spread, smallest, largest, and the quarter-way points.</p>
+  <div class="cell"><textarea>clean.describe().round(1)</textarea></div>
+  <div class="check"><div><span class="tag">Check</span><p>You can load a CSV, count the gaps, make a clean table, add a column, and use groupby and crosstab to ask questions, and you know why "heaviest island" was misleading.</p></div></div>
+</section>
+
+<section id="local">
+  <p class="tag eyebrow">On your own machine</p>
+  <h2>Run it without the browser</h2>
+  <p>If you set up the folder in <a href="data-numpy.html#local">step 1</a>, pandas is already installed. Otherwise follow that box first. Then:</p>
+<pre>cd ~/code/data-path &amp;&amp; source venv/bin/activate
+python3                  <span class="dim"># then paste the boxes in, in order</span></pre>
+  <p>In a terminal, tables print in plain text and may wrap if the window is narrow. Make the window wider, or try <code>pip install jupyterlab</code> and <code>jupyter lab</code> for a notebook in your browser that draws tables neatly.</p>
+</section>
+
+<hr class="div">
+
+<section style="padding-top:44px">
+  <p class="tag eyebrow">That's step 2</p>
+  <h2>What I'd want you to take away</h2>
+  <div class="takeaways">
+    <div class="take"><h3>Names, not numbers</h3><p>A DataFrame keeps every column named, and words next to numbers.</p></div>
+    <div class="take"><h3>Cleaning is a choice</h3><p>Count the gaps, decide what to drop, and write down why.</p></div>
+    <div class="take"><h3>Look for the hidden third thing</h3><p>Biscoe looked heavy because of who lives there. Always ask what else differs between your groups.</p></div>
+  </div>
+  <p style="margin-top:26px">The data was collected by Dr Kristen Gorman and the Palmer Station Long Term Ecological Research programme, Antarctica, and shared freely (CC0) by Horst, Hill and Gorman (2020). Spotted a mistake? <a href="contact.html">Tell me</a>.</p>
+</section>
+
+</main>
+
+<section class="read-next">
+  <div class="wrap col">
+    <p class="tag">Next on the Data path</p>
+    <div class="card soon">
+      <h3>Step 3: matplotlib, draw it</h3>
+      <p>Put flipper length against weight and see three species fall into place, then find the one picture that separates them all.</p>
+      <span class="go">Coming soon</span>
+    </div>
+  </div>
+</section>
+
+<script src="pylab.js" defer></script>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">← Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="contact.html">Get in touch</a>
+    <a href="offline.html">Use offline</a>
+    <span class="tag">© 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
+<script src="sw-register.js" defer></script>
+</body>
+</html>
