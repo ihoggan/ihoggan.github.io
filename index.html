@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Iain Hoggan — old kit, local AI, and things you can run</title>
-<meta name="description" content="Network technician in the UK. I build things on hardware other people throw away, and measure them honestly. Case studies, free hands-on tutorials (Linux, networking, electronics, Raspberry Pi, radio), and tools you can run in your browser.">
+<meta name="description" content="Network technician in the UK. I build things on hardware other people throw away, and measure them honestly. Case studies and free hands-on learning paths: AI, security, Linux, electronics, radio, data and building your own website.">
 <link rel="canonical" href="https://ihoggan.github.io/">
 <meta property="og:site_name" content="Iain Hoggan">
 <meta property="og:locale" content="en_GB">
@@ -23,596 +23,455 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site.css">
 <style>
-:root{
-  --panel:#E4E6E1;
-  --panel-2:#DADDD6;
-  --bezel:#B7BCB4;
-  --engrave:#F2F3F0;
-  --ink:#17202B;
-  --ink-2:#57616E;
-  --ink-3:#8A929C;
-  --screen:#0F181E;
-  --screen-2:#16232B;
-  --trace:#57C79A;
-  --lamp:#E0982B;
-  --alarm:#BE3A1F;
-  --rule:rgba(23,32,43,.16);
-}
-*{margin:0;padding:0;box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{
-  background:var(--panel);
-  color:var(--ink);
-  font-family:"Source Serif 4",Georgia,serif;
-  font-size:17px;
-  line-height:1.62;
-  -webkit-font-smoothing:antialiased;
-  background-image:
-    linear-gradient(180deg,rgba(255,255,255,.5),transparent 240px),
-    repeating-linear-gradient(90deg,rgba(23,32,43,.018) 0 1px,transparent 1px 3px);
-}
-.wrap{max-width:1160px;margin:0 auto;padding:0 28px}
-
-/* ---------- shared type roles ---------- */
-.tag{
-  font-family:"IBM Plex Mono",monospace;
-  font-size:11px;font-weight:500;
-  letter-spacing:.16em;text-transform:uppercase;
-  color:var(--ink-3);
-}
-.display{
-  font-family:Archivo,"Helvetica Neue",sans-serif;
-  font-variation-settings:"wdth" 118,"wght" 750;
-  text-transform:uppercase;
-  letter-spacing:-.005em;
-  line-height:.94;
-}
-
-/* ---------- top rail ---------- */
-.rail{
-  border-bottom:1px solid var(--rule);
-  background:linear-gradient(180deg,var(--engrave),var(--panel-2));
-}
-.rail .wrap{display:flex;align-items:center;gap:18px;min-height:64px;flex-wrap:wrap}
-.plate{
-  width:38px;height:38px;flex:none;
-  display:grid;place-items:center;
-  background:var(--panel-2);
-  border:1px solid var(--bezel);
-  border-radius:3px;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 2px rgba(23,32,43,.14);
-  font-family:Archivo,sans-serif;
-  font-variation-settings:"wdth" 92,"wght" 800;
-  font-size:15px;letter-spacing:.02em;
-}
-.rail-name{
-  font-family:Archivo,sans-serif;
-  font-variation-settings:"wdth" 100,"wght" 700;
-  text-transform:uppercase;letter-spacing:.09em;font-size:14px;
-}
-.rail-nav{margin-left:auto;display:flex;gap:26px;align-items:center}
-.rail-nav a{
-  font-family:"IBM Plex Mono",monospace;
-  font-size:11px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--ink-2);text-decoration:none;padding:4px 0;
-  border-bottom:1px solid transparent;
-}
-.rail-nav a:hover{color:var(--ink);border-bottom-color:var(--lamp)}
+/* ============================================================
+   index.html — page-specific rules only. Shared system: site.css
+   Layout: hero + honest gauge / paths / case studies / latest
+   ============================================================ */
 
 /* ---------- hero ---------- */
-.hero{padding:64px 0 56px;border-bottom:1px solid var(--rule)}
-.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.02fr);gap:56px;align-items:center}
-h1{
-  font-family:Archivo,sans-serif;
-  font-variation-settings:"wdth" 120,"wght" 780;
-  text-transform:uppercase;
-  font-size:clamp(2.5rem,5.4vw,4.5rem);
-  line-height:.9;
-  letter-spacing:-.015em;
-  margin:16px 0 22px;
-}
-h1 em{font-style:normal;color:var(--lamp)}
-.lede{font-size:1.06rem;color:var(--ink-2);max-width:36em}
-.lede strong{color:var(--ink);font-weight:600}
-.hero-cta{margin-top:28px;display:flex;gap:14px;flex-wrap:wrap}
+.home-hero{padding:60px 0 56px;border-bottom:1px solid var(--rule)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:center}
+.home-hero h1{font-size:clamp(2.6rem,6vw,4.8rem);margin:16px 0 22px}
+.home-hero h1 em{font-style:normal;color:var(--lamp)}
+.hero-cta{margin-top:28px;display:flex;gap:12px;flex-wrap:wrap}
+.creed{margin-top:26px;padding-top:18px;border-top:1px solid var(--rule);
+  display:flex;gap:22px;flex-wrap:wrap}
+.creed span{font-family:var(--mono);font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-2);display:flex;align-items:center;gap:8px}
+.creed span::before{content:"";width:6px;height:6px;border-radius:50%;
+  background:var(--trace);box-shadow:0 0 5px var(--trace)}
 
-/* ---------- buttons ---------- */
-.btn{
-  font-family:"IBM Plex Mono",monospace;
-  font-size:12px;font-weight:500;letter-spacing:.13em;text-transform:uppercase;
-  padding:13px 22px;
-  color:var(--ink);
-  background:linear-gradient(180deg,var(--engrave),var(--panel-2));
-  border:1px solid var(--bezel);
-  border-radius:3px;
-  text-decoration:none;display:inline-block;cursor:pointer;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 1px 2px rgba(23,32,43,.16);
-}
-.btn:hover{background:linear-gradient(180deg,#fff,var(--panel-2))}
-.btn:active{
-  transform:translateY(1px);
-  box-shadow:inset 0 2px 4px rgba(23,32,43,.22);
-}
-.btn-primary{
-  background:linear-gradient(180deg,#20303E,var(--ink));
-  color:var(--engrave);border-color:#0C1319;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 1px 3px rgba(23,32,43,.3);
-}
-.btn-primary:hover{background:linear-gradient(180deg,#2A3D4E,#1D2833)}
-
-/* ---------- scope ---------- */
-.scope{
+/* ---------- the honest gauge ---------- */
+.meter{
   background:linear-gradient(180deg,var(--panel-2),#CBCFC8);
-  border:1px solid var(--bezel);
-  border-radius:5px;
-  padding:16px;
+  border:1px solid var(--bezel);border-radius:5px;padding:16px;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.85),0 6px 22px rgba(23,32,43,.16);
 }
-.scope-head{display:flex;align-items:baseline;gap:12px;margin-bottom:12px}
-.scope-head .tag{color:var(--ink-2)}
-.lamp{
-  width:9px;height:9px;border-radius:50%;margin-left:auto;flex:none;
-  background:#8E9691;box-shadow:inset 0 1px 1px rgba(0,0,0,.3);
-}
-.lamp.on{background:var(--lamp);box-shadow:0 0 9px var(--lamp)}
-.lamp.alarm{background:var(--alarm);box-shadow:0 0 9px var(--alarm)}
-.well{
-  position:relative;
-  background:radial-gradient(120% 130% at 50% 0%,var(--screen-2),var(--screen));
-  border-radius:3px;
-  border:1px solid #060B0E;
-  box-shadow:inset 0 3px 12px rgba(0,0,0,.65);
-  overflow:hidden;
-}
-canvas{display:block;width:100%;height:236px}
-.readout{
-  display:flex;gap:26px;flex-wrap:wrap;
-  padding:10px 12px 2px;
-  font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.08em;
-  color:var(--ink-2);text-transform:uppercase;
-}
-.readout b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
-#status.diverged{color:var(--alarm)}
+.meter-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.meter-head .tag{color:var(--ink-2)}
+.lamp{width:9px;height:9px;border-radius:50%;margin-left:auto;flex:none;
+  background:#8E9691;box-shadow:inset 0 1px 1px rgba(0,0,0,.3);transition:background .3s,box-shadow .3s}
+.lamp.on{background:var(--trace);box-shadow:0 0 9px var(--trace)}
+.lamp.wait{background:var(--lamp);box-shadow:0 0 9px var(--lamp)}
+.meter .well{position:relative;padding:14px 12px 10px}
+.dial{display:block;width:100%;height:auto;max-height:230px}
+.dial .arc{fill:none;stroke:rgba(87,199,154,.22);stroke-width:2}
+.dial .tick{stroke:rgba(87,199,154,.45);stroke-width:1.2}
+.dial .tick.major{stroke:rgba(140,232,194,.8);stroke-width:2}
+.dial .num{fill:rgba(140,232,194,.75);font:500 11px "IBM Plex Mono",monospace;letter-spacing:.06em}
+.dial .unit{fill:rgba(140,232,194,.5);font:500 9.5px "IBM Plex Mono",monospace;letter-spacing:.16em;text-transform:uppercase}
+.dial .claim{fill:var(--lamp);filter:drop-shadow(0 0 4px rgba(224,152,43,.8))}
+.dial .needle line{stroke:#8CE8C2;stroke-width:2.6;stroke-linecap:round;filter:drop-shadow(0 0 5px rgba(87,199,154,.9))}
+.dial .hub{fill:#16232B;stroke:#8CE8C2;stroke-width:2}
+.dial .rot{transform-box:view-box;transform-origin:160px 168px;
+  transition:transform 1.6s cubic-bezier(.22,1.25,.36,1)}
+.dial .rot.fast{transition:transform .5s ease-out}
+.legend{display:flex;justify-content:center;gap:18px;margin-top:4px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(140,232,194,.7)}
+.legend i{display:inline-block;width:8px;height:8px;margin-right:6px;vertical-align:-1px}
+.legend .lc{background:var(--lamp);clip-path:polygon(50% 100%,0 0,100% 0)}
+.legend .lm{background:#8CE8C2;height:2px;width:12px;vertical-align:3px}
 
-/* control */
-.control{margin-top:14px;padding-top:14px;border-top:1px solid rgba(23,32,43,.14)}
-.control label{
-  display:flex;justify-content:space-between;align-items:baseline;
-  font-family:"IBM Plex Mono",monospace;font-size:11px;
-  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);
-}
-.control label b{font-size:14px;color:var(--ink);font-variant-numeric:tabular-nums}
-input[type=range]{
-  -webkit-appearance:none;appearance:none;
-  width:100%;height:26px;margin-top:6px;background:transparent;cursor:grab;
-}
-input[type=range]::-webkit-slider-runnable-track{
-  height:5px;border-radius:2px;
-  background:linear-gradient(90deg,#9AA29B 0 76%,var(--alarm) 76% 100%);
-  box-shadow:inset 0 1px 2px rgba(0,0,0,.35);
-}
-input[type=range]::-moz-range-track{
-  height:5px;border-radius:2px;
-  background:linear-gradient(90deg,#9AA29B 0 76%,var(--alarm) 76% 100%);
-  box-shadow:inset 0 1px 2px rgba(0,0,0,.35);
-}
-input[type=range]::-webkit-slider-thumb{
-  -webkit-appearance:none;width:15px;height:24px;margin-top:-10px;
-  background:linear-gradient(180deg,var(--engrave),#B6BBB4);
-  border:1px solid #8E958D;border-radius:2px;
-  box-shadow:0 1px 3px rgba(23,32,43,.4);
-}
-input[type=range]::-moz-range-thumb{
-  width:15px;height:24px;
-  background:linear-gradient(180deg,var(--engrave),#B6BBB4);
-  border:1px solid #8E958D;border-radius:2px;
-}
-input[type=range]:focus-visible{outline:2px solid var(--lamp);outline-offset:3px}
-.scale{
-  position:relative;height:14px;
-  font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;
-  color:var(--ink-3);margin-top:-2px;
-}
-.scale span{position:absolute;top:0;transform:translateX(-50%);white-space:nowrap}
-.scale span:first-child{transform:none;left:0}
-.scale span:last-child{transform:none;right:0;left:auto}
-.scale .thresh{color:var(--alarm)}
-
-/* ---------- bench ---------- */
-.bench{padding:64px 0 72px}
-.bench-head{display:flex;align-items:baseline;gap:20px;margin-bottom:32px;flex-wrap:wrap}
-.bench-head h2{
-  font-family:Archivo,sans-serif;
-  font-variation-settings:"wdth" 118,"wght" 760;
-  text-transform:uppercase;font-size:clamp(1.6rem,3vw,2.3rem);line-height:1;
-}
-.bench-head p{color:var(--ink-2);font-size:.98rem;margin-left:auto;max-width:30em}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.card{
-  display:flex;flex-direction:column;
+.read{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.read div{background:var(--engrave);border:1px solid var(--bezel);border-radius:3px;padding:9px 11px;
+  box-shadow:inset 0 1px 2px rgba(23,32,43,.08)}
+.read span{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-3)}
+.read b{display:block;font-family:var(--display);font-variation-settings:"wdth" 110,"wght" 760;
+  font-size:1.5rem;line-height:1.1;font-variant-numeric:tabular-nums}
+.read .claimv b{color:#A86A10}
+.read .measv b{color:var(--ink)}
+.verdict{margin:12px 2px 0;font-size:.95rem;color:var(--ink-2);min-height:3em}
+.verdict a{white-space:nowrap}
+.chan{display:flex;gap:6px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(23,32,43,.14)}
+.chan button{flex:1;font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.12em;
+  text-transform:uppercase;padding:10px 6px;color:var(--ink-2);cursor:pointer;
   background:linear-gradient(180deg,var(--engrave),var(--panel-2));
-  border:1px solid var(--bezel);border-radius:4px;
-  padding:20px 20px 22px;
-  text-decoration:none;color:inherit;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 2px rgba(23,32,43,.1);
-  transition:box-shadow .16s ease,transform .16s ease;
-}
-.card:hover{
-  transform:translateY(-2px);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,1),0 8px 18px rgba(23,32,43,.16);
-}
-.card:active{transform:translateY(0);box-shadow:inset 0 2px 5px rgba(23,32,43,.2)}
-.card:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
-.card-tag{display:flex;align-items:center;gap:8px;margin-bottom:14px}
-.card .dot{width:7px;height:7px;border-radius:50%;background:var(--lamp);box-shadow:0 0 6px var(--lamp);flex:none}
-.card h3{
-  font-family:Archivo,sans-serif;
-  font-variation-settings:"wdth" 104,"wght" 720;
-  text-transform:uppercase;font-size:1.16rem;line-height:1.06;
-  margin-bottom:9px;letter-spacing:.005em;
-}
-.card p{font-size:.95rem;color:var(--ink-2);line-height:1.5}
-.card .go{
-  margin-top:16px;
-  font-family:"IBM Plex Mono",monospace;font-size:10.5px;
-  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);
-}
-.card:hover .go{color:var(--ink)}
+  border:1px solid var(--bezel);border-radius:3px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 1px 2px rgba(23,32,43,.16)}
+.chan button:hover{color:var(--ink)}
+.chan button[aria-pressed="true"]{color:var(--engrave);
+  background:linear-gradient(180deg,#20303E,var(--ink));border-color:#0C1319;
+  box-shadow:inset 0 2px 4px rgba(0,0,0,.35)}
+.chan button:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
 
-/* case study band */
-.study{
-  margin-top:34px;
-  display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:0;
-  border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 2px rgba(23,32,43,.1);
-}
-.study-text{background:linear-gradient(180deg,var(--engrave),var(--panel-2));padding:26px 26px 28px}
-.study-text h3{
-  font-family:Archivo,sans-serif;font-variation-settings:"wdth" 112,"wght" 750;
-  text-transform:uppercase;font-size:1.5rem;line-height:1;margin:12px 0 10px;
-}
-.study-text p{font-size:.97rem;color:var(--ink-2);margin-bottom:18px;max-width:34em}
-.study-panel{
-  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen));
-  padding:26px;display:flex;flex-direction:column;justify-content:center;gap:14px;
-  box-shadow:inset 3px 0 12px rgba(0,0,0,.5);
-}
-.study-panel .row{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
-  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;
-  text-transform:uppercase;color:#93A79E;
-  border-bottom:1px solid rgba(87,199,154,.14);padding-bottom:9px}
-.study-panel .row:last-child{border-bottom:0;padding-bottom:0}
-.study-panel .row b{font-size:15px;color:var(--trace);font-variant-numeric:tabular-nums;letter-spacing:0}
-.study-panel .row b.bad{color:#E0603F}
-@media(max-width:760px){ .study{grid-template-columns:1fr} }
+/* ---------- section heads ---------- */
+.home main{padding:64px 0 48px}
+.home section{margin-bottom:76px}
+.head{display:flex;align-items:baseline;gap:20px;margin-bottom:28px;flex-wrap:wrap}
+.head h2{font-size:clamp(1.6rem,3vw,2.3rem);margin:0}
+.head p{color:var(--ink-2);font-size:.98rem;margin:0 0 0 auto;max-width:31em}
 
 /* ---------- learning paths ---------- */
-.paths{display:grid;gap:14px}
-.path{display:grid;grid-template-columns:minmax(0,15em) minmax(0,1fr);
-  border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+.paths{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.path{display:flex;flex-direction:column;
   background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);border-radius:4px;padding:18px 18px 16px;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 2px rgba(23,32,43,.1)}
-.path-head{padding:18px 20px;border-right:1px solid var(--rule)}
-.path-head h3{font-family:Archivo,"Helvetica Neue",sans-serif;font-variation-settings:"wdth" 110,"wght" 740;
-  text-transform:uppercase;font-size:1.2rem;line-height:1.05;margin:6px 0 6px}
-.path-head p{font-size:.92rem;color:var(--ink-2);line-height:1.45;margin:0}
-.path-steps{display:flex;flex-wrap:wrap;gap:10px;padding:14px;align-items:stretch;align-content:center}
-.pstep{flex:1 1 190px;display:flex;gap:12px;align-items:flex-start;text-decoration:none;color:inherit;
-  padding:12px 14px;border:1px solid var(--bezel);border-radius:3px;
-  background:linear-gradient(180deg,#fff,var(--engrave));
-  box-shadow:0 1px 2px rgba(23,32,43,.08);transition:box-shadow .16s ease,transform .16s ease}
-.pstep:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(23,32,43,.14)}
-.pstep:active{transform:translateY(0)}
-.pstep:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
-.pstep .n{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;
-  font:600 12px/1 "IBM Plex Mono",monospace;color:var(--engrave);
-  background:linear-gradient(180deg,#20303E,var(--ink))}
-.pstep b{display:block;font-family:Archivo,"Helvetica Neue",sans-serif;font-variation-settings:"wdth" 100,"wght" 700;
-  text-transform:uppercase;font-size:.95rem;line-height:1.1;margin-bottom:4px}
-.pstep span.meta{display:block;font:11px/1.4 "IBM Plex Mono",monospace;letter-spacing:.06em;color:var(--ink-3);text-transform:uppercase}
-.pstep span.what{display:block;font-size:.9rem;line-height:1.45;color:var(--ink-2);margin-top:6px}
-.pstep .start{display:inline-block;margin-top:6px;font:600 10px/1 "IBM Plex Mono",monospace;letter-spacing:.12em;
-  text-transform:uppercase;color:#0B2A1E;background:linear-gradient(180deg,#6FD6AA,var(--trace));border-radius:2px;padding:4px 6px}
-@media(max-width:760px){.path{grid-template-columns:1fr}.path-head{border-right:0;border-bottom:1px solid var(--rule)}}
+.path .top{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.path .count{margin-left:auto;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
+  color:var(--ink-2);background:rgba(23,32,43,.07);padding:2px 7px;border-radius:2px}
+.path h3{font-size:1.08rem;margin-bottom:8px}
+.path > p{font-size:.92rem;color:var(--ink-2);line-height:1.5;margin-bottom:14px}
+.path .easy{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:#2F7F5E;margin-bottom:12px}
+.path .start{margin-top:auto;display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;
+  padding:10px 12px;border-radius:3px;
+  background:linear-gradient(180deg,#20303E,var(--ink));color:var(--engrave);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 1px 3px rgba(23,32,43,.3)}
+.path .start:hover{background:linear-gradient(180deg,#2A3D4E,#1D2833)}
+.path .start:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.path .start small{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:rgba(242,243,240,.6)}
+.path .start b{display:block;font-family:var(--display);font-variation-settings:"wdth" 104,"wght" 680;
+  text-transform:uppercase;font-size:.86rem;line-height:1.15;letter-spacing:.01em}
+.path .start::after{content:"→";margin-left:auto;font-family:var(--mono)}
+.path details{margin-top:10px;border-top:1px solid var(--rule);padding-top:8px}
+.path summary{cursor:pointer;list-style:none;font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--ink-2);padding:4px 0}
+.path summary::-webkit-details-marker{display:none}
+.path summary::before{content:"+";display:inline-block;width:14px;color:var(--lamp);font-weight:600}
+.path details[open] summary::before{content:"−"}
+.path summary:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.path ol{list-style:none;margin:6px 0 2px;counter-reset:s}
+.path li{counter-increment:s}
+.path li a{display:flex;gap:10px;padding:7px 0;text-decoration:none;color:var(--ink);
+  font-size:.92rem;line-height:1.35;border-bottom:1px dashed var(--rule)}
+.path li:last-child a{border-bottom:0}
+.path li a::before{content:counter(s);flex:none;width:20px;height:20px;display:grid;place-items:center;
+  font-family:var(--mono);font-size:10.5px;border:1px solid var(--bezel);border-radius:2px;
+  background:var(--engrave);color:var(--ink-2)}
+.path li a:hover{color:#000}
+.path li a:hover::before{border-color:var(--lamp);color:var(--ink)}
+.path li em{display:block;font-style:normal;font-family:var(--mono);font-size:10px;
+  letter-spacing:.08em;color:var(--ink-3);margin-top:2px}
 
-/* ---------- footer ---------- */
-footer{border-top:1px solid var(--rule);background:linear-gradient(180deg,var(--panel-2),#CDD1CA);padding:34px 0}
-.foot{display:flex;gap:24px;flex-wrap:wrap;align-items:center}
-.foot a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--rule)}
-.foot a:hover{border-bottom-color:var(--lamp)}
-.foot .tag{margin-left:auto}
+/* ---------- case studies ---------- */
+.studies{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.study{display:flex;flex-direction:column;text-decoration:none;color:inherit;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 2px rgba(23,32,43,.1);
+  transition:box-shadow .16s ease,transform .16s ease}
+.study:hover{transform:translateY(-2px);box-shadow:inset 0 1px 0 #fff,0 8px 18px rgba(23,32,43,.16)}
+.study:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.study .scr{background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen));
+  padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:4px 14px;
+  border-bottom:1px solid #060B0E}
+.study .scr span{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(140,232,194,.6)}
+.study .scr b{font-family:var(--display);font-variation-settings:"wdth" 112,"wght" 760;
+  font-size:1.7rem;line-height:1.05;color:#8CE8C2;font-variant-numeric:tabular-nums;
+  text-shadow:0 0 10px rgba(87,199,154,.45)}
+.study .scr b.bad{color:#F0A24A;text-shadow:0 0 10px rgba(224,152,43,.45)}
+.study .txt{padding:18px 18px 20px;display:flex;flex-direction:column;flex:1}
+.study h3{font-size:1.16rem;margin:10px 0 8px}
+.study p{font-size:.94rem;color:var(--ink-2);line-height:1.5}
+.study:hover .go{color:var(--ink)}
 
+/* ---------- latest ---------- */
+.latest{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.stamp{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-3);margin-left:auto}
+
+/* ---------- bench strip ---------- */
+.strip{display:grid;grid-template-columns:repeat(3,1fr);gap:0;
+  border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))}
+.strip a{display:block;padding:16px 18px;text-decoration:none;color:inherit;border-right:1px solid var(--rule)}
+.strip a:last-child{border-right:0}
+.strip a:hover{background:rgba(255,255,255,.55)}
+.strip a:focus-visible{outline:2px solid var(--lamp);outline-offset:-2px}
+.strip b{display:block;font-family:var(--display);font-variation-settings:"wdth" 106,"wght" 720;
+  text-transform:uppercase;font-size:1rem;margin:4px 0 2px}
+.strip p{font-size:.9rem;color:var(--ink-2);margin:0}
+
+@media(max-width:1020px){
+  .paths{grid-template-columns:repeat(2,1fr)}
+}
 @media(max-width:900px){
   .hero-grid{grid-template-columns:1fr;gap:36px}
-  .grid{grid-template-columns:repeat(2,1fr)}
-  .bench-head p{margin-left:0}
+  .studies,.latest{grid-template-columns:1fr 1fr}
+  .studies .study:last-child{grid-column:1 / -1}
 }
 @media(max-width:600px){
-  .wrap{padding:0 18px}
-  .grid{grid-template-columns:1fr}
-  .hero{padding:44px 0 40px}
-  .rail .wrap{min-height:0;height:auto;flex-wrap:wrap;padding-top:10px;padding-bottom:10px}
-  .rail-nav{margin-left:0;width:100%;gap:18px;padding-top:2px}
-  canvas{height:190px}
+  .home-hero{padding:36px 0 40px}
+  .home main{padding:44px 0 32px}
+  .home section{margin-bottom:56px}
+  .head p{margin-left:0}
+  .paths,.studies,.latest,.strip{grid-template-columns:1fr}
+  .studies .study:last-child{grid-column:auto}
+  .strip a{border-right:0;border-bottom:1px solid var(--rule)}
+  .strip a:last-child{border-bottom:0}
+  .chan button{font-size:9.5px;letter-spacing:.08em;padding:10px 4px}
+  .read b{font-size:1.3rem}
 }
-@media(prefers-reduced-motion:reduce){
-  *{transition:none!important}
-}
-/* ---------- new articles strip ---------- */
-.grid.grid-new{grid-template-columns:repeat(2,1fr)}
-.grid-new .card{border-left:3px solid var(--lamp)}
-.grid-new .when{margin-left:auto}
-@media(max-width:600px){.grid.grid-new{grid-template-columns:1fr}}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0F181E">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 </head>
-<body>
+<body class="home">
 
 <div class="rail">
   <div class="wrap">
     <div class="plate">IH</div>
     <span class="rail-name">Iain&nbsp;Hoggan</span>
     <nav class="rail-nav">
-      <a href="portfolio.html">Projects</a>
+      <a href="#learn">Learn</a>
+      <a href="#studies">Case studies</a>
       <a href="about.html">About</a>
       <a href="contact.html">Contact</a>
     </nav>
   </div>
 </div>
 
-<header class="hero">
+<header class="home-hero">
   <div class="wrap hero-grid">
     <div>
       <p class="tag">Network technician · UK</p>
       <h1>Old kit.<br><em>New tricks.</em></h1>
-      <p class="lede">I build things on hardware other people throw away, and I measure them, including when the measurement says I'm wrong. <strong>Free, hands-on guides you can try in your browser, and honest write-ups of what I built and what went wrong.</strong></p>
+      <p class="lede">I build things on hardware other people throw away, and I measure them, including when the measurement says I'm wrong. <strong>Free, hands-on guides you can try for yourself, and honest write-ups of what I built and what went wrong.</strong></p>
       <div class="hero-cta">
-        <a class="btn btn-primary" href="#learn">Start learning</a>
-        <a class="btn" href="reclaim.html">Read: saved from the scrap pile</a>
+        <a class="btn btn-primary" href="#learn">Pick a learning path</a>
+        <a class="btn" href="#studies">Read the case studies</a>
       </div>
-      <p class="tag" style="margin-top:22px">Or try the panel: drag the learning rate past 1.00 and watch training fall apart.</p>
+      <div class="creed" aria-label="How every guide works">
+        <span>Predict</span><span>Try it</span><span>Check</span><span>Free, no sign-up</span>
+      </div>
     </div>
 
-    <div class="scope">
-      <div class="scope-head">
-        <span class="tag">Gradient descent · loss per step</span>
+    <figure class="meter" aria-labelledby="meter-cap">
+      <div class="meter-head">
+        <span class="tag" id="meter-cap">Measured, not assumed</span>
         <span class="lamp" id="lamp" aria-hidden="true"></span>
       </div>
       <div class="well">
-        <canvas id="scope" aria-label="Live plot of training loss falling each step. The learning rate control below changes how it behaves."></canvas>
+        <svg class="dial" id="dial" viewBox="0 0 320 196" role="img" aria-label="A gauge comparing what was expected, or the before reading, with what was measured.">
+          <path class="arc" d="M30 168 A130 130 0 0 1 290 168"/>
+          <g id="ticks"></g>
+          <text class="unit" id="unit" x="160" y="130" text-anchor="middle">pot rate %</text>
+          <g class="rot" id="claim"><path class="claim" d="M160 30 l-6 -12 h12 z"/></g>
+          <g class="rot needle" id="needle"><line x1="160" y1="168" x2="160" y2="52"/></g>
+          <circle class="hub" cx="160" cy="168" r="7"/>
+        </svg>
+        <div class="legend" aria-hidden="true"><span><i class="lc"></i><span id="legA">Expected</span></span><span><i class="lm"></i><span id="legB">Measured</span></span></div>
       </div>
-      <div class="readout" aria-live="polite">
-        <span>Step <b id="step">0</b></span>
-        <span>Loss <b id="loss">0.000</b></span>
-        <span>Status <b id="status">Converging</b></span>
+      <div class="read" aria-live="polite">
+        <div class="claimv"><span id="claimLabel">The AI predicted</span><b id="claimVal">91.5%</b></div>
+        <div class="measv"><span id="measLabel">It actually potted</span><b id="measVal">18.3%</b></div>
       </div>
-      <div class="control">
-        <label for="lr">Learning rate <b id="lrval">0.12</b></label>
-        <input id="lr" type="range" min="0.05" max="1.30" step="0.01" value="0.12">
-        <div class="scale">
-          <span>0.05</span>
-          <span style="left:36%">0.50</span>
-          <span class="thresh" style="left:76%">1.00 unstable →</span>
-          <span>1.30</span>
-        </div>
+      <p class="verdict" id="verdict">The pool AI thought it potted nearly everything. Five confident explanations died before the real bug turned up. <a href="Hustler.html">Read how →</a></p>
+      <div class="chan" role="group" aria-label="Choose a measurement">
+        <button type="button" data-ch="0" aria-pressed="true">Pool AI</button>
+        <button type="button" data-ch="1" aria-pressed="false">AI memory</button>
+        <button type="button" data-ch="2" aria-pressed="false">Home robot</button>
       </div>
-    </div>
+    </figure>
   </div>
 </header>
 
-<main class="bench wrap" id="bench">
-  <div class="bench-head" id="new">
-    <h2>Latest</h2>
-    <p>The newest pages on the site, all added in October 2026.</p>
-  </div>
-  <div class="grid grid-new">
-    <a class="card" href="gus.html">
-      <div class="card-tag"><span class="dot" aria-hidden="true"></span><span class="tag">Case study · Home robot</span></div>
-      <h3>Meet Gus</h3>
-      <p>A scrap PC became the family robot, with a face that never lies. Then I caught him using 70% of a core to draw himself.</p>
-      <span class="go">Read →</span>
-    </a>
-    <a class="card" href="word-map.html">
-      <div class="card-tag"><span class="dot" aria-hidden="true"></span><span class="tag">Tutorial · AI · in your browser</span></div>
-      <h3>Where does &ldquo;dog&rdquo; live?</h3>
-      <p>Watch a machine learn where every word belongs on a map, then teach it a new animal from one sentence and see what it guesses.</p>
-      <span class="go">Open →</span>
-    </a>
-    <a class="card" href="electronics-2.html">
-      <div class="card-tag"><span class="dot" aria-hidden="true"></span><span class="tag">Study guide · Electronics · part two</span></div>
-      <h3>Stripes, storage and switches</h3>
-      <p>Read a resistor's stripes, make an LED fade out with a capacitor, and let a tiny current switch a big one with a transistor.</p>
-      <span class="go">Read →</span>
-    </a>
-    <a class="card" href="account-audit.html">
-      <div class="card-tag"><span class="dot" aria-hidden="true"></span><span class="tag">Guide · Your accounts</span></div>
-      <h3>Who holds the keys to your life?</h3>
-      <p>A security clean-up of your own accounts, in the order that works: email first, one home for passwords, then close the rest.</p>
-      <span class="go">Read →</span>
-    </a>
-  </div>
+<main class="wrap">
 
-  <div class="bench-head" style="margin-top:64px">
-    <h2>Case studies</h2>
-    <p>Longer reads. Not feature lists: what went wrong, how it was found, and what it cost.</p>
-  </div>
+  <section id="learn">
+    <div class="head">
+      <h2>Pick a path</h2>
+      <p>Free guides, in order. Every step asks you to predict, try it, and check, so you understand what happened, not just that it worked.</p>
+    </div>
+    <div class="paths">
 
-  <div class="study">
-    <div class="study-text">
-      <span class="tag">Home robot · local AI · new</span>
-      <h3>Meet Gus</h3>
-      <p>The PC saved from the scrap pile became the family robot: a face that reacts to his own vital signs, a GO / NO-GO check before he gets a personality, and one rule. He watches, never touches, and keeps his brain at home. Plus the morning I caught him slowing down his own brain, and the fix that made it 55% faster.</p>
-      <a class="btn btn-primary" href="gus.html">Read the case study</a>
-    </div>
-    <div class="study-panel" aria-hidden="true">
-      <div class="row"><span>His own CPU, before</span><b class="bad">70%</b></div>
-      <div class="row"><span>His own CPU, after</span><b>9–10%</b></div>
-      <div class="row"><span>Brain speed, before</span><b class="bad">6.2 tok/s</b></div>
-      <div class="row"><span>Brain speed, after</span><b>9.6 tok/s</b></div>
-    </div>
-  </div>
-
-  <div class="study">
-    <div class="study-text">
-      <span class="tag">Old hardware · local AI</span>
-      <h3>Saved from the scrap pile</h3>
-      <p>Two 2015 desktop PCs were about to be scrapped. One now runs Ubuntu, a local AI model at reading pace, and characters that remember me, with no cloud and no subscription. Plus the day I measured the characters' memories and found every one of them was invented, and the fix that checks their memories against my own words.</p>
-      <a class="btn btn-primary" href="reclaim.html">Read the case study</a>
-    </div>
-    <div class="study-panel" aria-hidden="true">
-      <div class="row"><span>The PC</span><b>2015</b></div>
-      <div class="row"><span>Speed, CPU only</span><b>8.0 tok/s</b></div>
-      <div class="row"><span>Memories invented, before</span><b class="bad">35 / 35</b></div>
-      <div class="row"><span>General-knowledge filler, after</span><b>0</b></div>
-    </div>
-  </div>
-
-  <div class="study">
-    <div class="study-text">
-      <span class="tag">Python · physics · testing</span>
-      <h3>HUSTLER</h3>
-      <p>A UK blackball pool physics sandbox in Python: 70 revisions, 129 assertions, two source files and no asset files at all. What was wrong, how each fault was found, and what it cost. Including the calibration bug that made the AI think it potted nearly everything, and five confident explanations that all died on contact with data.</p>
-      <a class="btn btn-primary" href="Hustler.html">Read the case study</a>
-    </div>
-    <div class="study-panel" aria-hidden="true">
-      <div class="row"><span>AI predicted pot rate</span><b>91.5%</b></div>
-      <div class="row"><span>Actual pot rate</span><b class="bad">18.3%</b></div>
-      <div class="row"><span>Hypotheses that were wrong</span><b class="bad">5</b></div>
-      <div class="row"><span>Assertions today</span><b>129</b></div>
-    </div>
-  </div>
-
-  <div class="bench-head" style="margin-top:64px" id="learn">
-    <h2>Learn by doing</h2>
-    <p>Free tutorials. Every step asks you to predict, try it, and check, so you understand what happened, not just that it worked.</p>
-  </div>
-  <div class="paths">
-    <div class="path">
-      <div class="path-head">
-        <span class="tag">Path · AI</span>
-        <h3>From one neuron to a language model</h3>
-        <p>What an AI chatbot actually does, built up from nothing in your browser. No maths, nothing to install. More steps are on the way.</p>
-      </div>
-      <div class="path-steps">
-        <a class="pstep" href="neural_playground.html"><span class="n">1</span><span><b>S.M.A.R.T.</b><span class="meta">~15 min · one neuron</span><span class="what">Watch a single neuron learn, then push the learning rate until it breaks.</span></span></a>
-        <a class="pstep" href="next-word.html"><span class="n">2</span><span><b>Guess the next word</b><span class="meta">~30 min · no maths</span><span class="what">Build a word-guessing machine out of counting, watch it write, then find where it breaks.</span></span></a>
-        <a class="pstep" href="word-map.html"><span class="n">3</span><span><b>Where does &ldquo;dog&rdquo; live?</b><span class="meta">~30 min · no maths · new</span><span class="what">Watch words find their place on a map, then teach it a fox from one sentence.</span></span></a>
-      </div>
-    </div>
-    <div class="path">
-      <div class="path-head">
-        <span class="tag">Path · Data</span>
-        <h3>Penguins, by the numbers</h3>
-        <p>344 real penguins and the four tools of data science, with live Python in your browser.</p>
-      </div>
-      <div class="path-steps">
-        <a class="pstep" href="data-numpy.html"><span class="n">1</span><span><b>NumPy with penguins</b><span class="meta">~45 min · live Python · new</span><span class="what">Maths on a whole column at once, the missing value that breaks an average, and masks.</span></span></a>
-      </div>
-    </div>
-    <div class="path">
-      <div class="path-head">
-        <span class="tag">Path · Linux</span>
-        <h3>From first command to your own network</h3>
-        <p>Open a terminal and find your way around, then understand the network your machine lives on.</p>
-      </div>
-      <div class="path-steps">
-        <a class="pstep" href="terminal.html"><span class="n">1</span><span><b>Meet the terminal</b><span class="meta">~20 min · complete beginners</span><span class="what">Open it, read what the prompt tells you, and move around. With a practice terminal.</span><span class="start">Start here</span></span></a>
-        <a class="pstep" href="networking.html"><span class="n">2</span><span><b>How networks work</b><span class="meta">~1 hr · home, then office</span><span class="what">Take your router apart with five commands, then scale it up to an office.</span></span></a>
-        <a class="pstep" href="timers.html"><span class="n">3</span><span><b>A reminder that never forgets</b><span class="meta">~40 min · no sudo · new</span><span class="what">Your first systemd timer: a weekly update check that never installs anything.</span></span></a>
-      </div>
-    </div>
-    <div class="path">
-      <div class="path-head">
-        <span class="tag">Path · Security</span>
+      <div class="path">
+        <div class="top"><span class="tag">Security</span><span class="count">5 steps</span></div>
         <h3>Lock your own doors</h3>
-        <p>Start with your accounts, no technical skills needed. Then the computer you use them on.</p>
+        <p>Your accounts first, then your computer, apps, phone and browser.</p>
+        <div class="easy">No technical skills needed</div>
+        <a class="start" href="account-audit.html"><span><small>Start · a few evenings</small><b>Who holds the keys to your life?</b></span></a>
+        <details><summary>All 5 steps</summary><ol>
+          <li><a href="account-audit.html"><span>Who holds the keys to your life?<em>a few evenings · no terminal</em></span></a></li>
+          <li><a href="secure-ubuntu.html"><span>Securing Ubuntu<em>~1 hr · after Meet the terminal</em></span></a></li>
+          <li><a href="real-thing.html"><span>Is it the real thing?<em>~30 min · read-only</em></span></a></li>
+          <li><a href="phone-cleanup.html"><span>Phone clean-up<em>~1 hr · iPhone or Android</em></span></a></li>
+          <li><a href="secure-browsing.html"><span>Browse like you mean it<em>~45 min · all main browsers</em></span></a></li>
+        </ol></details>
       </div>
-      <div class="path-steps">
-        <a class="pstep" href="account-audit.html"><span class="n">1</span><span><b>Who holds the keys to your life?</b><span class="meta">a few evenings · no terminal</span><span class="what">Audit your own accounts: email first, one home for passwords, close the rest.</span><span class="start">Start here</span></span></a>
-        <a class="pstep" href="secure-ubuntu.html"><span class="n">2</span><span><b>Securing Ubuntu</b><span class="meta">~1 hr · after Meet the terminal</span><span class="what">Six questions for your own machine. Watch a firewall block your phone.</span></span></a>
-        <a class="pstep" href="real-thing.html"><span class="n">3</span><span><b>Is it the real thing?</b><span class="meta">~30 min · read-only · new</span><span class="what">Six checks that show where your apps really came from, and who you are trusting.</span></span></a>
-        <a class="pstep" href="phone-cleanup.html"><span class="n">4</span><span><b>Phone clean-up</b><span class="meta">~1 hr · iPhone or Android · new</span><span class="what">Eight checks: updates, theft protection, apps, permissions, tracking and who else has access.</span></span></a>
-        <a class="pstep" href="secure-browsing.html"><span class="n">5</span><span><b>Browse like you mean it</b><span class="meta">~45 min · all main browsers · new</span><span class="what">Eight settings for Chrome, Firefox, Edge and Safari, and what any site can see about you.</span></span></a>
+
+      <div class="path">
+        <div class="top"><span class="tag">AI</span><span class="count">3 steps</span></div>
+        <h3>From one neuron to a language model</h3>
+        <p>What an AI chatbot actually does, built up from nothing in your browser.</p>
+        <div class="easy">No maths · nothing to install</div>
+        <a class="start" href="neural_playground.html"><span><small>Start · ~15 min</small><b>S.M.A.R.T.</b></span></a>
+        <details><summary>All 3 steps</summary><ol>
+          <li><a href="neural_playground.html"><span>S.M.A.R.T.<em>~15 min · one neuron</em></span></a></li>
+          <li><a href="next-word.html"><span>Guess the next word<em>~30 min · no maths</em></span></a></li>
+          <li><a href="word-map.html"><span>Where does &ldquo;dog&rdquo; live?<em>~30 min · no maths</em></span></a></li>
+        </ol></details>
       </div>
-    </div>
-    <div class="path">
-      <div class="path-head">
-        <span class="tag">Path · Ready, not scared</span>
+
+      <div class="path">
+        <div class="top"><span class="tag">Ready, not scared</span><span class="count">3 steps</span></div>
         <h3>Ready for when things go wrong</h3>
-        <p>Calm, practical preparation for power cuts and household emergencies. No fear, no gadgets you don't need.</p>
+        <p>Calm, practical preparation for power cuts and household emergencies.</p>
+        <div class="easy">No gadgets you don't need</div>
+        <a class="start" href="power-cut.html"><span><small>Start · a weekend</small><b>When the lights go out</b></span></a>
+        <details><summary>All 3 steps</summary><ol>
+          <li><a href="power-cut.html"><span>When the lights go out<em>a weekend · UK</em></span></a></li>
+          <li><a href="lean-toolkit.html"><span>The lean toolkit<em>an afternoon</em></span></a></li>
+          <li><a href="battery-safety.html"><span>Living safely with lithium batteries<em>~30 min</em></span></a></li>
+        </ol></details>
       </div>
-      <div class="path-steps">
-        <a class="pstep" href="power-cut.html"><span class="n">1</span><span><b>When the lights go out</b><span class="meta">a weekend · UK · new</span><span class="what">The first ten minutes, the first night and the days after, with a fridge and freezer timer.</span></span></a>
-        <a class="pstep" href="lean-toolkit.html"><span class="n">2</span><span><b>The lean toolkit</b><span class="meta">an afternoon · new</span><span class="what">Look first, make it safe, log the fault, and keep three small kits instead of one heavy box.</span></span></a>
-        <a class="pstep" href="battery-safety.html"><span class="n">3</span><span><b>Living safely with lithium batteries</b><span class="meta">~30 min · new</span><span class="what">Six habits that cover nearly all the risk, plus power bank maths.</span></span></a>
+
+      <div class="path">
+        <div class="top"><span class="tag">Linux</span><span class="count">3 steps</span></div>
+        <h3>From first command to your own network</h3>
+        <p>Open a terminal, find your way around, then understand the network your machine lives on.</p>
+        <div class="easy">Complete beginners welcome</div>
+        <a class="start" href="terminal.html"><span><small>Start · ~20 min</small><b>Meet the terminal</b></span></a>
+        <details><summary>All 3 steps</summary><ol>
+          <li><a href="terminal.html"><span>Meet the terminal<em>~20 min · practice terminal</em></span></a></li>
+          <li><a href="networking.html"><span>How networks work<em>~1 hr · home, then office</em></span></a></li>
+          <li><a href="timers.html"><span>A reminder that never forgets<em>~40 min · no sudo</em></span></a></li>
+        </ol></details>
       </div>
-    </div>
-    <div class="path">
-      <div class="path-head">
-        <span class="tag">Path · Hardware</span>
+
+      <div class="path">
+        <div class="top"><span class="tag">Hardware</span><span class="count">4 steps</span></div>
         <h3>From a battery to a Wi-Fi clock</h3>
-        <p>Light an LED, measure it, find Ohm's law yourself, let a Pi do the switching, then build a clock on a chip the size of a USB stick.</p>
+        <p>Light an LED, find Ohm's law yourself, then build a clock on a chip the size of a USB stick.</p>
+        <div class="easy">Starts with batteries only</div>
+        <a class="start" href="electronics-1.html"><span><small>Start · study guide</small><b>Electronics: first light</b></span></a>
+        <details><summary>All 4 steps</summary><ol>
+          <li><a href="electronics-1.html"><span>Electronics: first light<em>study guide · batteries only</em></span></a></li>
+          <li><a href="electronics-2.html"><span>Stripes, storage and switches<em>study guide · part two</em></span></a></li>
+          <li><a href="pi-gpio.html"><span>Hand the switch to a computer<em>Raspberry Pi · Python</em></span></a></li>
+          <li><a href="esp32-clock.html"><span>A Wi-Fi clock on a stick<em>ESP32 · MicroPython</em></span></a></li>
+        </ol></details>
       </div>
-      <div class="path-steps">
-        <a class="pstep" href="electronics-1.html"><span class="n">1</span><span><b>Electronics: first light</b><span class="meta">Study guide · batteries only</span><span class="what">Light an LED, burn one out for free, and discover Ohm's law yourself.</span></span></a>
-        <a class="pstep" href="electronics-2.html"><span class="n">2</span><span><b>Stripes, storage and switches</b><span class="meta">Study guide · part two · new</span><span class="what">Read resistor stripes, make an LED fade with a capacitor, and switch it with a transistor.</span></span></a>
-        <a class="pstep" href="pi-gpio.html"><span class="n">3</span><span><b>Hand the switch to a computer</b><span class="meta">Raspberry Pi · Python</span><span class="what">Blink an LED from Python, read a button, and learn the 3.3 volt rule.</span></span></a>
-        <a class="pstep" href="esp32-clock.html"><span class="n">4</span><span><b>A Wi-Fi clock on a stick</b><span class="meta">ESP32 · MicroPython</span><span class="what">Put Python on a USB-stick chip, light its screen, and build a clock that shows the weather.</span></span></a>
-      </div>
-    </div>
-    <div class="path">
-      <div class="path-head">
-        <span class="tag">Path · Radio</span>
+
+      <div class="path">
+        <div class="top"><span class="tag">Radio</span><span class="count">3 steps</span></div>
         <h3>See what's in the air</h3>
         <p>A cheap USB dongle, Ubuntu, and the signals already passing through your room.</p>
+        <div class="easy">UK rules explained</div>
+        <a class="start" href="sdr.html"><span><small>Start · ~1 hr</small><b>Software-defined radio</b></span></a>
+        <details><summary>All 3 steps</summary><ol>
+          <li><a href="sdr.html"><span>Software-defined radio<em>~1 hr · UK rules explained</em></span></a></li>
+          <li><a href="ears-on.html"><span>Got my ears on<em>case study · build</em></span></a></li>
+          <li><a href="tv-licence.html"><span>Do you need a TV licence?<em>~10 min · UK</em></span></a></li>
+        </ol></details>
       </div>
-      <div class="path-steps">
-        <a class="pstep" href="sdr.html"><span class="n">1</span><span><b>Software-defined radio</b><span class="meta">~1 hr · UK rules explained</span><span class="what">Tune in FM, fix the driver clash, and map the spectrum.</span></span></a>
-        <a class="pstep" href="ears-on.html"><span class="n">2</span><span><b>Got my ears on</b><span class="meta">Case study · build · new</span><span class="what">Turn an old TV aerial into a window antenna: survey, build, faults and a rebuild script.</span></span></a>
-        <a class="pstep" href="tv-licence.html"><span class="n">3</span><span><b>Do you need a TV licence?</b><span class="meta">~10 min · UK · new</span><span class="what">Live TV, iPlayer, YouTube, catch-up and radio: what needs one, from the official pages.</span></span></a>
-      </div>
-    </div>
-    <div class="path">
-      <div class="path-head">
-        <span class="tag">Path · Build your own</span>
-        <h3>A website like this one</h3>
-        <p>This site costs nothing to run. Make yours, in your browser, with a check after every step.</p>
-      </div>
-      <div class="path-steps">
-        <a class="pstep" href="website.html"><span class="n">1</span><span><b>Would you like a website like this?</b><span class="meta">~1 hr · £0 · nothing to install</span><span class="what">From a new GitHub account to your own site, with a page builder.</span></span></a>
-        <a class="pstep" href="github-setup.html"><span class="n">2</span><span><b>From a fresh machine to your first push</b><span class="meta">~1 hr · £0 · Ubuntu</span><span class="what">Keys, 2FA you can't lose, a Python venv, and checks before every push.</span></span></a>
-        <a class="pstep" href="preflight.html"><span class="n">3</span><span><b>Look before you leap</b><span class="meta">~45 min · Git · new</span><span class="what">Read-only checks, then GO or NO-GO. Build a hook that guards every push.</span></span></a>
-        <a class="pstep" href="offline-site.html"><span class="n">4</span><span><b>Make your website work with no signal</b><span class="meta">~1 hr · £0 · new</span><span class="what">Four small files: it installs on a phone and still opens in flight mode.</span></span></a>
-      </div>
-    </div>
-  </div>
 
-  <div class="bench-head" style="margin-top:64px">
-    <h2>Things you can run</h2>
-    <p>Free, in your browser, no sign-up. Each one asks you to change something.</p>
-  </div>
-  <div class="grid">
-    <a class="card" href="neural_playground.html">
-      <div class="card-tag"><span class="dot"></span><span class="tag">Live training</span></div>
-      <h3>S.M.A.R.T.</h3>
-      <p>Watch a neural network learn in real time, then push the learning rate until it explodes. The fastest way to understand why that one number matters.</p>
-      <span class="go">Open →</span>
-    </a>
-    <a class="card" href="TradeWar.html">
-      <div class="card-tag"><span class="tag">Market sim · human vs bot</span></div>
-      <h3>TradeWar</h3>
-      <p>Trade against a rule-following bot that never panics, never revenge-trades and never gets bored. Find out how long your discipline lasts.</p>
-      <span class="go">Play →</span>
-    </a>
-    <a class="card" href="portfolio.html#earlier">
-      <div class="card-tag"><span class="tag">Archive · 2025</span></div>
-      <h3>Earlier learning pages</h3>
-      <p>Beginner guides to Linux, Python and the Raspberry Pi, and a rocks and minerals reference, from when this site started.</p>
-      <span class="go">Browse →</span>
-    </a>
-  </div>
+      <div class="path">
+        <div class="top"><span class="tag">Data</span><span class="count">1 step · more coming</span></div>
+        <h3>Penguins, by the numbers</h3>
+        <p>344 real penguins and the four tools of data science, with live Python in your browser.</p>
+        <div class="easy">Live Python · nothing to install</div>
+        <a class="start" href="data-numpy.html"><span><small>Start · ~45 min</small><b>NumPy with penguins</b></span></a>
+        <details><summary>All steps</summary><ol>
+          <li><a href="data-numpy.html"><span>NumPy with penguins<em>~45 min · live Python</em></span></a></li>
+        </ol></details>
+      </div>
+
+      <div class="path">
+        <div class="top"><span class="tag">Build your own</span><span class="count">4 steps</span></div>
+        <h3>A website like this one</h3>
+        <p>This site costs nothing to run. Make yours, with a check after every step.</p>
+        <div class="easy">£0 · starts in your browser</div>
+        <a class="start" href="website.html"><span><small>Start · ~1 hr</small><b>Would you like a website like this?</b></span></a>
+        <details><summary>All 4 steps</summary><ol>
+          <li><a href="website.html"><span>Would you like a website like this?<em>~1 hr · nothing to install</em></span></a></li>
+          <li><a href="github-setup.html"><span>From a fresh machine to your first push<em>~1 hr · Ubuntu</em></span></a></li>
+          <li><a href="preflight.html"><span>Look before you leap<em>~45 min · Git</em></span></a></li>
+          <li><a href="offline-site.html"><span>Make your website work with no signal<em>~1 hr · £0</em></span></a></li>
+        </ol></details>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="studies">
+    <div class="head">
+      <h2>Case studies</h2>
+      <p>Not feature lists: what went wrong, how it was found, and what it cost.</p>
+    </div>
+    <div class="studies">
+      <a class="study" href="Hustler.html">
+        <div class="scr" aria-hidden="true">
+          <span>AI predicted</span><span>Actually potted</span>
+          <b>91.5%</b><b class="bad">18.3%</b>
+        </div>
+        <div class="txt">
+          <span class="tag">Python · physics · testing</span>
+          <h3>HUSTLER</h3>
+          <p>A UK blackball pool physics sandbox: 70 revisions, 129 assertions, and five confident explanations that all died on contact with data.</p>
+          <span class="go">Read the case study →</span>
+        </div>
+      </a>
+      <a class="study" href="reclaim.html">
+        <div class="scr" aria-hidden="true">
+          <span>Memories invented</span><span>Filler after fix</span>
+          <b class="bad">35 / 35</b><b>0</b>
+        </div>
+        <div class="txt">
+          <span class="tag">Old hardware · local AI</span>
+          <h3>Saved from the scrap pile</h3>
+          <p>A 2015 PC headed for scrap now runs Ubuntu, a local AI model at reading pace, and characters that remember me. No cloud, no subscription.</p>
+          <span class="go">Read the case study →</span>
+        </div>
+      </a>
+      <a class="study" href="gus.html">
+        <div class="scr" aria-hidden="true">
+          <span>CPU to draw his face</span><span>After the fix</span>
+          <b class="bad">70%</b><b>9–10%</b>
+        </div>
+        <div class="txt">
+          <span class="tag">Home robot · local AI</span>
+          <h3>Meet Gus</h3>
+          <p>The rescued PC became the family robot: a face that reacts to his own vital signs, one rule, and a brain that stays at home. Now 55% faster.</p>
+          <span class="go">Read the case study →</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section id="latest">
+    <div class="head">
+      <h2>Just added</h2>
+      <p>The newest pages. Every guide on the site is in a path above.</p>
+    </div>
+    <div class="latest">
+      <a class="card" href="ears-on.html">
+        <div class="card-tag"><span class="dot" aria-hidden="true"></span><span class="tag">Radio · build</span><span class="stamp">4 Nov 2026</span></div>
+        <h3>Got my ears on</h3>
+        <p>An old TV aerial becomes a window antenna: survey before you solder, build, faults, and a rebuild script.</p>
+        <span class="go">Read →</span>
+      </a>
+      <a class="card" href="phone-cleanup.html">
+        <div class="card-tag"><span class="dot" aria-hidden="true"></span><span class="tag">Security · phone</span><span class="stamp">4 Nov 2026</span></div>
+        <h3>Phone clean-up</h3>
+        <p>Pick iPhone or Android. Eight checks: updates, theft protection, apps, permissions, tracking and who else has access.</p>
+        <span class="go">Start →</span>
+      </a>
+      <a class="card" href="data-numpy.html">
+        <div class="card-tag"><span class="dot" aria-hidden="true"></span><span class="tag">Data · live Python</span><span class="stamp">4 Nov 2026</span></div>
+        <h3>NumPy with penguins</h3>
+        <p>Maths on a whole column at once, the missing value that breaks an average, and masks. First step of the new Data path.</p>
+        <span class="go">Open →</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="more">
+    <div class="head">
+      <h2>Also on the bench</h2>
+    </div>
+    <div class="strip">
+      <a href="TradeWar.html"><span class="tag">Game · human vs bot</span><b>TradeWar</b><p>Trade against a bot that never panics. How long does your discipline last?</p></a>
+      <a href="portfolio.html"><span class="tag">Everything</span><b>All projects</b><p>Every page on the site in one place.</p></a>
+      <a href="portfolio.html#earlier"><span class="tag">Archive · 2025</span><b>Earlier learning pages</b><p>Linux, Python, Raspberry Pi and a rocks and minerals reference.</p></a>
+    </div>
+  </section>
+
 </main>
 
 <footer>
@@ -628,120 +487,96 @@ footer{border-top:1px solid var(--rule);background:linear-gradient(180deg,var(--
 </footer>
 
 <script>
+/* The honest gauge: the amber marker is what was expected (or
+   the before reading), the needle is what was measured. Every number comes from
+   a case study on this site. */
 (function(){
-  var cv=document.getElementById('scope'), ctx=cv.getContext('2d');
-  var lrEl=document.getElementById('lr'), lrVal=document.getElementById('lrval');
-  var stepEl=document.getElementById('step'), lossEl=document.getElementById('loss');
-  var statusEl=document.getElementById('status'), lamp=document.getElementById('lamp');
+  var CH=[
+    {unit:'pot rate %', max:100, legA:'Expected', legB:'Measured', claim:91.5, meas:18.3,
+     claimLabel:'The AI predicted', claimVal:'91.5%',
+     measLabel:'It actually potted', measVal:'18.3%',
+     verdict:'The pool AI thought it potted nearly everything. Five confident explanations died before the real bug turned up.',
+     href:'Hustler.html'},
+    {unit:'memories of 35', max:35, legA:'Before', legB:'After', claim:35, meas:0,
+     claimLabel:'Memories invented', claimVal:'35 / 35',
+     measLabel:'Filler after the fix', measVal:'0',
+     verdict:'I measured my AI characters’ memories and every one was made up. Now they’re checked against my own words.',
+     href:'reclaim.html'},
+    {unit:'% of one core', max:100, legA:'Before', legB:'After', claim:70, meas:9.5,
+     claimLabel:'CPU to draw his face', claimVal:'70%',
+     measLabel:'After the fix', measVal:'9–10%',
+     verdict:'Gus the home robot was spending most of a core drawing himself. The fix made his brain 55% faster.',
+     href:'gus.html'}
+  ];
+  var R=130, CX=160, CY=168;
+  var ticks=document.getElementById('ticks'), unit=document.getElementById('unit');
+  var claim=document.getElementById('claim'), needle=document.getElementById('needle');
+  var lamp=document.getElementById('lamp'), verdict=document.getElementById('verdict');
+  var cL=document.getElementById('claimLabel'), cV=document.getElementById('claimVal');
+  var mL=document.getElementById('measLabel'), mV=document.getElementById('measVal');
+  var btns=[].slice.call(document.querySelectorAll('.chan button'));
   var reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var NS='http://www.w3.org/2000/svg', cur=-1, t1=0, t2=0, cycle=0, touched=false;
 
-  // loss(w) = w^2   grad = 2w   update: w <- w - lr*2w = w(1 - 2*lr)
-  // |1 - 2*lr| > 1  <=>  lr > 1.00  -> divergence. The printed threshold is real.
-  var LOG_HI=1.2, LOG_LO=-8, MAX_STEPS=30, W0=1.75, WCLAMP=2.4;
-  var w=W0, loss=[], weight=[], diverged=false, hold=0, lr=parseFloat(lrEl.value);
+  function el(n,a){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);return e}
+  function deg(v,max){return (v/max)*180-90}  // -90 = left end, +90 = right end
+  function rot(g,d,fast){g.classList.toggle('fast',!!fast);g.style.transform='rotate('+d+'deg)'}
 
-  function fit(){
-    var r=cv.getBoundingClientRect(), d=window.devicePixelRatio||1;
-    cv.width=Math.round(r.width*d); cv.height=Math.round(r.height*d);
-    ctx.setTransform(d,0,0,d,0,0);
-    draw();
-  }
-
-  function reset(){ w=W0; loss=[]; weight=[]; diverged=false; hold=0; }
-
-  function stepOnce(){
-    var l=w*w;
-    loss.push(l); weight.push(w);
-    w=w-lr*(2*w);
-    if(!isFinite(w)||l>1e7) diverged=true;
-  }
-
-  function yLoss(l,H){
-    var t=(LOG_HI-Math.log10(Math.max(l,1e-9)))/(LOG_HI-LOG_LO);
-    return Math.max(-0.3,Math.min(0.98,t))*H;  // never below the floor of the chart
-  }
-  function yWeight(v,H){
-    var t=Math.max(-1,Math.min(1,v/WCLAMP));
-    return H/2 - t*(H/2)*0.86;
-  }
-
-  function poly(arr,fn,H,W,n,colour,width,glow){
-    if(arr.length<2) return;
-    ctx.beginPath();
-    for(var k=0;k<arr.length;k++){
-      var px=W*k/(n-1), py=fn(arr[k],H);
-      k?ctx.lineTo(px,py):ctx.moveTo(px,py);
-    }
-    ctx.strokeStyle=colour; ctx.lineWidth=width; ctx.lineJoin='round';
-    ctx.shadowColor=glow; ctx.shadowBlur=glow?8:0;
-    ctx.stroke(); ctx.shadowBlur=0;
-  }
-
-  function draw(){
-    var W=cv.clientWidth, H=cv.clientHeight, n=MAX_STEPS;
-    ctx.clearRect(0,0,W,H);
-
-    ctx.strokeStyle='rgba(87,199,154,.12)'; ctx.lineWidth=1;
-    for(var i=1;i<10;i++){ctx.beginPath();ctx.moveTo(W*i/10,0);ctx.lineTo(W*i/10,H);ctx.stroke();}
-    for(var j=1;j<6;j++){ctx.beginPath();ctx.moveTo(0,H*j/6);ctx.lineTo(W,H*j/6);ctx.stroke();}
-
-    // zero line for the weight trace
-    ctx.strokeStyle='rgba(224,152,43,.22)';
-    ctx.beginPath();ctx.moveTo(0,H/2);ctx.lineTo(W,H/2);ctx.stroke();
-
-    poly(weight,yWeight,H,W,n,'rgba(224,152,43,.85)',1.5,'');
-    poly(loss,yLoss,H,W,n,diverged?'#E0603F':'#57C79A',2,
-         diverged?'rgba(224,96,63,.8)':'rgba(87,199,154,.7)');
-
-    if(loss.length){
-      var lx=W*(loss.length-1)/(n-1), ly=yLoss(loss[loss.length-1],H);
-      if(ly>-10&&ly<H+10){
-        ctx.beginPath(); ctx.arc(lx,ly,3,0,6.284);
-        ctx.fillStyle=diverged?'#E0603F':'#8CE8C2'; ctx.fill();
+  function drawScale(max){
+    while(ticks.firstChild) ticks.removeChild(ticks.firstChild);
+    var steps=max===35?7:10;
+    for(var i=0;i<=steps*2;i++){
+      var a=Math.PI*(1-i/(steps*2)), major=i%2===0;
+      var r1=R-(major?13:7), c=Math.cos(a), s=Math.sin(a);
+      ticks.appendChild(el('line',{'class':'tick'+(major?' major':''),
+        x1:CX+c*r1,y1:CY-s*r1,x2:CX+c*R,y2:CY-s*R}));
+      if(major && (i/2)%(steps===7?1:2)===0){
+        var t=el('text',{'class':'num',x:CX+c*(R-27),y:CY-s*(R-27)+4,'text-anchor':'middle'});
+        t.textContent=Math.round(max*i/(steps*2));
+        ticks.appendChild(t);
       }
     }
   }
 
-  function readout(){
-    var last=loss.length?loss[loss.length-1]:0;
-    stepEl.textContent=loss.length;
-    lossEl.textContent=(last>=1e4||(last>0&&last<1e-3))?last.toExponential(1):last.toFixed(3);
-    var first=loss.length?loss[0]:1, state='Converging';
-    if(diverged) state='Diverged';
-    else if(last<1e-4) state='Settled';
-    else if(loss.length>3&&last>first*1.02) state='Unstable';
-    else if(loss.length>3&&Math.abs(last-first)<first*0.02) state='Marginal';
-    statusEl.textContent=state;
-    statusEl.className=diverged?'diverged':'';
-    lamp.className='lamp '+(diverged?'alarm':'on');
+  function show(i){
+    if(i===cur) return;
+    cur=i; clearTimeout(t1); clearTimeout(t2);
+    var c=CH[i];
+    btns.forEach(function(b,k){b.setAttribute('aria-pressed',k===i?'true':'false')});
+    drawScale(c.max); unit.textContent=c.unit;
+    document.getElementById('legA').textContent=c.legA;
+    document.getElementById('legB').textContent=c.legB;
+    cL.textContent=c.claimLabel; cV.textContent=c.claimVal;
+    mL.textContent=c.measLabel; mV.textContent=reduced?c.measVal:'—';
+    verdict.innerHTML='';
+    verdict.appendChild(document.createTextNode(c.verdict+' '));
+    var a=document.createElement('a'); a.href=c.href; a.textContent='Read how →';
+    verdict.appendChild(a);
+    rot(claim,deg(c.claim,c.max),true);
+    if(reduced){ rot(needle,deg(c.meas,c.max),true); lamp.className='lamp on'; return; }
+    // the needle starts where we expected, then settles where we measured
+    lamp.className='lamp wait';
+    rot(needle,deg(c.claim,c.max),true);
+    t1=setTimeout(function(){
+      rot(needle,deg(c.meas,c.max),false);
+      t2=setTimeout(function(){ mV.textContent=c.measVal; lamp.className='lamp on'; },1300);
+    },900);
   }
 
-  function settle(){ for(var i=0;i<MAX_STEPS&&!diverged;i++) stepOnce(); draw(); readout(); }
-
-  var acc=0, prev=0;
-  function loop(t){
-    if(!prev) prev=t;
-    acc+=t-prev; prev=t;
-    if(acc>95){
-      acc=0;
-      if(diverged||loss.length>=MAX_STEPS){
-        if(!hold) hold=t+1500; else if(t>hold) reset();
-      } else stepOnce();
-      draw(); readout();
-    }
-    requestAnimationFrame(loop);
-  }
-
-  lrEl.addEventListener('input',function(){
-    lr=parseFloat(lrEl.value);
-    lrVal.textContent=lr.toFixed(2);
-    reset();
-    if(reduced) settle();
+  btns.forEach(function(b){
+    b.addEventListener('click',function(){ touched=true; clearInterval(cycle); show(+b.dataset.ch); });
   });
 
-  window.addEventListener('resize',fit);
-  fit();
-  if(reduced) settle(); else requestAnimationFrame(loop);
+  rot(needle,-90,true);
+  show(0);
+  if(!reduced){
+    cycle=setInterval(function(){
+      if(touched||document.hidden) return;
+      var r=document.getElementById('dial').getBoundingClientRect();
+      if(r.bottom<0||r.top>innerHeight) return;  // only cycle while it's on screen
+      show((cur+1)%CH.length);
+    },7000);
+  }
 })();
 </script>
 <script src="sw-register.js" defer></script>
