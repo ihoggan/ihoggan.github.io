@@ -80,6 +80,8 @@ def precache_list():
     files += ["site.css", "manifest.webmanifest", "sw-register.js"]
     files += sorted(f"icons/{p.name}" for p in (ROOT / "icons").glob("*.png"))
     files += sorted(f"images/{p.name}" for p in (ROOT / "images").glob("*.svg"))
+    files += [n for n in ["pylab.js"] if (ROOT / n).exists()]
+    files += sorted(f"data/{p.name}" for p in (ROOT / "data").glob("*.csv"))
     return files
 
 

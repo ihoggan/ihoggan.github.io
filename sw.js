@@ -23,7 +23,7 @@
    ------------------------------------------------------------ */
 
 // VERSION-START
-const VERSION = 'site-f1596c445b';
+const VERSION = 'site-ecd2c11126';
 // VERSION-END
 
 const PAGES = `${VERSION}-pages`;
@@ -43,6 +43,7 @@ const PRECACHE = [
   'about.html',
   'account-audit.html',
   'contact.html',
+  'data-numpy.html',
   'ears-on.html',
   'electronics-1.html',
   'electronics-2.html',
@@ -80,6 +81,8 @@ const PRECACHE = [
   'images/esp32-battery-plan.svg',
   'images/esp32-plug-in.svg',
   'images/esp32-screen-map.svg',
+  'pylab.js',
+  'data/penguins.csv',
 ];
 // PRECACHE-END
 
