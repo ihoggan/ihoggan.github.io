@@ -23,7 +23,7 @@
    ------------------------------------------------------------ */
 
 // VERSION-START
-const VERSION = 'site-ecd2c11126';
+const VERSION = 'site-7f31b320a7';
 // VERSION-END
 
 const PAGES = `${VERSION}-pages`;
@@ -42,6 +42,7 @@ const PRECACHE = [
   'TradeWar.html',
   'about.html',
   'account-audit.html',
+  'battery-safety.html',
   'contact.html',
   'data-numpy.html',
   'ears-on.html',
@@ -52,12 +53,15 @@ const PRECACHE = [
   'github-setup.html',
   'gus.html',
   'index.html',
+  'lean-toolkit.html',
   'networking.html',
   'neural_playground.html',
   'next-word.html',
+  'offline-site.html',
   'offline.html',
   'pi-gpio.html',
   'portfolio.html',
+  'power-cut.html',
   'preflight.html',
   'real-thing.html',
   'reclaim.html',

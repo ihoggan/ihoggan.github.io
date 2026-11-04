@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Make your website work with no signal: offline support for a static site — Iain Hoggan</title>
+<meta name="description" content="Four small files turn a free static website into one that installs on a phone and still opens in flight mode. A beginner tutorial with tested code: a manifest, a service worker, an offline page, and how to keep visitors' copies fresh.">
+<link rel="canonical" href="https://ihoggan.github.io/offline-site.html">
+<meta property="og:site_name" content="Iain Hoggan">
+<meta property="og:locale" content="en_GB">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ihoggan.github.io/offline-site.html">
+<meta property="og:title" content="Make your website work with no signal">
+<meta property="og:description" content="Four small files turn a static site into one that installs on a phone and still opens in flight mode. Tested code, explained line by line.">
+<meta property="og:image" content="https://ihoggan.github.io/images/og-offline-site.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Make your website work with no signal. Tutorial, build your own. Four files, installs on a phone, works in flight mode.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Make your website work with no signal", "description": "Four small files turn a static site into one that installs on a phone and still opens in flight mode. Tested code, explained line by line.", "image": "https://ihoggan.github.io/images/og-offline-site.png", "datePublished": "2026-11-04", "dateModified": "2026-11-04", "inLanguage": "en-GB", "author": {"@type": "Person", "name": "Iain Hoggan", "url": "https://ihoggan.github.io/about.html"}, "mainEntityOfPage": "https://ihoggan.github.io/offline-site.html"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+main.wrap{padding-top:52px;padding-bottom:40px}
+.standfirst{font-size:1.12rem;color:var(--ink-2);max-width:34em}
+.standfirst strong{color:var(--ink);font-weight:600}
+main section p{max-width:38em}
+main h2{max-width:18em;margin-bottom:14px}
+main h3{margin:22px 0 8px}
+main ul,main ol{max-width:36em;margin:0 0 16px 1.2em}
+main li{margin-bottom:6px}
+pre{
+  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen));
+  border:1px solid #060B0E;border-radius:3px;box-shadow:inset 0 3px 12px rgba(0,0,0,.55);
+  color:#CFE3DA;font-family:var(--mono);font-size:13px;line-height:1.55;
+  padding:14px 16px;margin:18px 0 22px;max-width:40em;overflow-x:auto;white-space:pre;
+}
+pre .me{color:#E8C27A}
+pre .dim{color:#7F968D}
+pre .bad{color:#E0603F}
+pre .ok{color:var(--trace)}
+figure.shot{max-width:44em;margin:22px 0}
+figure.shot img{display:block;width:100%;height:auto;background:#fff;border:1px solid var(--bezel);border-radius:4px;
+  box-shadow:0 1px 2px rgba(23,32,43,.14)}
+figure.shot figcaption{margin-top:8px;font:12px/1.55 var(--mono);color:var(--ink-2);max-width:44em}
+.rules{max-width:38em;margin:14px 0 18px;border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))}
+.rules div{display:grid;grid-template-columns:11em 1fr;gap:12px;padding:10px 14px;border-bottom:1px solid var(--rule);font-size:.97rem}
+.rules div:last-child{border-bottom:0}
+.rules b{font-family:var(--mono);font-size:.84em;letter-spacing:.04em}
+@media(max-width:560px){.rules div{grid-template-columns:1fr;gap:2px}}
+.slips{display:grid;gap:12px;max-width:40em;margin:18px 0 22px}
+.slip{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.slip>div{padding:12px 14px;font-size:.95rem;line-height:1.5}
+.slip>div+div{border-left:1px solid var(--rule)}
+.slip .tag{display:block;margin-bottom:4px}
+.slip .dec .tag{color:#2F8A63}
+@media(max-width:560px){.slip{grid-template-columns:1fr}.slip>div+div{border-left:0;border-top:1px solid var(--rule)}}
+.takeaways{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:26px}
+.take{background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);border-radius:4px;padding:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.take h3{font-size:1rem;margin:0 0 8px}
+.take p{font-size:.94rem;color:var(--ink-2);margin:0}
+.predict{border-left:3px solid var(--lamp);padding:2px 0 2px 18px;margin:18px 0;max-width:38em}
+.predict .tag{display:block;margin-bottom:4px;color:var(--lamp)}
+.predict p{margin:0}
+.warn{border-left:3px solid var(--alarm);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.warn .tag{display:block;margin-bottom:4px;color:var(--alarm)}
+.warn p{margin:0}
+.warn p+p{margin-top:8px}
+details.answer{max-width:38em;margin:10px 0 18px}
+details.answer summary{cursor:pointer;font:600 11px/1.4 var(--mono);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-2)}
+details.answer p{margin-top:8px}
+.tablewrap{max-width:44em;overflow-x:auto;margin:16px 0 22px}
+table.disc{border-collapse:collapse;width:100%;font-size:.93rem;background:var(--engrave)}
+.disc th,.disc td{border:1px solid var(--bezel);padding:7px 9px;text-align:left;vertical-align:top}
+.disc th{background:var(--panel-2);font-family:var(--mono);font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.disc td code{white-space:nowrap}
+.disc td.n{text-align:right;font-family:var(--mono);font-size:.88em;white-space:nowrap}
+.calc{max-width:40em;margin:20px 0 22px;padding:16px 18px}
+.calc .cap{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#6E8A80;margin-bottom:12px}
+.calc .ins{display:grid;grid-template-columns:repeat(auto-fit,minmax(10em,1fr));gap:12px}
+.calc label{font:11px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#93A79E;display:grid;gap:5px}
+.calc input{font:500 1rem var(--mono);color:var(--trace);background:#0B1216;border:1px solid #2B3B44;border-radius:3px;padding:7px 9px;width:100%}
+.calc input:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.calc dl{display:grid;grid-template-columns:1fr auto;gap:6px 18px;margin:16px 0 0;padding-top:12px;border-top:1px solid rgba(87,199,154,.18)}
+.calc dt{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#93A79E}
+.calc dd{font-family:var(--mono);font-size:13px;color:var(--trace);text-align:right;font-variant-numeric:tabular-nums;margin:0}
+.calc .note{margin-top:12px;font:11px/1.55 var(--mono);color:#8FA69C}
+.sheet{max-width:40em;margin:16px 0 22px;border:1px dashed var(--bezel);border-radius:4px;padding:14px 16px;
+  background:repeating-linear-gradient(0deg,transparent 0 27px,rgba(23,32,43,.06) 27px 28px),var(--engrave)}
+.sheet p{font:13px/28px var(--mono);margin:0;max-width:none}
+.sheet .blank{display:inline-block;min-width:7em;border-bottom:1px solid var(--ink);margin:0 4px}
+.links{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+.read-next{border-top:1px solid var(--rule);padding:44px 0 8px}
+.read-next .card{margin-top:14px;max-width:640px}
+
+.check{display:flex;gap:14px;align-items:flex-start;max-width:38em;margin:20px 0 6px;
+  border:1px solid var(--bezel);border-radius:4px;padding:14px 16px;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.check .tag{display:block;margin-bottom:4px;color:#2F8A63}
+.check p{margin:0;font-size:.97rem}
+.ui{font-family:var(--mono);font-size:.84em;white-space:nowrap;background:linear-gradient(180deg,#fff,var(--engrave));
+  border:1px solid var(--bezel);border-bottom-width:2px;border-radius:3px;padding:1px 6px;color:var(--ink)}
+.ticks{display:grid;gap:9px}
+.ticks label{font:13.5px/1.5 var(--mono);text-transform:none;letter-spacing:normal;color:#CFE3DA;display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.ticks input{accent-color:var(--trace);margin-top:3px;flex:none;width:16px;height:16px}
+.verdict{margin-top:14px;padding-top:12px;border-top:1px solid rgba(87,199,154,.18);font:600 13px/1.55 var(--mono);color:#93A79E}
+.verdict.yes{color:#E7B863}
+.verdict.no{color:var(--trace)}
+/* Data path: live code cells (pylab.js) */
+.cell{max-width:44em;margin:18px 0 22px;border:1px solid #060B0E;border-radius:3px;overflow:hidden;
+  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen));box-shadow:inset 0 3px 12px rgba(0,0,0,.55)}
+.cell textarea{display:block;width:100%;min-height:3.2em;resize:vertical;border:0;outline:none;background:transparent;
+  color:#CFE3DA;font:13px/1.55 var(--mono);padding:14px 16px;white-space:pre;overflow-x:auto;tab-size:4}
+.cell textarea:focus-visible{box-shadow:inset 0 0 0 2px var(--lamp)}
+.cell-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:8px 12px;border-top:1px solid rgba(87,199,154,.18)}
+.cell-bar button{font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:8px 12px;border-radius:3px;cursor:pointer;
+  border:1px solid #2B3B44;background:#16232B;color:#A9BFB5}
+.cell-bar button.run{background:linear-gradient(180deg,#6FD6AA,var(--trace));border-color:#2F8A63;color:#0B2A1E}
+.cell-bar button:disabled{opacity:.55;cursor:progress}
+.cell-bar button:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.cell-bar .status{font:11px/1.4 var(--mono);color:#8FA69C}
+.cell pre.out{margin:0;max-width:none;border:0;border-top:1px solid rgba(87,199,154,.18);border-radius:0;box-shadow:none;
+  background:#0B1216;color:#E6F0EC;white-space:pre-wrap;word-break:break-word}
+.cell pre.out.bad{color:#F0896E}
+.cell .figs img{display:block;max-width:calc(100% - 24px);height:auto;margin:0 12px 12px;background:#fff;border-radius:2px}
+.pathlist{list-style:none;margin:6px 0 18px!important;padding:0;counter-reset:p;max-width:38em}
+.pathlist li{counter-increment:p;position:relative;padding:8px 0 8px 40px;border-bottom:1px solid var(--rule);margin:0!important}
+.pathlist li::before{content:counter(p);position:absolute;left:0;top:7px;width:26px;height:26px;display:grid;place-items:center;
+  font:600 12px var(--mono);border:1px solid var(--bezel);border-radius:3px;background:var(--engrave)}
+.pathlist li.here::before{background:var(--ink);color:var(--engrave);border-color:var(--ink)}
+.pathlist li.here em{color:var(--lamp);font-style:normal;font:600 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-left:6px}
+.card.soon{opacity:.75}
+.calc select{font:500 1rem var(--mono);color:var(--trace);background:#0B1216;border:1px solid #2B3B44;border-radius:3px;padding:7px 9px;width:100%}
+.calc select:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.verdict p{margin:0 0 8px;max-width:none;font:13px/1.55 var(--mono)}
+.verdict p:last-child{margin-bottom:0}
+.verdict p.ok{color:var(--trace)}
+.verdict p.amber{color:#E7B863}
+.verdict p b{color:#E6F0EC}
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0F181E">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+</head>
+<body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html" aria-label="Home">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap col">
+    <p class="tag">Tutorial · Build your own path, step 4 · Web · ~1 hr</p>
+    <h1>Make your website work with no signal</h1>
+    <p class="standfirst">This site installs on a phone like an app, and every guide still opens in flight mode, in a power cut, or halfway up a hill with no signal. It took <strong>four small files</strong>, and none of them need a server, an account or any money. This tutorial builds the same thing for your own site, one file at a time, with a test after each step. If you haven't got a site yet, <a href="website.html">Would you like a website like this?</a> gets you one first.</p>
+    <div class="spec">
+      <div><b>4</b><span>small files</span></div>
+      <div><b>Flight mode</b><span>still opens</span></div>
+      <div><b>£0</b><span>on GitHub Pages</span></div>
+      <div><b>0</b><span>tracking</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap col">
+
+<section>
+  <p class="tag eyebrow">The idea</p>
+  <h2>A helper that lives in the browser</h2>
+  <p>Normally, every time you open a page, the browser asks the website for it. No signal, no page. A <strong>service worker</strong> is a small script your site gives the browser, which then sits between the browser and the internet. On a visitor's first visit, it saves a copy of your pages on their device. Later, if the network isn't there, it hands over the saved copy instead.</p>
+  <p>The four files:</p>
+  <div class="rules">
+    <div><b>manifest.webmanifest</b><span>The name and icon, so the site can be installed on a home screen.</span></div>
+    <div><b>register.js</b><span>Three lines that switch the service worker on.</span></div>
+    <div><b>sw.js</b><span>The service worker: what to save, and what to hand over when there's no signal.</span></div>
+    <div><b>offline.html</b><span>A friendly page for when someone asks for a page that was never saved.</span></div>
+  </div>
+  <div class="warn">
+    <span class="tag">Two things it needs</span>
+    <p>Service workers only run on <strong>https</strong> sites, plus <code>localhost</code> for testing on your own computer. GitHub Pages is https, so you're covered. They also don't run on pages opened straight from a file on your disk.</p>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Step 1</p>
+  <h2>The manifest: a name and an icon</h2>
+  <p>Create <code>manifest.webmanifest</code> in the same folder as your <code>index.html</code>:</p>
+<pre>{
+  "name": "My Guides",
+  "short_name": "Guides",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#222222",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}</pre>
+  <p>You'll need two square PNG icons, 192 and 512 pixels wide. Any simple image works: a letter on a coloured background is fine. Then add these lines inside the <code>&lt;head&gt;</code> of <strong>every</strong> page:</p>
+<pre>&lt;link rel="manifest" href="manifest.webmanifest"&gt;
+&lt;meta name="theme-color" content="#222222"&gt;
+&lt;script src="register.js" defer&gt;&lt;/script&gt;</pre>
+  <p><code>start_url</code> is the page that opens from the home-screen icon. <code>display: standalone</code> hides the browser's address bar, so it feels like an app.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Step 2</p>
+  <h2>Switch it on</h2>
+  <p>Create <code>register.js</code>. The <code>if</code> means browsers that can't do this simply skip it, so nothing breaks:</p>
+<pre>// register.js: switch on offline support, if this browser can do it.
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () =&gt; {
+    navigator.serviceWorker.register('sw.js');
+  });
+}</pre>
+</section>
+
+<section>
+  <p class="tag eyebrow">Step 3</p>
+  <h2>The service worker</h2>
+  <p>Create <code>sw.js</code>, and put your own pages and stylesheet in the <code>FILES</code> list:</p>
+<pre>// sw.js: keeps a copy of the site on the visitor's device.
+const VERSION = 'v1';                       // change this whenever you change a file
+const FILES = ['./', 'index.html', 'about.html', 'style.css', 'offline.html'];
+
+// 1. Install: save every file in the list.
+self.addEventListener('install', (event) =&gt; {
+  event.waitUntil(
+    caches.open(VERSION).then((cache) =&gt; cache.addAll(FILES)).then(() =&gt; self.skipWaiting())
+  );
+});
+
+// 2. Activate: delete copies saved by older versions.
+self.addEventListener('activate', (event) =&gt; {
+  event.waitUntil(
+    caches.keys()
+      .then((names) =&gt; Promise.all(names.filter((n) =&gt; n !== VERSION).map((n) =&gt; caches.delete(n))))
+      .then(() =&gt; self.clients.claim())
+  );
+});
+
+// 3. Fetch: pages try the network first; everything else uses the saved copy first.
+self.addEventListener('fetch', (event) =&gt; {
+  const request = event.request;
+  if (request.method !== 'GET' || new URL(request.url).origin !== location.origin) return;
+
+  if (request.mode === 'navigate') {
+    event.respondWith(
+      fetch(request)
+        .then((response) =&gt; {
+          const copy = response.clone();
+          caches.open(VERSION).then((cache) =&gt; cache.put(request, copy));
+          return response;
+        })
+        .catch(() =&gt; caches.match(request, { ignoreSearch: true })
+          .then((saved) =&gt; saved || caches.match('offline.html')))
+    );
+  } else {
+    event.respondWith(caches.match(request).then((saved) =&gt; saved || fetch(request)));
+  }
+});</pre>
+  <details class="answer">
+    <summary>What each part does</summary>
+    <p><strong>Install</strong> runs once, on a visitor's first visit: it opens a storage box named after <code>VERSION</code> and saves every file in the list. <strong>Activate</strong> clears out boxes from older versions, so old copies don't pile up. <strong>Fetch</strong> runs for every request. For pages, it tries the internet first, so visitors with signal always get your latest words, and it keeps the fresh copy. With no signal, it hands over the saved copy, or <code>offline.html</code> if there isn't one. For everything else (stylesheets, images), it uses the saved copy straight away, which is also why the site gets faster.</p>
+    <p>The first line of the fetch part matters for safety: it only touches simple requests (<code>GET</code>) for your own site. Anything else, such as forms or other websites, goes straight to the internet untouched.</p>
+  </details>
+</section>
+
+<section>
+  <p class="tag eyebrow">Step 4</p>
+  <h2>A page for "not saved yet"</h2>
+  <p>Create <code>offline.html</code> as an ordinary page from your site, with a short message like "You're offline, and this page hasn't been saved on this device yet. The pages you've already opened will still work." Make sure it's in the <code>FILES</code> list, because it has to be saved before it's needed.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Step 5</p>
+  <h2>Test it, then cut the signal</h2>
+  <p>Push your changes, wait a minute for GitHub Pages, then open your site in Chrome, Edge or Firefox on a computer:</p>
+  <ol>
+    <li>Press <span class="ui">F12</span> to open developer tools, then find the <strong>Application</strong> tab (Firefox calls it <strong>Storage</strong>).</li>
+    <li>Under <strong>Service workers</strong>, you should see <code>sw.js</code> marked as activated and running.</li>
+    <li>Under <strong>Cache storage</strong>, open <code>v1</code>: every file in your list should be there.</li>
+    <li>Back under Service workers, tick <strong>Offline</strong>, and reload the page.</li>
+  </ol>
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>With "Offline" ticked: what happens when you reload a page you've visited? And when you type the address of a page that isn't in your list, and you've never opened?</p>
+  </div>
+  <details class="answer">
+    <summary>What should happen</summary>
+    <p>The visited page reloads normally, styles and all: it came from the saved copy. The unvisited page shows your <code>offline.html</code>. I tested exactly this before writing it up. If you see the browser's own "no internet" page instead, the service worker isn't running yet: reload once with the signal on and try again.</p>
+  </details>
+  <p>Then the real test, on a phone: open the site, use the browser's <strong>Add to Home Screen</strong> (or <strong>Install</strong>) option, switch on <strong>flight mode</strong>, and open it from the new icon.</p>
+  <div class="check"><div><span class="tag">Check</span><p>Your site opens from its home-screen icon in flight mode, and an unsaved page shows your offline page rather than an error.</p></div></div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Step 6</p>
+  <h2>The catch: keeping copies fresh</h2>
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>You change the colours in <code>style.css</code> and push it. A visitor who came last week comes back. Which colours do they see?</p>
+  </div>
+  <details class="answer">
+    <summary>The answer</summary>
+    <p>The <strong>old</strong> ones. Stylesheets come from the saved copy first, and nothing told the browser that copy was out of date. The fix is the <code>VERSION</code> line: change <code>v1</code> to <code>v2</code> whenever you change any file. The browser notices <code>sw.js</code> has changed, installs the new version, saves fresh copies, and the activate step throws the old box away.</p>
+  </details>
+  <div class="lesson">
+    <span class="tag">Lesson</span>
+    <p>Every change to the site means a change to <code>VERSION</code>. Forget it, and your visitors are stuck in the past without knowing it.</p>
+  </div>
+  <p>Remembering that by hand gets old fast. This site has a small script, <code>tools/build_offline.py</code>, that I run after adding a page: it rebuilds the list of files to save, and sets <code>VERSION</code> from a fingerprint of all of them, so it only changes when something actually did. It's in the site's repository if you'd like to borrow the idea.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">What it doesn't do</p>
+  <h2>Honest limits</h2>
+  <ul>
+    <li><strong>Only what's been saved.</strong> Pages in the list, plus any page a visitor has opened. Nothing else is there in flight mode.</li>
+    <li><strong>Not other websites.</strong> Fonts or scripts from elsewhere won't be there offline unless you save them on purpose. This site saves its fonts; the live Python on the <a href="data-numpy.html">Data path</a> needs the internet.</li>
+    <li><strong>Storage can be cleared.</strong> Browsers may clear saved sites that haven't been used for a long time, or when the device runs short of space.</li>
+    <li><strong>No tracking.</strong> A service worker can't see other sites, and this one sends nothing anywhere. It only saves and hands back your own pages.</li>
+  </ul>
+  <div class="links">
+    <a class="btn btn-primary" href="offline.html">See this site's offline page</a>
+    <a class="btn" href="preflight.html">Look before you leap</a>
+  </div>
+</section>
+
+<hr class="div">
+
+<section style="padding-top:44px">
+  <p class="tag eyebrow">That's it</p>
+  <h2>What I'd want you to take away</h2>
+  <div class="takeaways">
+    <div class="take"><h3>Four small files</h3><p>A manifest, a register script, a service worker and an offline page. No server, no cost.</p></div>
+    <div class="take"><h3>Network first for pages</h3><p>Fresh words when there's signal, the saved copy when there isn't.</p></div>
+    <div class="take"><h3>Bump the version</h3><p>Change any file, change <code>VERSION</code>, or visitors keep the old copy.</p></div>
+  </div>
+  <p style="margin-top:26px">Made your site work offline? <a href="contact.html">Tell me</a>. Spotted a mistake? Tell me that too.</p>
+</section>
+
+</main>
+
+<section class="read-next">
+  <div class="wrap col">
+    <p class="tag">Start of the Build your own path</p>
+    <a class="card" href="website.html">
+      <h3>Would you like a website like this?</h3>
+      <p>From a new GitHub account to your own free site, in your browser, with a check after every step.</p>
+      <span class="go">Read &rarr;</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">← Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="contact.html">Get in touch</a>
+    <a href="offline.html">Use offline</a>
+    <span class="tag">© 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
+<script src="sw-register.js" defer></script>
+</body>
+</html>

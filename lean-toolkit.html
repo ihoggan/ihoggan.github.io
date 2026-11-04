@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The lean toolkit: build your kit around the jobs, not the tools — Iain Hoggan</title>
+<meta name="description" content="Years of tools in a heavy box, and still the wrong one for the job. How to rebuild a toolkit around the repairs you actually face: look first, make it safe, log the fault, and keep three small kits instead of one big one.">
+<link rel="canonical" href="https://ihoggan.github.io/lean-toolkit.html">
+<meta property="og:site_name" content="Iain Hoggan">
+<meta property="og:locale" content="en_GB">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ihoggan.github.io/lean-toolkit.html">
+<meta property="og:title" content="The lean toolkit: build your kit around the jobs">
+<meta property="og:description" content="Look first, make it safe, log the fault. Three small kits instead of one heavy box, and a picker that shows what each common household job really needs.">
+<meta property="og:image" content="https://ihoggan.github.io/images/og-lean-toolkit.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The lean toolkit. Guide, Ready not scared, home repairs. Look first, make it safe, three small kits.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "The lean toolkit: build your kit around the jobs", "description": "Look first, make it safe, log the fault. Three small kits instead of one heavy box, and a picker that shows what each common household job really needs.", "image": "https://ihoggan.github.io/images/og-lean-toolkit.png", "datePublished": "2026-11-04", "dateModified": "2026-11-04", "inLanguage": "en-GB", "author": {"@type": "Person", "name": "Iain Hoggan", "url": "https://ihoggan.github.io/about.html"}, "mainEntityOfPage": "https://ihoggan.github.io/lean-toolkit.html"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+main.wrap{padding-top:52px;padding-bottom:40px}
+.standfirst{font-size:1.12rem;color:var(--ink-2);max-width:34em}
+.standfirst strong{color:var(--ink);font-weight:600}
+main section p{max-width:38em}
+main h2{max-width:18em;margin-bottom:14px}
+main h3{margin:22px 0 8px}
+main ul,main ol{max-width:36em;margin:0 0 16px 1.2em}
+main li{margin-bottom:6px}
+pre{
+  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen));
+  border:1px solid #060B0E;border-radius:3px;box-shadow:inset 0 3px 12px rgba(0,0,0,.55);
+  color:#CFE3DA;font-family:var(--mono);font-size:13px;line-height:1.55;
+  padding:14px 16px;margin:18px 0 22px;max-width:40em;overflow-x:auto;white-space:pre;
+}
+pre .me{color:#E8C27A}
+pre .dim{color:#7F968D}
+pre .bad{color:#E0603F}
+pre .ok{color:var(--trace)}
+figure.shot{max-width:44em;margin:22px 0}
+figure.shot img{display:block;width:100%;height:auto;background:#fff;border:1px solid var(--bezel);border-radius:4px;
+  box-shadow:0 1px 2px rgba(23,32,43,.14)}
+figure.shot figcaption{margin-top:8px;font:12px/1.55 var(--mono);color:var(--ink-2);max-width:44em}
+.rules{max-width:38em;margin:14px 0 18px;border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))}
+.rules div{display:grid;grid-template-columns:11em 1fr;gap:12px;padding:10px 14px;border-bottom:1px solid var(--rule);font-size:.97rem}
+.rules div:last-child{border-bottom:0}
+.rules b{font-family:var(--mono);font-size:.84em;letter-spacing:.04em}
+@media(max-width:560px){.rules div{grid-template-columns:1fr;gap:2px}}
+.slips{display:grid;gap:12px;max-width:40em;margin:18px 0 22px}
+.slip{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.slip>div{padding:12px 14px;font-size:.95rem;line-height:1.5}
+.slip>div+div{border-left:1px solid var(--rule)}
+.slip .tag{display:block;margin-bottom:4px}
+.slip .dec .tag{color:#2F8A63}
+@media(max-width:560px){.slip{grid-template-columns:1fr}.slip>div+div{border-left:0;border-top:1px solid var(--rule)}}
+.takeaways{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:26px}
+.take{background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);border-radius:4px;padding:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.take h3{font-size:1rem;margin:0 0 8px}
+.take p{font-size:.94rem;color:var(--ink-2);margin:0}
+.predict{border-left:3px solid var(--lamp);padding:2px 0 2px 18px;margin:18px 0;max-width:38em}
+.predict .tag{display:block;margin-bottom:4px;color:var(--lamp)}
+.predict p{margin:0}
+.warn{border-left:3px solid var(--alarm);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.warn .tag{display:block;margin-bottom:4px;color:var(--alarm)}
+.warn p{margin:0}
+.warn p+p{margin-top:8px}
+details.answer{max-width:38em;margin:10px 0 18px}
+details.answer summary{cursor:pointer;font:600 11px/1.4 var(--mono);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-2)}
+details.answer p{margin-top:8px}
+.tablewrap{max-width:44em;overflow-x:auto;margin:16px 0 22px}
+table.disc{border-collapse:collapse;width:100%;font-size:.93rem;background:var(--engrave)}
+.disc th,.disc td{border:1px solid var(--bezel);padding:7px 9px;text-align:left;vertical-align:top}
+.disc th{background:var(--panel-2);font-family:var(--mono);font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.disc td code{white-space:nowrap}
+.disc td.n{text-align:right;font-family:var(--mono);font-size:.88em;white-space:nowrap}
+.calc{max-width:40em;margin:20px 0 22px;padding:16px 18px}
+.calc .cap{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#6E8A80;margin-bottom:12px}
+.calc .ins{display:grid;grid-template-columns:repeat(auto-fit,minmax(10em,1fr));gap:12px}
+.calc label{font:11px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#93A79E;display:grid;gap:5px}
+.calc input{font:500 1rem var(--mono);color:var(--trace);background:#0B1216;border:1px solid #2B3B44;border-radius:3px;padding:7px 9px;width:100%}
+.calc input:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.calc dl{display:grid;grid-template-columns:1fr auto;gap:6px 18px;margin:16px 0 0;padding-top:12px;border-top:1px solid rgba(87,199,154,.18)}
+.calc dt{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#93A79E}
+.calc dd{font-family:var(--mono);font-size:13px;color:var(--trace);text-align:right;font-variant-numeric:tabular-nums;margin:0}
+.calc .note{margin-top:12px;font:11px/1.55 var(--mono);color:#8FA69C}
+.sheet{max-width:40em;margin:16px 0 22px;border:1px dashed var(--bezel);border-radius:4px;padding:14px 16px;
+  background:repeating-linear-gradient(0deg,transparent 0 27px,rgba(23,32,43,.06) 27px 28px),var(--engrave)}
+.sheet p{font:13px/28px var(--mono);margin:0;max-width:none}
+.sheet .blank{display:inline-block;min-width:7em;border-bottom:1px solid var(--ink);margin:0 4px}
+.links{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+.read-next{border-top:1px solid var(--rule);padding:44px 0 8px}
+.read-next .card{margin-top:14px;max-width:640px}
+
+.check{display:flex;gap:14px;align-items:flex-start;max-width:38em;margin:20px 0 6px;
+  border:1px solid var(--bezel);border-radius:4px;padding:14px 16px;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.check .tag{display:block;margin-bottom:4px;color:#2F8A63}
+.check p{margin:0;font-size:.97rem}
+.ui{font-family:var(--mono);font-size:.84em;white-space:nowrap;background:linear-gradient(180deg,#fff,var(--engrave));
+  border:1px solid var(--bezel);border-bottom-width:2px;border-radius:3px;padding:1px 6px;color:var(--ink)}
+.ticks{display:grid;gap:9px}
+.ticks label{font:13.5px/1.5 var(--mono);text-transform:none;letter-spacing:normal;color:#CFE3DA;display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.ticks input{accent-color:var(--trace);margin-top:3px;flex:none;width:16px;height:16px}
+.verdict{margin-top:14px;padding-top:12px;border-top:1px solid rgba(87,199,154,.18);font:600 13px/1.55 var(--mono);color:#93A79E}
+.verdict.yes{color:#E7B863}
+.verdict.no{color:var(--trace)}
+/* Data path: live code cells (pylab.js) */
+.cell{max-width:44em;margin:18px 0 22px;border:1px solid #060B0E;border-radius:3px;overflow:hidden;
+  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen));box-shadow:inset 0 3px 12px rgba(0,0,0,.55)}
+.cell textarea{display:block;width:100%;min-height:3.2em;resize:vertical;border:0;outline:none;background:transparent;
+  color:#CFE3DA;font:13px/1.55 var(--mono);padding:14px 16px;white-space:pre;overflow-x:auto;tab-size:4}
+.cell textarea:focus-visible{box-shadow:inset 0 0 0 2px var(--lamp)}
+.cell-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:8px 12px;border-top:1px solid rgba(87,199,154,.18)}
+.cell-bar button{font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:8px 12px;border-radius:3px;cursor:pointer;
+  border:1px solid #2B3B44;background:#16232B;color:#A9BFB5}
+.cell-bar button.run{background:linear-gradient(180deg,#6FD6AA,var(--trace));border-color:#2F8A63;color:#0B2A1E}
+.cell-bar button:disabled{opacity:.55;cursor:progress}
+.cell-bar button:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.cell-bar .status{font:11px/1.4 var(--mono);color:#8FA69C}
+.cell pre.out{margin:0;max-width:none;border:0;border-top:1px solid rgba(87,199,154,.18);border-radius:0;box-shadow:none;
+  background:#0B1216;color:#E6F0EC;white-space:pre-wrap;word-break:break-word}
+.cell pre.out.bad{color:#F0896E}
+.cell .figs img{display:block;max-width:calc(100% - 24px);height:auto;margin:0 12px 12px;background:#fff;border-radius:2px}
+.pathlist{list-style:none;margin:6px 0 18px!important;padding:0;counter-reset:p;max-width:38em}
+.pathlist li{counter-increment:p;position:relative;padding:8px 0 8px 40px;border-bottom:1px solid var(--rule);margin:0!important}
+.pathlist li::before{content:counter(p);position:absolute;left:0;top:7px;width:26px;height:26px;display:grid;place-items:center;
+  font:600 12px var(--mono);border:1px solid var(--bezel);border-radius:3px;background:var(--engrave)}
+.pathlist li.here::before{background:var(--ink);color:var(--engrave);border-color:var(--ink)}
+.pathlist li.here em{color:var(--lamp);font-style:normal;font:600 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-left:6px}
+.card.soon{opacity:.75}
+.calc select{font:500 1rem var(--mono);color:var(--trace);background:#0B1216;border:1px solid #2B3B44;border-radius:3px;padding:7px 9px;width:100%}
+.calc select:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.verdict p{margin:0 0 8px;max-width:none;font:13px/1.55 var(--mono)}
+.verdict p:last-child{margin-bottom:0}
+.verdict p.ok{color:var(--trace)}
+.verdict p.amber{color:#E7B863}
+.verdict p b{color:#E6F0EC}
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0F181E">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+</head>
+<body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html" aria-label="Home">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap col">
+    <p class="tag">Guide · Ready, not scared, step 2 · Home repairs · an afternoon</p>
+    <h1>The lean toolkit</h1>
+    <p class="standfirst">For years I humped a heavy box of tools from job to job, and still reached into it for the wrong thing. The box wasn't the problem. I'd built it around tools, not around the jobs that actually happen in a house. This is how I'm rebuilding it: <strong>look first, make it safe, log the fault, and keep three small kits instead of one big one.</strong></p>
+    <div class="spec">
+      <div><b>Look</b><span>before you reach</span></div>
+      <div><b>Safe</b><span>water, power, gas</span></div>
+      <div><b>Log</b><span>open, then closed</span></div>
+      <div><b>3</b><span>small kits</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap col">
+
+<section>
+  <p class="tag eyebrow">Part 1</p>
+  <h2>The best tool is a look</h2>
+  <p>Most bad repairs start with grabbing a tool. A dripping tap gets a spanner before anyone has worked out whether it's the washer, the valve or the joint below it. So my first rule costs nothing: <strong>stop and look.</strong></p>
+  <ol>
+    <li><strong>What exactly is wrong?</strong> Say it in one sentence. "Water drips from the spout when the tap is off" is a fault. "The tap's broken" isn't.</li>
+    <li><strong>Is anything unsafe right now?</strong> Water near electrics, a smell of gas, a hot or burning smell from a socket. If so, Part 2 comes before anything else.</li>
+    <li><strong>Is it mine to fix?</strong> Some jobs are DIY, some are for a qualified person by law or by common sense. Knowing the difference is a skill too.</li>
+  </ol>
+  <div class="lesson">
+    <span class="tag">Lesson</span>
+    <p>Five minutes of looking saves an hour of undoing. The diagnosis is the job; the tool is just the last step.</p>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 2</p>
+  <h2>Know your three off-switches</h2>
+  <p>Before you need them, find these, and show everyone in the house:</p>
+  <div class="rules">
+    <div><b>Water</b><span>The <strong>stopcock</strong>, usually under the kitchen sink or where the pipe comes in. Turn it clockwise to close. Try it once now: old ones seize.</span></div>
+    <div><b>Electricity</b><span>The <strong>consumer unit</strong> (fuse box). The main switch turns everything off; each trip switch covers one circuit. Label them if they aren't.</span></div>
+    <div><b>Gas</b><span>The lever by the <strong>gas meter</strong>: turn it so it's across the pipe to shut off. If you smell gas, don't touch switches, open windows, get out, and call the free gas emergency line, <strong>0800&nbsp;111&nbsp;999</strong>.</span></div>
+  </div>
+  <div class="warn">
+    <span class="tag">Where DIY stops</span>
+    <p>Resetting a trip switch or changing a plug fuse is fine. New circuits, new sockets in kitchens and bathrooms, and work in the consumer unit are for a registered electrician. Anything on a gas appliance or pipe is <strong>only</strong> for a Gas Safe registered engineer. No exceptions, no "just this once".</p>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 3</p>
+  <h2>Log the fault before you fix it</h2>
+  <p>I borrowed this from work on computers: write the fault down as <strong>open</strong> before you start, and mark it <strong>closed</strong> when it's fixed. It sounds fussy. It isn't.</p>
+<pre>date        what                              status   notes
+2026-11-02  kitchen tap drips when off        OPEN     washer? check model first
+2026-11-03  kitchen tap drips when off        CLOSED   new washer, 1/2" — spare in pouch</pre>
+  <ul>
+    <li>You stop half-fixing things and forgetting.</li>
+    <li>The notes tell you what worked, and what part it took, next time.</li>
+    <li>Patterns show up: the same circuit tripping every week isn't bad luck. It's a fault to report.</li>
+  </ul>
+  <p>A notebook in the kit is enough. Mine will end up in a small database at home, but paper never runs out of battery.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 4</p>
+  <h2>Three kits, not one heavy box</h2>
+  <div class="rules">
+    <div><b>1. Grab pouch</b><span>Small enough to carry to any room in one hand. The first response to nearly every household fault: torch, a screwdriver with interchangeable bits, small adjustable spanner, pliers, utility knife, tape (electrical and duct), gloves, a pencil, the fault log.</span></div>
+    <div><b>2. Job kit</b><span>Fetched once you know what the job is. A small hammer, drill and bits, a spirit level, tape measure, sealant, a few fixings, a bucket and old towels.</span></div>
+    <div><b>3. The store</b><span>Everything else, in the garage or a cupboard: the big tools, spares, and the things you use twice a year. Sorted so you can find them, not carried around.</span></div>
+  </div>
+  <p>The test of the grab pouch: can you deal with the first five minutes of any common fault without going back for something? If you keep fetching the same thing, it moves into the pouch. If something in the pouch hasn't been used in a year, it moves out.</p>
+  <p>Weight matters indoors too. My old claw hammer has lasted 35 years and still works perfectly, but it's far too heavy for hanging a picture in a plastered wall. A small ball-pein hammer does every indoor job I have, and the big one stays in the store for the jobs that need it.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 5</p>
+  <h2>What does this job need?</h2>
+  <p>Pick a common job. The picker shows the look-first step, what to carry, and when to stop and call someone.</p>
+  <div class="calc well" id="picker">
+    <div class="cap">Job to tool picker</div>
+    <div class="ins">
+      <label>The job<select id="job"></select></label>
+    </div>
+    <div class="verdict" id="job-out" aria-live="polite"></div>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 6</p>
+  <h2>An afternoon to rebuild yours</h2>
+  <ol>
+    <li>Empty your toolbox onto a sheet. All of it.</li>
+    <li>Write down the last ten jobs you actually did around the house.</li>
+    <li>For each job, pick out the tools it really took. That pile is your grab pouch and job kit.</li>
+    <li>Everything else goes to the store, sorted. Duplicates and broken tools go to a charity shop or the tip.</li>
+    <li>Find your three off-switches, try the stopcock, and label the consumer unit.</li>
+    <li>Start a fault log, and write the first entry today.</li>
+  </ol>
+  <div class="check"><div><span class="tag">Check</span><p>You can carry your grab pouch in one hand, and you know where all three off-switches are.</p></div></div>
+</section>
+
+<hr class="div">
+
+<section style="padding-top:44px">
+  <p class="tag eyebrow">What I'd want you to take away</p>
+  <h2>Lean is a habit, not a shopping list</h2>
+  <div class="takeaways">
+    <div class="take"><h3>Look first</h3><p>Say the fault in one sentence before you pick up a tool.</p></div>
+    <div class="take"><h3>Make it safe</h3><p>Know your stopcock, your consumer unit and your gas lever, and where DIY stops.</p></div>
+    <div class="take"><h3>Log it</h3><p>Open when you start, closed when it's done, and a note for next time.</p></div>
+  </div>
+  <p style="margin-top:26px">Got a job the picker should include? <a href="contact.html">Tell me</a>.</p>
+</section>
+
+</main>
+
+<section class="read-next">
+  <div class="wrap col">
+    <p class="tag">Next on the Ready path</p>
+    <a class="card" href="battery-safety.html">
+      <h3>Living safely with lithium batteries</h3>
+      <p>The power banks and torches a plan depends on: charge, store, check and dispose of them safely.</p>
+      <span class="go">Read &rarr;</span>
+    </a>
+  </div>
+</section>
+
+<script>
+(function(){
+  var JOBS = {
+    'Dripping tap': ['Turn the tap off fully. Does it drip from the spout (washer or cartridge) or from the body or joint below (seal or fitting)? Note the tap type before buying parts.','Isolating valve under the sink or the stopcock off, then grab pouch: screwdriver, adjustable spanner, towel. A replacement washer or cartridge to match.','Water won’t turn off, or the pipe itself is leaking: call a plumber.'],
+    'Power off in one room': ['Look at the consumer unit: one trip switch down? Before resetting, unplug everything on that circuit.','Torch. Reset the switch. Plug things back in one at a time; the one that trips it is the culprit.','It trips straight away with nothing plugged in, there’s a burning smell, or a socket is hot or marked: leave it off and call an electrician.'],
+    'Blocked sink': ['Is it one sink, or several drains? Several at once suggests a blockage further down, outside your home.','Plunger, rubber gloves, bucket, towels. Undo the trap under the sink to clear it by hand.','Water backing up in several places, or the drain outside overflowing: call a drainage company or your water company.'],
+    'Loose cupboard door': ['Open it and watch the hinge: are the screws loose, or pulled out of the wood?','Grab pouch screwdriver. For stripped holes: wood glue and matchsticks or a slightly larger screw.','Cracked carcass or a heavy wall cupboard pulling away from the wall: stop using it and get it re-fixed properly.'],
+    'Hanging a picture': ['Check the wall for pipes and cables first: they often run straight up and down from sockets and switches. A detector helps.','Small hammer, picture hooks, pencil, spirit level. For heavy frames: drill, wall plugs, screws.','Anything heavy above a bed or a doorway: fix it to the studs or with proper heavy-duty fixings, or get help.'],
+    'Cracked or broken window': ['Keep everyone away from the glass. Is it cracked but intact, or broken through?','Gloves, eye protection, strong tape across a crack, or board and duct tape over a hole to keep weather out.','Any broken glass in a frame, or a large pane: a glazier fits the replacement. Don’t remove large shards yourself.'],
+    'Radiator cold at the top': ['Heating on, feel the radiator: cold at the top and warm at the bottom means trapped air.','Radiator key, cloth, small dish. Heating off, open the bleed valve a quarter turn, close it when water appears.','Cold at the bottom instead, the boiler pressure keeps dropping, or any boiler fault: call a Gas Safe engineer.']
+  };
+  var sel=document.getElementById('job'), out=document.getElementById('job-out');
+  if(!sel) return;
+  Object.keys(JOBS).forEach(function(k){ var o=document.createElement('option'); o.textContent=k; sel.appendChild(o); });
+  function render(){
+    var j=JOBS[sel.value]; out.innerHTML='';
+    [['Look first',j[0],'ok'],['Make safe, then carry',j[1],'ok'],['Stop and call someone if',j[2],'amber']].forEach(function(r){
+      var p=document.createElement('p'); p.className=r[2];
+      var b=document.createElement('b'); b.textContent=r[0]+': '; p.appendChild(b); p.appendChild(document.createTextNode(r[1])); out.appendChild(p);
+    });
+  }
+  sel.addEventListener('change',render); render();
+})();
+</script>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">← Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="contact.html">Get in touch</a>
+    <a href="offline.html">Use offline</a>
+    <span class="tag">© 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
+<script src="sw-register.js" defer></script>
+</body>
+</html>

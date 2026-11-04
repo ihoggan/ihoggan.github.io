@@ -6,6 +6,26 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://ihoggan.github.io/power-cut.html</loc>
+    <lastmod>2026-11-04</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ihoggan.github.io/lean-toolkit.html</loc>
+    <lastmod>2026-11-04</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ihoggan.github.io/battery-safety.html</loc>
+    <lastmod>2026-11-04</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ihoggan.github.io/offline-site.html</loc>
+    <lastmod>2026-11-04</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://ihoggan.github.io/data-numpy.html</loc>
     <lastmod>2026-11-04</lastmod>
     <priority>0.8</priority>
