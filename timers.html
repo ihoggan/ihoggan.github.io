@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A reminder that never forgets: systemd timers for beginners — Iain Hoggan</title>
+<meta name="description" content="Make Ubuntu check every Tuesday evening whether an update is waiting for an app you care about, and tell you, without ever installing anything itself. A first systemd timer, built and tested step by step.">
+<link rel="canonical" href="https://ihoggan.github.io/timers.html">
+<meta property="og:site_name" content="Iain Hoggan">
+<meta property="og:locale" content="en_GB">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ihoggan.github.io/timers.html">
+<meta property="og:title" content="A reminder that never forgets: systemd timers for beginners">
+<meta property="og:description" content="Make Ubuntu check every week whether an update is waiting, and tell you, without ever installing anything itself. Your first systemd timer, step by step.">
+<meta property="og:image" content="https://ihoggan.github.io/images/og-timers.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A reminder that never forgets. Tutorial, Linux, Ubuntu. One script, two small files, every Tuesday at 21:00, and it never installs anything.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "A reminder that never forgets: systemd timers for beginners", "description": "Make Ubuntu check every week whether an update is waiting, and tell you, without ever installing anything itself. Your first systemd timer, step by step.", "image": "https://ihoggan.github.io/images/og-timers.png", "datePublished": "2026-11-04", "dateModified": "2026-11-04", "inLanguage": "en-GB", "author": {"@type": "Person", "name": "Iain Hoggan", "url": "https://ihoggan.github.io/about.html"}, "mainEntityOfPage": "https://ihoggan.github.io/timers.html"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+main.wrap{padding-top:52px;padding-bottom:40px}
+.standfirst{font-size:1.12rem;color:var(--ink-2);max-width:34em}
+.standfirst strong{color:var(--ink);font-weight:600}
+main section p{max-width:38em}
+main h2{max-width:18em;margin-bottom:14px}
+main h3{margin:22px 0 8px}
+main ul,main ol{max-width:36em;margin:0 0 16px 1.2em}
+main li{margin-bottom:6px}
+pre{
+  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen));
+  border:1px solid #060B0E;border-radius:3px;box-shadow:inset 0 3px 12px rgba(0,0,0,.55);
+  color:#CFE3DA;font-family:var(--mono);font-size:13px;line-height:1.55;
+  padding:14px 16px;margin:18px 0 22px;max-width:40em;overflow-x:auto;white-space:pre;
+}
+pre .me{color:#E8C27A}
+pre .dim{color:#7F968D}
+pre .bad{color:#E0603F}
+pre .ok{color:var(--trace)}
+figure.shot{max-width:44em;margin:22px 0}
+figure.shot img{display:block;width:100%;height:auto;background:#fff;border:1px solid var(--bezel);border-radius:4px;
+  box-shadow:0 1px 2px rgba(23,32,43,.14)}
+figure.shot figcaption{margin-top:8px;font:12px/1.55 var(--mono);color:var(--ink-2);max-width:44em}
+.rules{max-width:38em;margin:14px 0 18px;border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))}
+.rules div{display:grid;grid-template-columns:11em 1fr;gap:12px;padding:10px 14px;border-bottom:1px solid var(--rule);font-size:.97rem}
+.rules div:last-child{border-bottom:0}
+.rules b{font-family:var(--mono);font-size:.84em;letter-spacing:.04em}
+@media(max-width:560px){.rules div{grid-template-columns:1fr;gap:2px}}
+.slips{display:grid;gap:12px;max-width:40em;margin:18px 0 22px}
+.slip{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.slip>div{padding:12px 14px;font-size:.95rem;line-height:1.5}
+.slip>div+div{border-left:1px solid var(--rule)}
+.slip .tag{display:block;margin-bottom:4px}
+.slip .dec .tag{color:#2F8A63}
+@media(max-width:560px){.slip{grid-template-columns:1fr}.slip>div+div{border-left:0;border-top:1px solid var(--rule)}}
+.takeaways{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:26px}
+.take{background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);border-radius:4px;padding:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.take h3{font-size:1rem;margin:0 0 8px}
+.take p{font-size:.94rem;color:var(--ink-2);margin:0}
+.predict{border-left:3px solid var(--lamp);padding:2px 0 2px 18px;margin:18px 0;max-width:38em}
+.predict .tag{display:block;margin-bottom:4px;color:var(--lamp)}
+.predict p{margin:0}
+.warn{border-left:3px solid var(--alarm);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.warn .tag{display:block;margin-bottom:4px;color:var(--alarm)}
+.warn p{margin:0}
+.warn p+p{margin-top:8px}
+details.answer{max-width:38em;margin:10px 0 18px}
+details.answer summary{cursor:pointer;font:600 11px/1.4 var(--mono);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-2)}
+details.answer p{margin-top:8px}
+.tablewrap{max-width:44em;overflow-x:auto;margin:16px 0 22px}
+table.disc{border-collapse:collapse;width:100%;font-size:.93rem;background:var(--engrave)}
+.disc th,.disc td{border:1px solid var(--bezel);padding:7px 9px;text-align:left;vertical-align:top}
+.disc th{background:var(--panel-2);font-family:var(--mono);font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.disc td code{white-space:nowrap}
+.disc td.n{text-align:right;font-family:var(--mono);font-size:.88em;white-space:nowrap}
+.calc{max-width:40em;margin:20px 0 22px;padding:16px 18px}
+.calc .cap{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#6E8A80;margin-bottom:12px}
+.calc .ins{display:grid;grid-template-columns:repeat(auto-fit,minmax(10em,1fr));gap:12px}
+.calc label{font:11px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#93A79E;display:grid;gap:5px}
+.calc input{font:500 1rem var(--mono);color:var(--trace);background:#0B1216;border:1px solid #2B3B44;border-radius:3px;padding:7px 9px;width:100%}
+.calc input:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.calc dl{display:grid;grid-template-columns:1fr auto;gap:6px 18px;margin:16px 0 0;padding-top:12px;border-top:1px solid rgba(87,199,154,.18)}
+.calc dt{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#93A79E}
+.calc dd{font-family:var(--mono);font-size:13px;color:var(--trace);text-align:right;font-variant-numeric:tabular-nums;margin:0}
+.calc .note{margin-top:12px;font:11px/1.55 var(--mono);color:#8FA69C}
+.sheet{max-width:40em;margin:16px 0 22px;border:1px dashed var(--bezel);border-radius:4px;padding:14px 16px;
+  background:repeating-linear-gradient(0deg,transparent 0 27px,rgba(23,32,43,.06) 27px 28px),var(--engrave)}
+.sheet p{font:13px/28px var(--mono);margin:0;max-width:none}
+.sheet .blank{display:inline-block;min-width:7em;border-bottom:1px solid var(--ink);margin:0 4px}
+.links{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+.read-next{border-top:1px solid var(--rule);padding:44px 0 8px}
+.read-next .card{margin-top:14px;max-width:640px}
+
+.check{display:flex;gap:14px;align-items:flex-start;max-width:38em;margin:20px 0 6px;
+  border:1px solid var(--bezel);border-radius:4px;padding:14px 16px;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.check .tag{display:block;margin-bottom:4px;color:#2F8A63}
+.check p{margin:0;font-size:.97rem}
+.ui{font-family:var(--mono);font-size:.84em;white-space:nowrap;background:linear-gradient(180deg,#fff,var(--engrave));
+  border:1px solid var(--bezel);border-bottom-width:2px;border-radius:3px;padding:1px 6px;color:var(--ink)}
+.ticks{display:grid;gap:9px}
+.ticks label{font:13.5px/1.5 var(--mono);text-transform:none;letter-spacing:normal;color:#CFE3DA;display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.ticks input{accent-color:var(--trace);margin-top:3px;flex:none;width:16px;height:16px}
+.verdict{margin-top:14px;padding-top:12px;border-top:1px solid rgba(87,199,154,.18);font:600 13px/1.55 var(--mono);color:#93A79E}
+.verdict.yes{color:#E7B863}
+.verdict.no{color:var(--trace)}
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0F181E">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+</head>
+<body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html" aria-label="Home">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap col">
+    <p class="tag">Tutorial · Linux path, step 3 · Ubuntu · ~40 min</p>
+    <h1>A reminder that never forgets</h1>
+    <p class="standfirst">One app I use every day doesn't update itself on Linux, and I kept forgetting to check. So now my desktop checks for me, <strong>every Tuesday at nine in the evening</strong>, and pops up a note if a new version is waiting. It never installs anything itself. That stays my decision. This page builds the same thing for an app of yours: your first <strong>systemd timer</strong>, one small piece at a time, with a test at every step.</p>
+    <div class="spec">
+      <div><b>1</b><span>small script</span></div>
+      <div><b>2</b><span>tiny files</span></div>
+      <div><b>Tue 21:00</b><span>every week</span></div>
+      <div><b>0</b><span>things installed</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap col">
+
+<section>
+  <p class="tag eyebrow">Before you start</p>
+  <h2>Why it only tells you</h2>
+  <p>It would be easy to make the computer install updates by itself. I deliberately don't. An install is a change, and every change on my machines gets read-only checks and a GO first (<a href="preflight.html">Look before you leap</a> explains why). A job that installs things on its own at 9pm skips all that. So this timer does the looking, and leaves the doing to me.</p>
+  <p>You'll need:</p>
+  <ul>
+    <li>Ubuntu with a desktop, and a terminal. If it's new, start with <a href="terminal.html">Meet the terminal</a>.</li>
+    <li>The apt package name of an app you care about. <a href="real-thing.html">Is it the real thing?</a> shows how to find it. Below I use <code>git</code>; swap in yours. (Snaps update themselves, so this is for apt packages.)</li>
+  </ul>
+  <p>Nothing here needs <code>sudo</code>. It all runs as you, from files in your own home folder.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Step 1</p>
+  <h2>Where does "a new version is waiting" come from?</h2>
+  <p>Ubuntu already refreshes its list of available versions once a day, with a timer of its own. Have a look at it:</p>
+<pre>systemctl list-timers apt-daily.timer</pre>
+  <p>Then ask apt about your app:</p>
+<pre><span class="dim">$</span> apt-cache policy git
+git:
+  Installed: 1:2.43.0-1ubuntu7.4
+  Candidate: 1:2.43.0-1ubuntu7.4</pre>
+  <p><code>Installed</code> is what you have. <code>Candidate</code> is the newest version apt knows about. When they're different, an update is waiting. That one comparison is the whole job. Everything else on this page is just doing it on a schedule.</p>
+  <div class="check"><div><span class="tag">Check</span><p>You can see your app's Installed and Candidate versions, and you know that Ubuntu's own timer keeps the Candidate fresh.</p></div></div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Step 2</p>
+  <h2>A script that checks once</h2>
+  <p>Always make it work by hand before you put it on a timer. Create the folder and the file:</p>
+<pre>mkdir -p ~/.local/bin
+nano ~/.local/bin/update-check.sh</pre>
+  <p>Paste this in, then <span class="ui">Ctrl</span> + <span class="ui">O</span> to save and <span class="ui">Ctrl</span> + <span class="ui">X</span> to leave:</p>
+<pre>#!/usr/bin/env bash
+# update-check.sh: say whether a newer version of one package is waiting.
+# It never installs anything. Usage: update-check.sh &lt;package&gt;
+pkg="${1:?usage: update-check.sh &lt;package&gt;}"
+log="$HOME/.local/state/update-check.log"
+mkdir -p "$(dirname "$log")"
+
+installed=$(dpkg-query -W -f='${Version}' "$pkg" 2&gt;/dev/null)
+if [ -z "$installed" ]; then
+  echo "$(date '+%F %T') $pkg is not installed" &gt;&gt; "$log"
+  exit 0
+fi
+candidate=$(apt-cache policy "$pkg" | awk '/Candidate:/ {print $2}')
+
+if [ "$candidate" != "(none)" ] &amp;&amp; dpkg --compare-versions "$candidate" gt "$installed"; then
+  msg="$pkg $candidate is waiting (you have $installed)"
+  notify-send "Update waiting" "$msg" 2&gt;/dev/null || true
+else
+  msg="$pkg is up to date ($installed)"
+fi
+echo "$(date '+%F %T') $msg" &gt;&gt; "$log"
+echo "$msg"</pre>
+  <p>Make it runnable, then run it:</p>
+<pre><span class="dim">$</span> chmod +x ~/.local/bin/update-check.sh
+<span class="dim">$</span> ~/.local/bin/update-check.sh git
+<span class="ok">git is up to date (1:2.43.0-1ubuntu7.4)</span></pre>
+  <details class="answer">
+    <summary>What each part does</summary>
+    <p><code>dpkg-query</code> reads the installed version, and <code>apt-cache policy</code> the candidate. <code>dpkg --compare-versions</code> compares them the way apt does: version numbers aren't ordinary numbers, so <code>2.10</code> is newer than <code>2.9</code>. <code>notify-send</code> pops up the desktop note. Every run also adds one line to a log file, so there's a record even if you weren't at the screen.</p>
+  </details>
+  <div class="predict">
+    <span class="tag">Experiment</span>
+    <p>Run it with a package name you don't have, like <code>update-check.sh no-such-thing</code>. What does it print, and what lands in the log? Look with <code>cat ~/.local/state/update-check.log</code>.</p>
+  </div>
+  <div class="check"><div><span class="tag">Check</span><p>The script prints a sensible line for your app, and the log file has one line per run.</p></div></div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Step 3</p>
+  <h2>Two small files: what to run, and when</h2>
+  <p>systemd, the part of Ubuntu that starts and runs everything, splits a scheduled job into two files. A <strong>service</strong> says <em>what</em> to run. A <strong>timer</strong> says <em>when</em>. Your own ones live in your home folder:</p>
+<pre>mkdir -p ~/.config/systemd/user
+nano ~/.config/systemd/user/update-check.service</pre>
+<pre>[Unit]
+Description=Check whether an update is waiting (never installs)
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/update-check.sh git</pre>
+  <p><code>%h</code> means your home folder. <code>Type=oneshot</code> means "run it, let it finish, done". Now the timer, with the same name but ending <code>.timer</code>:</p>
+<pre>nano ~/.config/systemd/user/update-check.timer</pre>
+<pre>[Unit]
+Description=Weekly update check, Tuesdays at 21:00
+
+[Timer]
+OnCalendar=Tue *-*-* 21:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target</pre>
+  <p><code>OnCalendar</code> is the schedule: day of the week, then year-month-day (<code>*</code> means any), then the time. <code>Persistent=true</code> is the clever bit: if the computer was off at 9pm on Tuesday, it runs the check the next time it starts up, instead of waiting a whole week.</p>
+  <h3>Check the schedule before you trust it</h3>
+  <p>systemd will tell you exactly when a schedule next fires. This is a read-only check, and it's worth doing every time:</p>
+<pre><span class="dim">$</span> systemd-analyze calendar 'Tue *-*-* 21:00:00'
+Normalized form: Tue *-*-* 21:00:00
+    Next elapse: <span class="ok">Tue 2026-11-10 21:00:00 GMT</span>
+       From now: 6 days left</pre>
+  <div class="predict">
+    <span class="tag">Experiment</span>
+    <p>Try a few schedules before you pick one: <code>'Mon..Fri 08:30'</code>, <code>'*-*-01 09:00'</code>, <code>'daily'</code>. Add <code>--iterations=3</code> to see the next three times. What does each one mean?</p>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Step 4</p>
+  <h2>Switch it on</h2>
+<pre>systemctl --user daemon-reload                  <span class="dim"># re-read your unit files</span>
+systemctl --user enable --now update-check.timer
+systemctl --user list-timers update-check.timer</pre>
+<pre>NEXT                        LEFT   LAST PASSED UNIT               ACTIVATES
+Tue 2026-11-10 21:00:00 GMT 6 days -    -      update-check.timer update-check.service</pre>
+  <p><code>--user</code> is important: it means <em>your</em> systemd, running as you, not the system-wide one, so no <code>sudo</code>. <code>enable</code> makes it survive a reboot, and <code>--now</code> starts it straight away. <code>LAST</code> shows a dash until it has run once.</p>
+  <h3>Don't wait a week to find out it works</h3>
+  <p>Run the service by hand, right now, exactly as the timer will:</p>
+<pre>systemctl --user start update-check.service
+tail -n 3 ~/.local/state/update-check.log
+journalctl --user -u update-check.service -n 5 --no-pager</pre>
+  <p><code>journalctl</code> shows what the service printed and whether it finished cleanly. If the script has a typo, this is where you'll see it.</p>
+  <div class="check"><div><span class="tag">Check</span><p><code>list-timers</code> shows your next Tuesday, and a manual start adds a fresh line to the log.</p></div></div>
+  <div class="warn">
+    <span class="tag">When you won't see the pop-up</span>
+    <p>The note only appears if you're logged in to the desktop when it runs. If you're not, the check still happens and the log still gets its line. Read it any time with <code>tail ~/.local/state/update-check.log</code>.</p>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Step 5</p>
+  <h2>When it says an update is waiting</h2>
+  <p>That's your cue, not the computer's. Do it the pre-flight way: look first, then decide.</p>
+<pre>apt-cache policy git                 <span class="dim"># look: which version, from where?</span>
+sudo apt update
+sudo apt install --only-upgrade git  <span class="dim"># upgrade just this app, nothing else</span></pre>
+  <p><code>--only-upgrade</code> means it will upgrade the app if it's installed, but never install it fresh, and it leaves everything else alone.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Step 6</p>
+  <h2>How to undo it all</h2>
+  <p>Write down how to take something out before you put it in. For this:</p>
+<pre>systemctl --user disable --now update-check.timer
+rm ~/.config/systemd/user/update-check.service ~/.config/systemd/user/update-check.timer
+systemctl --user daemon-reload
+rm ~/.local/bin/update-check.sh ~/.local/state/update-check.log</pre>
+  <p>Why not use <code>cron</code>, the older way of scheduling things? You can, but a timer gives you <code>list-timers</code> to see what's coming, <code>journalctl</code> to see what happened, and <code>Persistent=true</code> for the evenings the computer was off. For a beginner, being able to <em>see</em> it working is worth a lot.</p>
+  <div class="links">
+    <a class="btn btn-primary" href="real-thing.html">Is it the real thing?</a>
+    <a class="btn" href="preflight.html">Look before you leap</a>
+  </div>
+</section>
+
+<hr class="div">
+
+<section style="padding-top:44px">
+  <p class="tag eyebrow">That's it</p>
+  <h2>What I'd want you to take away</h2>
+  <div class="takeaways">
+    <div class="take">
+      <h3>By hand first</h3>
+      <p>Make the script work on its own, then the schedule, then switch it on. Three small tests beat one big mystery.</p>
+    </div>
+    <div class="take">
+      <h3>What, then when</h3>
+      <p>A service says what to run. A timer says when. <code>systemd-analyze calendar</code> proves the when before you trust it.</p>
+    </div>
+    <div class="take">
+      <h3>Tell, don't do</h3>
+      <p>Let the machine do the remembering. Keep the decisions, and the changes, for yourself.</p>
+    </div>
+  </div>
+  <p style="margin-top:26px">Built a timer for something else? <a href="contact.html">Tell me</a> what it does. Corrections are genuinely welcome too.</p>
+</section>
+
+</main>
+
+<section class="read-next">
+  <div class="wrap col">
+    <p class="tag">Next on the Linux path</p>
+    <a class="card" href="secure-ubuntu.html">
+      <h3>Securing Ubuntu</h3>
+      <p>Six questions for your own machine, answered in the terminal. Watch a firewall block your phone.</p>
+      <span class="go">Read &rarr;</span>
+    </a>
+  </div>
+</section>
+
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">← Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="contact.html">Get in touch</a>
+    <a href="offline.html">Use offline</a>
+    <span class="tag">© 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
+<script src="sw-register.js" defer></script>
+</body>
+</html>

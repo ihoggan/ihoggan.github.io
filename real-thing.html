@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Is it the real thing? Check where your Linux apps come from — Iain Hoggan</title>
+<meta name="description" content="A program's name tells you nothing about who made it. Six read-only checks on Ubuntu: which copy runs, which package owns it, where apt gets it, who signed it, who published a snap, and how to find duplicates.">
+<link rel="canonical" href="https://ihoggan.github.io/real-thing.html">
+<meta property="og:site_name" content="Iain Hoggan">
+<meta property="og:locale" content="en_GB">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ihoggan.github.io/real-thing.html">
+<meta property="og:title" content="Is it the real thing? Check where your Linux apps come from">
+<meta property="og:description" content="I found two copies of the same app on my desktop: the official one, and a look-alike I don't remember choosing. Six read-only checks to find out what's really on yours.">
+<meta property="og:image" content="https://ihoggan.github.io/images/og-real-thing.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Is it the real thing? Tutorial, security, Ubuntu. Four places apps come from, six checks, nothing installed.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Is it the real thing? Check where your Linux apps come from", "description": "I found two copies of the same app on my desktop: the official one, and a look-alike I don't remember choosing. Six read-only checks to find out what's really on yours.", "image": "https://ihoggan.github.io/images/og-real-thing.png", "datePublished": "2026-11-04", "dateModified": "2026-11-04", "inLanguage": "en-GB", "author": {"@type": "Person", "name": "Iain Hoggan", "url": "https://ihoggan.github.io/about.html"}, "mainEntityOfPage": "https://ihoggan.github.io/real-thing.html"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+main.wrap{padding-top:52px;padding-bottom:40px}
+.standfirst{font-size:1.12rem;color:var(--ink-2);max-width:34em}
+.standfirst strong{color:var(--ink);font-weight:600}
+main section p{max-width:38em}
+main h2{max-width:18em;margin-bottom:14px}
+main h3{margin:22px 0 8px}
+main ul,main ol{max-width:36em;margin:0 0 16px 1.2em}
+main li{margin-bottom:6px}
+pre{
+  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen));
+  border:1px solid #060B0E;border-radius:3px;box-shadow:inset 0 3px 12px rgba(0,0,0,.55);
+  color:#CFE3DA;font-family:var(--mono);font-size:13px;line-height:1.55;
+  padding:14px 16px;margin:18px 0 22px;max-width:40em;overflow-x:auto;white-space:pre;
+}
+pre .me{color:#E8C27A}
+pre .dim{color:#7F968D}
+pre .bad{color:#E0603F}
+pre .ok{color:var(--trace)}
+figure.shot{max-width:44em;margin:22px 0}
+figure.shot img{display:block;width:100%;height:auto;background:#fff;border:1px solid var(--bezel);border-radius:4px;
+  box-shadow:0 1px 2px rgba(23,32,43,.14)}
+figure.shot figcaption{margin-top:8px;font:12px/1.55 var(--mono);color:var(--ink-2);max-width:44em}
+.rules{max-width:38em;margin:14px 0 18px;border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))}
+.rules div{display:grid;grid-template-columns:11em 1fr;gap:12px;padding:10px 14px;border-bottom:1px solid var(--rule);font-size:.97rem}
+.rules div:last-child{border-bottom:0}
+.rules b{font-family:var(--mono);font-size:.84em;letter-spacing:.04em}
+@media(max-width:560px){.rules div{grid-template-columns:1fr;gap:2px}}
+.slips{display:grid;gap:12px;max-width:40em;margin:18px 0 22px}
+.slip{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.slip>div{padding:12px 14px;font-size:.95rem;line-height:1.5}
+.slip>div+div{border-left:1px solid var(--rule)}
+.slip .tag{display:block;margin-bottom:4px}
+.slip .dec .tag{color:#2F8A63}
+@media(max-width:560px){.slip{grid-template-columns:1fr}.slip>div+div{border-left:0;border-top:1px solid var(--rule)}}
+.takeaways{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:26px}
+.take{background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);border-radius:4px;padding:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.take h3{font-size:1rem;margin:0 0 8px}
+.take p{font-size:.94rem;color:var(--ink-2);margin:0}
+.predict{border-left:3px solid var(--lamp);padding:2px 0 2px 18px;margin:18px 0;max-width:38em}
+.predict .tag{display:block;margin-bottom:4px;color:var(--lamp)}
+.predict p{margin:0}
+.warn{border-left:3px solid var(--alarm);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.warn .tag{display:block;margin-bottom:4px;color:var(--alarm)}
+.warn p{margin:0}
+.warn p+p{margin-top:8px}
+details.answer{max-width:38em;margin:10px 0 18px}
+details.answer summary{cursor:pointer;font:600 11px/1.4 var(--mono);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-2)}
+details.answer p{margin-top:8px}
+.tablewrap{max-width:44em;overflow-x:auto;margin:16px 0 22px}
+table.disc{border-collapse:collapse;width:100%;font-size:.93rem;background:var(--engrave)}
+.disc th,.disc td{border:1px solid var(--bezel);padding:7px 9px;text-align:left;vertical-align:top}
+.disc th{background:var(--panel-2);font-family:var(--mono);font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.disc td code{white-space:nowrap}
+.disc td.n{text-align:right;font-family:var(--mono);font-size:.88em;white-space:nowrap}
+.calc{max-width:40em;margin:20px 0 22px;padding:16px 18px}
+.calc .cap{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#6E8A80;margin-bottom:12px}
+.calc .ins{display:grid;grid-template-columns:repeat(auto-fit,minmax(10em,1fr));gap:12px}
+.calc label{font:11px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#93A79E;display:grid;gap:5px}
+.calc input{font:500 1rem var(--mono);color:var(--trace);background:#0B1216;border:1px solid #2B3B44;border-radius:3px;padding:7px 9px;width:100%}
+.calc input:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.calc dl{display:grid;grid-template-columns:1fr auto;gap:6px 18px;margin:16px 0 0;padding-top:12px;border-top:1px solid rgba(87,199,154,.18)}
+.calc dt{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#93A79E}
+.calc dd{font-family:var(--mono);font-size:13px;color:var(--trace);text-align:right;font-variant-numeric:tabular-nums;margin:0}
+.calc .note{margin-top:12px;font:11px/1.55 var(--mono);color:#8FA69C}
+.sheet{max-width:40em;margin:16px 0 22px;border:1px dashed var(--bezel);border-radius:4px;padding:14px 16px;
+  background:repeating-linear-gradient(0deg,transparent 0 27px,rgba(23,32,43,.06) 27px 28px),var(--engrave)}
+.sheet p{font:13px/28px var(--mono);margin:0;max-width:none}
+.sheet .blank{display:inline-block;min-width:7em;border-bottom:1px solid var(--ink);margin:0 4px}
+.links{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+.read-next{border-top:1px solid var(--rule);padding:44px 0 8px}
+.read-next .card{margin-top:14px;max-width:640px}
+
+.check{display:flex;gap:14px;align-items:flex-start;max-width:38em;margin:20px 0 6px;
+  border:1px solid var(--bezel);border-radius:4px;padding:14px 16px;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.check .tag{display:block;margin-bottom:4px;color:#2F8A63}
+.check p{margin:0;font-size:.97rem}
+.ui{font-family:var(--mono);font-size:.84em;white-space:nowrap;background:linear-gradient(180deg,#fff,var(--engrave));
+  border:1px solid var(--bezel);border-bottom-width:2px;border-radius:3px;padding:1px 6px;color:var(--ink)}
+.ticks{display:grid;gap:9px}
+.ticks label{font:13.5px/1.5 var(--mono);text-transform:none;letter-spacing:normal;color:#CFE3DA;display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.ticks input{accent-color:var(--trace);margin-top:3px;flex:none;width:16px;height:16px}
+.verdict{margin-top:14px;padding-top:12px;border-top:1px solid rgba(87,199,154,.18);font:600 13px/1.55 var(--mono);color:#93A79E}
+.verdict.yes{color:#E7B863}
+.verdict.no{color:var(--trace)}
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0F181E">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+</head>
+<body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html" aria-label="Home">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap col">
+    <p class="tag">Tutorial · Security path, step 3 · Ubuntu · ~30 min</p>
+    <h1>Is it the real thing?</h1>
+    <p class="standfirst">While updating my desktop today, I found <strong>two copies of the same app</strong>. One came straight from the company that makes it. The other was a look-alike, packaged by a volunteer I'd never heard of, under the same name. Nothing bad had happened, but I hadn't chosen it on purpose and couldn't remember installing it. This page is the six checks I used to find out, so you can run them on your own machine. Every one of them only reads. Nothing here changes anything.</p>
+    <div class="spec">
+      <div><b>4</b><span>places apps come from</span></div>
+      <div><b>6</b><span>checks</span></div>
+      <div><b>0</b><span>things installed</span></div>
+      <div><b>~30 min</b><span>start to finish</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap col">
+
+<section>
+  <p class="tag eyebrow">Before you start</p>
+  <h2>A name is not a maker</h2>
+  <p>On Ubuntu, programs usually arrive in one of four ways: <strong>apt</strong> (Ubuntu's own package manager), <strong>snap</strong>, <strong>Flatpak</strong>, or a file you downloaded yourself, such as an AppImage. Anyone can publish under almost any name in some of these places. So "it's called <em>Firefox</em>" or "it's called <em>the thing I use at work</em>" tells you nothing about who built it, or who can change it later.</p>
+  <p>That matters, because installing software is handing over trust. When you install with <code>sudo apt</code>, the package's own setup scripts run as root, the all-powerful account. Whoever controls that package controls what runs next time it updates.</p>
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>Think of one app you use every day. Do you know <em>which</em> of those four routes it came by, and who publishes it? Write your guess down. You'll check it in a minute.</p>
+  </div>
+  <p>You'll need a terminal. If it's new to you, <a href="terminal.html">Meet the terminal</a> starts from nothing. In the commands below, swap <code>firefox</code> for whatever app you're checking.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Check 1</p>
+  <h2>Which copy runs when you type its name?</h2>
+<pre>type -a firefox</pre>
+  <p>This lists <em>every</em> program with that name that your shell can find, in the order it looks for them. The first one listed is the one that runs.</p>
+  <p>On one Ubuntu machine, for example:</p>
+<pre><span class="dim">$</span> type -a firefox
+firefox is /snap/bin/firefox
+firefox is /usr/bin/firefox</pre>
+  <ul>
+    <li>Anything under <code>/snap/bin</code> is a snap.</li>
+    <li>Anything under <code>/usr/bin</code> usually came from apt.</li>
+    <li>Anything under your home folder, such as <code>~/.local/bin</code>, was put there by you, or by something you ran.</li>
+  </ul>
+  <div class="warn">
+    <span class="tag">Don't be fooled by this one</span>
+    <p>On modern Ubuntu, <code>/bin</code> is just another name for <code>/usr/bin</code>. If you see the same program listed under both, it's one file, not two. I nearly counted mine twice.</p>
+  </div>
+  <div class="check"><div><span class="tag">Check</span><p>You know which path runs when you type the app's name, and whether more than one copy exists.</p></div></div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Check 2</p>
+  <h2>Which package owns that file?</h2>
+  <p>For anything in <code>/usr/bin</code>, ask apt's database which package put it there:</p>
+<pre>dpkg -S "$(readlink -f "$(command -v firefox)")"</pre>
+  <p>Read it from the inside out: <code>command -v</code> finds the program, <code>readlink -f</code> follows any shortcuts to the real file, and <code>dpkg -S</code> names the package that owns it. If it says <code>no path found</code>, apt didn't install that file. Something else did, and that's worth knowing.</p>
+  <p>For the other routes:</p>
+<pre>snap list                                         <span class="dim"># every snap, with its publisher</span>
+flatpak list --app --columns=application,origin   <span class="dim"># if you use Flatpak at all</span></pre>
+  <div class="check"><div><span class="tag">Check</span><p>You can name the package, snap or Flatpak that each copy belongs to. Compare it with the guess you wrote down.</p></div></div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Check 3</p>
+  <h2>Where does apt get it from?</h2>
+<pre>apt-cache policy firefox</pre>
+  <p>Look at the web addresses in the output. They're where updates will come from:</p>
+<pre><span class="dim">$</span> apt-cache policy claude-desktop
+claude-desktop:
+  Installed: 4.4212.0
+  Candidate: 4.16336.0
+  Version table:
+     4.16336.0 500
+        500 <span class="ok">https://downloads.claude.ai/claude-desktop/apt/stable</span> stable/main amd64 Packages
+ *** 4.4212.0 500
+        100 /var/lib/dpkg/status</pre>
+  <p>That's the AI desktop app I use, coming from its maker's own domain. <code>Installed</code> is what you have; <code>Candidate</code> is what apt would upgrade you to. As a rough guide to the addresses:</p>
+  <div class="tablewrap">
+  <table class="disc">
+    <thead><tr><th>You see</th><th>It means</th></tr></thead>
+    <tbody>
+      <tr><td><code>archive.ubuntu.com</code>, <code>security.ubuntu.com</code></td><td>Ubuntu itself.</td></tr>
+      <tr><td>The maker's own domain</td><td>The vendor's official repository. Check it against their install page.</td></tr>
+      <tr><td><code>ppa.launchpadcontent.net</code></td><td>A personal package archive: someone's own packages, hosted by Ubuntu. Could be the maker, could be anyone.</td></tr>
+      <tr><td>Anything else, e.g. a <code>github.io</code> address</td><td>Often a community rebuild. Not necessarily bad, but not the maker.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="check"><div><span class="tag">Check</span><p>You know which web address your app updates from, and whether it belongs to the people who make it.</p></div></div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Check 4</p>
+  <h2>Who signed it?</h2>
+  <p>An address can be faked or mistyped. What apt actually trusts is a <strong>signing key</strong>. Each source on your system names the key that its packages must be signed with:</p>
+<pre>ls /etc/apt/sources.list.d/
+cat /etc/apt/sources.list.d/ubuntu.sources</pre>
+<pre><span class="dim">$</span> cat /etc/apt/sources.list.d/ubuntu.sources
+Types: deb
+URIs: http://archive.ubuntu.com/ubuntu/
+Suites: noble noble-updates noble-backports
+Components: main universe restricted multiverse
+<span class="me">Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg</span></pre>
+  <p>The <code>Signed-By</code> line points at the key file. Ask it who it belongs to:</p>
+<pre><span class="dim">$</span> gpg --show-keys /usr/share/keyrings/ubuntu-archive-keyring.gpg
+pub   rsa4096 2012-05-11 [SC]
+      <span class="me">790B C727 7767 219C 42C8  6F93 3B4F E6AC C0B2 1F32</span>
+uid   Ubuntu Archive Automatic Signing Key (2012) &lt;ftpmaster@ubuntu.com&gt;</pre>
+  <p>That long string is the key's <strong>fingerprint</strong>. The name after <code>uid</code> is just a label anyone could type. The fingerprint is the part that can't be faked. For a vendor's own source, compare it with the fingerprint printed on the vendor's install page. If they match, the packages really are signed by them.</p>
+  <p>Older guides use a single file, <code>/etc/apt/sources.list</code>, or a line format like <code>deb [signed-by=...] https://...</code>. It's the same idea in a different layout: look for <code>signed-by</code>.</p>
+  <div class="lesson">
+    <span class="tag">Lesson</span>
+    <p>A source with no <code>Signed-By</code> at all trusts every key on your system. That's the one to look at hardest.</p>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Check 5</p>
+  <h2>Who published that snap?</h2>
+<pre>snap info firefox | grep -E '^(name|publisher|store-url)'</pre>
+  <p>The <code>publisher</code> line is the account that uploaded it. The Snap Store adds two marks you'll see by some names:</p>
+  <ul>
+    <li><strong>A tick (✓)</strong>: a <em>verified</em> publisher. The Snap Store has checked that this account is the organisation it says it is.</li>
+    <li><strong>A star</strong>: a <em>Star Developer</em>, an individual the store recognises as an active, responsible member of the community. In a plain terminal, mine showed as an asterisk after the name.</li>
+  </ul>
+  <p>Neither mark says the snap is the <em>official</em> version of the app it's named after. My look-alike had a star. Its publisher was a real, active volunteer, and the store page said plainly that it wasn't the official app. A star tells you about the packager, not about the brand.</p>
+  <div class="predict">
+    <span class="tag">Think about it</span>
+    <p>If the company that makes an app doesn't publish a snap of it, who decides what goes into a snap with that app's name?</p>
+  </div>
+  <details class="answer">
+    <summary>The answer</summary>
+    <p>Whoever packaged it. They choose which version goes in, when it updates, and what else comes with it. That can be perfectly fine, but it's a person you're trusting, so it should be a choice you made on purpose.</p>
+  </details>
+  <p>The store page, at <code>snapcraft.io/</code> followed by the snap's name, often says in its description whether the snap is official. Read it.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Check 6</p>
+  <h2>Hunt for duplicates</h2>
+  <p>Now look for <em>every</em> copy, from every route, in one go. Replace <code>firefox</code> with your app's name:</p>
+<pre>app=firefox
+dpkg -l | grep -i "$app" || echo "no apt package"
+snap list 2>/dev/null | grep -i "$app" || echo "no snap"
+flatpak list 2>/dev/null | grep -i "$app" || echo "no flatpak"
+find ~ -maxdepth 3 -iname "*$app*.AppImage" 2>/dev/null</pre>
+  <p>This is how I found mine. The official app came from apt, as I expected. The look-alike turned up in the <code>snap list</code> line.</p>
+  <div class="check"><div><span class="tag">Check</span><p>You've found every copy of your app, and you know which route each one came by and who publishes it.</p></div></div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Then what?</p>
+  <h2>Deciding what stays</h2>
+  <p>Finding a copy you didn't expect isn't an emergency. Most community packagers are generous people filling a gap. The question is simply: <strong>did you choose this?</strong></p>
+  <ol>
+    <li><strong>Work out what you actually use.</strong> Check 1 tells you which copy runs. The others may be sitting unused.</li>
+    <li><strong>Find the maker's own install page</strong>, and see which route they recommend for Ubuntu.</li>
+    <li><strong>Remove the copy you didn't choose</strong>, and only that one. Run the checks again before you remove anything, and again afterwards. For a snap, the command is <code>sudo snap remove</code> followed by its name.</li>
+  </ol>
+  <p>I'm sorting mine out the same way: read-only checks first, then a decision, then the change. That habit has its own page: <a href="preflight.html">Look before you leap</a>.</p>
+  <div class="links">
+    <a class="btn btn-primary" href="secure-ubuntu.html">Securing Ubuntu</a>
+    <a class="btn" href="account-audit.html">Who holds the keys to your life?</a>
+  </div>
+</section>
+
+<hr class="div">
+
+<section style="padding-top:44px">
+  <p class="tag eyebrow">That's it</p>
+  <h2>What I'd want you to take away</h2>
+  <div class="takeaways">
+    <div class="take">
+      <h3>A name isn't a maker</h3>
+      <p>Anyone can package an app under its name. Check the publisher, not the label.</p>
+    </div>
+    <div class="take">
+      <h3>The key is the trust</h3>
+      <p>For apt, the signing key's fingerprint is what proves who built a package. The web address is just where it's kept.</p>
+    </div>
+    <div class="take">
+      <h3>One of each, on purpose</h3>
+      <p>Two copies of an app means two people you're trusting. Keep the one you chose.</p>
+    </div>
+  </div>
+  <p style="margin-top:26px">Found a check that didn't behave like this on your machine? <a href="contact.html">Tell me</a>, and I'll fix the page.</p>
+</section>
+
+</main>
+
+<section class="read-next">
+  <div class="wrap col">
+    <p class="tag">If the terminal is new</p>
+    <a class="card" href="terminal.html">
+      <h3>Meet the terminal</h3>
+      <p>Open it, read the prompt, and learn why Ctrl + C stops things. Every command here builds on it.</p>
+      <span class="go">Read &rarr;</span>
+    </a>
+  </div>
+</section>
+
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">← Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="contact.html">Get in touch</a>
+    <a href="offline.html">Use offline</a>
+    <span class="tag">© 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
+<script src="sw-register.js" defer></script>
+</body>
+</html>

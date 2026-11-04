@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Look before you leap: pre-flight checks for every change — Iain Hoggan</title>
+<meta name="description" content="Read-only checks first, then GO or NO-GO. The habit behind every change I make on my machines, with a real near-miss, and a small git hook you can build that refuses to push your private words to a public repository.">
+<link rel="canonical" href="https://ihoggan.github.io/preflight.html">
+<meta property="og:site_name" content="Iain Hoggan">
+<meta property="og:locale" content="en_GB">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ihoggan.github.io/preflight.html">
+<meta property="og:title" content="Look before you leap: pre-flight checks for every change">
+<meta property="og:description" content="Read-only checks first, then GO or NO-GO. The habit behind everything on this site, plus a git hook that stops your private words reaching a public repository.">
+<meta property="og:image" content="https://ihoggan.github.io/images/og-preflight.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Look before you leap. Tutorial, build your own, Git. Read-only checks first, then GO or NO-GO, and one hook that guards every push.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Look before you leap: pre-flight checks for every change", "description": "Read-only checks first, then GO or NO-GO. The habit behind everything on this site, plus a git hook that stops your private words reaching a public repository.", "image": "https://ihoggan.github.io/images/og-preflight.png", "datePublished": "2026-11-04", "dateModified": "2026-11-04", "inLanguage": "en-GB", "author": {"@type": "Person", "name": "Iain Hoggan", "url": "https://ihoggan.github.io/about.html"}, "mainEntityOfPage": "https://ihoggan.github.io/preflight.html"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+main.wrap{padding-top:52px;padding-bottom:40px}
+.standfirst{font-size:1.12rem;color:var(--ink-2);max-width:34em}
+.standfirst strong{color:var(--ink);font-weight:600}
+main section p{max-width:38em}
+main h2{max-width:18em;margin-bottom:14px}
+main h3{margin:22px 0 8px}
+main ul,main ol{max-width:36em;margin:0 0 16px 1.2em}
+main li{margin-bottom:6px}
+pre{
+  background:radial-gradient(120% 140% at 50% 0%,var(--screen-2),var(--screen));
+  border:1px solid #060B0E;border-radius:3px;box-shadow:inset 0 3px 12px rgba(0,0,0,.55);
+  color:#CFE3DA;font-family:var(--mono);font-size:13px;line-height:1.55;
+  padding:14px 16px;margin:18px 0 22px;max-width:40em;overflow-x:auto;white-space:pre;
+}
+pre .me{color:#E8C27A}
+pre .dim{color:#7F968D}
+pre .bad{color:#E0603F}
+pre .ok{color:var(--trace)}
+figure.shot{max-width:44em;margin:22px 0}
+figure.shot img{display:block;width:100%;height:auto;background:#fff;border:1px solid var(--bezel);border-radius:4px;
+  box-shadow:0 1px 2px rgba(23,32,43,.14)}
+figure.shot figcaption{margin-top:8px;font:12px/1.55 var(--mono);color:var(--ink-2);max-width:44em}
+.rules{max-width:38em;margin:14px 0 18px;border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))}
+.rules div{display:grid;grid-template-columns:11em 1fr;gap:12px;padding:10px 14px;border-bottom:1px solid var(--rule);font-size:.97rem}
+.rules div:last-child{border-bottom:0}
+.rules b{font-family:var(--mono);font-size:.84em;letter-spacing:.04em}
+@media(max-width:560px){.rules div{grid-template-columns:1fr;gap:2px}}
+.slips{display:grid;gap:12px;max-width:40em;margin:18px 0 22px}
+.slip{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.slip>div{padding:12px 14px;font-size:.95rem;line-height:1.5}
+.slip>div+div{border-left:1px solid var(--rule)}
+.slip .tag{display:block;margin-bottom:4px}
+.slip .dec .tag{color:#2F8A63}
+@media(max-width:560px){.slip{grid-template-columns:1fr}.slip>div+div{border-left:0;border-top:1px solid var(--rule)}}
+.takeaways{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:26px}
+.take{background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);border-radius:4px;padding:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.take h3{font-size:1rem;margin:0 0 8px}
+.take p{font-size:.94rem;color:var(--ink-2);margin:0}
+.predict{border-left:3px solid var(--lamp);padding:2px 0 2px 18px;margin:18px 0;max-width:38em}
+.predict .tag{display:block;margin-bottom:4px;color:var(--lamp)}
+.predict p{margin:0}
+.warn{border-left:3px solid var(--alarm);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.warn .tag{display:block;margin-bottom:4px;color:var(--alarm)}
+.warn p{margin:0}
+.warn p+p{margin-top:8px}
+details.answer{max-width:38em;margin:10px 0 18px}
+details.answer summary{cursor:pointer;font:600 11px/1.4 var(--mono);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-2)}
+details.answer p{margin-top:8px}
+.tablewrap{max-width:44em;overflow-x:auto;margin:16px 0 22px}
+table.disc{border-collapse:collapse;width:100%;font-size:.93rem;background:var(--engrave)}
+.disc th,.disc td{border:1px solid var(--bezel);padding:7px 9px;text-align:left;vertical-align:top}
+.disc th{background:var(--panel-2);font-family:var(--mono);font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.disc td code{white-space:nowrap}
+.disc td.n{text-align:right;font-family:var(--mono);font-size:.88em;white-space:nowrap}
+.calc{max-width:40em;margin:20px 0 22px;padding:16px 18px}
+.calc .cap{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#6E8A80;margin-bottom:12px}
+.calc .ins{display:grid;grid-template-columns:repeat(auto-fit,minmax(10em,1fr));gap:12px}
+.calc label{font:11px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#93A79E;display:grid;gap:5px}
+.calc input{font:500 1rem var(--mono);color:var(--trace);background:#0B1216;border:1px solid #2B3B44;border-radius:3px;padding:7px 9px;width:100%}
+.calc input:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.calc dl{display:grid;grid-template-columns:1fr auto;gap:6px 18px;margin:16px 0 0;padding-top:12px;border-top:1px solid rgba(87,199,154,.18)}
+.calc dt{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#93A79E}
+.calc dd{font-family:var(--mono);font-size:13px;color:var(--trace);text-align:right;font-variant-numeric:tabular-nums;margin:0}
+.calc .note{margin-top:12px;font:11px/1.55 var(--mono);color:#8FA69C}
+.sheet{max-width:40em;margin:16px 0 22px;border:1px dashed var(--bezel);border-radius:4px;padding:14px 16px;
+  background:repeating-linear-gradient(0deg,transparent 0 27px,rgba(23,32,43,.06) 27px 28px),var(--engrave)}
+.sheet p{font:13px/28px var(--mono);margin:0;max-width:none}
+.sheet .blank{display:inline-block;min-width:7em;border-bottom:1px solid var(--ink);margin:0 4px}
+.links{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+.read-next{border-top:1px solid var(--rule);padding:44px 0 8px}
+.read-next .card{margin-top:14px;max-width:640px}
+
+.check{display:flex;gap:14px;align-items:flex-start;max-width:38em;margin:20px 0 6px;
+  border:1px solid var(--bezel);border-radius:4px;padding:14px 16px;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.check .tag{display:block;margin-bottom:4px;color:#2F8A63}
+.check p{margin:0;font-size:.97rem}
+.ui{font-family:var(--mono);font-size:.84em;white-space:nowrap;background:linear-gradient(180deg,#fff,var(--engrave));
+  border:1px solid var(--bezel);border-bottom-width:2px;border-radius:3px;padding:1px 6px;color:var(--ink)}
+.ticks{display:grid;gap:9px}
+.ticks label{font:13.5px/1.5 var(--mono);text-transform:none;letter-spacing:normal;color:#CFE3DA;display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.ticks input{accent-color:var(--trace);margin-top:3px;flex:none;width:16px;height:16px}
+.verdict{margin-top:14px;padding-top:12px;border-top:1px solid rgba(87,199,154,.18);font:600 13px/1.55 var(--mono);color:#93A79E}
+.verdict.yes{color:#E7B863}
+.verdict.no{color:var(--trace)}
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0F181E">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+</head>
+<body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html" aria-label="Home">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap col">
+    <p class="tag">Tutorial · Build your own path, step 3 · Git · ~45 min</p>
+    <h1>Look before you leap</h1>
+    <p class="standfirst">Pilots don't start an engine and then check the fuel. Every change I make on my machines works the same way: <strong>read-only checks first, then a GO or a NO-GO</strong>, and only then the command that changes something. This page shows the habit, a real time it saved me, and a small guard you can build that refuses to push your private words to a public repository.</p>
+    <div class="spec">
+      <div><b>Look</b><span>read-only checks</span></div>
+      <div><b>Decide</b><span>GO or NO-GO</span></div>
+      <div><b>Act</b><span>then change it</span></div>
+      <div><b>Guard</b><span>every push</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap col">
+
+<section>
+  <p class="tag eyebrow">Part 1</p>
+  <h2>Two kinds of command</h2>
+  <p>Every command you type in a terminal does one of two things. It <strong>looks</strong>, or it <strong>changes</strong>. Looking is always safe: run it as often as you like. Changing is where mistakes live, and some changes can't be taken back.</p>
+  <div class="tablewrap">
+  <table class="disc">
+    <thead><tr><th>Looks (safe any time)</th><th>Changes (check first)</th></tr></thead>
+    <tbody>
+      <tr><td><code>ls</code>, <code>cat</code>, <code>pwd</code>, <code>df -h</code></td><td><code>mv</code>, <code>cp</code>, <code>rm</code>, <code>mkdir</code></td></tr>
+      <tr><td><code>git status</code>, <code>git log</code>, <code>git diff</code></td><td><code>git commit</code>, <code>git reset</code>, <code>git push</code></td></tr>
+      <tr><td><code>apt-cache policy</code>, <code>dpkg -l</code></td><td><code>sudo apt install</code>, <code>sudo apt remove</code></td></tr>
+      <tr><td><code>systemctl status</code>, <code>lsusb</code>, <code>pgrep</code></td><td><code>systemctl enable</code>, <code>sudo tee</code>, <code>chmod</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>A handy rule of thumb: <code>sudo</code> almost always means a change. So does anything with <code>&gt;</code> in it, which writes to a file.</p>
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>Which column does <code>git fetch</code> go in? It downloads, but does it change your files?</p>
+  </div>
+  <details class="answer">
+    <summary>The answer</summary>
+    <p>It's a looker, as far as your work is concerned. It updates git's record of what's on the server, but never touches your files or your branch. That's why it's in my pre-flight checks below.</p>
+  </details>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 2</p>
+  <h2>Write down what you want before you look</h2>
+  <p>A pre-flight is a short list of looking commands, each with the answer you <em>expect</em> written next to it. Before I copy a change into my website's folder, it's this:</p>
+<pre>cd ~/code/my-site
+git status --short                    <span class="dim"># want: empty (nothing half-done)</span>
+git branch --show-current             <span class="dim"># want: main</span>
+git fetch -q && git log -1 --oneline origin/main   <span class="dim"># want: the commit I expect</span>
+git log -1 --oneline                  <span class="dim"># want: the same commit</span>
+ls -l ~/Downloads/new-page.patch      <span class="dim"># want: the file, about the size I expect</span></pre>
+  <p>Writing the "want" first matters. If you look first, it's very easy to decide that whatever you see is fine. If you've written down what fine looks like, a surprise jumps out.</p>
+  <p>Then, before giving a GO, I ask three questions:</p>
+  <div class="rules">
+    <div><b>Am I where I think?</b><span>Right machine, right folder, right branch. The prompt tells you the first two; <code>git branch</code> tells you the third.</span></div>
+    <div><b>Is it how I think?</b><span>Nothing half-finished, nothing newer on the server, the file I need is actually there.</span></div>
+    <div><b>Can I undo it?</b><span>If not, slow down even more. A push to a public repository is the obvious one: once it's out, assume it's been copied.</span></div>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 3</p>
+  <h2>The day it said NO-GO</h2>
+  <p>Earlier today I was adding a new page to this site. The checks came back like this (trimmed, with the file name simplified):</p>
+<pre><span class="dim">$</span> git status --short
+<span class="dim">$</span> git branch --show-current
+<span class="ok">main</span>
+<span class="dim">$</span> git log -1 --oneline
+<span class="ok">9db8a87</span> Add case study: Meet Gus
+<span class="dim">$</span> ls -l ~/Downloads/new-page.patch
+<span class="bad">ls: cannot access '/home/me/Downloads/new-page.patch': No such file or directory</span></pre>
+  <p>Everything was where it should be, except the one file I needed. I'd clicked past it without downloading it. Without the check, the next commands would have failed halfway through a change, with part of it done and part not, and I'd have been untangling it instead of publishing.</p>
+  <p>Instead it was a <strong>NO-GO</strong>. I downloaded the file, ran the checks again, got all the answers I'd written down, and gave it a GO.</p>
+  <div class="lesson">
+    <span class="tag">Lesson</span>
+    <p>A NO-GO isn't a failure. It's the check doing its job, at the moment it's cheapest to fix.</p>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 4</p>
+  <h2>The change you can't take back</h2>
+  <p>Most mistakes on your own machine can be undone. A push to a public repository can't, not really: within minutes, anything public can be copied, cached or scraped. So the push gets the strictest check of all. I run my own tool, <code>git preflight</code>, before every one. Its last report looked like this:</p>
+<pre>Repository
+  <span class="ok">PASS</span>  On branch 'main'
+GitHub access
+  <span class="ok">PASS</span>  GitHub accepts this machine's SSH key
+Working tree
+  <span class="ok">PASS</span>  No uncommitted changes to tracked files
+Sync with remote
+  <span class="ok">PASS</span>  Not behind origin/main
+  <span class="ok">PASS</span>  1 commit(s) ready to push
+Content of the 1 outgoing commit(s)
+  <span class="ok">PASS</span>  No passwords, keys or tokens spotted
+  <span class="ok">PASS</span>  No watchlist words (20 checked)
+  <span class="ok">PASS</span>  Commits use a noreply email address
+Visibility
+  <span class="me">WARN</span>  This repo is PUBLIC — anyone can read what you push.
+
+CLEAR TO PUSH — 1 warning(s).</pre>
+  <p>The line I care about most is <strong>"No watchlist words"</strong>. I keep a private list of words that must never appear in anything public: places, names and accounts that are nobody else's business. The list lives on my machine, outside every repository, so it can never be pushed itself. Before anything goes out, every outgoing change is checked against it.</p>
+  <p>You can build the core of that yourself, right now, in about twenty lines.</p>
+</section>
+
+<section id="build">
+  <p class="tag eyebrow">Part 5</p>
+  <h2>Build your own watchlist guard</h2>
+  <p>Git can run a script of yours at certain moments. These are called <strong>hooks</strong>. A <code>pre-push</code> hook runs just before a push. If it ends with an error, the push doesn't happen. That's exactly what we want.</p>
+
+  <h3>1. Your private list</h3>
+  <p>One word or phrase per line. Use your own, but for practice, start with these made-up ones:</p>
+<pre>mkdir -p ~/.config/watchlist
+printf 'Acacia Avenue\nFluffykins\n' &gt; ~/.config/watchlist/words
+chmod 600 ~/.config/watchlist/words     <span class="dim"># readable by you only</span></pre>
+  <p>It lives in your home folder's <code>.config</code>, not inside any project, so no <code>git add</code> can ever pick it up. Later, add the real things you never want public, one per line: your road, your town, your pets' names, your employer.</p>
+
+  <h3>2. A practice repository</h3>
+  <p>Don't test a guard on something precious. Make a throwaway pair: a "server" folder and a working folder that pushes to it.</p>
+<pre>mkdir -p ~/practice && cd ~/practice
+git init -q --bare practice-remote.git
+git init -q -b main practice && cd practice
+git remote add origin ../practice-remote.git</pre>
+
+  <h3>3. The hook</h3>
+  <p>Save this as <code>.git/hooks/pre-push</code> inside the practice folder. A text editor is fine: <code>nano .git/hooks/pre-push</code>, paste it in, then <span class="ui">Ctrl</span> + <span class="ui">O</span> to save and <span class="ui">Ctrl</span> + <span class="ui">X</span> to leave.</p>
+<pre>#!/usr/bin/env bash
+# pre-push: refuse to push if anything outgoing mentions a word on your private watchlist.
+# The list lives outside every repo, one word or phrase per line.
+list="$HOME/.config/watchlist/words"
+if [ ! -r "$list" ]; then
+  echo "pre-push: no watchlist at $list, so refusing to push." &gt;&amp;2
+  exit 1
+fi
+zero=0000000000000000000000000000000000000000
+found=0
+while read -r local_ref local_sha remote_ref remote_sha; do
+  [ "$local_sha" = "$zero" ] &amp;&amp; continue                 # deleting a branch: nothing to check
+  if [ "$remote_sha" = "$zero" ]; then
+    range=("$local_sha" --not --remotes)                  # new branch: everything not already on the remote
+  else
+    range=("$remote_sha..$local_sha")                     # existing branch: just the new commits
+  fi
+  hits=$(git log -p --format='commit %h %s%n%b' "${range[@]}" \
+         | grep -i -n -F -f &lt;(grep -v '^[[:space:]]*$' "$list"))
+  if [ -n "$hits" ]; then
+    echo "pre-push: watchlist words found in what you're about to push:" &gt;&amp;2
+    echo "$hits" &gt;&amp;2
+    found=1
+  fi
+done
+if [ "$found" -ne 0 ]; then
+  echo "pre-push: NO-GO. Nothing was pushed." &gt;&amp;2
+  exit 1
+fi
+echo "pre-push: watchlist clear."</pre>
+  <p>Then make it runnable:</p>
+<pre>chmod +x .git/hooks/pre-push</pre>
+  <details class="answer">
+    <summary>How it works, line by line</summary>
+    <p>Git hands the hook one line per branch being pushed: what you're sending and what the server already has. The hook asks <code>git log -p</code> for every outgoing commit, including its message and every line it changes, and runs it through <code>grep</code> with your list. <code>-i</code> ignores capitals, <code>-F</code> treats your words as plain text rather than patterns, and the inner <code>grep -v</code> drops blank lines from your list. (A blank line would match everything.) If no list is found at all, it refuses: a guard that silently does nothing is worse than none.</p>
+  </details>
+
+  <h3>4. Test it: a clean push, then a dirty one</h3>
+  <div class="predict">
+    <span class="tag">Predict first</span>
+    <p>The first commit below is harmless. The second mentions a made-up pet that's on the list. What will each push print?</p>
+  </div>
+<pre>git config user.name "You"; git config user.email "you@example.com"   <span class="dim"># practice repo only</span>
+echo "Hello world" &gt; notes.txt
+git add notes.txt &amp;&amp; git commit -qm "First notes"
+git push origin main
+
+echo "Our cat is called Fluffykins" &gt;&gt; notes.txt
+git commit -qam "More notes"
+git push origin main</pre>
+<pre><span class="dim">$</span> git push origin main
+<span class="ok">pre-push: watchlist clear.</span>
+<span class="dim">…</span>
+<span class="dim">$</span> git push origin main
+pre-push: watchlist words found in what you're about to push:
+10:+Our cat is called <span class="me">Fluffykins</span>
+<span class="bad">pre-push: NO-GO. Nothing was pushed.</span>
+error: failed to push some refs to '../practice-remote.git'</pre>
+  <p>The <code>+</code> shows it's a line being added. The commit never left your machine.</p>
+
+  <h3>5. Fix it and go again</h3>
+<pre>git reset HEAD~1          <span class="dim"># undo the last commit, keep the file as it is</span>
+nano notes.txt            <span class="dim"># take the name out</span>
+git commit -qam "More notes"
+git push origin main      <span class="dim"># want: watchlist clear</span></pre>
+  <p><code>git reset HEAD~1</code> is safe here because that commit never left your machine, which is exactly the situation the hook leaves you in. Don't use it to undo commits that are already on the server.</p>
+  <div class="check"><div><span class="tag">Check</span><p>Your hook let a clean push through, stopped one with a watchlist word, and let the fixed version through.</p></div></div>
+
+  <h3>6. Put it on your real projects</h3>
+  <p>Hooks live inside each project's <code>.git</code> folder, and they aren't copied when you clone. So copy it into each project you push from:</p>
+<pre>cp ~/practice/practice/.git/hooks/pre-push ~/code/my-site/.git/hooks/
+chmod +x ~/code/my-site/.git/hooks/pre-push</pre>
+  <div class="warn">
+    <span class="tag">Know its limits</span>
+    <p>It's a seatbelt, not a lock. <code>git push --no-verify</code> skips hooks completely, and it only checks text, not words inside pictures or PDFs. It can't catch what isn't on your list either, so keep the list up to date.</p>
+    <p>It also only guards what you push from now on. If something private was pushed in the past, it's still in the history. Removing it properly is a bigger job.</p>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 6</p>
+  <h2>Make it a habit</h2>
+  <p>The hook is the last line of defence. The habit is the first. Next time you're about to type a command that changes something, stop and ask:</p>
+  <ol>
+    <li>What do I <strong>expect</strong> to be true right now? Write it down.</li>
+    <li>Which <strong>looking</strong> commands would prove it?</li>
+    <li>Do the answers match? <strong>GO</strong>. If they don't, <strong>NO-GO</strong>: fix that first, then check again.</li>
+  </ol>
+  <p>It feels slow for about a week. Then it feels like the only sane way to work.</p>
+  <div class="links">
+    <a class="btn btn-primary" href="github-setup.html">From a fresh machine to your first push</a>
+    <a class="btn" href="real-thing.html">Is it the real thing?</a>
+  </div>
+</section>
+
+<hr class="div">
+
+<section style="padding-top:44px">
+  <p class="tag eyebrow">That's it</p>
+  <h2>What I'd want you to take away</h2>
+  <div class="takeaways">
+    <div class="take">
+      <h3>Look, decide, act</h3>
+      <p>Read-only checks first, the answer you expect written beside each, then GO or NO-GO.</p>
+    </div>
+    <div class="take">
+      <h3>NO-GO is a win</h3>
+      <p>It caught the problem at the moment it was cheapest to fix, before anything had changed.</p>
+    </div>
+    <div class="take">
+      <h3>Guard the one-way door</h3>
+      <p>A push to a public repository can't be taken back. Put a check in front of it that knows your private words.</p>
+    </div>
+  </div>
+  <p style="margin-top:26px">Improved the hook, or found a case it misses? <a href="contact.html">Tell me</a>. Corrections are genuinely welcome.</p>
+</section>
+
+</main>
+
+<section class="read-next">
+  <div class="wrap col">
+    <p class="tag">If Git is new</p>
+    <a class="card" href="github-setup.html">
+      <h3>From a fresh machine to your first push</h3>
+      <p>Keys, two-factor sign-in you can't lose, a Python project and your first push, with what the terminal should say at every step.</p>
+      <span class="go">Read &rarr;</span>
+    </a>
+  </div>
+</section>
+
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">← Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="contact.html">Get in touch</a>
+    <a href="offline.html">Use offline</a>
+    <span class="tag">© 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
+<script src="sw-register.js" defer></script>
+</body>
+</html>
