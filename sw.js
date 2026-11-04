@@ -23,7 +23,7 @@
    ------------------------------------------------------------ */
 
 // VERSION-START
-const VERSION = 'site-ad85ce706e';
+const VERSION = 'site-d6990fcd0f';
 // VERSION-END
 
 const PAGES = `${VERSION}-pages`;
@@ -44,6 +44,7 @@ const PRECACHE = [
   'account-audit.html',
   'battery-safety.html',
   'contact.html',
+  'data-ml.html',
   'data-numpy.html',
   'data-pandas.html',
   'data-plots.html',
