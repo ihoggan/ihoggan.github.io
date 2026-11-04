@@ -318,7 +318,7 @@ np.corrcoef(flippers[both], mass_kg[both])[0, 1]</textarea></div>
   <h2>Run it without the browser</h2>
   <p>Everything above works in ordinary Python on Ubuntu too, and then it works offline. Set up one folder for the whole path, with its own <strong>virtual environment</strong> (a private box of Python libraries, so nothing touches the system's Python):</p>
 <pre>sudo apt install python3-venv          <span class="dim"># once, if you don't have it</span>
-mkdir -p ~/code/data-path && cd ~/code/data-path
+mkdir -p ~/code/data-path &amp;&amp; cd ~/code/data-path
 python3 -m venv venv
 source venv/bin/activate               <span class="dim"># your prompt now starts with (venv)</span>
 pip install numpy pandas matplotlib scikit-learn

@@ -182,7 +182,7 @@ table.disc{border-collapse:collapse;width:100%;font-size:.93rem;background:var(-
 <pre>cd ~/code/my-site
 git status --short                    <span class="dim"># want: empty (nothing half-done)</span>
 git branch --show-current             <span class="dim"># want: main</span>
-git fetch -q && git log -1 --oneline origin/main   <span class="dim"># want: the commit I expect</span>
+git fetch -q &amp;&amp; git log -1 --oneline origin/main   <span class="dim"># want: the commit I expect</span>
 git log -1 --oneline                  <span class="dim"># want: the same commit</span>
 ls -l ~/Downloads/new-page.patch      <span class="dim"># want: the file, about the size I expect</span></pre>
   <p>Writing the "want" first matters. If you look first, it's very easy to decide that whatever you see is fine. If you've written down what fine looks like, a surprise jumps out.</p>
@@ -252,9 +252,9 @@ chmod 600 ~/.config/watchlist/words     <span class="dim"># readable by you only
 
   <h3>2. A practice repository</h3>
   <p>Don't test a guard on something precious. Make a throwaway pair: a "server" folder and a working folder that pushes to it.</p>
-<pre>mkdir -p ~/practice && cd ~/practice
+<pre>mkdir -p ~/practice &amp;&amp; cd ~/practice
 git init -q --bare practice-remote.git
-git init -q -b main practice && cd practice
+git init -q -b main practice &amp;&amp; cd practice
 git remote add origin ../practice-remote.git</pre>
 
   <h3>3. The hook</h3>

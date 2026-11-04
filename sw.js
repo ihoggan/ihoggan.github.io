@@ -23,7 +23,7 @@
    ------------------------------------------------------------ */
 
 // VERSION-START
-const VERSION = 'site-ce29419480';
+const VERSION = 'site-ad85ce706e';
 // VERSION-END
 
 const PAGES = `${VERSION}-pages`;
@@ -46,6 +46,7 @@ const PRECACHE = [
   'contact.html',
   'data-numpy.html',
   'data-pandas.html',
+  'data-plots.html',
   'ears-on.html',
   'electronics-1.html',
   'electronics-2.html',
