@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electronics for complete beginners, part three: the 555 jumper bench — Iain Hoggan</title>
+<meta name="description" content="Part three of the beginner's electronics study guide: the 555 timer. Move jumpers to swap R1, R2 and C1, watch the result on an oscilloscope and listen to it, then build the real circuit on a 9 V battery.">
+<link rel="canonical" href="https://ihoggan.github.io/electronics-3.html">
+<meta property="og:site_name" content="Iain Hoggan">
+<meta property="og:locale" content="en_GB">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ihoggan.github.io/electronics-3.html">
+<meta property="og:title" content="The 555 jumper bench">
+<meta property="og:description" content="Move the jumpers, watch the scope, hear the tone. The 555 timer explained by playing with it, then built for real on a 9 V battery.">
+<meta property="og:image" content="https://ihoggan.github.io/images/og-electronics-3.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Electronics part three: the 555 jumper bench.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"The 555 jumper bench","description":"Move the jumpers, watch the scope, hear the tone. The 555 timer explained by playing with it, then built for real on a 9 V battery.","image":"https://ihoggan.github.io/images/og-electronics-3.png","datePublished":"2026-11-05","dateModified":"2026-11-05","inLanguage":"en-GB","author":{"@type":"Person","name":"Iain Hoggan","url":"https://ihoggan.github.io/about.html"},"mainEntityOfPage":"https://ihoggan.github.io/electronics-3.html"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+main.wrap{padding-top:52px;padding-bottom:40px}
+.standfirst{font-size:1.12rem;color:var(--ink-2);max-width:34em}
+.standfirst strong{color:var(--ink);font-weight:600}
+main section p{max-width:38em}
+main h2{max-width:18em;margin-bottom:14px}
+main h3{margin:26px 0 10px}
+main ul,main ol{max-width:36em;margin:0 0 16px 1.2em}
+main li{margin-bottom:6px}
+.warn{border-left:3px solid var(--alarm);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.warn .tag{display:block;margin-bottom:4px;color:var(--alarm)}
+.warn p{margin:0}
+.warn p+p{margin-top:8px}
+.takeaways{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:26px}
+.take{background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);border-radius:4px;padding:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.take h3{font-size:1rem;margin:0 0 8px}
+.take p{font-size:.94rem;color:var(--ink-2);margin:0}
+.ui{font-family:var(--mono);font-size:.84em;white-space:nowrap;
+  background:linear-gradient(180deg,#fff,var(--engrave));border:1px solid var(--bezel);
+  border-bottom-width:2px;border-radius:3px;padding:1px 6px;color:var(--ink)}
+.predict{border-left:3px solid var(--lamp);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.predict .tag{display:block;margin-bottom:4px;color:var(--lamp)}
+.predict p{margin:0}
+details.answer{max-width:38em;margin:10px 0 18px}
+details.answer summary{cursor:pointer;font:600 11px/1.4 var(--mono);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-2)}
+details.answer p{margin-top:8px}
+.check{display:flex;gap:14px;align-items:flex-start;max-width:38em;margin:20px 0 6px;
+  border:1px solid var(--bezel);border-radius:4px;padding:14px 16px;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.check .tag{display:block;margin-bottom:4px;color:#2F8A63}
+.check p{margin:0;font-size:.97rem}
+.check ul{margin:6px 0 0 1.1em;font-size:.97rem}
+.check li{margin-bottom:3px}
+.done{flex:none;margin-left:auto;align-self:center;cursor:pointer;
+  font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;
+  padding:9px 12px;border-radius:3px;border:1px solid var(--bezel);border-bottom-width:2px;
+  background:linear-gradient(180deg,#fff,var(--engrave));color:var(--ink-2)}
+.done[aria-pressed="true"]{background:linear-gradient(180deg,#6FD6AA,var(--trace));border-color:#2F8A63;color:#0B2A1E}
+.done:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.progress{margin-top:26px;max-width:30em}
+.progress .bar{height:10px;border-radius:5px;background:var(--screen);border:1px solid #060B0E;
+  box-shadow:inset 0 2px 6px rgba(0,0,0,.6);overflow:hidden}
+.progress .fill{height:100%;width:0;background:linear-gradient(90deg,#2F8A63,var(--trace));
+  box-shadow:0 0 10px rgba(87,199,154,.7);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.progress .read{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:8px}
+.kit{max-width:38em;margin:16px 0 20px;border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2))}
+.kit div{display:flex;justify-content:space-between;gap:14px;padding:10px 14px;border-bottom:1px solid var(--rule)}
+.kit div:last-child{border-bottom:0;font-weight:600}
+.kit span:last-child{font-family:var(--mono);font-size:.9em;color:var(--ink-2);white-space:nowrap}
+.disc{max-width:38em;border-collapse:collapse;margin:16px 0 8px;width:100%;font:13px var(--mono)}
+.disc th,.disc td{border:1px solid var(--bezel);padding:7px 9px;text-align:right}
+.disc th{background:var(--panel-2);font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.disc td:first-child,.disc th:first-child{text-align:left}
+.disc td.q{color:var(--ink-3)}
+.tablewrap{max-width:38em;overflow-x:auto}
+.read-next{border-top:1px solid var(--rule);padding:44px 0 8px}
+.read-next .card{margin-top:14px;max-width:640px}
+
+/* ---------- the jumper bench ---------- */
+.jb{max-width:46em;margin:24px 0 12px}
+.jb-board{
+  background-color:#1E4A37;
+  background-image:radial-gradient(circle,rgba(0,0,0,.2) 1.2px,transparent 1.7px);
+  background-size:12px 12px;
+  border-bottom:1px solid #060B0E;padding:16px 18px 18px;display:flex;flex-direction:column;gap:14px;
+}
+.silk{font:600 10.5px/1.3 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#E3ECE5}
+.silk.dim{color:#AFC6B8;font-weight:500}
+.bank-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin-bottom:6px}
+.bank-head .val{margin-left:auto;font:600 14px/1 var(--mono);color:#F2C46A;font-variant-numeric:tabular-nums}
+.pins{display:flex;flex-wrap:wrap;gap:4px}
+.pin{display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:0;padding:3px 1px;min-width:46px;cursor:pointer}
+.pin .hdr{position:relative;width:30px;height:16px;display:flex;justify-content:space-between;align-items:center;
+  padding:0 4px;background:#0E1612;border-radius:2px}
+.pin .hdr i{width:6px;height:6px;background:#C9A75A;border-radius:1px;display:block}
+.pin .capj{position:absolute;inset:-4px 0;background:#C8392D;border-radius:3px;
+  box-shadow:inset 0 -3px 0 rgba(0,0,0,.28),0 1px 2px rgba(0,0,0,.4);
+  opacity:0;transform:translateY(-6px);transition:opacity .15s,transform .15s}
+.pin[aria-checked="true"] .capj{opacity:1;transform:none}
+.pin .lbl{font:11.5px/1 var(--mono);color:#CFE0D4}
+.pin[aria-checked="true"] .lbl{color:#fff;font-weight:600}
+.pin:hover .hdr{outline:1px solid #C9A75A}
+.pin:focus-visible{outline:2px solid var(--lamp);outline-offset:2px;border-radius:3px}
+.jb-row{display:flex;flex-wrap:wrap;gap:12px 22px;align-items:center}
+.jb-trim{flex:1 1 230px;min-width:0}
+.jb-trim input{width:100%;accent-color:#C9A75A}
+.jb-switch{display:flex;align-items:center;gap:8px;font:12px/1.4 var(--mono);color:#E3ECE5;cursor:pointer}
+.jb-switch input{width:18px;height:18px;accent-color:#C8392D;flex:none}
+.vsel{display:flex;gap:6px;align-items:center}
+.vsel button,.jb-btn{font:600 11px/1 var(--mono);letter-spacing:.08em;padding:7px 10px;border-radius:3px;
+  border:1px solid #2B5A45;background:#0E1612;color:#CFE0D4;cursor:pointer}
+.vsel button[aria-pressed="true"]{border-color:#C9A75A;color:#F2C46A}
+.vsel button:focus-visible,.jb-btn:focus-visible,.jb-switch input:focus-visible,.jb-trim input:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.jb-schem{background:rgba(0,0,0,.25);border-radius:3px;padding:6px;overflow-x:auto}
+.jb-schem svg{display:block;width:100%;min-width:420px;max-width:560px;height:auto;margin:0 auto}
+.jb-scope{padding:14px 16px 6px}
+.jb-scope .head{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:space-between;align-items:center;margin-bottom:10px}
+.legend{display:flex;gap:14px;font:11px/1 var(--mono);letter-spacing:.06em}
+.legend span::before{content:"";display:inline-block;width:14px;height:3px;margin-right:6px;vertical-align:middle;background:currentColor}
+.c1{color:var(--lamp)} .c2{color:var(--trace)}
+.screen{position:relative;aspect-ratio:10/6;max-width:100%;background:#071012;border:1px solid #060B0E;border-radius:3px;
+  box-shadow:inset 0 0 30px rgba(0,0,0,.8)}
+.screen canvas{display:block;width:100%;height:100%}
+.scales{display:flex;flex-wrap:wrap;gap:4px 16px;font:11.5px/1.5 var(--mono);color:#93A79E;margin-top:8px}
+.scales b{color:#CFE3DA;font-weight:500}
+.jb-actions{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center;padding:4px 16px 14px}
+.jb-btn.on{background:linear-gradient(180deg,#6FD6AA,var(--trace));color:#0B2A1E;border-color:#2F8A63}
+.ledbox{display:flex;align-items:center;gap:10px;font:12px/1.4 var(--mono);color:#A9BFB5}
+.bulb{width:18px;height:18px;border-radius:50%;background:#3A1512;border:1px solid #5A2420;flex:none}
+.jb .meas{margin:0;max-width:none;border-top:1px solid rgba(87,199,154,.18)}
+.jb .meas dl{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px 18px}
+.jb .meas dl div{display:flex;flex-direction:column;gap:2px}
+.jb .meas dd{text-align:left;font-size:15px}
+.jb .status{font:12.5px/1.55 var(--mono);color:#A9BFB5;padding:0 18px 16px;min-height:3em}
+.jb .status .bad{color:#E0603F}
+.presets{display:flex;flex-wrap:wrap;gap:6px}
+.pinout{max-width:38em;margin:16px 0}
+.pinout svg{display:block;width:100%;max-width:420px;height:auto}
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0F181E">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+</head>
+<body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html" aria-label="Home">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap col">
+    <p class="tag">Study guide · Electronics · Part three · After part two</p>
+    <h1>The 555 jumper bench</h1>
+    <p class="standfirst">When I got back into electronics, the first chip I reached for was the <strong>555 timer</strong>. It's from 1971, it costs pennies, and it's still in everything that blinks or beeps. I always wanted a kit where you could <strong>move a jumper</strong> to swap a resistor or a capacitor and see what changed. So I built one, on this page. Move the jumpers, watch the result on an <strong>oscilloscope</strong>, listen to it, then build the real thing.</p>
+    <div class="spec">
+      <div><b>3</b><span>stages</span></div>
+      <div><b>~£4</b><span>more parts, optional</span></div>
+      <div><b>9 V</b><span>battery only</span></div>
+      <div><b>An evening</b><span>or two</span></div>
+    </div>
+    <div class="progress" aria-live="polite">
+      <div class="bar"><div class="fill" id="fill"></div></div>
+      <div class="read"><span class="tag" id="progress-text">0 of 3 checkpoints passed</span><span class="tag">Tick each checkpoint when you can explain it</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap col">
+
+<section>
+  <p class="tag eyebrow">Before you start</p>
+  <h2>Where this picks up</h2>
+  <p>This guide assumes you've done <a href="electronics-2.html">part two</a>. The most important bit is the capacitor: it fills like a bucket, and <strong>resistance × capacitance</strong> tells you how long that takes. The 555 is built on exactly that idea. It just keeps filling and emptying the bucket, over and over, and flips its output each time.</p>
+  <div class="warn">
+    <span class="tag">Same safety rule</span>
+    <p><strong>Batteries only. Nothing in this guide ever plugs into the wall.</strong></p>
+    <p>The 555 is happy on anything from about 4.5&nbsp;V to 15&nbsp;V, so a 9&nbsp;V battery is ideal. Electrolytic capacitors still have a right way round: the stripe goes to the negative side.</p>
+  </div>
+  <h3>What to add to your kit</h3>
+  <p>Everything from parts one and two, plus:</p>
+  <div class="kit">
+    <div><span>A few NE555 timer chips (8 pins)</span><span>~£2</span></div>
+    <div><span>A few 1N4148 small signal diodes</span><span>~£1</span></div>
+    <div><span>A small 8&nbsp;Ω speaker or a piezo buzzer, for stage 2</span><span>~£1</span></div>
+    <div><span>Roughly, all in</span><span>~£4</span></div>
+  </div>
+  <p>Prices are rough, from the usual online shops. You'll already have the resistors, the 10&nbsp;µF capacitors and the LEDs from part two.</p>
+</section>
+
+<!-- ============ STAGE 1 ============ -->
+<section class="step">
+  <p class="tag eyebrow">Stage 1</p>
+  <h2>A bucket with two tripwires</h2>
+  <p>Inside the 555 are two tripwires that watch the voltage on the capacitor, <strong>C1</strong>:</p>
+  <ol>
+    <li>While the output is <strong>on</strong>, C1 fills from the battery through <strong>R1 and R2</strong>.</li>
+    <li>When C1 reaches <strong>two thirds</strong> of the battery voltage, the top tripwire fires. The output switches <strong>off</strong>, and pin 7 opens a drain to the negative side.</li>
+    <li>C1 empties through that drain, but only through <strong>R2</strong>.</li>
+    <li>When C1 falls to <strong>one third</strong>, the bottom tripwire fires. The drain closes, the output switches back <strong>on</strong>, and C1 starts filling again.</li>
+  </ol>
+  <p>Round and round, for as long as the battery lasts. A circuit that keeps flipping by itself like this is called an <strong>astable</strong>: it never settles in one state.</p>
+  <p>Here's the bench. Each red cap is a <strong>jumper</strong>: click a pair of pins to move it, and that part goes into the circuit. The oscilloscope shows two things at once: the <span class="c1">amber</span> line is the output on pin 3, and the <span class="c2">green</span> line is the voltage on C1. The dashed lines are the two tripwires.</p>
+
+  <div class="jb well" id="bench">
+    <div class="jb-board" aria-label="The jumper board">
+      <div class="presets" role="group" aria-label="Ready-made settings">
+        <span class="silk dim" style="align-self:center">Try</span>
+        <button type="button" class="jb-btn" data-preset="flasher">LED flasher</button>
+        <button type="button" class="jb-btn" data-preset="beeper">Beeper</button>
+        <button type="button" class="jb-btn" data-preset="square">Even square wave</button>
+        <button type="button" class="jb-btn" data-preset="metro">Metronome</button>
+      </div>
+      <div id="bankR1"></div>
+      <div id="bankR2"></div>
+      <div id="bankC1"></div>
+      <div class="jb-row">
+        <label class="jb-trim" for="pot">
+          <span class="bank-head"><span class="silk">VR1 · 10k trimmer, added to R2</span><span class="val" id="potVal">0 Ω</span></span>
+          <input type="range" id="pot" min="0" max="10000" step="100" value="0">
+        </label>
+      </div>
+      <div class="jb-row">
+        <label class="jb-switch" for="diode"><input type="checkbox" id="diode"> D1 · diode across R2 (stage 2)</label>
+        <div class="vsel" role="group" aria-label="Battery voltage">
+          <span class="silk">Battery</span>
+          <button type="button" data-v="5">5V</button><button type="button" data-v="9">9V</button><button type="button" data-v="12">12V</button>
+        </div>
+      </div>
+      <div class="jb-schem" id="schem"></div>
+    </div>
+
+    <div class="jb-scope">
+      <div class="head">
+        <span class="silk dim">Oscilloscope · 2 channels</span>
+        <div class="legend"><span class="c1">CH1 output, pin 3</span><span class="c2">CH2 capacitor, pins 2 + 6</span></div>
+      </div>
+      <div class="screen"><canvas id="scr" role="img" aria-label="Oscilloscope trace of the output and the capacitor voltage"></canvas></div>
+      <div class="scales" id="scales"></div>
+    </div>
+    <div class="jb-actions">
+      <button type="button" class="jb-btn" id="listen" aria-pressed="false">Listen</button>
+      <span class="ledbox"><span class="bulb" id="bulb"></span><span id="ledTxt">LED on pin 3</span></span>
+    </div>
+    <div class="meas">
+      <div class="cap">Readings</div>
+      <dl id="readouts"></dl>
+    </div>
+    <p class="status" id="note" aria-live="polite"></p>
+  </div>
+
+  <div class="predict">
+    <span class="tag">Predict, then try</span>
+    <p>The bench starts on the LED flasher: R1&nbsp;10k, R2&nbsp;47k, C1&nbsp;10&nbsp;µF. Before you touch anything, guess: if you move C1's jumper to <strong>1&nbsp;µF</strong>, a tenth of the size, what happens to the flashing?</p>
+  </div>
+  <details class="answer">
+    <summary>What happens</summary>
+    <p>It flashes <strong>ten times faster</strong>, about 14 times a second instead of 1.4. That's too fast for your eye to follow, so the LED seems to glow steadily instead. A bucket a tenth the size fills and empties in a tenth of the time. Every time in a 555 is <strong>resistance × capacitance</strong>, just like the fading LED in part two.</p>
+  </details>
+
+  <h3>Spot the long first pulse</h3>
+  <p>Look at the very start of the trace. The first time the output is on, it stays on <strong>longer</strong> than every later time. That's because, at switch-on, C1 is empty. It has to fill all the way from nothing up to two thirds, rather than from one third. After that, it only ever travels between the two tripwires. A real oscilloscope shows exactly the same thing.</p>
+
+  <div class="check" data-step="1">
+    <div><span class="tag">Checkpoint</span><p>Can you explain:</p>
+      <ul><li>what the two tripwires do, and at what voltages,</li><li>why making C1 ten times smaller makes it flash ten times faster?</li></ul></div>
+    <button class="done" type="button" aria-pressed="false">I can</button>
+  </div>
+</section>
+
+<!-- ============ STAGE 2 ============ -->
+<section class="step">
+  <p class="tag eyebrow">Stage 2</p>
+  <h2>Turning the dials</h2>
+  <p>Now find out what each part does. Set each row on the bench, read the frequency and the duty cycle, and fill in the table on paper. The <strong>duty cycle</strong> is how much of each cycle the output spends on: 50% means on and off for equal times.</p>
+  <div class="tablewrap">
+  <table class="disc">
+    <thead><tr><th>R1</th><th>R2</th><th>C1</th><th>Frequency</th><th>Duty</th><th>What you see or hear</th></tr></thead>
+    <tbody>
+      <tr><td>10 kΩ</td><td>47 kΩ</td><td>10 µF</td><td class="q">?</td><td class="q">?</td><td class="q">?</td></tr>
+      <tr><td>10 kΩ</td><td>47 kΩ</td><td>100 nF</td><td class="q">?</td><td class="q">?</td><td class="q">?</td></tr>
+      <tr><td>1 kΩ</td><td>10 kΩ</td><td>100 nF</td><td class="q">?</td><td class="q">?</td><td class="q">?</td></tr>
+      <tr><td>47 kΩ</td><td>1 kΩ</td><td>100 nF</td><td class="q">?</td><td class="q">?</td><td class="q">?</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>For the rows that make a tone, press <span class="ui">Listen</span>. The bench plays the waveform the scope is showing, at its real frequency. Keep your volume low to start with.</p>
+
+  <div class="predict">
+    <span class="tag">Predict, then try</span>
+    <p>Change the battery from 5&nbsp;V to 9&nbsp;V to 12&nbsp;V. A bigger battery pushes charge in harder. Will the 555 run faster?</p>
+  </div>
+  <details class="answer">
+    <summary>What you've found</summary>
+    <p>The frequency <strong>doesn't change at all</strong>. A bigger battery does fill C1 faster, but the tripwires move up with it, because they're set at a third and two thirds of whatever the battery is. The faster filling and the higher target cancel out exactly. That's one of the reasons the 555 became so popular: its timing doesn't drift as a battery runs down.</p>
+  </details>
+
+  <div class="predict">
+    <span class="tag">Predict, then try</span>
+    <p>Set R1 and R2 to the same value, say both 10&nbsp;kΩ. Can you get a duty cycle of exactly 50%?</p>
+  </div>
+  <details class="answer">
+    <summary>What you've found</summary>
+    <p>No: it sits at about 67%. Look back at stage 1. C1 fills through <strong>R1 and R2 together</strong>, but empties through <strong>R2 alone</strong>. Filling always meets more resistance than emptying, so the output is always on for longer than it's off. The fourth row of the table shows how bad it gets: with a big R1 and a small R2, it's on almost all the time.</p>
+    <p>The fix is the <strong>diode</strong>. Tick <span class="ui">D1</span> on the bench. A diode lets current through one way only, so while C1 is filling, the current takes the shortcut through the diode and skips R2. Now filling uses R1 only and emptying uses R2 only. Make them equal, and you get an even 50% square wave. That's the <span class="ui">Even square wave</span> setting.</p>
+  </details>
+
+  <h3>The sums, if you want them</h3>
+  <p>The readings on the bench come from three small formulas. The 0.693 is how long a capacitor takes to fill or empty between a third and two thirds, measured in units of resistance × capacitance.</p>
+  <div class="meas well">
+    <div class="cap">With the jumpers as they're set now</div>
+    <dl>
+      <dt>Time on</dt><dd id="fHigh">–</dd>
+      <dt>Time off</dt><dd id="fLow">–</dd>
+      <dt>Frequency</dt><dd id="fFreq">–</dd>
+    </dl>
+    <p class="note">Time on = 0.693 × (R1 + R2) × C1. Time off = 0.693 × R2 × C1. With the diode fitted, time on = 0.693 × R1 × C1.</p>
+  </div>
+
+  <div class="check" data-step="2">
+    <div><span class="tag">Checkpoint</span><p>Can you explain:</p>
+      <ul><li>why changing the battery voltage doesn't change the timing,</li><li>why the duty cycle is always over 50% without the diode, and how the diode fixes it?</li></ul></div>
+    <button class="done" type="button" aria-pressed="false">I can</button>
+  </div>
+</section>
+
+<!-- ============ STAGE 3 ============ -->
+<section class="step">
+  <p class="tag eyebrow">Stage 3</p>
+  <h2>Build it for real</h2>
+  <p>Time to build the LED flasher on the breadboard: R1&nbsp;10k, R2&nbsp;47k, C1&nbsp;10&nbsp;µF. The bench says it should flash about 1.4 times a second.</p>
+  <h3>Which pin is which</h3>
+  <p>The 555 has 8 legs, 4 down each side. Find the <strong>notch</strong> or the <strong>dot</strong> at one end. With that end pointing away from you, pin 1 is top left, and the numbers go <strong>down the left side and back up the right</strong>, anticlockwise.</p>
+  <div class="pinout">
+    <svg viewBox="0 0 420 230" role="img" aria-label="555 pinout: left side top to bottom pins 1 ground, 2 trigger, 3 output, 4 reset. Right side bottom to top pins 5 control, 6 threshold, 7 discharge, 8 positive supply.">
+      <rect x="150" y="20" width="120" height="190" rx="6" fill="#17202B"/>
+      <path d="M195 20 a15 15 0 0 0 30 0" fill="#E4E6E1"/>
+      <circle cx="170" cy="42" r="5" fill="#57616E"/>
+      <text x="210" y="125" fill="#E4E6E1" font-family="IBM Plex Mono,monospace" font-size="15" text-anchor="middle" font-weight="600">NE555</text>
+      <g fill="#B7BCB4">
+        <rect x="128" y="44" width="22" height="10"/><rect x="128" y="88" width="22" height="10"/><rect x="128" y="132" width="22" height="10"/><rect x="128" y="176" width="22" height="10"/>
+        <rect x="270" y="44" width="22" height="10"/><rect x="270" y="88" width="22" height="10"/><rect x="270" y="132" width="22" height="10"/><rect x="270" y="176" width="22" height="10"/>
+      </g>
+      <g font-family="IBM Plex Mono,monospace" font-size="13" fill="#17202B">
+        <text x="120" y="53" text-anchor="end">1 · negative</text>
+        <text x="120" y="97" text-anchor="end">2 · trigger</text>
+        <text x="120" y="141" text-anchor="end">3 · output</text>
+        <text x="120" y="185" text-anchor="end">4 · reset</text>
+        <text x="300" y="53">8 · positive</text>
+        <text x="300" y="97">7 · discharge</text>
+        <text x="300" y="141">6 · threshold</text>
+        <text x="300" y="185">5 · control</text>
+      </g>
+    </svg>
+  </div>
+  <ol>
+    <li>Push the 555 into the breadboard across the middle gap, so each leg has its own row.</li>
+    <li>Pin 8 and pin 4 to the red line. Pin 4 is reset: tied to positive, it never resets.</li>
+    <li>Pin 1 to the blue line.</li>
+    <li><strong>R1</strong>, 10&nbsp;kΩ, from the red line to pin 7.</li>
+    <li><strong>R2</strong>, 47&nbsp;kΩ, from pin 7 to pin 6.</li>
+    <li>A jumper wire from pin 6 to pin 2. Both tripwires watch the same capacitor.</li>
+    <li><strong>C1</strong>, 10&nbsp;µF, from pin 2 to the blue line, <strong>stripe to the blue line</strong>.</li>
+    <li>From pin 3: a 470&nbsp;Ω resistor, then the LED (long leg first), to the blue line.</li>
+    <li>Connect the battery.</li>
+  </ol>
+  <div class="warn">
+    <span class="tag">Keep R1 at 1&nbsp;kΩ or more</span>
+    <p>Every time C1 empties, pin 7 also carries the current coming down through R1 from the battery. With R1 tiny, that current gets big enough to cook the chip. The bench warns you when you get close.</p>
+  </div>
+  <div class="predict">
+    <span class="tag">Measure it</span>
+    <p>Count the flashes for 10 seconds. The bench says about 14. What do you get?</p>
+  </div>
+  <details class="answer">
+    <summary>Why yours is different</summary>
+    <p>You'll probably count anything from about 11 to 17, and that's not a mistake. The bench uses <strong>perfect</strong> parts. Electrolytic capacitors are made loosely: a "10&nbsp;µF" one can easily be 20% bigger or smaller than its label, and resistors are only within 5%. Real parts are close, not exact. The gap between what the sums predict and what the bench in front of you actually does is where most of the learning in electronics happens.</p>
+    <p>If you get the chance to put a real oscilloscope on pins 3 and 6, you'll see the same two traces as the bench, with a few extra details the simulation leaves out, like a small spike each time the output switches.</p>
+  </details>
+  <p>Now swap parts the way the jumpers did. Try C1 at 1&nbsp;µF, then put a 100&nbsp;nF capacitor in and the speaker on pin 3 in place of the LED. You've built a beeper. Put the 10&nbsp;kΩ trimmer in series with R2, and you can tune it.</p>
+  <div class="check" data-step="3">
+    <div><span class="tag">Checkpoint</span><p>Can you explain:</p>
+      <ul><li>which pin is pin 1, and how to count the rest,</li><li>why your real flash count isn't exactly the bench's?</li></ul></div>
+    <button class="done" type="button" aria-pressed="false">I can</button>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Where next</p>
+  <h2>Hand the switch to a computer</h2>
+  <p>A 555 can only do one thing: keep time. Before cheap microcontrollers, that's how almost everything that blinked or beeped was made. The next guide hands the job to a computer instead. A Raspberry Pi can flash an LED at any rate you type, read a button, and decide what to do next. <a href="pi-gpio.html">Hand the switch to a computer</a> is the next guide on this path.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">That's part three</p>
+  <h2>What I'd want you to take away</h2>
+  <div class="takeaways">
+    <div class="take">
+      <h3>Two tripwires</h3>
+      <p>The 555 fills and empties a capacitor between a third and two thirds of the battery, and flips its output each time.</p>
+    </div>
+    <div class="take">
+      <h3>R × C sets the time</h3>
+      <p>Charge through R1 and R2, empty through R2. Bigger parts, slower timing. The battery voltage cancels out.</p>
+    </div>
+    <div class="take">
+      <h3>Real parts aren't exact</h3>
+      <p>The sums get you close. The chip in front of you will be a little off, and finding out why is the fun part.</p>
+    </div>
+  </div>
+  <p style="margin-top:26px">Stuck on a checkpoint, or found something wrong? <a href="contact.html">Tell me</a>. If a stage didn't make sense, that's my fault, and I'll fix it.</p>
+</section>
+
+</main>
+
+<section class="read-next">
+  <div class="wrap col">
+    <p class="tag">On the same path</p>
+    <a class="card" href="electronics-2.html">
+      <h3>Back: Stripes, storage and switches</h3>
+      <p>Read a resistor's stripes, make an LED fade with a capacitor, and switch a big current with a small one.</p>
+      <span class="go">Read &rarr;</span>
+    </a>
+    <a class="card" href="pi-gpio.html">
+      <h3>Next: Hand the switch to a computer</h3>
+      <p>Blink an LED from Python, read a button, and learn the 3.3 volt rule.</p>
+      <span class="go">Read &rarr;</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">← Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="contact.html">Get in touch</a>
+    <a href="offline.html">Use offline</a>
+    <span class="tag">© 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* ---------- checkpoints and progress meter ---------- */
+  var KEY='electronics-3-steps';
+  var buttons=[].slice.call(document.querySelectorAll('.check .done'));
+  var saved={};
+  try{ saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){ saved={}; }
+  function update(){
+    var n=buttons.filter(function(b){return b.getAttribute('aria-pressed')==='true';}).length;
+    document.getElementById('fill').style.width=(n/buttons.length*100)+'%';
+    document.getElementById('progress-text').textContent=
+      n===buttons.length ? 'All 3 checkpoints passed. Part three done.' : n+' of '+buttons.length+' checkpoints passed';
+  }
+  buttons.forEach(function(b){
+    var s=b.parentNode.getAttribute('data-step');
+    if(saved[s]){ b.setAttribute('aria-pressed','true'); b.textContent='Yes ✓'; }
+    b.addEventListener('click',function(){
+      var on=b.getAttribute('aria-pressed')!=='true';
+      b.setAttribute('aria-pressed',on?'true':'false');
+      b.textContent=on?'Yes ✓':'I can';
+      saved[s]=on;
+      try{ localStorage.setItem(KEY,JSON.stringify(saved)); }catch(e){}
+      update();
+    });
+  });
+  update();
+
+  /* ---------- the jumper bench ---------- */
+  var R_VALUES=[1e3,2.2e3,4.7e3,10e3,22e3,47e3,100e3,470e3];
+  var C_VALUES=[1e-9,10e-9,100e-9,1e-6,10e-6,100e-6];
+  var st={r1:10e3,r2:47e3,c:10e-6,pot:0,diode:false,vcc:9};
+  var PRESETS={
+    flasher:{r1:10e3,r2:47e3,c:10e-6,pot:0,diode:false},
+    beeper:{r1:1e3,r2:10e3,c:100e-9,pot:0,diode:false},
+    square:{r1:10e3,r2:10e3,c:100e-9,pot:0,diode:true},
+    metro:{r1:1e3,r2:470e3,c:1e-6,pot:0,diode:false}
+  };
+  function trim(x){ return (+x.toPrecision(3)).toString(); }
+  function fmtR(v){ return v>=1e6?trim(v/1e6)+' MΩ':v>=1e3?trim(v/1e3)+' kΩ':Math.round(v)+' Ω'; }
+  function fmtC(v){ return v>=1e-6?trim(v*1e6)+' µF':v>=1e-9?trim(v*1e9)+' nF':trim(v*1e12)+' pF'; }
+  function fmtT(s){ if(s>=1) return trim(s)+' s'; if(s>=1e-3) return trim(s*1e3)+' ms'; if(s>=1e-6) return trim(s*1e6)+' µs'; return trim(s*1e9)+' ns'; }
+  function fmtF(f){ if(f>=1e6) return trim(f/1e6)+' MHz'; if(f>=1e3) return trim(f/1e3)+' kHz'; return trim(f)+' Hz'; }
+
+  function bank(id,key,title,where,values,fmt){
+    var el=document.getElementById(id);
+    el.innerHTML='<div class="bank-head"><span class="silk">'+title+'</span><span class="silk dim">'+where+'</span><span class="val" id="'+key+'Val"></span></div>'+
+      '<div class="pins" role="radiogroup" aria-label="'+title+'"></div>';
+    var pins=el.querySelector('.pins');
+    values.forEach(function(v){
+      var b=document.createElement('button');
+      b.type='button'; b.className='pin'; b.setAttribute('role','radio'); b.dataset.v=v; b.dataset.key=key;
+      b.setAttribute('aria-label',title+' '+fmt(v));
+      b.innerHTML='<span class="hdr"><i></i><i></i><span class="capj"></span></span><span class="lbl">'+fmt(v).replace(' ','')+'</span>';
+      b.addEventListener('click',function(){ st[key]=v; render(); });
+      pins.appendChild(b);
+    });
+  }
+  bank('bankR1','r1','R1','pin 8 to 7',R_VALUES.slice(0,7),fmtR);
+  bank('bankR2','r2','R2','pin 7 to 6',R_VALUES,fmtR);
+  bank('bankC1','c','C1','pin 6 to negative',C_VALUES,fmtC);
+
+  var pot=document.getElementById('pot'), diode=document.getElementById('diode');
+  pot.addEventListener('input',function(){ st.pot=+pot.value; render(); });
+  diode.addEventListener('change',function(){ st.diode=diode.checked; render(); });
+  [].forEach.call(document.querySelectorAll('.vsel button'),function(b){
+    b.addEventListener('click',function(){ st.vcc=+b.dataset.v; render(); });
+  });
+  [].forEach.call(document.querySelectorAll('[data-preset]'),function(b){
+    b.addEventListener('click',function(){
+      var p=PRESETS[b.dataset.preset]; for(var k in p) st[k]=p[k];
+      pot.value=st.pot; diode.checked=st.diode; render();
+    });
+  });
+
+  function timing(){
+    var R2=st.r2+st.pot, C=st.c;
+    var tauC=(st.diode?st.r1:st.r1+R2)*C, tauD=R2*C;
+    var tH=Math.LN2*tauC, tL=Math.LN2*tauD, T=tH+tL;
+    return {R2:R2,C:C,tauC:tauC,tauD:tauD,tH:tH,tL:tL,T:T,f:1/T,duty:tH/T,tFirst:tauC*Math.log(3)};
+  }
+  function waveform(tm,span){
+    var V=st.vcc, segs=[], t=0, v0=0, high=true;
+    while(t<span && segs.length<4000){
+      var dur=high? tm.tauC*Math.log((V-v0)/(V/3)) : tm.tL;
+      segs.push({t0:t,high:high,v0:v0}); t+=dur; v0=high?2*V/3:V/3; high=!high;
+    }
+    return function(tt){
+      var lo=0, hi=segs.length-1;
+      while(lo<hi){ var m=(lo+hi+1)>>1; if(segs[m].t0<=tt) lo=m; else hi=m-1; }
+      var s=segs[lo], dt=tt-s.t0;
+      return { cap: s.high ? V-(V-s.v0)*Math.exp(-dt/tm.tauC) : s.v0*Math.exp(-dt/tm.tauD),
+               out: s.high ? V-1.5 : 0.05 };
+    };
+  }
+  function niceDiv(x){ var p=Math.pow(10,Math.floor(Math.log10(x))); var ms=[1,2,5,10]; for(var i=0;i<ms.length;i++) if(ms[i]*p>=x) return ms[i]*p; return 10*p; }
+
+  var cv=document.getElementById('scr'), ctx=cv.getContext('2d');
+  var cfg=null, sweepStart=performance.now();
+  var reduce=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function size(){ var r=cv.getBoundingClientRect(), d=window.devicePixelRatio||1; cv.width=Math.round(r.width*d); cv.height=Math.round(r.height*d); }
+  function draw(now){
+    if(!cfg||!cv.width) return;
+    var W=cv.width, H=cv.height, d=window.devicePixelRatio||1, V=st.vcc;
+    ctx.clearRect(0,0,W,H);
+    var dx=W/10, dy=H/6, i;
+    ctx.strokeStyle='rgba(87,199,154,.12)'; ctx.lineWidth=1;
+    for(i=0;i<=10;i++){ ctx.beginPath(); ctx.moveTo(i*dx,0); ctx.lineTo(i*dx,H); ctx.stroke(); }
+    for(i=0;i<=6;i++){ ctx.beginPath(); ctx.moveTo(0,i*dy); ctx.lineTo(W,i*dy); ctx.stroke(); }
+    function y(v){ return H-dy*0.5-(v/cfg.vdiv)*dy; }
+    ctx.setLineDash([4*d,5*d]); ctx.strokeStyle='rgba(87,199,154,.45)';
+    [V/3,2*V/3].forEach(function(v){ ctx.beginPath(); ctx.moveTo(0,y(v)); ctx.lineTo(W,y(v)); ctx.stroke(); });
+    ctx.setLineDash([]);
+    ctx.font=(11*d)+'px "IBM Plex Mono",monospace'; ctx.fillStyle='rgba(143,166,156,.9)';
+    ctx.fillText('top tripwire · ⅔ of battery',6*d,y(2*V/3)-5*d);
+    ctx.fillText('bottom tripwire · ⅓ of battery',6*d,y(V/3)+14*d);
+    var frac=reduce?1:Math.min(1,((now-sweepStart)%2600)/1800);
+    var n=Math.max(2,Math.floor(W*frac)), span=cfg.tdiv*10;
+    [['out','#E0982B'],['cap','#57C79A']].forEach(function(ch){
+      ctx.strokeStyle=ch[1]; ctx.lineWidth=2*d; ctx.shadowColor=ch[1]; ctx.shadowBlur=5*d; ctx.beginPath();
+      for(var x=0;x<n;x++){ var p=cfg.fn(x/W*span), yy=y(p[ch[0]]); if(x) ctx.lineTo(x,yy); else ctx.moveTo(x,yy); }
+      ctx.stroke();
+    });
+    ctx.shadowBlur=0;
+  }
+  var bulb=document.getElementById('bulb'), ledTxt=document.getElementById('ledTxt');
+  function led(now){
+    if(!cfg) return; var tm=cfg.tm;
+    if(tm.f<=25){
+      var on=((now/1000)%tm.T)<tm.tH;
+      bulb.style.background=on?'#FF4A33':'#3A1512'; bulb.style.boxShadow=on?'0 0 14px #FF4A33':'none';
+      ledTxt.textContent='LED on pin 3, flashing in real time';
+    } else {
+      var a=0.25+0.75*tm.duty;
+      bulb.style.background='rgba(255,74,51,'+a.toFixed(2)+')'; bulb.style.boxShadow='0 0 '+(10*a).toFixed(1)+'px #FF4A33';
+      ledTxt.textContent='Too fast to see: the LED looks steady, at '+Math.round(tm.duty*100)+'% brightness';
+    }
+  }
+  function loop(now){ draw(now); led(now); requestAnimationFrame(loop); }
+
+  /* sound, only after the Listen button is pressed */
+  var ac=null, osc=null, gain=null, listen=document.getElementById('listen');
+  listen.addEventListener('click',function(){
+    if(osc){ osc.stop(); osc=null; listen.setAttribute('aria-pressed','false'); listen.className='jb-btn'; listen.textContent='Listen'; return; }
+    try{
+      ac=ac||new (window.AudioContext||window.webkitAudioContext)(); ac.resume();
+      gain=ac.createGain(); gain.gain.value=0.06; gain.connect(ac.destination);
+      osc=ac.createOscillator(); osc.connect(gain); tone(); osc.start();
+      listen.setAttribute('aria-pressed','true'); listen.className='jb-btn on'; listen.textContent='Stop';
+    }catch(e){ document.getElementById('note').textContent='Sound could not start in this browser.'; }
+  });
+  function tone(){
+    if(!osc||!cfg) return;
+    var tm=cfg.tm, N=64, re=new Float32Array(N), im=new Float32Array(N), D=tm.duty;
+    for(var k=1;k<N;k++){ re[k]=2/(k*Math.PI)*Math.sin(2*Math.PI*k*D); im[k]=2/(k*Math.PI)*(1-Math.cos(2*Math.PI*k*D)); }
+    osc.setPeriodicWave(ac.createPeriodicWave(re,im));
+    osc.frequency.setTargetAtTime(Math.min(20000,Math.max(0.5,tm.f)),ac.currentTime,0.01);
+  }
+
+  function schematic(){
+    var R2t=st.pot?fmtR(st.r2)+' + '+fmtR(st.pot):fmtR(st.r2);
+    return '<svg viewBox="0 0 520 250" role="img" aria-label="555 flasher circuit with the parts as set">'+
+    '<g stroke="#E3ECE5" stroke-width="1.6" fill="none">'+
+    '<rect x="250" y="40" width="130" height="170" rx="4" fill="rgba(0,0,0,.35)"/>'+
+    '<path d="M60 20 H430 V40 M60 20 V40"/>'+
+    '<rect x="52" y="40" width="16" height="44"/><path d="M60 84 V105 H250"/>'+
+    '<rect x="52" y="115" width="16" height="44"/><path d="M60 105 V115 M60 159 V170 H250 M60 170 V185"/>'+
+    '<path d="M44 185 H76 M44 193 H76 M60 193 V230 H430"/>'+
+    '<path d="M160 170 V140 H250"/>'+
+    (st.diode?'<path d="M90 105 V159 H60" stroke="#E0982B"/><path d="M83 127 L97 127 L90 139 Z M83 139 H97" stroke="#E0982B" fill="#E0982B"/>':'')+
+    '<path d="M315 20 V40 M315 210 V230 M380 90 H430"/>'+
+    '<circle cx="445" cy="90" r="8" fill="#FF4A33" stroke="none"/><path d="M430 90 H437 M453 90 H470 V230 H430"/>'+
+    '</g><g fill="#E3ECE5" font-family="IBM Plex Mono,monospace" font-size="11">'+
+    '<text x="315" y="125" text-anchor="middle" font-size="16" font-weight="600">NE555</text>'+
+    '<text x="256" y="102">7 DIS</text><text x="256" y="137">6 THR</text><text x="256" y="167">2 TRIG</text>'+
+    '<text x="300" y="54">8 +</text><text x="300" y="204">1 −</text><text x="340" y="94">3 OUT</text>'+
+    '<text x="76" y="66" fill="#F2C46A">R1 '+fmtR(st.r1)+'</text>'+
+    '<text x="'+(st.diode?102:76)+'" y="141" fill="#F2C46A">R2 '+R2t+'</text>'+
+    '<text x="82" y="194" fill="#F2C46A">C1 '+fmtC(st.c)+'</text>'+
+    '<text x="436" y="114">LED</text>'+
+    '<text x="66" y="14">+'+st.vcc+' V</text><text x="66" y="246">0 V</text>'+
+    '</g></svg>';
+  }
+
+  function render(){
+    var tm=timing();
+    ['r1','r2','c'].forEach(function(k){
+      [].forEach.call(document.querySelectorAll('.pin[data-key="'+k+'"]'),function(p){ p.setAttribute('aria-checked',+p.dataset.v===st[k]?'true':'false'); });
+      document.getElementById(k+'Val').textContent=k==='c'?fmtC(st[k]):fmtR(st[k]);
+    });
+    document.getElementById('potVal').textContent=fmtR(st.pot);
+    [].forEach.call(document.querySelectorAll('.vsel button'),function(b){ b.setAttribute('aria-pressed',+b.dataset.v===st.vcc?'true':'false'); });
+    var span=tm.tFirst+2.6*tm.T, tdiv=niceDiv(span/10), vdiv=niceDiv(st.vcc/4.5);
+    cfg={tm:tm,tdiv:tdiv,vdiv:vdiv,fn:waveform(tm,tdiv*10+tm.T)}; sweepStart=performance.now();
+    document.getElementById('scales').innerHTML='<span>Time <b>'+fmtT(tdiv)+' per square</b></span><span>Both channels <b>'+vdiv+' V per square</b></span><span>Trace starts at switch-on</span>';
+    var iDis=st.vcc/st.r1*1000;
+    var rows=[['Frequency',fmtF(tm.f)],['One cycle',fmtT(tm.T)],['Time on',fmtT(tm.tH)],['Time off',fmtT(tm.tL)],['Duty cycle',(tm.duty*100).toFixed(1)+'%'],['Pin 7 current',iDis.toFixed(1)+' mA']];
+    document.getElementById('readouts').innerHTML=rows.map(function(r){ return '<div><dt>'+r[0]+'</dt><dd>'+r[1]+'</dd></div>'; }).join('');
+    var notes=[];
+    if(!st.diode && tm.duty>0.9) notes.push('R1 is much bigger than R2, so the output is on almost all the time.');
+    if(st.diode) notes.push('The diode is in: C1 fills through R1 only. A real diode drops about 0.6 V, so on a real breadboard the on-time runs a little longer than shown.');
+    if(iDis>15) notes.push('<span class="bad">Pin 7 has to carry '+iDis.toFixed(0)+' mA every cycle. Keep R1 at 1 kΩ or more on a real chip.</span>');
+    if(tm.f>20000) notes.push('<span class="bad">Above 20 kHz: too high to hear, so Listen stops at 20 kHz.</span>');
+    else if(tm.f<20) notes.push('Below about 20 Hz you hear separate clicks, not a tone.');
+    document.getElementById('note').innerHTML=notes.join(' ');
+    document.getElementById('schem').innerHTML=schematic();
+    document.getElementById('fHigh').textContent='0.693 × '+(st.diode?fmtR(st.r1):'('+fmtR(st.r1)+' + '+fmtR(tm.R2)+')')+' × '+fmtC(tm.C)+' = '+fmtT(tm.tH);
+    document.getElementById('fLow').textContent='0.693 × '+fmtR(tm.R2)+' × '+fmtC(tm.C)+' = '+fmtT(tm.tL);
+    document.getElementById('fFreq').textContent='1 ÷ ('+fmtT(tm.tH)+' + '+fmtT(tm.tL)+') = '+fmtF(tm.f);
+    tone();
+  }
+  window.addEventListener('resize',size);
+  size(); render(); requestAnimationFrame(loop);
+})();
+</script>
+
+<script src="sw-register.js" defer></script>
+</body>
+</html>
