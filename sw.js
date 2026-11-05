@@ -23,7 +23,7 @@
    ------------------------------------------------------------ */
 
 // VERSION-START
-const VERSION = 'site-d6990fcd0f';
+const VERSION = 'site-e38ed792bc';
 // VERSION-END
 
 const PAGES = `${VERSION}-pages`;
@@ -51,6 +51,7 @@ const PRECACHE = [
   'ears-on.html',
   'electronics-1.html',
   'electronics-2.html',
+  'electronics-3.html',
   'esp32-clock.html',
   'gallery.html',
   'github-setup.html',
