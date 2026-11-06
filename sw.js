@@ -23,7 +23,7 @@
    ------------------------------------------------------------ */
 
 // VERSION-START
-const VERSION = 'site-e38ed792bc';
+const VERSION = 'site-8d058a0b33';
 // VERSION-END
 
 const PAGES = `${VERSION}-pages`;
@@ -62,6 +62,7 @@ const PRECACHE = [
   'neural_playground.html',
   'next-word.html',
   'offline-site.html',
+  'offline-tools.html',
   'offline.html',
   'phone-cleanup.html',
   'pi-gpio.html',

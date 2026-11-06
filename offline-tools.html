@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prepare now, relax later: free tools that work with no internet — Iain Hoggan</title>
+<meta name="description" content="Free, trusted tools that keep working when the internet and mobile network don't: offline Wikipedia, offline maps, a first aid app, official guidance and more. Where to get the real ones, what to download in advance, and the airplane-mode test that proves they work.">
+<link rel="canonical" href="https://ihoggan.github.io/offline-tools.html">
+<meta property="og:site_name" content="Iain Hoggan">
+<meta property="og:locale" content="en_GB">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ihoggan.github.io/offline-tools.html">
+<meta property="og:title" content="Prepare now, relax later">
+<meta property="og:description" content="Free tools that keep working with no internet: offline Wikipedia, maps, first aid and more. Download the real ones now, then prove they work with the airplane-mode test.">
+<meta property="og:image" content="https://ihoggan.github.io/images/og-offline-tools.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Prepare now, relax later. Guide, Ready not scared, step 4. Download now, test in airplane mode, refresh every few months.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Prepare now, relax later: free tools that work with no internet", "description": "Free tools that keep working with no internet: offline Wikipedia, maps, first aid and more. Download the real ones now, then prove they work with the airplane-mode test.", "image": "https://ihoggan.github.io/images/og-offline-tools.png", "datePublished": "2026-11-06", "dateModified": "2026-11-06", "inLanguage": "en-GB", "author": {"@type": "Person", "name": "Iain Hoggan", "url": "https://ihoggan.github.io/about.html"}, "mainEntityOfPage": "https://ihoggan.github.io/offline-tools.html"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+main.wrap{padding-top:52px;padding-bottom:40px}
+.standfirst{font-size:1.12rem;color:var(--ink-2);max-width:34em}
+.standfirst strong{color:var(--ink);font-weight:600}
+main section p{max-width:38em}
+main h2{max-width:18em;margin-bottom:14px}
+main h3{margin:22px 0 8px}
+main ul,main ol{max-width:36em;margin:0 0 16px 1.2em}
+main li{margin-bottom:6px}
+.warn{border-left:3px solid var(--alarm);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.warn .tag{display:block;margin-bottom:4px;color:var(--alarm)}
+.warn p{margin:0}
+.warn p+p{margin-top:8px}
+.predict{border-left:3px solid var(--lamp);padding:2px 0 2px 18px;margin:18px 0;max-width:38em}
+.predict .tag{display:block;margin-bottom:4px;color:var(--lamp)}
+.predict p{margin:0}
+.tool{max-width:40em;margin:18px 0 22px;border:1px solid var(--bezel);border-radius:4px;overflow:hidden;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.tool .head{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;padding:12px 16px;border-bottom:1px solid var(--rule)}
+.tool .head h3{margin:0;font-size:1.05rem}
+.tool .head .tag{margin-left:auto}
+.tool dl{display:grid;grid-template-columns:9.5em 1fr;gap:8px 14px;margin:0;padding:12px 16px}
+.tool dt{font:600 11px/1.6 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2)}
+.tool dd{margin:0;font-size:.97rem}
+@media(max-width:560px){.tool dl{grid-template-columns:1fr;gap:2px}.tool dd{margin-bottom:8px}}
+.takeaways{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:26px}
+.take{background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);border-radius:4px;padding:18px;box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.take h3{font-size:1rem;margin:0 0 8px}
+.take p{font-size:.94rem;color:var(--ink-2);margin:0}
+.calc{max-width:40em;margin:20px 0 22px;padding:16px 18px}
+.calc .cap{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#6E8A80;margin-bottom:12px}
+.ticks{display:grid;gap:10px}
+.ticks label{font:13.5px/1.5 var(--mono);color:#CFE3DA;display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.ticks input{accent-color:var(--trace);margin-top:3px;flex:none;width:16px;height:16px}
+.ticks input:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.ticks small{display:block;color:#8FA69C;font-size:11.5px}
+.verdict{margin-top:14px;padding-top:12px;border-top:1px solid rgba(87,199,154,.18);font:600 13px/1.55 var(--mono);color:#93A79E}
+.verdict.ok{color:var(--trace)}
+.verdict.amber{color:#E7B863}
+.calc .note{margin-top:10px;font:11px/1.55 var(--mono);color:#8FA69C}
+.calc button{margin-top:12px;font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:8px 12px;border-radius:3px;
+  cursor:pointer;border:1px solid #2B3B44;background:#16232B;color:#A9BFB5}
+.calc button:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.check{display:flex;gap:14px;align-items:flex-start;max-width:38em;margin:20px 0 6px;
+  border:1px solid var(--bezel);border-radius:4px;padding:14px 16px;
+  background:linear-gradient(180deg,var(--engrave),var(--panel-2));box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.check .tag{display:block;margin-bottom:4px;color:#2F8A63}
+.check p{margin:0;font-size:.97rem}
+.read-next{border-top:1px solid var(--rule);padding:44px 0 8px}
+.read-next .card{margin-top:14px;max-width:640px}
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0F181E">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+</head>
+<body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html" aria-label="Home">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap col">
+    <p class="tag">Guide · Ready, not scared, step 4 · Downloads · An evening</p>
+    <h1>Prepare now, relax later</h1>
+    <p class="standfirst">When the power goes, the mobile network can follow within hours, and with it every app that needs the internet. Some excellent free tools <strong>keep working with no signal at all</strong>, but only if they're on your phone or laptop before you need them. This is my shortlist: what each one does offline, where to get the <strong>real</strong> one, what to download in advance, and a simple test that proves it all works.</p>
+    <div class="spec">
+      <div><b>£0</b><span>for every app here</span></div>
+      <div><b>Wi-Fi</b><span>download at home, not on data</span></div>
+      <div><b>1</b><span>test: airplane mode</span></div>
+      <div><b>3 months</b><span>then refresh</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap col">
+
+<section>
+  <p class="tag eyebrow">Before you start</p>
+  <h2>Three rules for downloading</h2>
+  <ol>
+    <li><strong>Only from the official source.</strong> Every link on this page goes to the tool's own website or the charity or government body that makes it. App stores are full of look-alikes with similar names and icons. <a href="real-thing.html">Is it the real thing?</a> shows how to check what's actually on a Linux machine; on a phone, check the publisher's name under the app before you install.</li>
+    <li><strong>Download at home, on Wi-Fi.</strong> Some of these files are big. Doing it on mobile data costs money and takes ages.</li>
+    <li><strong>Check your space first.</strong> On a phone, look in Settings for storage. Leave a few gigabytes free so the phone itself keeps working.</li>
+  </ol>
+  <p>None of these tools needs an account, and none of them needs to know who you are.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 1</p>
+  <h2>A library in your pocket</h2>
+  <div class="tool">
+    <div class="head"><h3>Kiwix</h3><span class="tag">Phone · laptop · desktop</span></div>
+    <dl>
+      <dt>What it does</dt><dd>Reads whole websites offline. Download Wikipedia once, and you can look anything up with no signal.</dd>
+      <dt>Worth downloading</dt><dd>Wikipedia in your language, the medical edition of Wikipedia, Wikivoyage (travel), and Project Gutenberg (free books).</dd>
+      <dt>Size</dt><dd>Varies a lot. The full English Wikipedia with pictures is very large, but text-only and "top articles" versions are made to fit on a phone. Start small.</dd>
+      <dt>Get it</dt><dd><a href="https://kiwix.org/en/">kiwix.org</a>, or search "Kiwix" in your app store and check the publisher is Kiwix.</dd>
+    </dl>
+  </div>
+  <p>This site works offline too. <a href="offline.html">Use offline</a> explains how to save it, so these guides are still there when the internet isn't.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 2</p>
+  <h2>Maps that don't need a signal</h2>
+  <div class="tool">
+    <div class="head"><h3>CoMaps, or Organic Maps</h3><span class="tag">Phone</span></div>
+    <dl>
+      <dt>What it does</dt><dd>Full maps with search and walking, cycling and driving directions, all worked out on the phone itself.</dd>
+      <dt>Worth downloading</dt><dd>Your own county, plus anywhere you travel to regularly: work, family, the route home.</dd>
+      <dt>Size</dt><dd>Maps download by region, so you only store the areas you choose.</dd>
+      <dt>Get it</dt><dd>CoMaps is a community-run version of Organic Maps that <a href="https://www.comaps.app/news/2025-07-03/AlternativeTo-Organic-Maps-fork-CoMaps-launches-on-major-app-stores-for-iOS-and-Android">arrived on the app stores in 2025</a>. Either works. Both use <a href="https://wiki.openstreetmap.org/wiki/Organic_Maps">OpenStreetMap</a> data.</dd>
+    </dl>
+  </div>
+  <div class="predict">
+    <span class="tag">Try this</span>
+    <p>Once your county is downloaded, plan the walk home from somewhere you go often. If your phone can do that in airplane mode, it can do it in a power cut.</p>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 3</p>
+  <h2>First aid, from people who teach it</h2>
+  <div class="tool">
+    <div class="head"><h3>British Red Cross first aid apps</h3><span class="tag">Phone</span></div>
+    <dl>
+      <dt>What it does</dt><dd>Step-by-step first aid for over 20 situations. The Red Cross says its general app <strong>works without internet</strong>. There's a separate app for babies and children.</dd>
+      <dt>Worth doing</dt><dd>Open it once and read a few skills now, while you're calm. An app is a reminder, not training.</dd>
+      <dt>Get it</dt><dd><a href="https://www.redcross.org.uk/first-aid/first-aid-apps">redcross.org.uk/first-aid/first-aid-apps</a>. Free, from the British Red Cross.</dd>
+    </dl>
+  </div>
+  <div class="warn">
+    <span class="tag">In an emergency</span>
+    <p>Call <strong>999</strong> first. If the mobile network is down, 999 calls can still get through on another network's masts, so try anyway.</p>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 4</p>
+  <h2>The official word, saved in advance</h2>
+  <div class="tool">
+    <div class="head"><h3>UK government emergency preparedness pages</h3><span class="tag">Any browser</span></div>
+    <dl>
+      <dt>What it is</dt><dd>The government's own advice on power cuts, flooding, severe weather and more.</dd>
+      <dt>Worth doing</dt><dd>Open the pages that matter to you and save them for offline reading, or print them.</dd>
+      <dt>Get it</dt><dd><a href="https://beready.campaign.gov.uk/be-informed-about-hazards/power-cuts/">The government's power cut advice</a>, and the rest of the site from there.</dd>
+    </dl>
+  </div>
+  <p>And on paper, by the fuse box: <strong>105</strong>, the free number for a power cut. <a href="power-cut.html">When the lights go out</a> explains why it's the number to call.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 5</p>
+  <h2>Everyday tools that already work offline</h2>
+  <p>On a laptop or desktop, these free programs need no internet once they're installed:</p>
+  <div class="tool">
+    <div class="head"><h3>Four for the laptop</h3><span class="tag">Windows · Mac · Linux</span></div>
+    <dl>
+      <dt>KeePassXC</dt><dd>A password manager that keeps everything in one encrypted file on your own computer. <a href="https://keepassxc.org/">keepassxc.org</a></dd>
+      <dt>LibreOffice</dt><dd>Documents, spreadsheets and presentations. <a href="https://www.libreoffice.org/">libreoffice.org</a></dd>
+      <dt>Calibre</dt><dd>Organises and reads ebooks, including Project Gutenberg's. <a href="https://calibre-ebook.com/">calibre-ebook.com</a></dd>
+      <dt>VLC</dt><dd>Plays almost any video or music file you've saved. <a href="https://www.videolan.org/">videolan.org</a></dd>
+    </dl>
+  </div>
+  <p>If you use a password manager that lives online, check whether it keeps a copy on your device. Some do and some don't, and you don't want to find out with no signal.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 6 · Optional</p>
+  <h2>Messages with no network at all</h2>
+  <div class="tool">
+    <div class="head"><h3>Meshtastic</h3><span class="tag">Needs small radios</span></div>
+    <dl>
+      <dt>What it does</dt><dd>Small, cheap radios pair with your phone and pass text messages to each other, hopping from radio to radio, with no mobile network or internet.</dd>
+      <dt>In the UK</dt><dd>They use the licence-free 868&nbsp;MHz band. Range depends on height and buildings: a few miles from a high window, much less at street level.</dd>
+      <dt>Worth knowing</dt><dd>It only helps if the people you want to reach have one too. Good for a family or a street, not a replacement for 999.</dd>
+      <dt>Read more</dt><dd><a href="https://www.linuxpromagazine.com/Issues/2025/299/Meshtastic">Linux Magazine: messaging off the grid with Meshtastic</a></dd>
+    </dl>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">Part 7</p>
+  <h2>The airplane-mode test</h2>
+  <p>This is the step that matters most. Plenty of people install an offline map, then find out in a power cut that they never actually downloaded the map. So: switch your phone to <strong>airplane mode</strong>, with Wi-Fi off as well, and try each tool. Tick it off when it works.</p>
+  <div class="calc well">
+    <div class="cap">Airplane-mode test · ticks stay on this device only</div>
+    <div class="ticks" id="ticks">
+      <label><input type="checkbox" data-k="kiwix"><span>Kiwix opens an article<small>Search for something, open it, follow a link.</small></span></label>
+      <label><input type="checkbox" data-k="maps"><span>The map shows my area and plans a route<small>Search for a street near home and get walking directions.</small></span></label>
+      <label><input type="checkbox" data-k="firstaid"><span>The first aid app opens a skill<small>Open "bleeding" or "burns" and scroll through it.</small></span></label>
+      <label><input type="checkbox" data-k="gov"><span>The saved government pages open<small>From your saved pages or reading list.</small></span></label>
+      <label><input type="checkbox" data-k="site"><span>This site opens<small>Try a page from the home screen or bookmark.</small></span></label>
+      <label><input type="checkbox" data-k="paper"><span>105 is written down by the fuse box<small>Paper works when every battery is flat.</small></span></label>
+    </div>
+    <div class="verdict" id="verdict" aria-live="polite"></div>
+    <button type="button" id="reset">Start a new test</button>
+    <p class="note">Nothing here is sent anywhere. Your ticks and the date you last tested are kept in this browser on this device, so you can see when you're due to test again.</p>
+  </div>
+  <h3>Every few months</h3>
+  <p>Maps change, Wikipedia changes, and apps update. Every three months or so, on Wi-Fi: update the apps, refresh the map regions and Kiwix files, then run the airplane-mode test again. The box above tells you when it's been more than three months.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Quick audit</p>
+  <h2>Ready?</h2>
+  <div class="check"><div><span class="tag">Check</span><p>Every tool came from its official source, and the publisher's name matched.</p></div></div>
+  <div class="check"><div><span class="tag">Check</span><p>Maps and libraries are downloaded, not just the apps.</p></div></div>
+  <div class="check"><div><span class="tag">Check</span><p>Everything passed the airplane-mode test.</p></div></div>
+  <div class="check"><div><span class="tag">Check</span><p>There's a reminder in your calendar to refresh it all in three months.</p></div></div>
+</section>
+
+<hr class="div">
+
+<section style="padding-top:44px">
+  <p class="tag eyebrow">What I'd want you to take away</p>
+  <h2>Do it on a calm evening</h2>
+  <div class="takeaways">
+    <div class="take"><h3>Before, not during</h3><p>Offline tools only help if they're downloaded while the internet still works.</p></div>
+    <div class="take"><h3>The real one only</h3><p>Official sources, checked publisher. Look-alikes are the easiest way to get caught out.</p></div>
+    <div class="take"><h3>Prove it</h3><p>Airplane mode tells you the truth. Test now, refresh every few months.</p></div>
+  </div>
+  <h3 style="margin-top:30px">Sources</h3>
+  <ul>
+    <li><a href="https://kiwix.org/en/">Kiwix: offline Wikipedia and educational content</a>, and <a href="https://en.wikipedia.org/wiki/Kiwix">Wikipedia's article on Kiwix</a> for platforms and content</li>
+    <li><a href="https://www.comaps.app/news/2025-07-03/AlternativeTo-Organic-Maps-fork-CoMaps-launches-on-major-app-stores-for-iOS-and-Android">CoMaps launches on the app stores (2025)</a></li>
+    <li><a href="https://www.redcross.org.uk/first-aid/first-aid-apps">British Red Cross: free first aid apps</a></li>
+    <li><a href="https://beready.campaign.gov.uk/be-informed-about-hazards/power-cuts/">UK government: power cuts</a></li>
+    <li><a href="https://www.linuxpromagazine.com/Issues/2025/299/Meshtastic">Linux Magazine: messaging off the grid with Meshtastic</a></li>
+  </ul>
+  <p>Checked on 6 November 2026. Apps change hands and change names, so <a href="contact.html">tell me</a> if a link stops working or a tool changes.</p>
+</section>
+
+</main>
+
+<section class="read-next">
+  <div class="wrap col">
+    <p class="tag">Back to the start of the Ready path</p>
+    <a class="card" href="power-cut.html">
+      <h3>When the lights go out</h3>
+      <p>The first ten minutes, the first night and the days after, with a fridge and freezer timer.</p>
+      <span class="go">Read &rarr;</span>
+    </a>
+  </div>
+</section>
+
+<script>
+(function(){
+  var KEY='offline-tools-test', DAY=86400000;
+  var boxes=[].slice.call(document.querySelectorAll('#ticks input'));
+  var verdict=document.getElementById('verdict');
+  var st={ticks:{},done:null};
+  try{ st=JSON.parse(localStorage.getItem(KEY)||'')||st; }catch(e){}
+  st.ticks=st.ticks||{};
+  function save(){ try{ localStorage.setItem(KEY,JSON.stringify(st)); }catch(e){} }
+  function fmt(t){ return new Date(t).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}); }
+  function show(){
+    var n=boxes.filter(function(b){return b.checked;}).length;
+    if(n===boxes.length){
+      if(!st.done){ st.done=Date.now(); save(); }
+      var age=Math.floor((Date.now()-st.done)/DAY);
+      if(age>90){ verdict.className='verdict amber'; verdict.textContent='All passed on '+fmt(st.done)+', but that was '+age+' days ago. Time to refresh and test again.'; }
+      else { verdict.className='verdict ok'; verdict.textContent='All passed on '+fmt(st.done)+'. Next refresh due around '+fmt(st.done+90*DAY)+'.'; }
+    } else {
+      verdict.className='verdict';
+      verdict.textContent=n+' of '+boxes.length+' checked. Keep going, in airplane mode.';
+    }
+  }
+  boxes.forEach(function(b){
+    b.checked=!!st.ticks[b.dataset.k];
+    b.addEventListener('change',function(){
+      st.ticks[b.dataset.k]=b.checked;
+      if(!b.checked) st.done=null;
+      save(); show();
+    });
+  });
+  document.getElementById('reset').addEventListener('click',function(){
+    st={ticks:{},done:null}; save();
+    boxes.forEach(function(b){ b.checked=false; }); show();
+  });
+  show();
+})();
+</script>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">← Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="contact.html">Get in touch</a>
+    <a href="offline.html">Use offline</a>
+    <span class="tag">© 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
+<script src="sw-register.js" defer></script>
+</body>
+</html>
