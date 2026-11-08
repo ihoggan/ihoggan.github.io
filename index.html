@@ -25,7 +25,7 @@
 <style>
 /* ============================================================
    index.html — page-specific rules only. Shared system: site.css
-   Layout: hero + honest gauge / paths / case studies / latest
+   Layout: hero + pipeline / paths / case studies / latest
    ============================================================ */
 
 /* ---------- hero ---------- */
@@ -41,59 +41,74 @@
 .creed span::before{content:"";width:6px;height:6px;border-radius:50%;
   background:var(--trace);box-shadow:0 0 5px var(--trace)}
 
-/* ---------- the honest gauge ---------- */
-.meter{
+/* ---------- the pipeline: how it all connects ---------- */
+.rig{
   background:linear-gradient(180deg,var(--panel-2),#CBCFC8);
   border:1px solid var(--bezel);border-radius:5px;padding:16px;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.85),0 6px 22px rgba(23,32,43,.16);
 }
-.meter-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.meter-head .tag{color:var(--ink-2)}
+.rig-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.rig-head .tag{color:var(--ink-2)}
 .lamp{width:9px;height:9px;border-radius:50%;margin-left:auto;flex:none;
   background:#8E9691;box-shadow:inset 0 1px 1px rgba(0,0,0,.3);transition:background .3s,box-shadow .3s}
 .lamp.on{background:var(--trace);box-shadow:0 0 9px var(--trace)}
 .lamp.wait{background:var(--lamp);box-shadow:0 0 9px var(--lamp)}
-.meter .well{position:relative;padding:14px 12px 10px}
-.dial{display:block;width:100%;height:auto;max-height:230px}
-.dial .arc{fill:none;stroke:rgba(87,199,154,.22);stroke-width:2}
-.dial .tick{stroke:rgba(87,199,154,.45);stroke-width:1.2}
-.dial .tick.major{stroke:rgba(140,232,194,.8);stroke-width:2}
-.dial .num{fill:rgba(140,232,194,.75);font:500 11px "IBM Plex Mono",monospace;letter-spacing:.06em}
-.dial .unit{fill:rgba(140,232,194,.5);font:500 9.5px "IBM Plex Mono",monospace;letter-spacing:.16em;text-transform:uppercase}
-.dial .claim{fill:var(--lamp);filter:drop-shadow(0 0 4px rgba(224,152,43,.8))}
-.dial .needle line{stroke:#8CE8C2;stroke-width:2.6;stroke-linecap:round;filter:drop-shadow(0 0 5px rgba(87,199,154,.9))}
-.dial .hub{fill:#16232B;stroke:#8CE8C2;stroke-width:2}
-.dial .rot{transform-box:view-box;transform-origin:160px 168px;
-  transition:transform 1.6s cubic-bezier(.22,1.25,.36,1)}
-.dial .rot.fast{transition:transform .5s ease-out}
-.legend{display:flex;justify-content:center;gap:18px;margin-top:4px;
-  font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(140,232,194,.7)}
-.legend i{display:inline-block;width:8px;height:8px;margin-right:6px;vertical-align:-1px}
-.legend .lc{background:var(--lamp);clip-path:polygon(50% 100%,0 0,100% 0)}
-.legend .lm{background:#8CE8C2;height:2px;width:12px;vertical-align:3px}
+.rig .well{position:relative;padding:8px 6px 4px}
+/* a slow sheen of light across the glass */
+.rig .well::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(105deg,transparent 35%,rgba(140,232,194,.07) 48%,rgba(255,255,255,.05) 50%,transparent 62%);
+  background-size:300% 100%;animation:sheen 9s ease-in-out infinite}
+@keyframes sheen{0%{background-position:120% 0}60%,100%{background-position:-60% 0}}
 
-.read{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-.read div{background:var(--engrave);border:1px solid var(--bezel);border-radius:3px;padding:9px 11px;
-  box-shadow:inset 0 1px 2px rgba(23,32,43,.08)}
-.read span{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;
+.pipe{display:block;width:100%;height:auto}
+.pipe .grid{fill:url(#dots)}
+.pipe .trace{fill:none;stroke:rgba(87,199,154,.2);stroke-width:3;stroke-linejoin:round;stroke-linecap:round;
+  transition:stroke .5s}
+.pipe .trace.hot{stroke:rgba(87,199,154,.5)}
+.pipe .flow{fill:none;stroke:rgba(140,232,194,.5);stroke-width:1.3;stroke-linecap:round;
+  stroke-dasharray:1.5 11;animation:flow 1.4s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-25}}
+.pipe .via{fill:#0F181E;stroke:rgba(140,232,194,.55);stroke-width:1.2}
+
+.chip{cursor:pointer;outline:none}
+.chip .glow{fill:var(--trace);opacity:0;filter:url(#bloom);transition:opacity .5s,fill .5s}
+.chip .top{fill:#1C313B;stroke:rgba(140,232,194,.45);stroke-width:1;transition:fill .5s,stroke .5s}
+.chip .lf{fill:#132229;stroke:rgba(140,232,194,.18);stroke-width:.8}
+.chip .rf{fill:#0B151A;stroke:rgba(140,232,194,.18);stroke-width:.8}
+.chip .pin{stroke:rgba(140,232,194,.35);stroke-width:1.4}
+.chip .code{fill:rgba(140,232,194,.75);font:600 9px "IBM Plex Mono",monospace;letter-spacing:.08em;
+  transition:fill .5s}
+.chip .label{fill:rgba(140,232,194,.55);font:500 9.5px "IBM Plex Mono",monospace;letter-spacing:.12em;
+  text-transform:uppercase;transition:fill .5s}
+.chip.lit .top{fill:#21473F;stroke:rgba(140,232,194,.8)}
+.chip.lit .glow{opacity:.28}
+.chip.lit .label{fill:rgba(140,232,194,.85)}
+.chip.on .top{fill:#5A4320;stroke:#F2C377}
+.chip.on .glow{fill:var(--lamp);opacity:.6}
+.chip.on .code{fill:#FFE2B0}
+.chip.on .label{fill:#F2C377}
+.chip:focus-visible .top{stroke:var(--lamp);stroke-width:2.2}
+.pulse{fill:#E9FFF6;filter:url(#bloom)}
+.pulse.tail{fill:#8CE8C2;opacity:.45}
+
+.rig .hint{display:flex;justify-content:center;gap:16px;margin-top:2px;padding-bottom:4px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(140,232,194,.6)}
+.rig .hint i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;vertical-align:0}
+.rig .hint .h1{background:var(--lamp);box-shadow:0 0 6px var(--lamp)}
+.rig .hint .h2{background:var(--trace);box-shadow:0 0 6px var(--trace)}
+.readout{margin-top:12px;background:var(--engrave);border:1px solid var(--bezel);border-radius:3px;
+  padding:11px 13px;box-shadow:inset 0 1px 2px rgba(23,32,43,.08);min-height:7.4em}
+.readout .stepno{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;
   text-transform:uppercase;color:var(--ink-3)}
-.read b{display:block;font-family:var(--display);font-variation-settings:"wdth" 110,"wght" 760;
-  font-size:1.5rem;line-height:1.1;font-variant-numeric:tabular-nums}
-.read .claimv b{color:#A86A10}
-.read .measv b{color:var(--ink)}
-.verdict{margin:12px 2px 0;font-size:.95rem;color:var(--ink-2);min-height:3em}
-.verdict a{white-space:nowrap}
-.chan{display:flex;gap:6px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(23,32,43,.14)}
-.chan button{flex:1;font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.12em;
-  text-transform:uppercase;padding:10px 6px;color:var(--ink-2);cursor:pointer;
-  background:linear-gradient(180deg,var(--engrave),var(--panel-2));
-  border:1px solid var(--bezel);border-radius:3px;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 1px 2px rgba(23,32,43,.16)}
-.chan button:hover{color:var(--ink)}
-.chan button[aria-pressed="true"]{color:var(--engrave);
-  background:linear-gradient(180deg,#20303E,var(--ink));border-color:#0C1319;
-  box-shadow:inset 0 2px 4px rgba(0,0,0,.35)}
-.chan button:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+.readout b{display:block;font-family:var(--display);font-variation-settings:"wdth" 110,"wght" 760;
+  font-size:1.35rem;line-height:1.15;margin:2px 0 4px}
+.readout p{margin:0;font-size:.95rem;color:var(--ink-2)}
+.readout a{white-space:nowrap}
+
+@media(prefers-reduced-motion:reduce){
+  .rig .well::after,.pipe .flow{animation:none}
+  .pipe .flow{display:none}
+}
 
 /* ---------- section heads ---------- */
 .home main{padding:64px 0 48px}
@@ -203,8 +218,8 @@
   .studies .study:last-child{grid-column:auto}
   .strip a{border-right:0;border-bottom:1px solid var(--rule)}
   .strip a:last-child{border-bottom:0}
-  .chan button{font-size:9.5px;letter-spacing:.08em;padding:10px 4px}
-  .read b{font-size:1.3rem}
+  .rig{padding:12px}
+  .pipe .label{font-size:11px}
 }
 </style>
 <link rel="manifest" href="manifest.webmanifest">
@@ -241,31 +256,28 @@
       </div>
     </div>
 
-    <figure class="meter" aria-labelledby="meter-cap">
-      <div class="meter-head">
-        <span class="tag" id="meter-cap">Measured, not assumed</span>
+    <figure class="rig" aria-labelledby="rig-cap">
+      <div class="rig-head">
+        <span class="tag" id="rig-cap">How it all connects</span>
         <span class="lamp" id="lamp" aria-hidden="true"></span>
       </div>
       <div class="well">
-        <svg class="dial" id="dial" viewBox="0 0 320 196" role="img" aria-label="A gauge comparing what was expected, or the before reading, with what was measured.">
-          <path class="arc" d="M30 168 A130 130 0 0 1 290 168"/>
-          <g id="ticks"></g>
-          <text class="unit" id="unit" x="160" y="130" text-anchor="middle">pot rate %</text>
-          <g class="rot" id="claim"><path class="claim" d="M160 30 l-6 -12 h12 z"/></g>
-          <g class="rot needle" id="needle"><line x1="160" y1="168" x2="160" y2="52"/></g>
-          <circle class="hub" cx="160" cy="168" r="7"/>
+        <svg class="pipe" id="pipe" viewBox="0 36 480 214" role="group" aria-label="A pipeline: a rescued PC runs Linux, which runs local AI and the home robot on one branch and Python and the pool engine on the other. Both branches feed the free guides.">
+          <defs>
+            <pattern id="dots" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".8" fill="rgba(140,232,194,.12)"/></pattern>
+            <filter id="bloom" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="3.2"/></filter>
+          </defs>
+          <rect class="grid" x="0" y="36" width="480" height="214"/>
+          <g id="traces"></g>
+          <g id="pulses"></g>
+          <g id="chips"></g>
         </svg>
-        <div class="legend" aria-hidden="true"><span><i class="lc"></i><span id="legA">Expected</span></span><span><i class="lm"></i><span id="legB">Measured</span></span></div>
+        <div class="hint" aria-hidden="true"><span><i class="h1"></i>Now</span><span><i class="h2"></i>Built on</span><span>Tap a block</span></div>
       </div>
-      <div class="read" aria-live="polite">
-        <div class="claimv"><span id="claimLabel">The AI predicted</span><b id="claimVal">91.5%</b></div>
-        <div class="measv"><span id="measLabel">It actually potted</span><b id="measVal">18.3%</b></div>
-      </div>
-      <p class="verdict" id="verdict">The pool AI thought it potted nearly everything. Five confident explanations died before the real bug turned up. <a href="Hustler.html">Read how →</a></p>
-      <div class="chan" role="group" aria-label="Choose a measurement">
-        <button type="button" data-ch="0" aria-pressed="true">Pool AI</button>
-        <button type="button" data-ch="1" aria-pressed="false">AI memory</button>
-        <button type="button" data-ch="2" aria-pressed="false">Home robot</button>
+      <div class="readout" id="readout">
+        <span class="stepno" id="stepNo">Block 1 of 7</span>
+        <b id="stepName">Rescued PC</b>
+        <p id="stepText">A 2015 desktop headed for scrap. Wiped and rebuilt, it runs everything you see here. <a href="reclaim.html">Read how →</a></p>
       </div>
     </figure>
   </div>
@@ -492,95 +504,135 @@
 </footer>
 
 <script>
-/* The honest gauge: the amber marker is what was expected (or
-   the before reading), the needle is what was measured. Every number comes from
-   a case study on this site. */
+/* How it all connects: each block is a real build on this site, wired in
+   the order it was built on. The light follows the pipeline; the amber block
+   is the one described underneath. Every claim comes from a page on this site. */
 (function(){
-  var CH=[
-    {unit:'pot rate %', max:100, legA:'Expected', legB:'Measured', claim:91.5, meas:18.3,
-     claimLabel:'The AI predicted', claimVal:'91.5%',
-     measLabel:'It actually potted', measVal:'18.3%',
-     verdict:'The pool AI thought it potted nearly everything. Five confident explanations died before the real bug turned up.',
-     href:'Hustler.html'},
-    {unit:'memories of 35', max:35, legA:'Before', legB:'After', claim:35, meas:0,
-     claimLabel:'Memories invented', claimVal:'35 / 35',
-     measLabel:'Filler after the fix', measVal:'0',
-     verdict:'I measured my AI characters’ memories and every one was made up. Now they’re checked against my own words.',
-     href:'reclaim.html'},
-    {unit:'% of one core', max:100, legA:'Before', legB:'After', claim:70, meas:9.5,
-     claimLabel:'CPU to draw his face', claimVal:'70%',
-     measLabel:'After the fix', measVal:'9–10%',
-     verdict:'Gus the home robot was spending most of a core drawing himself. The fix made his brain 55% faster.',
-     href:'gus.html'}
+  var N=[
+    {x:46, y:140,code:'PC',  name:'Rescued PC',
+     text:'A 2015 desktop headed for scrap. Wiped and rebuilt, it runs everything you see here.', href:'reclaim.html'},
+    {x:140,y:140,code:'OS',  name:'Linux',
+     text:'Ubuntu, locked down step by step before anything else went on it.', href:'secure-ubuntu.html'},
+    {x:236,y:72, code:'AI',  name:'Local AI',
+     text:'A language model running at home, no cloud. Its characters’ memories are checked against my own words.', href:'reclaim.html'},
+    {x:330,y:72, code:'GUS', name:'Gus',
+     text:'The home robot, on the same machine. One fix took his face from 70% of a core to about 10%.', href:'gus.html'},
+    {x:236,y:210,code:'PY',  name:'Python',
+     text:'The language behind the simulations, the tools and the tests. Learn it with real data on the Data path.', href:'data-numpy.html'},
+    {x:330,y:210,code:'8B',  name:'HUSTLER',
+     text:'A UK pool physics engine. Its AI thought it potted 91.5% of shots. It actually potted 18.3%.', href:'Hustler.html'},
+    {x:430,y:140,code:'FREE',name:'Free guides',
+     text:'Everything learned along the way becomes a free, hands-on guide. Eight paths, no sign-up.', href:'#learn'}
   ];
-  var R=130, CX=160, CY=168;
-  var ticks=document.getElementById('ticks'), unit=document.getElementById('unit');
-  var claim=document.getElementById('claim'), needle=document.getElementById('needle');
-  var lamp=document.getElementById('lamp'), verdict=document.getElementById('verdict');
-  var cL=document.getElementById('claimLabel'), cV=document.getElementById('claimVal');
-  var mL=document.getElementById('measLabel'), mV=document.getElementById('measVal');
-  var btns=[].slice.call(document.querySelectorAll('.chan button'));
+  // edges: [from, to]; ARRIVE[i] = the edges whose light lands on block i
+  var E=[[0,1],[1,2],[2,3],[1,4],[4,5],[3,6],[5,6]];
+  var ARRIVE=[[],[0],[1],[2],[3],[4],[5,6]];
+  var W=27,H=13.5,D=10,NS='http://www.w3.org/2000/svg';
+  var svg=document.getElementById('pipe'),gT=document.getElementById('traces'),
+      gP=document.getElementById('pulses'),gC=document.getElementById('chips'),
+      lamp=document.getElementById('lamp'),ro=document.getElementById('readout'),
+      sNo=document.getElementById('stepNo'),sName=document.getElementById('stepName'),
+      sText=document.getElementById('stepText');
   var reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var NS='http://www.w3.org/2000/svg', cur=-1, t1=0, t2=0, cycle=0, touched=false;
+  var cur=-1,cycle=0,touched=false,timer=0,chips=[],traces=[];
 
-  function el(n,a){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);return e}
-  function deg(v,max){return (v/max)*180-90}  // -90 = left end, +90 = right end
-  function rot(g,d,fast){g.classList.toggle('fast',!!fast);g.style.transform='rotate('+d+'deg)'}
+  function el(n,a,p){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e}
+  function pts(a){return a.map(function(p){return p[0]+','+p[1]}).join(' ')}
 
-  function drawScale(max){
-    while(ticks.firstChild) ticks.removeChild(ticks.firstChild);
-    var steps=max===35?7:10;
-    for(var i=0;i<=steps*2;i++){
-      var a=Math.PI*(1-i/(steps*2)), major=i%2===0;
-      var r1=R-(major?13:7), c=Math.cos(a), s=Math.sin(a);
-      ticks.appendChild(el('line',{'class':'tick'+(major?' major':''),
-        x1:CX+c*r1,y1:CY-s*r1,x2:CX+c*R,y2:CY-s*R}));
-      if(major && (i/2)%(steps===7?1:2)===0){
-        var t=el('text',{'class':'num',x:CX+c*(R-27),y:CY-s*(R-27)+4,'text-anchor':'middle'});
-        t.textContent=Math.round(max*i/(steps*2));
-        ticks.appendChild(t);
-      }
+  // wire: leave the right side of one block, arrive at the left side of the next
+  E.forEach(function(e){
+    var a=N[e[0]],b=N[e[1]],sx=a.x+W,sy=a.y-D/2,ex=b.x-W,ey=b.y-D/2,d;
+    if(sy===ey) d='M'+sx+' '+sy+' H'+ex;
+    else{
+      var mx=(sx+ex)/2,r=9,s=ey>sy?1:-1;
+      d='M'+sx+' '+sy+' H'+(mx-r)+' Q'+mx+' '+sy+' '+mx+' '+(sy+s*r)+
+        ' V'+(ey-s*r)+' Q'+mx+' '+ey+' '+(mx+r)+' '+ey+' H'+ex;
     }
+    var t=el('path',{'class':'trace',d:d},gT);
+    el('path',{'class':'flow',d:d},gT);
+    el('circle',{'class':'via',cx:sx,cy:sy,r:2.4},gT);
+    el('circle',{'class':'via',cx:ex,cy:ey,r:2.4},gT);
+    traces.push(t);
+  });
+
+  // blocks: small isometric chips with pins, code printed on the lid
+  N.forEach(function(n,i){
+    var x=n.x,y=n.y;
+    var g=el('a',{'class':'chip',href:n.href,'aria-label':n.name+': '+n.text},gC);
+    el('ellipse',{'class':'glow',cx:x,cy:y-D/2,rx:W+4,ry:H+5},g);
+    for(var k=1;k<=3;k++){
+      var f=k/4;
+      el('line',{'class':'pin',x1:x-W+W*f,y1:y+H*f,x2:x-W+W*f,y2:y+H*f+4},g);
+      el('line',{'class':'pin',x1:x+W*f,y1:y+H-H*f,x2:x+W*f,y2:y+H-H*f+4},g);
+    }
+    el('polygon',{'class':'lf',points:pts([[x-W,y-D],[x,y-D+H],[x,y+H],[x-W,y]])},g);
+    el('polygon',{'class':'rf',points:pts([[x,y-D+H],[x+W,y-D],[x+W,y],[x,y+H]])},g);
+    el('polygon',{'class':'top',points:pts([[x,y-D-H],[x+W,y-D],[x,y-D+H],[x-W,y-D]])},g);
+    var c=el('text',{'class':'code','text-anchor':'middle',dy:3,
+      transform:'matrix(.894,-.447,.894,.447,'+x+','+(y-D)+')'},g);
+    c.textContent=n.code;
+    var l=el('text',{'class':'label','text-anchor':'middle',x:x,y:y+H+16},g);
+    l.textContent=n.name;
+    g.addEventListener('mouseenter',function(){ take(); show(i); });
+    g.addEventListener('focus',function(){ take(); show(i); });
+    g.addEventListener('click',function(ev){
+      // first tap on a touch screen explains the block; the second follows the link
+      if(cur!==i){ ev.preventDefault(); take(); show(i); }
+    });
+    chips.push(g);
+  });
+
+  function take(){ if(!touched){ touched=true; clearInterval(cycle); ro.setAttribute('aria-live','polite'); } }
+
+  function pulse(path,ms){
+    var len=path.getTotalLength(),heads=[];
+    for(var k=0;k<4;k++) heads.push(el('circle',{'class':'pulse'+(k?' tail':''),r:k?2.6-k*.5:3.4},gP));
+    var t0=performance.now();
+    (function step(now){
+      var p=Math.min(1,(now-t0)/ms);
+      heads.forEach(function(h,k){
+        var q=Math.max(0,p-k*.06),pt=path.getPointAtLength(len*(q*q*(3-2*q)));
+        h.setAttribute('cx',pt.x); h.setAttribute('cy',pt.y);
+      });
+      if(p<1) requestAnimationFrame(step);
+      else heads.forEach(function(h){ h.remove(); });
+    })(t0);
+  }
+
+  function paint(i){
+    chips.forEach(function(g,k){
+      g.classList.toggle('lit',(reduced||k<=i) && k!==i);
+      g.classList.toggle('on',k===i);
+    });
+    E.forEach(function(e,k){ traces[k].classList.toggle('hot',reduced||(e[0]<=i&&e[1]<=i)); });
+    lamp.className='lamp on';
   }
 
   function show(i){
     if(i===cur) return;
-    cur=i; clearTimeout(t1); clearTimeout(t2);
-    var c=CH[i];
-    btns.forEach(function(b,k){b.setAttribute('aria-pressed',k===i?'true':'false')});
-    drawScale(c.max); unit.textContent=c.unit;
-    document.getElementById('legA').textContent=c.legA;
-    document.getElementById('legB').textContent=c.legB;
-    cL.textContent=c.claimLabel; cV.textContent=c.claimVal;
-    mL.textContent=c.measLabel; mV.textContent=reduced?c.measVal:'—';
-    verdict.innerHTML='';
-    verdict.appendChild(document.createTextNode(c.verdict+' '));
-    var a=document.createElement('a'); a.href=c.href; a.textContent='Read how →';
-    verdict.appendChild(a);
-    rot(claim,deg(c.claim,c.max),true);
-    if(reduced){ rot(needle,deg(c.meas,c.max),true); lamp.className='lamp on'; return; }
-    // the needle starts where we expected, then settles where we measured
+    cur=i; clearTimeout(timer);
+    var n=N[i];
+    sNo.textContent='Block '+(i+1)+' of '+N.length;
+    sName.textContent=n.name;
+    sText.textContent=n.text+' ';
+    var a=document.createElement('a'); a.href=n.href;
+    a.textContent=n.href==='#learn'?'Pick a path →':'Read how →';
+    sText.appendChild(a);
+    if(reduced||!ARRIVE[i].length){ paint(i); return; }
     lamp.className='lamp wait';
-    rot(needle,deg(c.claim,c.max),true);
-    t1=setTimeout(function(){
-      rot(needle,deg(c.meas,c.max),false);
-      t2=setTimeout(function(){ mV.textContent=c.measVal; lamp.className='lamp on'; },1300);
-    },900);
+    ARRIVE[i].forEach(function(k){ pulse(traces[k],750); });
+    timer=setTimeout(function(){ paint(i); },700);
   }
 
-  btns.forEach(function(b){
-    b.addEventListener('click',function(){ touched=true; clearInterval(cycle); show(+b.dataset.ch); });
-  });
-
-  rot(needle,-90,true);
-  show(0);
-  if(!reduced){
+  if(reduced){ show(0); }
+  else{
+    show(0);
     cycle=setInterval(function(){
       if(touched||document.hidden) return;
-      var r=document.getElementById('dial').getBoundingClientRect();
-      if(r.bottom<0||r.top>innerHeight) return;  // only cycle while it's on screen
-      show((cur+1)%CH.length);
-    },7000);
+      var r=svg.getBoundingClientRect();
+      if(r.bottom<0||r.top>innerHeight) return;  // only run while it's on screen
+      show((cur+1)%N.length);
+    },3800);
   }
 })();
 </script>
