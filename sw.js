@@ -23,7 +23,7 @@
    ------------------------------------------------------------ */
 
 // VERSION-START
-const VERSION = 'site-8d058a0b33';
+const VERSION = 'site-3200aa6eca';
 // VERSION-END
 
 const PAGES = `${VERSION}-pages`;
