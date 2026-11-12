@@ -23,7 +23,7 @@
    ------------------------------------------------------------ */
 
 // VERSION-START
-const VERSION = 'site-c14e6ceac7';
+const VERSION = 'site-a5b772057d';
 // VERSION-END
 
 const PAGES = `${VERSION}-pages`;
@@ -42,6 +42,7 @@ const PRECACHE = [
   'TradeWar.html',
   'about.html',
   'account-audit.html',
+  'assembled.html',
   'battery-safety.html',
   'contact.html',
   'data-ml.html',

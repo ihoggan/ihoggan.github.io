@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How they assemble you: what a cheap radio and a stolen bank balance share — Iain Hoggan</title>
+<meta name="description" content="No single packet matters, and no single leaked password matters. Both attacks work by assembling small, boring pieces nobody thought worth protecting. What a thirty-pound radio taught me about how bank fraud really happens, and how to leave fewer pieces lying around.">
+<link rel="canonical" href="https://ihoggan.github.io/assembled.html">
+<meta property="og:site_name" content="Iain Hoggan">
+<meta property="og:locale" content="en_GB">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ihoggan.github.io/assembled.html">
+<meta property="og:title" content="How they assemble you">
+<meta property="og:description" content="No single packet matters, and no single leaked password matters. Both attacks work by assembling the harmless scraps you leave lying about.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "How they assemble you", "description": "No single packet matters, and no single leaked password matters. Both attacks work by assembling the harmless scraps you leave lying about.", "datePublished": "2026-11-12", "dateModified": "2026-11-12", "inLanguage": "en-GB", "author": {"@type": "Person", "name": "Iain Hoggan", "url": "https://ihoggan.github.io/about.html"}, "mainEntityOfPage": "https://ihoggan.github.io/assembled.html"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+main.wrap{padding-top:52px;padding-bottom:40px}
+.standfirst{font-size:1.12rem;color:var(--ink-2);max-width:34em}
+.standfirst strong{color:var(--ink);font-weight:600}
+main section p{max-width:38em}
+main h2{max-width:18em;margin-bottom:14px}
+main ul{max-width:36em;margin:0 0 16px 1.2em}
+main li{margin-bottom:8px}
+.predict{border-left:3px solid var(--lamp);padding:2px 0 2px 18px;margin:18px 0;max-width:38em}
+.predict .tag{display:block;margin-bottom:4px;color:var(--lamp)}
+.predict p{margin:0}
+.warn{border-left:3px solid var(--alarm);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.warn .tag{display:block;margin-bottom:4px;color:var(--alarm)}
+.warn p{margin:0}
+.warn p+p{margin-top:8px}
+.found{border-left:3px solid var(--trace);padding:2px 0 2px 18px;margin:22px 0;max-width:38em}
+.found .tag{display:block;margin-bottom:4px;color:var(--trace)}
+.found p{margin:0}
+.takeaways{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:26px}
+.take{background:linear-gradient(180deg,var(--engrave),var(--panel-2));
+  border:1px solid var(--bezel);border-radius:4px;padding:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.take h3{font-size:1rem;margin:0 0 8px}
+.take p{font-size:.94rem;color:var(--ink-2);margin:0}
+.read-next{border-top:1px solid var(--rule);padding:44px 0 8px}
+.read-next .card{margin-top:14px;max-width:640px}
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0F181E">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+</head>
+<body>
+
+<div class="rail">
+  <div class="wrap">
+    <a class="plate" href="index.html" aria-label="Home">IH</a>
+    <span class="rail-name">Iain&nbsp;Hoggan</span>
+    <nav class="rail-nav">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap col">
+    <p class="tag">Essay · Security path · ~8 min</p>
+    <h1>How they assemble you</h1>
+    <p class="standfirst">A single radio packet from a passing car is boring. A single leaked password for a site you forgot you joined is nothing. Yet both attacks work the same way: by <strong>assembling</strong> small, dull pieces that nobody thought worth protecting. I pointed a thirty-pound radio at the airwaves around my own home to see what leaks, and it explained something people always ask after they've been robbed online: <strong>how did they get my bank information?</strong></p>
+  </div>
+</header>
+
+<main class="wrap col">
+
+<section>
+  <p class="tag eyebrow">The hidden layer</p>
+  <h2>The quiet world you never notice</h2>
+  <p>The air around an ordinary street is busy with radio. Not the stations you tune into, but a constant mutter of tiny signals from small devices, each sending a short packet every half-minute or so, almost all of it unencrypted. The devices were built to be cheap, and encryption costs money and battery, so they simply announce themselves to anyone listening.</p>
+  <p>You can listen for about thirty pounds. A USB dongle the size of a memory stick, originally sold to watch digital TV, turns any laptop into a radio receiver that reads these signals. Point it at the two bands these gadgets use and the packets start scrolling past.</p>
+  <p>The first surprise is how dull each one is. A single packet is a scrap: a number, a temperature, a status flag. Nothing alarming. The alarming part is what happens when you stop looking at one packet and start looking at a day of them.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">What's out there</p>
+  <h2>Everyday things, broadcasting</h2>
+  <p>Most of this chatter lives in two licence-free bands, the slices of spectrum set aside for low-power gadgets. Spend a day listening and you will typically hear:</p>
+  <ul>
+    <li><strong>Weather stations</strong> reporting temperature, humidity and rainfall, plus a battery level and a device ID.</li>
+    <li><strong>Tyre pressure sensors.</strong> Every modern car carries four, one per wheel, each sending a unique ID with the tyre's pressure and temperature whenever the car is moving.</li>
+    <li><strong>Wireless thermostats</strong> telling the boiler how hard to work, every few minutes, all day.</li>
+    <li><strong>Cheap alarm sensors</strong> &mdash; door contacts and motion detectors announcing "open", "closed" or "movement".</li>
+    <li><strong>Doorbells, remote thermometers, energy monitors</strong> clamped to the mains that broadcast a household's live electricity use.</li>
+  </ul>
+  <p>A few things are not readable. Car key fobs transmit, but use a rolling code that changes every press, so there is nothing reusable to capture. Properly encrypted kit &mdash; modern smart meters, better alarm systems &mdash; shows up as noise you can see but not decode. But the cheap, chatty majority is wide open, and reading it needs no special skill: free software recognises hundreds of device types and prints their contents in plain text.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">Where the risk lives</p>
+  <h2>The pattern, not the packet</h2>
+  <p>Here is the crux: no single packet matters. The risk is in the pattern over time.</p>
+  <p>An energy monitor reporting every minute draws a graph of a household's day: when they wake, when the kettle goes on, when the house empties for a week. Door contacts and motion sensors become a timeline of comings and goings, and quietly reveal when the alarm is off. A tyre sensor's ID is effectively a silent number plate: log it, and you know when that particular car passes or parks nearby, without ever seeing it.</p>
+  <p>None of this requires breaking into anything. The devices volunteer it. Someone with a cheap receiver doesn't crack a system; they just collect what is already in the air and wait for the shape to appear.</p>
+  <p>To see how exposed the everyday world is, I ran the receiver as a controlled audit of my own home: I left it logging for twenty-four hours, then read back what the airwaves around the house had given away. A day's listening picked up a handful of passing cars, a nearby thermostat reporting its heating schedule around the clock, and an energy monitor or two.</p>
+  <div class="found">
+    <span class="tag">The finding that mattered</span>
+    <p>When I checked which of those signals were my own, the answer was none. My home was silent on these bands &mdash; nothing of mine was broadcasting a routine to the kerb. That was the point of auditing: you can only fix what you can see, and the reassurance is worth as much as the warning.</p>
+  </div>
+  <p>Even so, the exercise made the lesson concrete. A quiet afternoon, thirty pounds of kit, and the daily rhythm of a street was faintly legible from the pavement &mdash; not because anything was hacked, but because the pieces were simply lying in the air, waiting to be assembled.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">The other crime</p>
+  <h2>"How did they get my bank information?"</h2>
+  <p>Hold that idea &mdash; harmless scraps, assembled &mdash; and look at a completely different crime.</p>
+  <p>The first thing people say after money vanishes from their account is: how did they get my bank information? They picture a hacker breaking into the bank, cracking a vault. The reality is duller and more human, and it almost never looks like the theft itself.</p>
+  <p>Usually the bank was never touched. What leaked was the set of keys to it, from a dozen soft places around the edges:</p>
+  <ul>
+    <li>A <strong>data breach</strong> at some half-forgotten website spills an email address and password into a public dump.</li>
+    <li>That password was <strong>reused</strong>, so the same pair is tried against the victim's email, their bank, everything. One leak, every door.</li>
+    <li>A <strong>phishing text or call</strong> &mdash; "we've spotted suspicious activity on your account" &mdash; and the victim reads out the security code themselves.</li>
+    <li><strong>Oversharing</strong> fills the gaps: a full date of birth on a profile, a pet's name that doubles as a security answer, a holiday photo announcing the house is empty.</li>
+  </ul>
+  <p>Each piece is harmless on its own. A leaked password for a shopping site you no longer use is nothing. A pet's name is nothing. Your date of birth is nothing. The theft is what happens when someone collects the nothings and fits them together.</p>
+</section>
+
+<section>
+  <p class="tag eyebrow">The common thread</p>
+  <h2>The same trick, twice</h2>
+  <p>The radio and the bank fraud feel like opposites: one is high-tech eavesdropping, the other is someone emptying an account. They share a single mechanism.</p>
+  <p>In both, information leaks in small, boring pieces that nobody thinks worth protecting, and the attacker assembles them. No one tyre packet matters; the day of them does. No one leaked password matters; the collection does. The power is in aggregation, and aggregation is invisible to the person leaking, because each piece really is harmless on its own.</p>
+  <div class="predict">
+    <span class="tag">The reframe</span>
+    <p>That is why "how did they get my bank information?" is the wrong question. They usually didn't get it from the bank. They got the keys from the soft edges and fitted them together. The bank was never hacked. The person was assembled.</p>
+  </div>
+</section>
+
+<section>
+  <p class="tag eyebrow">What to do</p>
+  <h2>Defending against assembly</h2>
+  <p>If the attack is assembly, the defence is to leave fewer pieces lying around, and to break the links between them. The measures are unglamorous, and they work on both halves of the problem.</p>
+  <ul>
+    <li><strong>Use a different password everywhere.</strong> A password manager makes this painless and kills the reused-password domino in one move. One breach can then open only one door.</li>
+    <li><strong>Turn on two-factor that can't be read aloud.</strong> An app or a physical key resists the phone-call trick in a way a texted code does not.</li>
+    <li><strong>Check what has already leaked.</strong> Services like Have I Been Pwned show which breaches include your email, so you know which passwords to retire.</li>
+    <li><strong>Shrink your footprint.</strong> Close dead accounts. Don't hand over a full date of birth or a pet's name to sites that don't need them. Every scrap you withhold is one the assembler can't use.</li>
+    <li><strong>Distrust the urgent inbound.</strong> The "act now" message is the oldest lever there is. Slow down, and reach the bank yourself on a number you trust, never the one in the message.</li>
+    <li><strong>Treat silence as a signal.</strong> A good alarm raises the alert when a sensor goes quiet, not only when it shouts. Apply the same instinct to yourself: a login you didn't make, a letter that stops arriving, a statement that looks off &mdash; the absence of something expected is itself worth a second look.</li>
+  </ul>
+</section>
+
+<hr class="div">
+
+<section style="padding-top:44px">
+  <p class="tag eyebrow">What I'd want you to take away</p>
+  <h2>Learn to see the breadcrumbs</h2>
+  <p>Listening to the radio around a street costs thirty pounds and is completely silent; nobody knows you are doing it. That is the uncomfortable part, and also the useful one. The same cheapness that lets a stranger read a street lets you understand exactly how exposed the everyday world is, and act on it.</p>
+  <p>The lesson isn't to fear every gadget or to live off-grid. It's to think in breadcrumbs. Before you hand over a piece of yourself &mdash; a password, a birthday, a device that broadcasts your routine &mdash; ask not "is this one thing dangerous?" but "what does this become when someone collects it alongside everything else I've left lying about?"</p>
+  <div class="takeaways">
+    <div class="take"><h3>No piece is the point</h3><p>Each scrap is harmless alone. The collection is the weapon. Aggregation is the whole attack.</p></div>
+    <div class="take"><h3>The theft isn't the leak</h3><p>The bank was never hacked. The keys were gathered from the soft edges and fitted together.</p></div>
+    <div class="take"><h3>Deny the pieces</h3><p>Different passwords, a smaller footprint, a healthy distrust of "act now". There's nothing to assemble if the pieces aren't there.</p></div>
+  </div>
+  <p style="margin-top:26px">The attacker's whole craft is patience and assembly. Deny them the pieces, and there is nothing to assemble. If a step here needs updating, <a href="contact.html">tell me</a>.</p>
+</section>
+
+</main>
+
+<section class="read-next">
+  <div class="wrap col">
+    <p class="tag">Also on the Security path</p>
+    <a class="card" href="account-audit.html">
+      <h3>Who holds the keys to your life?</h3>
+      <p>The practical version of this essay: find every account you have, kill the reused passwords, and close the doors you forgot were open.</p>
+      <span class="go">Read &rarr;</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html">&larr; Home</a>
+    <a href="portfolio.html">All projects</a>
+    <a href="contact.html">Get in touch</a>
+    <a href="offline.html">Use offline</a>
+    <span class="tag">&copy; 2026 Iain Hoggan</span>
+  </div>
+</footer>
+
+<script src="sw-register.js" defer></script>
+</body>
+</html>
